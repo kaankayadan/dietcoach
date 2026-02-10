@@ -29,9 +29,14 @@ class BotHandlers:
         self.claude = claude
         self.settings = settings
         self.payment_url = settings.payment_url
+        self.admin_ids = settings.admin_ids
 
     async def _check_subscription(self, update: Update, telegram_id: int) -> bool:
         """Abonelik kontrolü — ödenmemişse ödeme sayfasına yönlendir."""
+        # Admin bypass — sahip her zaman kullanabilir
+        if telegram_id in self.admin_ids:
+            return True
+
         sub = await self.db.check_subscription(telegram_id)
 
         if sub["durum"] == "kayitsiz":

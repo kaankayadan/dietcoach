@@ -10,6 +10,9 @@ class Settings:
     anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "")
     database_url: str = os.getenv("DATABASE_URL", "postgresql://localhost/beslenme_kocu")
     
+    # Admin — ödeme olmadan tam erişim
+    admin_ids: list = [int(x) for x in os.getenv("ADMIN_IDS", "").split(",") if x.strip()]
+
     # Ödeme
     iyzico_api_key: str = os.getenv("IYZICO_API_KEY", "")
     iyzico_secret_key: str = os.getenv("IYZICO_SECRET_KEY", "")

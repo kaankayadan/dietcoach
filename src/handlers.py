@@ -129,19 +129,27 @@ class BotHandlers:
         """
         Claude'un yanıtındaki onboarding metadata'sını parse et.
         Format: <!--ONBOARDING:{"step": 3, "field": "cinsiyet", "value": "erkek", "valid": true}-->
+
+        Son adımda hesaplama metadata'sı gelir:
+        <!--ONBOARDING:{"step": 15, "field": "hesaplamalar", "value": {"bmr": 1968, ...}, "complete": true}-->
         """
         pattern = r'<!--ONBOARDING:(.*?)-->'
         matches = re.findall(pattern, response)
-        
+
         for match in matches:
             try:
                 meta = json.loads(match)
                 if meta.get("valid"):
                     onboarding_data = json.loads(user.get("onboarding_data") or "{}")
-                    onboarding_data[meta["field"]] = meta["value"]
-                    
+
+                    # Hesaplama metadata'sı: nested dict ise ana dict'e merge et
+                    if meta["field"] == "hesaplamalar" and isinstance(meta["value"], dict):
+                        onboarding_data.update(meta["value"])
+                    else:
+                        onboarding_data[meta["field"]] = meta["value"]
+
                     new_step = meta.get("step", user["onboarding_step"]) + 1
-                    
+
                     # Son adımsa onboarding'i tamamla
                     if new_step > 15 or meta.get("complete"):
                         await self.db.complete_onboarding(telegram_id, onboarding_data)
@@ -149,7 +157,7 @@ class BotHandlers:
                         await self.db.update_onboarding(telegram_id, new_step, onboarding_data)
             except (json.JSONDecodeError, KeyError) as e:
                 logger.warning(f"Onboarding metadata parse hatası: {e}")
-        
+
         # Metadata'yı yanıttan temizle
         clean = re.sub(pattern, '', response).strip()
         return clean

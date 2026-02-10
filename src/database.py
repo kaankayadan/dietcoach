@@ -243,6 +243,79 @@ class Database:
     # KİLO GEÇMİŞİ
     # ==========================================
     
+    # ==========================================
+    # ABONELİK İŞLEMLERİ
+    # ==========================================
+
+    async def check_subscription(self, telegram_id: int) -> dict:
+        """Kullanıcının abonelik durumunu kontrol et."""
+        user = await self.get_user(telegram_id)
+        if not user:
+            return {"aktif": False, "durum": "kayitsiz"}
+
+        durum = user.get("abonelik_durumu", "trial")
+        bitis = user.get("abonelik_bitis")
+
+        # Trial kullanıcılar: onboarding'e izin ver ama sonrasında ödeme iste
+        if durum == "trial":
+            return {"aktif": True, "durum": "trial", "bitis": None}
+
+        # Aktif abonelik: bitiş tarihini kontrol et
+        if durum == "aktif":
+            if bitis and bitis < date.today():
+                # Abonelik süresi dolmuş — pasife al
+                await self.pool.execute(
+                    "UPDATE users SET abonelik_durumu = 'pasif', updated_at = NOW() WHERE telegram_id = $1",
+                    telegram_id,
+                )
+                return {"aktif": False, "durum": "suresi_dolmus", "bitis": bitis}
+            return {"aktif": True, "durum": "aktif", "bitis": bitis}
+
+        # Pasif
+        return {"aktif": False, "durum": "pasif", "bitis": bitis}
+
+    async def activate_subscription(self, telegram_id: int, plan_tipi: str) -> date:
+        """Aboneliği aktifle — ödeme başarılı olduğunda çağrılır."""
+        sure_gun = {"aylik": 30, "3aylik": 90, "yillik": 365}
+        gun = sure_gun.get(plan_tipi, 30)
+
+        user = await self.get_user(telegram_id)
+        bugun = date.today()
+
+        # Mevcut abonelik varsa üstüne ekle
+        mevcut_bitis = user.get("abonelik_bitis") if user else None
+        if mevcut_bitis and mevcut_bitis > bugun:
+            baslangic = mevcut_bitis
+        else:
+            baslangic = bugun
+
+        bitis = baslangic + timedelta(days=gun)
+
+        await self.pool.execute(
+            """UPDATE users SET abonelik_durumu = 'aktif', abonelik_bitis = $2, updated_at = NOW()
+               WHERE telegram_id = $1""",
+            telegram_id, bitis,
+        )
+        return bitis
+
+    async def save_payment(self, telegram_id: int, user_id: int, tutar: float,
+                           plan_tipi: str, odeme_durumu: str,
+                           iyzico_payment_id: str = None) -> int:
+        """Ödeme kaydı oluştur."""
+        baslangic = date.today()
+        sure_gun = {"aylik": 30, "3aylik": 90, "yillik": 365}
+        bitis = baslangic + timedelta(days=sure_gun.get(plan_tipi, 30))
+
+        row = await self.pool.fetchrow(
+            """INSERT INTO odemeler (user_id, telegram_id, tutar, odeme_durumu, plan_tipi,
+                   baslangic_tarihi, bitis_tarihi, iyzico_payment_id)
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+               RETURNING id""",
+            user_id, telegram_id, tutar, odeme_durumu, plan_tipi,
+            baslangic, bitis, iyzico_payment_id,
+        )
+        return row["id"]
+
     async def get_weight_history(self, user_id: int, limit: int = 12) -> list:
         rows = await self.pool.fetch(
             """SELECT tarih, kilo_kg FROM kilo_gecmisi 

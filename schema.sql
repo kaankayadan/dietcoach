@@ -222,6 +222,28 @@ CREATE TABLE IF NOT EXISTS konusma_gecmisi (
 );
 
 -- =============================================
+-- 9. ÖDEME KAYITLARI
+-- Abonelik ödemeleri
+-- =============================================
+CREATE TABLE IF NOT EXISTS odemeler (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    telegram_id BIGINT NOT NULL,
+    tutar DECIMAL(8,2) NOT NULL,
+    para_birimi VARCHAR(5) DEFAULT 'TRY',
+    odeme_durumu VARCHAR(20) DEFAULT 'bekliyor', -- 'bekliyor', 'basarili', 'basarisiz'
+    odeme_yontemi VARCHAR(30), -- 'iyzico', 'manual'
+    iyzico_payment_id VARCHAR(100),
+    plan_tipi VARCHAR(20) DEFAULT 'aylik', -- 'aylik', '3aylik', 'yillik'
+    baslangic_tarihi DATE,
+    bitis_tarihi DATE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_odeme_user ON odemeler(user_id);
+CREATE INDEX idx_odeme_telegram ON odemeler(telegram_id);
+
+-- =============================================
 -- INDEXLER
 -- =============================================
 CREATE INDEX idx_users_telegram ON users(telegram_id);

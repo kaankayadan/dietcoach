@@ -20,12 +20,50 @@ logger = logging.getLogger(__name__)
 MAX_MSG_LENGTH = 4096
 
 
+TRIAL_MESSAGE_LIMIT = 10  # Trial kullanıcılar max 10 mesaj gönderebilir
+
+
 class BotHandlers:
     def __init__(self, db: Database, claude: ClaudeClient, settings):
         self.db = db
         self.claude = claude
         self.settings = settings
-    
+        self.payment_url = settings.payment_url
+
+    async def _check_subscription(self, update: Update, telegram_id: int) -> bool:
+        """Abonelik kontrolü — ödenmemişse ödeme sayfasına yönlendir."""
+        sub = await self.db.check_subscription(telegram_id)
+
+        if sub["durum"] == "kayitsiz":
+            return True  # Kayıtsız kullanıcı, onboarding'e izin ver
+
+        if sub["durum"] == "trial":
+            # Trial: onboarding sırasında serbest, sonrasında mesaj limiti
+            user = await self.db.get_user(telegram_id)
+            if user and user["onboarding_step"] == 99:
+                # Onboarding bitti, mesaj sayısını kontrol et
+                history = await self.db.get_conversation_history(user["id"], limit=100)
+                user_msgs = [m for m in history if m["rol"] == "user"]
+                if len(user_msgs) >= TRIAL_MESSAGE_LIMIT:
+                    await update.message.reply_text(
+                        f"Deneme süreniz doldu! Beslenme koçunuza devam etmek için abone olun.\n\n"
+                        f"Abonelik için: {self.payment_url}?tid={telegram_id}\n\n"
+                        f"Ya da /abone yazarak planları görüntüleyin."
+                    )
+                    return False
+            return True
+
+        if sub["aktif"]:
+            return True
+
+        # Pasif veya süresi dolmuş
+        await update.message.reply_text(
+            f"Aboneliğiniz sona erdi. Devam etmek için yenileyin.\n\n"
+            f"Abonelik için: {self.payment_url}?tid={telegram_id}\n\n"
+            f"Ya da /abone yazarak planları görüntüleyin."
+        )
+        return False
+
     async def _get_full_context(self, telegram_id: int) -> dict:
         """Kullanıcının tüm güncel verilerini topla — her mesajda çağrılır."""
         user = await self.db.get_user(telegram_id)
@@ -45,8 +83,13 @@ class BotHandlers:
     async def _send_to_claude(self, update: Update, message: str):
         """Mesajı Claude'a gönder, yanıtı kullanıcıya ilet."""
         telegram_id = update.effective_user.id
+
+        # Abonelik kontrolü
+        if not await self._check_subscription(update, telegram_id):
+            return
+
         ctx = await self._get_full_context(telegram_id)
-        
+
         if not ctx["user"]:
             await update.message.reply_text(
                 "Henüz kayıtlı değilsin! /baslat yazarak başlayabilirsin 🌟"
@@ -175,6 +218,33 @@ class BotHandlers:
     async def cmd_hedef(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/hedef — İlerleme raporumu göster")
     
+    async def cmd_abone(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Abonelik bilgisi ve ödeme linki."""
+        telegram_id = update.effective_user.id
+        sub = await self.db.check_subscription(telegram_id)
+
+        if sub["aktif"] and sub["durum"] == "aktif":
+            await update.message.reply_text(
+                f"Aboneliğin aktif! Bitiş tarihi: {sub['bitis']}\n\n"
+                f"Uzatmak istersen: {self.payment_url}?tid={telegram_id}"
+            )
+            return
+
+        text = (
+            "Beslenme Koçu Abonelik Planları\n\n"
+            "1 Aylık  —  149 TL\n"
+            "3 Aylık  —  349 TL (ayda 116 TL)\n"
+            "Yıllık   —  999 TL (ayda 83 TL)\n\n"
+            "Aboneliğe dahil:\n"
+            "- Kişisel AI beslenme koçu\n"
+            "- Günlük beslenme planı\n"
+            "- Öğün takibi ve analiz\n"
+            "- Haftalık ilerleme raporu\n"
+            "- Hatırlatıcılar\n\n"
+            f"Satın almak için: {self.payment_url}?tid={telegram_id}"
+        )
+        await update.message.reply_text(text)
+
     async def cmd_yardim(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         help_text = """🥗 *Beslenme Koçu Komutları*
 
@@ -189,6 +259,7 @@ class BotHandlers:
 /su [bardak] — Su kaydı
 /guncelle — Profil güncelle
 /hedef — İlerleme raporu
+/abone — Abonelik bilgisi
 
 💬 Komut kullanmadan da yazabilirsin!
 "Öğlen ne yesem?" veya "100g pirinçte ne kadar kalori var?" gibi."""

@@ -3,7 +3,8 @@ Meal Validator Unit Tests — Programatik validasyonun doğru çalıştığını
 """
 import pytest
 from src.meal_validator import (
-    parse_plan_json, remove_plan_json, validate_plan, format_validation_feedback
+    parse_plan_json, remove_plan_json, validate_plan, format_validation_feedback,
+    _find_food_in_db,
 )
 
 
@@ -114,7 +115,17 @@ class TestValidPlan:
             ]),
         ]
         plan = make_plan(ogunler)
-        result = validate_plan(plan, DEFAULT_USER)
+        # Kullanıcı hedeflerini planın gerçek toplamlarına yakın ayarla
+        totals = plan["gun_toplam"]
+        matching_user = {
+            **DEFAULT_USER,
+            "hedef_kalori": totals["kalori"],
+            "protein_g": totals["protein"],
+            "karbonhidrat_g": totals["karb"],
+            "yag_g": totals["yag"],
+            "lif_g": totals["lif"],
+        }
+        result = validate_plan(plan, matching_user)
         assert result["valid"] is True
         assert len(result["errors"]) == 0
 
@@ -350,3 +361,100 @@ class TestConsecutiveDays:
         day_warnings = [w for w in result["warnings"] if w["tip"] == "ardisik_gun_tekrar"]
         assert len(day_warnings) > 0
         assert "tavuk" in day_warnings[0]["mesaj"].lower()
+
+
+# ==========================================
+# KULLANICI PROFİL HEDEFİ KONTROL TESTLERİ
+# ==========================================
+
+class TestProfileTargetValidation:
+    def test_protein_exceeds_profile_target(self):
+        """Protein kullanıcı profil hedefinden fazlaysa hata vermeli."""
+        user = {**DEFAULT_USER, "protein_g": 132, "hedef_kalori": 2656, "karbonhidrat_g": 386, "yag_g": 65}
+        ogunler = [
+            make_ogun("kahvalti", [make_besin("Yüksek protein", 200, 55, 10, 40, 3)]),
+            make_ogun("ogle", [make_besin("Yüksek protein 2", 200, 55, 10, 40, 3)]),
+            make_ogun("aksam", [make_besin("Yüksek protein 3", 200, 55, 10, 40, 3)]),
+        ]
+        plan = make_plan(ogunler, hedef={"kalori": 2656, "protein": 132, "yag": 65, "karb": 386, "lif": 37})
+        result = validate_plan(plan, user)
+        # Protein 165g vs hedef 132g → +33g sapma
+        profil_errors = [e for e in result["errors"] if e["tip"] == "profil_hedef_sapma" and "protein" in e["mesaj"]]
+        assert len(profil_errors) > 0
+
+    def test_carb_below_profile_target(self):
+        """Karbonhidrat profil hedefinden çok düşükse hata vermeli."""
+        user = {**DEFAULT_USER, "protein_g": 132, "hedef_kalori": 2656, "karbonhidrat_g": 386, "yag_g": 65}
+        ogunler = [
+            make_ogun("kahvalti", [make_besin("Düşük karb", 200, 30, 15, 50, 3)]),
+            make_ogun("ogle", [make_besin("Düşük karb 2", 200, 30, 15, 50, 3)]),
+            make_ogun("aksam", [make_besin("Düşük karb 3", 200, 30, 15, 50, 3)]),
+        ]
+        plan = make_plan(ogunler, hedef={"kalori": 2656, "protein": 132, "yag": 65, "karb": 386, "lif": 37})
+        result = validate_plan(plan, user)
+        # Karb 150g vs hedef 386g → -236g sapma
+        profil_errors = [e for e in result["errors"] if e["tip"] == "profil_hedef_sapma" and "karb" in e["mesaj"]]
+        assert len(profil_errors) > 0
+
+    def test_plan_matching_profile_passes(self):
+        """Profil hedeflerine uyan plan hata vermemeli."""
+        user = {**DEFAULT_USER, "protein_g": 130, "hedef_kalori": 2500, "karbonhidrat_g": 350, "yag_g": 65}
+        ogunler = [
+            make_ogun("kahvalti", [make_besin("Dengeli 1", 200, 43, 22, 117, 5)]),
+            make_ogun("ogle", [make_besin("Dengeli 2", 300, 44, 22, 117, 5)]),
+            make_ogun("aksam", [make_besin("Dengeli 3", 300, 43, 21, 116, 5)]),
+        ]
+        plan = make_plan(ogunler, hedef={"kalori": 2500, "protein": 130, "yag": 65, "karb": 350, "lif": 30})
+        result = validate_plan(plan, user)
+        profil_errors = [e for e in result["errors"] if e["tip"] == "profil_hedef_sapma"]
+        assert len(profil_errors) == 0
+
+
+# ==========================================
+# BESİN DEĞERİ CROSS-CHECK TESTLERİ
+# ==========================================
+
+class TestFoodDatabaseCrossCheck:
+    def test_find_food_exact_match(self):
+        """Tam eşleşme bulunmalı."""
+        result = _find_food_in_db("tavuk göğsü")
+        assert result is not None
+        assert result["protein"] == 31
+
+    def test_find_food_partial_match(self):
+        """Kısmi eşleşme bulunmalı."""
+        result = _find_food_in_db("ızgara tavuk göğsü")
+        assert result is not None
+        assert result["protein"] == 31
+
+    def test_find_food_no_match(self):
+        """Eşleşme yoksa None dönmeli."""
+        result = _find_food_in_db("bilinmeyen bir yemek xyz")
+        assert result is None
+
+    def test_wildly_wrong_macro_flagged(self):
+        """Besin DB'den çok sapan makro değerleri uyarı vermeli."""
+        user = {**DEFAULT_USER}
+        ogunler = [
+            make_ogun("ogle", [{
+                "ad": "Tavuk göğsü",
+                "gram": 200,
+                "protein": 62,  # Doğru: 31g/100g × 2 = 62g ✓
+                "yag": 7.2,     # Doğru: 3.6g/100g × 2 = 7.2g ✓
+                "karb": 0,
+                "lif": 0,
+                "kalori": round((62*4)+(7.2*9)+(0*4)),
+            }, {
+                "ad": "Pirinç pilavı",
+                "gram": 150,
+                "protein": 15,  # Yanlış! Doğrusu: 2.7g/100g × 1.5 = 4.05g
+                "yag": 0.5,
+                "karb": 42,
+                "lif": 0.6,
+                "kalori": round((15*4)+(0.5*9)+(42*4)),
+            }]),
+        ]
+        plan = make_plan(ogunler)
+        result = validate_plan(plan, user)
+        db_warnings = [w for w in result["warnings"] if w["tip"] == "besin_deger_sapma" and "pirinç" in w["mesaj"].lower()]
+        assert len(db_warnings) > 0

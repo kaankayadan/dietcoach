@@ -27,9 +27,9 @@ class ClaudeClient:
     def __init__(self, api_key: str, system_prompt_path: str):
         self.client = anthropic.Anthropic(api_key=api_key)
         self.system_prompt = Path(system_prompt_path).read_text(encoding="utf-8")
-        # Basit sorgular için ucuz model, plan oluşturma için güçlü model
-        self.model_light = "claude-haiku-4-5-20251001"    # Besin sorgusu, kısa yanıt
-        self.model_heavy = "claude-sonnet-4-5-20250929"   # Plan oluşturma, onboarding
+        # Tüm sorgular için Sonnet 4.5 — tutarlı kalite ve doğruluk
+        self.model_light = "claude-sonnet-4-5-20250929"
+        self.model_heavy = "claude-sonnet-4-5-20250929"
 
     def _build_user_context(self, user: dict, recent_meals: list,
                             daily_summary: dict, weekly_summary: dict,

@@ -106,6 +106,34 @@ BESIN_DB = {
     "fıstık ezmesi": {"kalori": 588, "protein": 25, "yag": 50, "karb": 20, "lif": 6, "kategori": "kuruyemis"},
 
     # ==========================================
+    # KURU MEYVELER
+    # ==========================================
+    "kuru kayısı": {"kalori": 241, "protein": 3.4, "yag": 0.5, "karb": 63, "lif": 7.3, "kategori": "kuru_meyve"},
+    "kuru üzüm": {"kalori": 299, "protein": 3.1, "yag": 0.5, "karb": 79, "lif": 3.7, "kategori": "kuru_meyve"},
+    "hurma": {"kalori": 277, "protein": 1.8, "yag": 0.2, "karb": 75, "lif": 7, "kategori": "kuru_meyve"},
+    "kuru incir": {"kalori": 249, "protein": 3.3, "yag": 0.9, "karb": 64, "lif": 9.8, "kategori": "kuru_meyve"},
+
+    # ==========================================
+    # EKMEK ÇEŞİTLERİ
+    # ==========================================
+    "lavaş ekmeği": {"kalori": 275, "protein": 9.1, "yag": 1.2, "karb": 56, "lif": 2.2, "kategori": "karbonhidrat", "porsiyon_g": 60, "porsiyon_ad": "1 adet"},
+    "tam buğday lavaş": {"kalori": 262, "protein": 10, "yag": 2.5, "karb": 50, "lif": 6.8, "kategori": "karbonhidrat", "porsiyon_g": 60, "porsiyon_ad": "1 adet"},
+    "tortilla": {"kalori": 312, "protein": 8.3, "yag": 8.1, "karb": 52, "lif": 3.1, "kategori": "karbonhidrat", "porsiyon_g": 45, "porsiyon_ad": "1 adet"},
+
+    # ==========================================
+    # PEYNİR ÇEŞİTLERİ
+    # ==========================================
+    "feta peyniri": {"kalori": 264, "protein": 14, "yag": 21, "karb": 4, "lif": 0, "kategori": "sut_urunu"},
+    "çökelek": {"kalori": 72, "protein": 11, "yag": 1.5, "karb": 4, "lif": 0, "kategori": "sut_urunu"},
+    "tulum peyniri": {"kalori": 300, "protein": 20, "yag": 24, "karb": 1, "lif": 0, "kategori": "sut_urunu"},
+
+    # ==========================================
+    # ET İŞLENMİŞ
+    # ==========================================
+    "tavuk döner": {"kalori": 175, "protein": 28, "yag": 6, "karb": 2, "lif": 0, "kategori": "protein"},
+    "köfte": {"kalori": 235, "protein": 22, "yag": 15, "karb": 3, "lif": 0.5, "kategori": "protein"},
+
+    # ==========================================
     # DİĞER
     # ==========================================
     "bal": {"kalori": 304, "protein": 0.3, "yag": 0, "karb": 82, "lif": 0.2, "kategori": "tatlandirici", "porsiyon_g": 21, "porsiyon_ad": "1 yemek kaşığı"},
@@ -114,6 +142,8 @@ BESIN_DB = {
     "zeytin": {"kalori": 115, "protein": 0.8, "yag": 11, "karb": 6, "lif": 3.2, "kategori": "diger"},
     "pirinç kağıdı": {"kalori": 319, "protein": 0.8, "yag": 0.1, "karb": 80, "lif": 0, "kategori": "diger", "porsiyon_g": 10, "porsiyon_ad": "1 adet"},
     "protein tozu": {"kalori": 400, "protein": 80, "yag": 5, "karb": 10, "lif": 0, "kategori": "supplement", "porsiyon_g": 30, "porsiyon_ad": "1 ölçek"},
+    "un": {"kalori": 364, "protein": 10, "yag": 1, "karb": 76, "lif": 2.7, "kategori": "karbonhidrat"},
+    "pankek": {"kalori": 227, "protein": 6.4, "yag": 10, "karb": 28, "lif": 1, "kategori": "karbonhidrat"},
 }
 
 # Karbonhidrat kategorisindeki besinler — aynı öğünde 2+ olmamalı
@@ -144,4 +174,6 @@ PROTEIN_SOURCES = {
     "nohut": "baklagil",
     "kuru fasulye": "baklagil",
     "mercimek": "baklagil",
+    "tavuk döner": "tavuk",
+    "köfte": "kırmızı et",
 }

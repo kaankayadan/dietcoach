@@ -4,18 +4,19 @@ Yemek Planı Validatörü — Claude'un ürettiği planları programatik olarak 
 Kontroller:
 1. Makro matematik: (P×4) + (Y×9) + (K×4) ≈ kcal?
 2. Öğün toplamı = besinlerin toplamı mı?
-3. Günlük toplam ≈ hedef? (±tolerans)
+3. Günlük toplam ≈ hedef? (±tolerans) — HEM plan JSON'daki hedef HEM kullanıcı profili hedefi
 4. Protein eşit dağıtım kontrolü
 5. Protein tekrarı kontrolü (aynı gün, ardışık günler)
 6. Öğün mantığı (aynı öğünde 2+ nişastalı besin)
 7. Sağlık kuralları (safra: yağ limiti vs.)
+8. Besin değeri doğrulama — food_database ile cross-check
 """
 import json
 import re
 import logging
 from typing import Optional
 
-from src.food_database import STARCHY_FOODS, PROTEIN_SOURCES
+from src.food_database import STARCHY_FOODS, PROTEIN_SOURCES, BESIN_DB
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,26 @@ KALORI_TOLERANS_OGUN = 40       # Öğün toplamı toleransı
 KALORI_TOLERANS_GUN = 75        # Günlük toplam vs hedef toleransı
 MAKRO_TOLERANS_GUN = 15         # Günlük makro toleransı (gram)
 MAKRO_TOLERANS_OGUN = 5         # Öğün içi toplama toleransı (gram)
+
+# Besin değeri cross-check toleransları (100g başına)
+BESIN_DEGER_TOLERANS_KCAL = 30  # Besin DB'den kcal sapma toleransı
+BESIN_DEGER_TOLERANS_MAKRO = 5  # Besin DB'den makro sapma toleransı (gram)
+
+
+def _find_food_in_db(ad: str) -> Optional[dict]:
+    """Besin adını food_database'de ara. Kısmi eşleşme destekler."""
+    ad_lower = ad.lower().strip()
+
+    # Tam eşleşme
+    if ad_lower in BESIN_DB:
+        return BESIN_DB[ad_lower]
+
+    # Kısmi eşleşme: DB key besin adında geçiyorsa
+    for db_key, db_val in BESIN_DB.items():
+        if db_key in ad_lower or ad_lower in db_key:
+            return db_val
+
+    return None
 
 
 def parse_plan_json(response: str) -> Optional[dict]:
@@ -162,7 +183,7 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: Optional[dict] = N
         for key in gun_toplam:
             gun_toplam[key] += ogun_hesaplanan[key]
 
-    # -- 5. Günlük toplam vs hedef kontrolü --
+    # -- 5. Günlük toplam vs hedef kontrolü (plan JSON hedefi) --
     hedef = plan_json.get("hedef", {})
     if hedef:
         for makro, hedef_key in [("kalori", "kalori"), ("protein", "protein"), ("yag", "yag"), ("karb", "karb")]:
@@ -180,8 +201,33 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: Optional[dict] = N
                     "duzeltme": f"Günlük {makro} toplamını {hedef_val} ±{tolerans} aralığına getir"
                 })
 
+    # -- 5b. Kullanıcı profili hedefleriyle karşılaştırma (asıl doğru hedefler) --
+    profil_hedefleri = {
+        "kalori": user.get("hedef_kalori", 0),
+        "protein": user.get("protein_g", 0),
+        "yag": user.get("yag_g", 0),
+        "karb": user.get("karbonhidrat_g", 0),
+    }
+    # Sadece profilde hedefler varsa kontrol et
+    if profil_hedefleri["kalori"] > 0:
+        for makro, profil_val in profil_hedefleri.items():
+            if profil_val <= 0:
+                continue
+            gercek_val = gun_toplam[makro]
+            tolerans = KALORI_TOLERANS_GUN if makro == "kalori" else MAKRO_TOLERANS_GUN
+            fark = gercek_val - profil_val
+            if abs(fark) > tolerans:
+                yuksek_dusuk = "yüksek" if fark > 0 else "düşük"
+                errors.append({
+                    "tip": "profil_hedef_sapma",
+                    "mesaj": f"Günlük {makro} kullanıcı profil hedefinden çok {yuksek_dusuk}: profil hedef {profil_val}, gerçek {gercek_val:.0f} (fark: {fark:+.0f})",
+                    "ogun": None,
+                    "besin": None,
+                    "duzeltme": f"Kullanıcının profil hedefi {makro}={profil_val}. Günlük toplamı {profil_val} ±{tolerans} aralığına getir"
+                })
+
     # Lif kontrolü
-    hedef_lif = hedef.get("lif", 0)
+    hedef_lif = hedef.get("lif", 0) or user.get("lif_g", 0)
     if hedef_lif and gun_toplam["lif"] < hedef_lif * 0.7:
         warnings.append({
             "tip": "lif_eksik",
@@ -278,6 +324,41 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: Optional[dict] = N
             "ogun": None, "besin": None,
             "duzeltme": f"Proteini {float(yagsiz_kutle)*2:.0f}g altına düşür"
         })
+
+    # -- 9. Besin değeri cross-check (food_database ile) --
+    for ogun in ogunler:
+        for besin in ogun.get("besinler", []):
+            ad = besin.get("ad", "").lower()
+            gram = besin.get("gram", 0)
+            if gram <= 0:
+                continue
+
+            # Besin DB'de eşleşme ara
+            db_entry = _find_food_in_db(ad)
+            if not db_entry:
+                continue
+
+            # 100g başına normalize et ve karşılaştır
+            carpan = gram / 100.0
+            for makro, db_key in [("protein", "protein"), ("yag", "yag"), ("karb", "karb")]:
+                beklenen = db_entry[db_key] * carpan
+                bildirilen = besin.get(makro, 0)
+                fark = abs(bildirilen - beklenen)
+                if fark > BESIN_DEGER_TOLERANS_MAKRO * carpan + 2:  # Küçük porsiyonlarda esneklik
+                    warnings.append({
+                        "tip": "besin_deger_sapma",
+                        "mesaj": f"'{besin.get('ad', '?')}' ({gram}g) {makro} değeri şüpheli: bildirilen {bildirilen}g, beklenen ~{beklenen:.1f}g (fark: {fark:.1f}g). Resmi kaynaklara göre düzelt."
+                    })
+
+            # Kalori cross-check
+            beklenen_kcal = db_entry["kalori"] * carpan
+            bildirilen_kcal = besin.get("kalori", 0)
+            kcal_fark = abs(bildirilen_kcal - beklenen_kcal)
+            if kcal_fark > BESIN_DEGER_TOLERANS_KCAL * carpan + 10:
+                warnings.append({
+                    "tip": "besin_deger_sapma",
+                    "mesaj": f"'{besin.get('ad', '?')}' ({gram}g) kalori değeri şüpheli: bildirilen {bildirilen_kcal} kcal, beklenen ~{beklenen_kcal:.0f} kcal (fark: {kcal_fark:.0f}). Resmi kaynaklara göre düzelt."
+                })
 
     return {
         "valid": len(errors) == 0,

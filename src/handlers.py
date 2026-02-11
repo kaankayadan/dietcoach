@@ -82,7 +82,10 @@ class BotHandlers:
             "daily_summary": await self.db.get_daily_summary(user_id),
             "weekly_summary": await self.db.get_weekly_summary(user_id),
             "todays_plan": await self.db.get_todays_plan(user_id),
-            "conversation_history": await self.db.get_conversation_history(user_id),
+            "conversation_history": await self.db.get_conversation_history(
+                user_id,
+                limit=50 if user.get("onboarding_step", 0) in range(1, 99) else 15
+            ),
         }
     
     async def _send_to_claude(self, update: Update, message: str):

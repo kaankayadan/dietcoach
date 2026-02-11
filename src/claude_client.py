@@ -93,9 +93,40 @@ Telafi: {'Evet, günlük ' + str(weekly_summary.get('telafi_miktari_gunluk')) + 
         # -- Onboarding durumu --
         step = user.get('onboarding_step', 0)
         if step > 0 and step < 99:
+            onboarding_data = user.get('onboarding_data') or {}
+            if isinstance(onboarding_data, str):
+                import json as _json
+                try:
+                    onboarding_data = _json.loads(onboarding_data)
+                except Exception:
+                    onboarding_data = {}
+
+            field_labels = {
+                'isim': 'İsim', 'yas': 'Yaş', 'cinsiyet': 'Cinsiyet',
+                'boy_cm': 'Boy (cm)', 'kilo_kg': 'Kilo (kg)',
+                'vucut_yag_orani': 'Vücut Yağ Oranı (%)', 'bel_cevresi_cm': 'Bel Çevresi (cm)',
+                'aktivite_detay': 'Aktivite Detayları', 'aktivite_seviyesi': 'Günlük Aktivite Seviyesi',
+                'kronik_hastaliklar': 'Kronik Hastalıklar', 'sindirim_sorunlari': 'Sindirim Sorunları',
+                'alerjiler': 'Alerjiler', 'ilaclar': 'İlaçlar',
+                'hedef_tip': 'Hedef', 'hedef_kilo': 'Hedef Kilo',
+                'mutfak_stili': 'Mutfak Tercihi',
+                'sevilen_yiyecekler': 'Sevilen Yiyecekler', 'sevilmeyen_yiyecekler': 'Sevilmeyen Yiyecekler',
+                'ogun_duzeni': 'Öğün Düzeni',
+            }
+
+            collected_lines = []
+            for key, value in onboarding_data.items():
+                label = field_labels.get(key, key)
+                collected_lines.append(f"  ✓ {label}: {value}")
+
+            collected_str = "\n".join(collected_lines) if collected_lines else "  (henüz veri yok)"
+
             ctx_parts.append(f"""## Onboarding Durumu
 Mevcut adım: {step}/15
-Toplanan veriler: {user.get('onboarding_data', {})}""")
+Toplanan veriler:
+{collected_str}
+
+ÖNEMLİ: Yukarıda listelenen verileri TEKRAR SORMA. Sadece henüz toplanmamış bilgileri sor.""")
         
         # -- Bugünün tarihi --
         ctx_parts.append(f"\n## Tarih: {date.today().isoformat()} ({self._gun_adi()})")
@@ -149,10 +180,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         # System prompt + context
         full_system = f"{self.system_prompt}\n\n---\n\n{user_context}"
         
-        # Konuşma geçmişi (son 15 mesaj)
+        # Konuşma geçmişi (onboarding sırasında daha fazla, normalde son 15)
         messages = []
         if conversation_history:
-            for msg in conversation_history[-15:]:
+            for msg in conversation_history:
                 messages.append({
                     "role": msg["rol"],
                     "content": msg["mesaj"],

@@ -2,7 +2,7 @@
 Telegram Bot Handler'ları — Her mesajda:
 1. Kullanıcıyı DB'den çek
 2. Güncel context'i topla (profil, öğünler, plan, haftalık durum)
-3. Claude'a gönder
+3. Claude'a gönder (plan isteğiyse validasyon döngüsü çalışır)
 4. Yanıtı kullanıcıya ilet
 5. Onboarding metadata varsa parse et ve DB güncelle
 """
@@ -13,6 +13,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from src.database import Database
 from src.claude_client import ClaudeClient
+from src.meal_validator import parse_plan_json, remove_plan_json
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +75,7 @@ class BotHandlers:
         user = await self.db.get_user(telegram_id)
         if not user:
             return {"user": None}
-        
+
         user_id = user["id"]
         return {
             "user": user,
@@ -82,12 +83,29 @@ class BotHandlers:
             "daily_summary": await self.db.get_daily_summary(user_id),
             "weekly_summary": await self.db.get_weekly_summary(user_id),
             "todays_plan": await self.db.get_todays_plan(user_id),
+            "yesterday_plan": await self.db.get_yesterday_plan(user_id),
             "conversation_history": await self.db.get_conversation_history(
                 user_id,
                 limit=50 if user.get("onboarding_step", 0) in range(1, 99) else 15
             ),
         }
-    
+
+    async def _get_previous_plan_json(self, yesterday_plan: dict) -> dict:
+        """Dünkü plan varsa JSON'ını parse et (protein tekrar kontrolü için)."""
+        if not yesterday_plan:
+            return None
+        plan_detay = yesterday_plan.get("plan_detay")
+        if not plan_detay:
+            return None
+        # plan_detay zaten dict olabilir (JSONB) veya string olabilir
+        if isinstance(plan_detay, str):
+            try:
+                plan_detay = json.loads(plan_detay)
+            except (json.JSONDecodeError, TypeError):
+                return None
+        # Doğrulanmış plan JSON'ı "validated_json" key'inde saklanır
+        return plan_detay.get("validated_json")
+
     async def _send_to_claude(self, update: Update, message: str):
         """Mesajı Claude'a gönder, yanıtı kullanıcıya ilet."""
         telegram_id = update.effective_user.id
@@ -103,8 +121,13 @@ class BotHandlers:
                 "Henüz kayıtlı değilsin! /baslat yazarak başlayabilirsin 🌟"
             )
             return
-        
-        # Claude'a gönder
+
+        # Dünkü plan JSON'ını al (ardışık gün protein tekrar kontrolü için)
+        previous_plan_json = await self._get_previous_plan_json(
+            ctx.get("yesterday_plan")
+        )
+
+        # Claude'a gönder (plan isteğiyse validasyon döngüsü otomatik çalışır)
         response = await self.claude.chat(
             user_message=message,
             user=ctx["user"],
@@ -113,21 +136,54 @@ class BotHandlers:
             weekly_summary=ctx["weekly_summary"],
             todays_plan=ctx["todays_plan"],
             conversation_history=ctx["conversation_history"],
+            previous_plan_json=previous_plan_json,
         )
-        
+
         # Onboarding metadata parse et (kullanıcıya görünmez)
         response_clean = await self._parse_onboarding_metadata(
             telegram_id, ctx["user"], response
         )
-        
+
+        # Plan JSON varsa DB'ye kaydet
+        plan_json = parse_plan_json(response)
+        if plan_json:
+            response_clean = remove_plan_json(response_clean)
+            await self._save_validated_plan(ctx["user"]["id"], plan_json)
+
         # Mesajları kaydet
         user_id = ctx["user"]["id"]
         await self.db.save_message(user_id, "user", message)
         await self.db.save_message(user_id, "assistant", response_clean)
-        
+
         # Telegram'a gönder (uzun mesajları böl)
         await self._send_long_message(update, response_clean)
-    
+
+    async def _save_validated_plan(self, user_id: int, plan_json: dict):
+        """Doğrulanmış plan JSON'ını DB'ye kaydet."""
+        from datetime import date as dt_date
+        try:
+            gun = plan_json.get("gun", dt_date.today().isoformat())
+            plan_date = dt_date.fromisoformat(gun)
+        except (ValueError, TypeError):
+            plan_date = dt_date.today()
+
+        gun_toplam = plan_json.get("gun_toplam", {})
+        toplam_kalori = gun_toplam.get("kalori", 0)
+
+        # Plan detayını kaydet — validated_json olarak da sakla
+        plan_detail = {
+            "ogunler": plan_json.get("ogunler", []),
+            "toplam_kalori": toplam_kalori,
+            "toplam_protein": gun_toplam.get("protein", 0),
+            "toplam_karbonhidrat": gun_toplam.get("karb", 0),
+            "toplam_yag": gun_toplam.get("yag", 0),
+            "toplam_lif": gun_toplam.get("lif", 0),
+            "validated_json": plan_json,  # Protein tekrar kontrolü için sakla
+        }
+
+        await self.db.save_daily_plan(user_id, plan_date, plan_detail, toplam_kalori)
+        logger.info(f"Doğrulanmış plan kaydedildi: user_id={user_id}, tarih={plan_date}")
+
     async def _parse_onboarding_metadata(self, telegram_id: int, user: dict, response: str) -> str:
         """
         Claude'un yanıtındaki onboarding metadata'sını parse et.
@@ -164,7 +220,7 @@ class BotHandlers:
         # Metadata'yı yanıttan temizle
         clean = re.sub(pattern, '', response).strip()
         return clean
-    
+
     async def _send_long_message(self, update: Update, text: str):
         """Telegram 4096 karakter limitine göre mesajı böl."""
         if len(text) <= MAX_MSG_LENGTH:
@@ -173,31 +229,31 @@ class BotHandlers:
             parts = [text[i:i+MAX_MSG_LENGTH] for i in range(0, len(text), MAX_MSG_LENGTH)]
             for part in parts:
                 await update.message.reply_text(part)
-    
+
     # ==========================================
     # KOMUT HANDLER'LARI
     # ==========================================
-    
+
     async def cmd_baslat(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Onboarding başlat."""
         telegram_id = update.effective_user.id
         user = await self.db.get_user(telegram_id)
-        
+
         if user and user["onboarding_step"] == 99:
             await update.message.reply_text(
                 "Zaten kayıtlısın! Profil bilgilerini güncellemek istersen /guncelle yazabilirsin 😊"
             )
             return
-        
+
         await self.db.create_user(telegram_id)
         await self._send_to_claude(update, "/baslat — Yeni kullanıcı onboarding başlat")
-    
+
     async def cmd_profil(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/profil — Profil kartımı göster")
-    
+
     async def cmd_plan(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/plan — Bugünkü beslenme planımı göster veya oluştur")
-    
+
     async def cmd_yedim(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else ""
         if text:
@@ -206,34 +262,34 @@ class BotHandlers:
             await update.message.reply_text(
                 "Ne yediğini yaz! Örnek: /yedim 1 kase mercimek çorbası + 1 dilim ekmek"
             )
-    
+
     async def cmd_durum(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/durum — Bugünkü uyum durumumu göster")
-    
+
     async def cmd_hafta(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/hafta — Haftalık özet raporumu göster")
-    
+
     async def cmd_alternatif(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else "bir sonraki öğün"
         await self._send_to_claude(update, f"/alternatif — {text} için alternatif öner")
-    
+
     async def cmd_besin(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else ""
         if text:
             await self._send_to_claude(update, f"/besin — {text} besin değerlerini göster")
         else:
             await update.message.reply_text("Hangi besini sorgulamak istiyorsun? Örnek: /besin tavuk göğsü")
-    
+
     async def cmd_su(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else "1"
         await self._send_to_claude(update, f"/su — {text} bardak su içtim")
-    
+
     async def cmd_guncelle(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/guncelle — Profil bilgilerimi güncellemek istiyorum")
-    
+
     async def cmd_hedef(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/hedef — İlerleme raporumu göster")
-    
+
     async def cmd_abone(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Abonelik bilgisi ve ödeme linki."""
         telegram_id = update.effective_user.id
@@ -280,15 +336,15 @@ class BotHandlers:
 💬 Komut kullanmadan da yazabilirsin!
 "Öğlen ne yesem?" veya "100g pirinçte ne kadar kalori var?" gibi."""
         await update.message.reply_text(help_text, parse_mode="Markdown")
-    
+
     # ==========================================
     # SERBEST METİN VE FOTOĞRAF
     # ==========================================
-    
+
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Komut olmayan her metin mesajı Claude'a gönder."""
         await self._send_to_claude(update, update.message.text)
-    
+
     async def handle_photo(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Yemek fotoğrafı — şimdilik caption'ı kullan."""
         caption = update.message.caption or "Yemek fotoğrafı gönderildi"

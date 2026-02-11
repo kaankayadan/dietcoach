@@ -175,6 +175,14 @@ class Database:
             user_id, date.today(),
         )
         return dict(row) if row else None
+
+    async def get_yesterday_plan(self, user_id: int) -> Optional[dict]:
+        """Dünkü planı getir — ardışık gün protein tekrar kontrolü için."""
+        row = await self.pool.fetchrow(
+            "SELECT * FROM gunluk_plan WHERE user_id = $1 AND tarih = $2",
+            user_id, date.today() - timedelta(days=1),
+        )
+        return dict(row) if row else None
     
     # ==========================================
     # GÜNLÜK VE HAFTALIK ÖZET

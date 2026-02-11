@@ -258,3 +258,47 @@ Onboarding'in son adımında (profil kartı gösterildiğinde), hesaplanan TÜM 
 <!--ONBOARDING:{"step": 14, "field": "hesaplamalar", "value": {"bmr": 1968, "neat": 689, "tef": 266, "eat_gunluk": 386, "tdee": 3087, "hedef_kalori": 2470, "protein_g": 133, "karbonhidrat_g": 390, "yag_g": 45, "lif_g": 30, "yagsiz_kutle_kg": 74.2, "vucut_yag_orani": 28, "su_hedefi_litre": 3.0}, "valid": true, "complete": true}-->
 ```
 Bu sayede hesaplanan değerler veritabanına doğru kaydedilir.
+
+### Plan JSON Metadata'sı — ZORUNLU
+
+Yemek planı oluştururken (günlük veya haftalık), kullanıcıya gösterilen formatın YANINA mutlaka aşağıdaki JSON metadata'sını ekle. Bu metadata sistem tarafından parse edilip doğrulanacak. Kullanıcıya görünmez.
+
+**PLAN_JSON formatı:**
+```
+<!--PLAN_JSON:{
+  "gun": "2025-02-12",
+  "gun_tipi": "antrenman|dinlenme",
+  "hedef": {"kalori": 2656, "protein": 132, "yag": 65, "karb": 386, "lif": 37},
+  "ogunler": [
+    {
+      "tip": "kahvalti|ara_ogun_1|ogle|ara_ogun_2|aksam|ara_ogun_3",
+      "saat": "08:00",
+      "besinler": [
+        {
+          "ad": "Menemen",
+          "gram": 330,
+          "protein": 22,
+          "yag": 24,
+          "karb": 12,
+          "lif": 3,
+          "kalori": 350
+        }
+      ],
+      "toplam": {"protein": 34, "yag": 34, "karb": 36, "lif": 7, "kalori": 580}
+    }
+  ],
+  "gun_toplam": {"protein": 132, "yag": 65, "karb": 386, "lif": 37, "kalori": 2656}
+}-->
+```
+
+**JSON kuralları:**
+1. Her besinin makro değerleri DOĞRU olmalı: (protein×4) + (yag×9) + (karb×4) ≈ kalori (±20 kcal)
+2. Öğün toplamı = besinlerin gerçek toplamı (hesapla, yuvarlama)
+3. Gün toplamı = öğünlerin gerçek toplamı (hesapla, yuvarlama)
+4. "tip" alanında şu değerlerden birini kullan: kahvalti, ara_ogun_1, ogle, ara_ogun_2, aksam, ara_ogun_3
+5. "ad" alanında besinin Türkçe adını yaz (örn: "Tavuk göğsü", "Pirinç pilavı")
+6. "gram" alanında pişmiş/hazır gramajı yaz
+7. Aynı öğünde birden fazla nişastalı besin (pilav+kısır, makarna+patates) KOYMA
+8. Öğle ve akşam yemeğinde farklı protein kaynağı kullan
+
+Bu JSON sistem tarafından matematiksel olarak doğrulanacak. Hatalar otomatik tespit edilecek ve düzeltme istenecek.

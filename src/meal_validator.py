@@ -28,8 +28,8 @@ MAKRO_TOLERANS_GUN = 15         # Günlük makro toleransı (gram)
 MAKRO_TOLERANS_OGUN = 5         # Öğün içi toplama toleransı (gram)
 
 # Besin değeri cross-check toleransları (100g başına)
-BESIN_DEGER_TOLERANS_KCAL = 30  # Besin DB'den kcal sapma toleransı
-BESIN_DEGER_TOLERANS_MAKRO = 5  # Besin DB'den makro sapma toleransı (gram)
+BESIN_DEGER_TOLERANS_KCAL = 20  # Besin DB'den kcal sapma toleransı (sıkı)
+BESIN_DEGER_TOLERANS_MAKRO = 3  # Besin DB'den makro sapma toleransı (gram, sıkı)
 
 
 def _find_food_in_db(ad: str) -> Optional[dict]:
@@ -336,6 +336,11 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: Optional[dict] = N
             # Besin DB'de eşleşme ara
             db_entry = _find_food_in_db(ad)
             if not db_entry:
+                # Bilinmeyen besin — uyar (veritabanındaki besinleri kullanması gerekli)
+                warnings.append({
+                    "tip": "besin_bulunamadi",
+                    "mesaj": f"'{besin.get('ad', '?')}' besin veritabanında bulunamadı. Lütfen veritabanındaki bilinen bir besinle değiştir."
+                })
                 continue
 
             # 100g başına normalize et ve karşılaştır
@@ -344,20 +349,29 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: Optional[dict] = N
                 beklenen = db_entry[db_key] * carpan
                 bildirilen = besin.get(makro, 0)
                 fark = abs(bildirilen - beklenen)
-                if fark > BESIN_DEGER_TOLERANS_MAKRO * carpan + 2:  # Küçük porsiyonlarda esneklik
-                    warnings.append({
+                # Sıkı tolerans: mutlak fark > 2g VE yüzdelik sapma > %30
+                tolerans = max(BESIN_DEGER_TOLERANS_MAKRO * carpan, 2)
+                if fark > tolerans:
+                    errors.append({
                         "tip": "besin_deger_sapma",
-                        "mesaj": f"'{besin.get('ad', '?')}' ({gram}g) {makro} değeri şüpheli: bildirilen {bildirilen}g, beklenen ~{beklenen:.1f}g (fark: {fark:.1f}g). Resmi kaynaklara göre düzelt."
+                        "mesaj": f"'{besin.get('ad', '?')}' ({gram}g) {makro} değeri YANLIŞ: bildirilen {bildirilen}g, veritabanına göre doğrusu ~{beklenen:.1f}g (fark: {fark:.1f}g)",
+                        "ogun": ogun.get("tip"),
+                        "besin": besin.get("ad"),
+                        "duzeltme": f"{makro} değerini {beklenen:.1f}g olarak düzelt"
                     })
 
             # Kalori cross-check
             beklenen_kcal = db_entry["kalori"] * carpan
             bildirilen_kcal = besin.get("kalori", 0)
             kcal_fark = abs(bildirilen_kcal - beklenen_kcal)
-            if kcal_fark > BESIN_DEGER_TOLERANS_KCAL * carpan + 10:
-                warnings.append({
+            kcal_tolerans = max(BESIN_DEGER_TOLERANS_KCAL * carpan, 10)
+            if kcal_fark > kcal_tolerans:
+                errors.append({
                     "tip": "besin_deger_sapma",
-                    "mesaj": f"'{besin.get('ad', '?')}' ({gram}g) kalori değeri şüpheli: bildirilen {bildirilen_kcal} kcal, beklenen ~{beklenen_kcal:.0f} kcal (fark: {kcal_fark:.0f}). Resmi kaynaklara göre düzelt."
+                    "mesaj": f"'{besin.get('ad', '?')}' ({gram}g) kalori YANLIŞ: bildirilen {bildirilen_kcal} kcal, veritabanına göre doğrusu ~{beklenen_kcal:.0f} kcal (fark: {kcal_fark:.0f})",
+                    "ogun": ogun.get("tip"),
+                    "besin": besin.get("ad"),
+                    "duzeltme": f"Kalori değerini {beklenen_kcal:.0f} kcal olarak düzelt"
                 })
 
     return {

@@ -302,6 +302,30 @@ BESIN_DB = {
     "bitter çikolata": {"kalori": 598, "protein": 7.8, "yag": 43, "karb": 46, "lif": 11, "kategori": "diger"},
     # USDA: Pekmez (grape molasses, similar to molasses)
     "pekmez": {"kalori": 293, "protein": 0.1, "yag": 0, "karb": 77, "lif": 0, "kategori": "tatlandirici", "porsiyon_g": 20, "porsiyon_ad": "1 yemek kaşığı"},
+
+    # ==========================================
+    # İÇECEKLER (100ml)
+    # ==========================================
+    # USDA: Orange juice, fresh
+    "portakal suyu": {"kalori": 45, "protein": 0.7, "yag": 0.2, "karb": 10.4, "lif": 0.2, "kategori": "icecek"},
+    # USDA: Apple juice
+    "elma suyu": {"kalori": 46, "protein": 0.1, "yag": 0.1, "karb": 11.3, "lif": 0.1, "kategori": "icecek"},
+    # USDA: Milk, skim/nonfat
+    "yağsız süt": {"kalori": 34, "protein": 3.4, "yag": 0.1, "karb": 5, "lif": 0, "kategori": "sut_urunu"},
+
+    # ==========================================
+    # EK BESİNLER (100g)
+    # ==========================================
+    # USDA: Smoothie base — banana + yogurt style
+    "smoothie": {"kalori": 75, "protein": 3, "yag": 1.5, "karb": 14, "lif": 1, "kategori": "icecek"},
+    # USDA: Cream cheese
+    "krem peynir": {"kalori": 342, "protein": 6, "yag": 34, "karb": 4, "lif": 0, "kategori": "sut_urunu"},
+    # USDA: Ricotta cheese, part skim
+    "ricotta": {"kalori": 138, "protein": 11, "yag": 8, "karb": 5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA: Energy/protein ball (date+nut based, generic)
+    "energy ball": {"kalori": 390, "protein": 10, "yag": 18, "karb": 50, "lif": 5, "kategori": "diger", "porsiyon_g": 30, "porsiyon_ad": "1 adet"},
+    # USDA: Reçel / jam
+    "reçel": {"kalori": 250, "protein": 0.4, "yag": 0.1, "karb": 65, "lif": 0.6, "kategori": "tatlandirici", "porsiyon_g": 20, "porsiyon_ad": "1 yemek kaşığı"},
 }
 
 # Karbonhidrat kategorisindeki besinler — aynı öğünde 2+ olmamalı

@@ -97,21 +97,31 @@ class TestParseJSON:
 class TestValidPlan:
     def test_correct_plan_passes(self):
         """Matematiksel olarak doğru plan validasyondan geçmeli."""
+        # Değerler BESIN_DB'den orantılı hesaplanmış (gram/100 × DB değeri)
         ogunler = [
             make_ogun("kahvalti", [
-                make_besin("Yumurta", 120, 13, 11, 1, 0),
+                # Yumurta 120g: DB 155kcal, P:13, Y:11, K:1.1 per 100g → ×1.2
+                make_besin("Yumurta", 120, 15.6, 13.2, 1.3, 0),
+                # Tam buğday ekmek 50g: DB 260kcal, P:10, Y:4, K:48 per 100g → ×0.5
                 make_besin("Tam buğday ekmek", 50, 5, 2, 24, 3.5),
-                make_besin("Beyaz peynir", 30, 5, 6, 0, 0),
+                # Beyaz peynir 30g: DB 289kcal, P:18, Y:23, K:1.5 per 100g → ×0.3
+                make_besin("Beyaz peynir", 30, 5.4, 6.9, 0.45, 0),
             ]),
             make_ogun("ogle", [
+                # Tavuk göğsü 200g: DB 165kcal, P:31, Y:3.6, K:0 per 100g → ×2
                 make_besin("Tavuk göğsü", 200, 62, 7.2, 0, 0),
-                make_besin("Pirinç pilavı", 150, 4, 0.5, 42, 0.6),
-                make_besin("Salata", 150, 2, 5, 6, 3),
+                # Pirinç pilavı 150g: DB 130kcal, P:2.7, Y:0.3, K:28 per 100g → ×1.5
+                make_besin("Pirinç pilavı", 150, 4.05, 0.45, 42, 0.6),
+                # Salata (yeşil salata) 150g: DB 15kcal, P:1.4, Y:0.2, K:2.9 per 100g → ×1.5
+                make_besin("Yeşil salata", 150, 2.1, 0.3, 4.35, 1.95),
             ]),
             make_ogun("aksam", [
-                make_besin("Somon", 180, 36, 23, 0, 0),
-                make_besin("Kinoa", 120, 5, 2, 26, 3.4),
-                make_besin("Brokoli", 150, 3.6, 0.6, 10.8, 5),
+                # Somon 180g: DB 208kcal, P:20, Y:13, K:0 per 100g → ×1.8
+                make_besin("Somon", 180, 36, 23.4, 0, 0),
+                # Kinoa 120g: DB 120kcal, P:4.4, Y:1.9, K:21.3 per 100g → ×1.2
+                make_besin("Kinoa", 120, 5.28, 2.28, 25.56, 3.36),
+                # Brokoli 150g: DB 35kcal, P:2.4, Y:0.4, K:7.2 per 100g → ×1.5
+                make_besin("Brokoli", 150, 3.6, 0.6, 10.8, 4.95),
             ]),
         ]
         plan = make_plan(ogunler)
@@ -433,7 +443,7 @@ class TestFoodDatabaseCrossCheck:
         assert result is None
 
     def test_wildly_wrong_macro_flagged(self):
-        """Besin DB'den çok sapan makro değerleri uyarı vermeli."""
+        """Besin DB'den çok sapan makro değerleri HATA vermeli (sıkı kontrol)."""
         user = {**DEFAULT_USER}
         ogunler = [
             make_ogun("ogle", [{
@@ -456,5 +466,7 @@ class TestFoodDatabaseCrossCheck:
         ]
         plan = make_plan(ogunler)
         result = validate_plan(plan, user)
-        db_warnings = [w for w in result["warnings"] if w["tip"] == "besin_deger_sapma" and "pirinç" in w["mesaj"].lower()]
-        assert len(db_warnings) > 0
+        # Artık sıkı kontrol: DB sapmaları error olarak döner
+        db_errors = [e for e in result["errors"] if e["tip"] == "besin_deger_sapma" and "pirinç" in e["mesaj"].lower()]
+        assert len(db_errors) > 0
+        assert not result["valid"]  # Plan reddedilmeli

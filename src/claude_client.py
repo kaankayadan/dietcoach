@@ -11,6 +11,7 @@ from typing import Optional
 from src.meal_validator import (
     parse_plan_json, remove_plan_json, validate_plan, format_validation_feedback
 )
+from src.food_database import BESIN_DB
 
 logger = logging.getLogger(__name__)
 
@@ -149,6 +150,54 @@ Toplanan veriler:
 
         return "\n\n".join(ctx_parts)
 
+    def _build_food_reference_table(self) -> str:
+        """
+        BESIN_DB'den dinamik besin referans tablosu oluştur.
+        Claude plan üretirken bu tabloyu kullanarak doğru değerler verir.
+        """
+        lines = [
+            "## BESİN DEĞER TABLOSU (100g pişmiş/hazır — programatik referans)",
+            "Aşağıdaki değerler BAĞLAYICI referanstır. Plan oluştururken BU değerleri kullan.",
+            "Gramaj değişince orantılı hesapla (ör: 150g tavuk göğsü = 31×1.5 = 46.5g protein).",
+            "Bu tabloda OLMAYAN bir besin kullanma. Sadece bu listedeki besinlerden plan oluştur.",
+            ""
+        ]
+        # Kategorilere göre grupla
+        kategoriler = {}
+        for ad, v in BESIN_DB.items():
+            kat = v.get("kategori", "diger")
+            kategoriler.setdefault(kat, []).append((ad, v))
+
+        kat_labels = {
+            "protein": "Protein Kaynakları",
+            "sut_urunu": "Süt Ürünleri",
+            "karbonhidrat": "Karbonhidrat",
+            "baklagil": "Baklagiller",
+            "sebze": "Sebzeler",
+            "meyve": "Meyveler",
+            "kuru_meyve": "Kuru Meyveler",
+            "kuruyemis": "Kuruyemişler",
+            "yag": "Yağlar",
+            "tatlandirici": "Tatlandırıcılar",
+            "supplement": "Takviyeler",
+            "diger": "Diğer",
+        }
+
+        for kat, items in kategoriler.items():
+            label = kat_labels.get(kat, kat.title())
+            lines.append(f"**{label}:**")
+            for ad, v in sorted(items, key=lambda x: x[0]):
+                porsiyon = ""
+                if "porsiyon_g" in v:
+                    porsiyon = f" (1 porsiyon={v['porsiyon_g']}g)"
+                lines.append(
+                    f"- {ad}{porsiyon}: {v['kalori']} kcal, "
+                    f"P:{v['protein']}g, Y:{v['yag']}g, K:{v['karb']}g, L:{v['lif']}g"
+                )
+            lines.append("")
+
+        return "\n".join(lines)
+
     def _gun_adi(self) -> str:
         gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
         return gunler[date.today().weekday()]
@@ -205,8 +254,9 @@ Toplanan veriler:
             todays_plan=todays_plan or {},
         )
 
-        # System prompt + context
-        full_system = f"{self.system_prompt}\n\n---\n\n{user_context}"
+        # System prompt + context + besin tablosu
+        food_table = self._build_food_reference_table()
+        full_system = f"{self.system_prompt}\n\n---\n\n{food_table}\n\n---\n\n{user_context}"
 
         # Konuşma geçmişi
         messages = []

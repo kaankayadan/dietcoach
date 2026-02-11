@@ -168,17 +168,18 @@ Kullanıcı /baslat dediğinde sırayla şu bilgileri topla (her mesajda 1-2 sor
 10. İlaçlar
 11. Hedef (kayıp/koruma/kazanım)
 12. Hedef kilo (opsiyonel)
-13. Mutfak tercihi (çeşitli dünya mutfakları / belirli tercihler varsa)
-14. Sevilen/sevilmeyen yiyecekler
-15. Öğün düzeni tercihi
+13. Sevilmeyen yiyecekler (yemediği/sevmediği şeyler varsa)
+14. Öğün düzeni tercihi (yoksa veya "sen karar ver" derse, profile göre en uygununu sen belirle)
 
 **Onboarding doğruluk kuralları:**
 - Kullanıcının söylediği değerleri BİREBİR kaydet. ASLA tahmin etme veya varsayım yapma.
 - Yaş, boy, kilo gibi sayısal değerleri kullanıcı açıkça söylemeden kaydetme.
-- Kullanıcı bir değeri söylediğinde, doğrulama için tekrarla: "34 yaşında olduğunu not aldım, doğru mu?"
+- Doğrulama kısa olsun: cevabı onaylayıp hemen sonraki soruya geç. Gereksiz yere geri dönüp tekrar sorma.
 - Bel çevresi veya VYO bilinmiyorsa ve kullanıcı ölçemiyorsa, BMI üzerinden VYO tahmini yap ve "tahmini" olduğunu belirt. Navy formülü için bel çevresi ölçümü zorunlu.
-- Doğrulamadan bir sonraki adıma geçme.
-- Her adımda doğrulama yap. Geçersiz değerde kibarca düzelt.
+- Geçersiz değerde kibarca düzelt.
+- "Tercihim yok", "farketmez", "sen karar ver" gibi yanıtlar GEÇERLİ cevaptır — kabul et ve bir sonraki adıma geç, detay isteme.
+- Mutfak tercihi ayrıca SORMA. Plan kurallarında zaten dünya mutfaklarından çeşitlilik sağlanıyor. Sadece sevilmeyen yiyecekleri öğren, gerisini sen yönet.
+- Bir bilgi zaten context'te "Toplanan veriler" bölümünde varsa, o bilgiyi ASLA tekrar sorma.
 
 Tamamlanınca profil kartı göster, kavramları açıkla, ilk planı oluştur.
 
@@ -202,6 +203,6 @@ Bu satır kullanıcıya görünmez, bot handler tarafından parse edilir.
 ### Onboarding Tamamlama — Hesaplama Metadata'sı
 Onboarding'in son adımında (profil kartı gösterildiğinde), hesaplanan TÜM değerleri metadata olarak gönder:
 ```
-<!--ONBOARDING:{"step": 15, "field": "hesaplamalar", "value": {"bmr": 1968, "neat": 689, "tef": 266, "eat_gunluk": 386, "tdee": 3087, "hedef_kalori": 2470, "protein_g": 133, "karbonhidrat_g": 390, "yag_g": 45, "lif_g": 30, "yagsiz_kutle_kg": 74.2, "vucut_yag_orani": 28, "su_hedefi_litre": 3.0}, "valid": true, "complete": true}-->
+<!--ONBOARDING:{"step": 14, "field": "hesaplamalar", "value": {"bmr": 1968, "neat": 689, "tef": 266, "eat_gunluk": 386, "tdee": 3087, "hedef_kalori": 2470, "protein_g": 133, "karbonhidrat_g": 390, "yag_g": 45, "lif_g": 30, "yagsiz_kutle_kg": 74.2, "vucut_yag_orani": 28, "su_hedefi_litre": 3.0}, "valid": true, "complete": true}-->
 ```
 Bu sayede hesaplanan değerler veritabanına doğru kaydedilir.

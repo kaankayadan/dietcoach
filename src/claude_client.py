@@ -122,7 +122,7 @@ Telafi: {'Evet, günlük ' + str(weekly_summary.get('telafi_miktari_gunluk')) + 
             collected_str = "\n".join(collected_lines) if collected_lines else "  (henüz veri yok)"
 
             ctx_parts.append(f"""## Onboarding Durumu
-Mevcut adım: {step}/15
+Mevcut adım: {step}/14
 Toplanan veriler:
 {collected_str}
 

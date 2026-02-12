@@ -19,6 +19,22 @@ logger = logging.getLogger(__name__)
 PLAN_TRIGGERS = [
     '/plan', '/haftalik', 'plan oluştur', 'plan yap', 'haftalık plan',
     'diyet listesi', '/alternatif', 'alternatif öner',
+    # Menü/yemek planı varyasyonları
+    'menü oluştur', 'menü yap', 'menü hazırla', 'menü ver',
+    'menü istiyorum', 'menü çıkar', 'menü planlayabilir',
+    'yemek planı', 'yemek listesi', 'yemek hazırla',
+    'beslenme planı', 'beslenme listesi',
+    # Zaman bazlı plan istekleri
+    'bugün için plan', 'yarın için plan', 'yarınki plan',
+    'ertesi gün', 'bugünkü menü', 'yarınki menü',
+    'bir menü', 'günlük plan', 'günlük menü',
+    # Kısa ifadeler
+    'ne yesem', 'ne yiyeyim', 'plan çıkar', 'liste yap',
+    'liste çıkar', 'liste hazırla', 'liste oluştur',
+    # Devam / düzeltme istekleri
+    'dengeli menü', 'dengeli plan', 'düzenle', 'yeniden düzenle',
+    'protein azalt', 'karb artır', 'karbonhidrat artır',
+    'yağ azalt', 'kalori azalt', 'kalori artır',
 ]
 
 MAX_VALIDATION_RETRIES = 2

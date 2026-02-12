@@ -285,26 +285,28 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: Optional[dict] = N
     # -- 8. Sağlık kuralları --
     hastaliklar = user.get("kronik_hastaliklar") or []
 
-    # Safra kontrolü
+    # Safra kontrolü (Cochrane, Kaiser Permanente, CUH klinik rehberi: 25-40g/gün)
     if "safra" in str(hastaliklar).lower():
-        if gun_toplam["yag"] > 50:
+        SAFRA_GUNLUK_YAG_LIMIT = 40  # Cochrane evidence range: 25-40g/gün
+        SAFRA_OGUN_YAG_LIMIT = 12    # Büyük yağ bolüsü semptom tetikler
+        if gun_toplam["yag"] > SAFRA_GUNLUK_YAG_LIMIT:
             errors.append({
                 "tip": "saglik_kural",
-                "mesaj": f"Safra hastası — günlük yağ limiti 50g, planda {gun_toplam['yag']:.0f}g var",
+                "mesaj": f"Safra hastası — günlük yağ limiti {SAFRA_GUNLUK_YAG_LIMIT}g, planda {gun_toplam['yag']:.0f}g var (Cochrane/Kaiser rehberi: 25-40g/gün)",
                 "ogun": None, "besin": None,
-                "duzeltme": "Toplam yağı 50g altına düşür"
+                "duzeltme": f"Toplam yağı {SAFRA_GUNLUK_YAG_LIMIT}g altına düşür. Yağsız pişirme yöntemleri kullan."
             })
         for ogun in ogunler:
             ogun_yag = sum(b.get("yag", 0) for b in ogun.get("besinler", []))
-            if ogun_yag > 15:
+            if ogun_yag > SAFRA_OGUN_YAG_LIMIT:
                 errors.append({
                     "tip": "saglik_kural",
-                    "mesaj": f"Safra hastası — {ogun.get('tip', '?')} öğününde yağ {ogun_yag:.0f}g (limit: 15g/öğün)",
+                    "mesaj": f"Safra hastası — {ogun.get('tip', '?')} öğününde yağ {ogun_yag:.0f}g (limit: {SAFRA_OGUN_YAG_LIMIT}g/öğün)",
                     "ogun": ogun.get("tip"), "besin": None,
-                    "duzeltme": f"Bu öğündeki yağı 15g altına düşür"
+                    "duzeltme": f"Bu öğündeki yağı {SAFRA_OGUN_YAG_LIMIT}g altına düşür"
                 })
 
-    # Diyabet kontrolü
+    # Diyabet kontrolü (ADA klinik pratiği: karb ≤%40)
     if "diyabet" in str(hastaliklar).lower():
         hedef_kcal = hedef.get("kalori", 0)
         if hedef_kcal > 0:
@@ -312,18 +314,47 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: Optional[dict] = N
             if karb_kcal_orani > 42:
                 warnings.append({
                     "tip": "saglik_kural",
-                    "mesaj": f"Diyabet — karbonhidrat oranı %{karb_kcal_orani:.0f} (önerilen: ≤%40)"
+                    "mesaj": f"Diyabet — karbonhidrat oranı %{karb_kcal_orani:.0f} (ADA önerisi: ≤%40)"
                 })
 
-    # Protein üst sınır kontrolü
+    # Protein üst sınır kontrolü (ISSN 2017: genel antrenman 1.4-2.0 g/kg BW, üst sınır 2.2 g/kg FFM)
     yagsiz_kutle = user.get("yagsiz_kutle_kg", 0)
     if yagsiz_kutle and gun_toplam["protein"] > float(yagsiz_kutle) * 2.2:
         errors.append({
             "tip": "protein_asiri",
-            "mesaj": f"Protein aşırı yüksek: {gun_toplam['protein']:.0f}g (LBM {yagsiz_kutle}kg × 2.0 = {float(yagsiz_kutle)*2:.0f}g max)",
+            "mesaj": f"Protein aşırı yüksek: {gun_toplam['protein']:.0f}g (ISSN üst sınır: LBM {yagsiz_kutle}kg × 2.2 = {float(yagsiz_kutle)*2.2:.0f}g)",
             "ogun": None, "besin": None,
-            "duzeltme": f"Proteini {float(yagsiz_kutle)*2:.0f}g altına düşür"
+            "duzeltme": f"Proteini {float(yagsiz_kutle)*2.2:.0f}g altına düşür"
         })
+
+    # Yağ alt sınır kontrolü (EFSA 2010: minimum %20, ACSM: %15-20 altına düşürme)
+    hedef_kcal = hedef.get("kalori", 0) or user.get("hedef_kalori", 0)
+    if hedef_kcal > 0 and "safra" not in str(hastaliklar).lower():
+        yag_kcal_orani = (gun_toplam["yag"] * 9) / hedef_kcal * 100
+        if yag_kcal_orani < 18:
+            errors.append({
+                "tip": "yag_yetersiz",
+                "mesaj": f"Yağ oranı çok düşük: %{yag_kcal_orani:.0f} (EFSA/ACSM minimum: %20). Hormonal fonksiyon için yağ artır.",
+                "ogun": None, "besin": None,
+                "duzeltme": f"Yağ oranını en az %20'ye çıkar → minimum {hedef_kcal * 0.20 / 9:.0f}g yağ"
+            })
+
+    # Karbonhidrat g/kg üst sınır kontrolü (ACSM 2016: hafif aktivite 3-5 g/kg)
+    kilo = user.get("kilo_kg", 0)
+    if kilo and gun_toplam["karb"] > 0:
+        karb_per_kg = gun_toplam["karb"] / float(kilo)
+        if karb_per_kg > 5:
+            errors.append({
+                "tip": "karb_asiri",
+                "mesaj": f"Karbonhidrat aşırı yüksek: {gun_toplam['karb']:.0f}g = {karb_per_kg:.1f} g/kg (ACSM hafif aktivite limiti: 3-5 g/kg)",
+                "ogun": None, "besin": None,
+                "duzeltme": f"Karbonhidratı {float(kilo)*5:.0f}g altına düşür veya yağ oranını artır"
+            })
+        elif karb_per_kg > 4:
+            warnings.append({
+                "tip": "karb_yuksek",
+                "mesaj": f"Karbonhidrat yüksek: {gun_toplam['karb']:.0f}g = {karb_per_kg:.1f} g/kg (ACSM hafif aktivite: 3-5 g/kg aralığının üst sınırına yakın)"
+            })
 
     # -- 9. Besin değeri cross-check (food_database ile) --
     for ogun in ogunler:

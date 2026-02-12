@@ -261,12 +261,13 @@ class TestMealLogic:
 
 class TestHealthRules:
     def test_gallbladder_fat_limit(self):
-        """Safra hastası — günlük yağ 50g üstüyse hata vermeli."""
+        """Safra hastası — günlük yağ 40g üstüyse hata vermeli (Cochrane: 25-40g/gün)."""
         user = {**DEFAULT_USER, "kronik_hastaliklar": ["safra kesesi"]}
         ogunler = [
-            make_ogun("kahvalti", [make_besin("Yağlı yemek", 200, 20, 20, 30, 2)]),
-            make_ogun("ogle", [make_besin("Yağlı yemek 2", 200, 25, 20, 40, 3)]),
-            make_ogun("aksam", [make_besin("Yağlı yemek 3", 200, 20, 15, 35, 2)]),
+            make_ogun("kahvalti", [make_besin("Yağlı yemek", 200, 20, 12, 30, 2)]),
+            make_ogun("ogle", [make_besin("Yağlı yemek 2", 200, 25, 12, 40, 3)]),
+            make_ogun("aksam", [make_besin("Yağlı yemek 3", 200, 20, 12, 35, 2)]),
+            make_ogun("ara_ogun_1", [make_besin("Ara öğün", 100, 5, 10, 20, 1)]),
         ]
         plan = make_plan(ogunler)
         result = validate_plan(plan, user)
@@ -274,7 +275,7 @@ class TestHealthRules:
         assert len(health_errors) > 0
 
     def test_gallbladder_per_meal_fat(self):
-        """Safra hastası — öğün başına 15g üstü yağ hata vermeli."""
+        """Safra hastası — öğün başına 12g üstü yağ hata vermeli (klinik rehber)."""
         user = {**DEFAULT_USER, "kronik_hastaliklar": ["safra"]}
         ogunler = [
             make_ogun("kahvalti", [make_besin("Çok yağlı", 100, 10, 18, 20, 1)]),
@@ -441,6 +442,34 @@ class TestFoodDatabaseCrossCheck:
         """Eşleşme yoksa None dönmeli."""
         result = _find_food_in_db("bilinmeyen bir yemek xyz")
         assert result is None
+
+    def test_carb_per_kg_upper_bound(self):
+        """Karbonhidrat 5 g/kg üstüyse hata vermeli (ACSM 2016)."""
+        user = {**DEFAULT_USER, "kilo_kg": 80}
+        ogunler = [
+            make_ogun("kahvalti", [make_besin("Yüksek karb 1", 300, 20, 10, 150, 5)]),
+            make_ogun("ogle", [make_besin("Yüksek karb 2", 300, 30, 10, 150, 5)]),
+            make_ogun("aksam", [make_besin("Yüksek karb 3", 300, 20, 10, 150, 5)]),
+        ]
+        plan = make_plan(ogunler)
+        result = validate_plan(plan, user)
+        # 450g karb / 80kg = 5.6 g/kg > 5 g/kg limit
+        karb_errors = [e for e in result["errors"] if e["tip"] == "karb_asiri"]
+        assert len(karb_errors) > 0
+
+    def test_fat_too_low_flagged(self):
+        """Yağ %18 altıysa hata vermeli (EFSA/ACSM)."""
+        user = {**DEFAULT_USER, "hedef_kalori": 2500}
+        ogunler = [
+            # Toplam yağ = 15g → %5.4 kalori → çok düşük
+            make_ogun("kahvalti", [make_besin("Düşük yağ 1", 200, 40, 5, 100, 5)]),
+            make_ogun("ogle", [make_besin("Düşük yağ 2", 300, 40, 5, 100, 5)]),
+            make_ogun("aksam", [make_besin("Düşük yağ 3", 300, 40, 5, 100, 5)]),
+        ]
+        plan = make_plan(ogunler, hedef={"kalori": 2500, "protein": 120, "yag": 15, "karb": 300, "lif": 30})
+        result = validate_plan(plan, user)
+        fat_errors = [e for e in result["errors"] if e["tip"] == "yag_yetersiz"]
+        assert len(fat_errors) > 0
 
     def test_wildly_wrong_macro_flagged(self):
         """Besin DB'den çok sapan makro değerleri HATA vermeli (sıkı kontrol)."""

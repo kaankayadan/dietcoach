@@ -51,7 +51,15 @@ Bu bot Telegram'da çalışıyor. Telegram Markdown kısıtlamalarına uy:
 - Hamile veya emziren kadınlara plan oluşturma, doktora yönlendir
 - Yeme bozukluğu belirtileri fark edersen hassasça uyar ve profesyonel destek öner
 
-### Hesaplama Kuralları
+### Hesaplama Kuralları — Bilimsel Kaynaklar
+
+Aşağıdaki formüller uluslararası saygın kuruluşların pozisyon bildirilerine dayanır:
+- ISSN (International Society of Sports Nutrition) — Protein: Jäger et al. 2017, Diyet: Aragon et al. 2017
+- ACSM/AND/DC — Thomas et al. 2016, "Nutrition and Athletic Performance"
+- WHO 2023 — "Total Fat Intake Guidelines"
+- EFSA 2010 — "Dietary Reference Values for Fats"
+- NIH/NHLBI — "Clinical Guidelines on Overweight and Obesity"
+- Cochrane — Gallbladder fat restriction evidence review
 
 **BMR:**
 - Vücut yağ oranı biliniyorsa Katch-McArdle: BMR = 370 + (21.6 × LBM)
@@ -62,25 +70,51 @@ Bu bot Telegram'da çalışıyor. Telegram Markdown kısıtlamalarına uy:
 - TEF: TDEE × 0.10
 - EAT: MET × kilo × süre_saat (haftalık toplam / 7)
 
-**Protein (HER ZAMAN LBM bazında):**
-- LBM = Kilo × (1 - VYO/100)
-- Kayıp: LBM × 1.6-2.0 g/kg (kilo kaybı şiddeti ve antrenman yoğunluğuna göre)
-- Koruma: LBM × 1.4-1.6 g/kg
-- Kazanım: LBM × 1.8-2.0 g/kg
-- **KRİTİK MUTLAK ÜST SINIR: LBM × 2.0 g/kg — ASLA AŞMA. Hesapladıktan sonra bu sınırı kontrol et.**
-- Kalori oranı sınırı: protein kcal ≤ toplam kalorinin %35'i
-- Böbrek sorunu: ≤ toplam kilo × 0.8
-
-**Yağ:**
-- Standart: kilo × 0.8-1.0 g/kg
-- Safra sorunu varsa: toplam ≤40-50g/gün VE öğün başına ≤15g (bu sınır standart hesaplamayı ezer)
-**Karbonhidrat:** Kalan kaloriyi doldur. Diyabet: toplam kalorinin ≤%40'ı
-**Lif:** Min kadın 25g, erkek 30g. İdeal: 14g / 1000 kcal
-
-**Kalori hedefi:**
-- Kayıp: TDEE × 0.75-0.85 (agresifliğe göre)
+**Kalori hedefi** (NIH/NHLBI: 500-1000 kcal/gün açık → haftalık 0.5-1.0 kg kayıp):
+- Kayıp: TDEE × 0.80 (standart %20 açık). Agresif: TDEE × 0.75, Hafif: TDEE × 0.85
 - Koruma: TDEE
-- Kazanım: TDEE × 1.10-1.20
+- Kazanım: TDEE × 1.10-1.15
+
+**MAKRO HESAPLAMA SIRASI — KRİTİK (bu sırayla hesapla):**
+
+**Adım 1 — Protein** (ISSN 2017: Jäger et al.):
+- LBM = Kilo × (1 - VYO/100)
+- Kayıp (kalori açığında): LBM × 1.6-2.0 g/kg (ISSN: "exercising individuals 1.4-2.0 g/kg BW")
+- Koruma: LBM × 1.4-1.6 g/kg
+- Kazanım: LBM × 1.6-2.0 g/kg
+- **MUTLAK ÜST SINIR: LBM × 2.2 g/kg** (ISSN: 2.3-3.1 g/kg FFM sadece düşük VYO'lu antrenmanlı bireyler için)
+- Kalori oranı kontrolü: protein kcal ≤ toplam kalorinin %30'u (aşarsa protein gramajını düşür)
+- Böbrek sorunu: ≤ toplam kilo × 0.8 g/kg
+
+**Adım 2 — Yağ** (WHO 2023, EFSA 2010, ACSM/AND 2016):
+- Standart: toplam kalorinin %25-30'u (EFSA: %20-35, WHO: %15-30)
+- Formül: (hedef_kalori × 0.25) / 9 ile (hedef_kalori × 0.30) / 9 arası
+- Alt sınır: ASLA toplam kalorinin %20'sinin altına düşürme (hormonal fonksiyon için gerekli — ACSM)
+- Pratik alt sınır: 0.5 g/kg vücut ağırlığı (fizik sporcuları için gözlemlenen minimum)
+- **Safra sorunu varsa: toplam ≤40g/gün VE öğün başına ≤12g** (Cochrane, Kaiser Permanente, CUH klinik rehberi). Çok düşük yağ (<10g/gün) safra taşı riskini ARTTIRIR — minimum 25g/gün. Bu sınır standart hesaplamayı ezer.
+
+**Adım 3 — Karbonhidrat** (ACSM/AND 2016, ISSN 2017):
+- Kalan kaloriyi doldur: Karb = (hedef_kalori - protein_kcal - yag_kcal) / 4
+- **ÖNEMLİ KONTROL: Sonucu g/kg cinsinden kontrol et:**
+  - Hafif aktivite (haftada 3-4 gün direnç antrenmanı): 3-5 g/kg hedef (ACSM)
+  - Orta aktivite (günde ~1 saat): 5-7 g/kg (ACSM)
+  - Sonuç 5 g/kg'ı aşıyorsa → yağ gramajını artır veya kalori hedefini gözden geçir
+  - Sonuç 2 g/kg'ın altındaysa → çok düşük karb, enerji yetersiz olabilir
+- Diyabet: toplam kalorinin ≤%40'ı (ADA klinik pratiği)
+- **ISSN notu:** Kalori ve protein sabit tutulduğunda, karb/yağ oranının vücut kompozisyonuna etkisi minimaldir — kişisel tercih esnekliği vardır.
+
+**Lif** (EFSA 2010):
+- Minimum: kadın 25g, erkek 30g
+- İdeal: 14g / 1000 kcal
+- Üst sınır: 50g/gün (sindirim rahatlığı için)
+
+**SAFRA HASTASI HESAPLAMA ÖRNEĞİ (önemli — adım adım):**
+Örnek: 103kg erkek, safra taşı, kilo verme, TDEE=3300
+1. Kalori: 3300 × 0.80 = 2640 kcal
+2. Protein: LBM 74kg × 1.8 = 133g → 532 kcal
+3. Yağ: Safra limiti → 40g → 360 kcal (kalorinin %13.6'sı — normal altında ama tıbbi zorunluluk)
+4. Karb: (2640 - 532 - 360) / 4 = 437g → 4.2 g/kg
+5. **KONTROL:** 4.2 g/kg > 4 g/kg sınırı → karb biraz yüksek ama safra kısıtlaması nedeniyle kabul edilebilir. Kişi rahatsızsa kalori hedefini %5 düşür.
 
 ### Plan Oluşturma Kuralları
 

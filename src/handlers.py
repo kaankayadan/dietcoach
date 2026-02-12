@@ -184,6 +184,38 @@ class BotHandlers:
         await self.db.save_daily_plan(user_id, plan_date, plan_detail, toplam_kalori)
         logger.info(f"Doğrulanmış plan kaydedildi: user_id={user_id}, tarih={plan_date}")
 
+    # Claude'un gönderebileceği alan adı varyasyonları → DB'deki doğru alan adı
+    FIELD_ALIASES = {
+        "isim": "isim", "ad": "isim", "name": "isim",
+        "yas": "yas", "yaş": "yas", "age": "yas",
+        "cinsiyet": "cinsiyet", "gender": "cinsiyet",
+        "boy": "boy_cm", "boy_cm": "boy_cm", "height": "boy_cm",
+        "kilo": "kilo_kg", "kilo_kg": "kilo_kg", "weight": "kilo_kg", "agirlik": "kilo_kg",
+        "vucut_yag_orani": "vucut_yag_orani", "vyo": "vucut_yag_orani",
+        "vucut_yag": "vucut_yag_orani", "yag_orani": "vucut_yag_orani",
+        "bel_cevresi": "bel_cevresi_cm", "bel_cevresi_cm": "bel_cevresi_cm",
+        "bel": "bel_cevresi_cm",
+        "yagsiz_kutle": "yagsiz_kutle_kg", "yagsiz_kutle_kg": "yagsiz_kutle_kg",
+        "lbm": "yagsiz_kutle_kg",
+        "aktivite": "aktivite_seviyesi", "aktivite_seviyesi": "aktivite_seviyesi",
+        "aktivite_detay": "aktivite_detay",
+        "kronik_hastaliklar": "kronik_hastaliklar", "hastaliklar": "kronik_hastaliklar",
+        "kronik": "kronik_hastaliklar",
+        "sindirim_sorunlari": "sindirim_sorunlari", "sindirim": "sindirim_sorunlari",
+        "alerjiler": "alerjiler", "alerji": "alerjiler",
+        "ilaclar": "ilaclar", "ilac": "ilaclar",
+        "hedef_tip": "hedef_tip", "hedef": "hedef_tip",
+        "hedef_kilo": "hedef_kilo",
+        "mutfak_stili": "mutfak_stili", "mutfak": "mutfak_stili",
+        "sevilen_yiyecekler": "sevilen_yiyecekler", "sevilen": "sevilen_yiyecekler",
+        "sevilmeyen_yiyecekler": "sevilmeyen_yiyecekler", "sevilmeyen": "sevilmeyen_yiyecekler",
+        "ogun_duzeni": "ogun_duzeni", "ogun": "ogun_duzeni",
+    }
+
+    def _normalize_field_name(self, field: str) -> str:
+        """Claude'un gönderdiği alan adını DB'deki standart alan adına çevir."""
+        return self.FIELD_ALIASES.get(field, field)
+
     async def _parse_onboarding_metadata(self, telegram_id: int, user: dict, response: str) -> str:
         """
         Claude'un yanıtındaki onboarding metadata'sını parse et.
@@ -199,18 +231,28 @@ class BotHandlers:
             try:
                 meta = json.loads(match)
                 if meta.get("valid"):
-                    onboarding_data = json.loads(user.get("onboarding_data") or "{}")
+                    # Her seferinde DB'den güncel onboarding_data oku (stale user nesnesine güvenme)
+                    fresh_user = await self.db.get_user(telegram_id)
+                    onboarding_data = json.loads(
+                        (fresh_user or user).get("onboarding_data") or "{}"
+                    )
 
                     # Hesaplama metadata'sı: nested dict ise ana dict'e merge et
                     if meta["field"] == "hesaplamalar" and isinstance(meta["value"], dict):
                         onboarding_data.update(meta["value"])
                     else:
-                        onboarding_data[meta["field"]] = meta["value"]
+                        # Alan adını normalize et (boy → boy_cm, kilo → kilo_kg, vb.)
+                        normalized_field = self._normalize_field_name(meta["field"])
+                        onboarding_data[normalized_field] = meta["value"]
+                        logger.info(
+                            f"Onboarding field: '{meta['field']}' → '{normalized_field}' = {meta['value']}"
+                        )
 
                     new_step = meta.get("step", user["onboarding_step"]) + 1
 
                     # Son adımsa onboarding'i tamamla
                     if new_step > 14 or meta.get("complete"):
+                        logger.info(f"Onboarding tamamlanıyor: {list(onboarding_data.keys())}")
                         await self.db.complete_onboarding(telegram_id, onboarding_data)
                     else:
                         await self.db.update_onboarding(telegram_id, new_step, onboarding_data)

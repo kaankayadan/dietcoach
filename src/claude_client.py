@@ -44,23 +44,46 @@ class ClaudeClient:
 
         ctx_parts = []
 
+        # onboarding_data'dan fallback değerleri oku (profil sütunları NULL olabilir)
+        ob = user.get('onboarding_data') or {}
+        if isinstance(ob, str):
+            import json as _json
+            try:
+                ob = _json.loads(ob)
+            except Exception:
+                ob = {}
+
+        def _g(field, default=None):
+            """Profil sütunundan oku, NULL ise onboarding_data'dan fallback."""
+            val = user.get(field)
+            if val is not None:
+                return val
+            return ob.get(field, default)
+
         # -- Profil --
+        sevilen = _g('sevilen_yiyecekler', []) or []
+        sevilmeyen = _g('sevilmeyen_yiyecekler', []) or []
+        if isinstance(sevilen, str):
+            sevilen = [sevilen]
+        if isinstance(sevilmeyen, str):
+            sevilmeyen = [sevilmeyen]
+
         ctx_parts.append(f"""## Kullanıcı Profili
-İsim: {user.get('isim', 'Bilinmiyor')}
-Yaş: {user.get('yas')} | Cinsiyet: {user.get('cinsiyet')}
-Boy: {user.get('boy_cm')} cm | Kilo: {user.get('kilo_kg')} kg
-Vücut Yağ Oranı: %{user.get('vucut_yag_orani')} | Yağsız Kütle: {user.get('yagsiz_kutle_kg')} kg
-Aktivite: {user.get('aktivite_seviyesi')}
-Hedef: {user.get('hedef_tip')} | Hedef Kilo: {user.get('hedef_kilo', 'Belirtilmedi')} kg
-Mutfak Stili: {user.get('mutfak_stili')} | Öğün Düzeni: {user.get('ogun_duzeni')}
-Sevilen: {', '.join(user.get('sevilen_yiyecekler', []) or [])}
-Sevilmeyen: {', '.join(user.get('sevilmeyen_yiyecekler', []) or [])}""")
+İsim: {_g('isim', 'Bilinmiyor')}
+Yaş: {_g('yas', 'Belirtilmedi')} | Cinsiyet: {_g('cinsiyet', 'Belirtilmedi')}
+Boy: {_g('boy_cm', 'Belirtilmedi')} cm | Kilo: {_g('kilo_kg', 'Belirtilmedi')} kg
+Vücut Yağ Oranı: %{_g('vucut_yag_orani', 'Belirtilmedi')} | Yağsız Kütle: {_g('yagsiz_kutle_kg', 'Belirtilmedi')} kg
+Aktivite: {_g('aktivite_seviyesi', 'Belirtilmedi')}
+Hedef: {_g('hedef_tip', 'Belirtilmedi')} | Hedef Kilo: {_g('hedef_kilo', 'Belirtilmedi')} kg
+Mutfak Stili: {_g('mutfak_stili', 'Belirtilmedi')} | Öğün Düzeni: {_g('ogun_duzeni', 'Belirtilmedi')}
+Sevilen: {', '.join(sevilen) if sevilen else 'Belirtilmedi'}
+Sevilmeyen: {', '.join(sevilmeyen) if sevilmeyen else 'Belirtilmedi'}""")
 
         # -- Sağlık --
-        hastaliklar = user.get('kronik_hastaliklar') or []
-        sindirim = user.get('sindirim_sorunlari') or []
-        alerjiler = user.get('alerjiler') or []
-        ilaclar = user.get('ilaclar') or []
+        hastaliklar = _g('kronik_hastaliklar', []) or []
+        sindirim = _g('sindirim_sorunlari', []) or []
+        alerjiler = _g('alerjiler', []) or []
+        ilaclar = _g('ilaclar', []) or []
         if hastaliklar or sindirim or alerjiler or ilaclar:
             ctx_parts.append(f"""## Sağlık Durumu
 Kronik: {', '.join(hastaliklar) if hastaliklar else 'Yok'}
@@ -69,11 +92,12 @@ Alerjiler: {', '.join(alerjiler) if alerjiler else 'Yok'}
 İlaçlar: {ilaclar if ilaclar else 'Yok'}""")
 
         # -- Metabolik Değerler --
-        if user.get('bmr'):
+        bmr = _g('bmr')
+        if bmr:
             ctx_parts.append(f"""## Metabolik Değerler
-BMR: {user['bmr']} kcal | TDEE: {user['tdee']} kcal
-Hedef Kalori: {user['hedef_kalori']} kcal
-Protein: {user['protein_g']}g | Karb: {user['karbonhidrat_g']}g | Yağ: {user['yag_g']}g | Lif: {user['lif_g']}g""")
+BMR: {bmr} kcal | TDEE: {_g('tdee')} kcal
+Hedef Kalori: {_g('hedef_kalori')} kcal
+Protein: {_g('protein_g')}g | Karb: {_g('karbonhidrat_g')}g | Yağ: {_g('yag_g')}g | Lif: {_g('lif_g')}g""")
 
         # -- Bugünkü Plan --
         if todays_plan:

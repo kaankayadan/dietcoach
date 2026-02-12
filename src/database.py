@@ -53,11 +53,67 @@ class Database:
             telegram_id, step, json.dumps(data, ensure_ascii=False),
         )
     
+    # Claude'un gönderebileceği alan adı varyasyonları → DB'deki doğru alan adı
+    _FIELD_ALIASES = {
+        "ad": "isim", "name": "isim",
+        "yaş": "yas", "age": "yas",
+        "gender": "cinsiyet",
+        "boy": "boy_cm", "height": "boy_cm",
+        "kilo": "kilo_kg", "weight": "kilo_kg", "agirlik": "kilo_kg",
+        "vyo": "vucut_yag_orani", "vucut_yag": "vucut_yag_orani", "yag_orani": "vucut_yag_orani",
+        "bel_cevresi": "bel_cevresi_cm", "bel": "bel_cevresi_cm",
+        "yagsiz_kutle": "yagsiz_kutle_kg", "lbm": "yagsiz_kutle_kg",
+        "aktivite": "aktivite_seviyesi",
+        "hastaliklar": "kronik_hastaliklar", "kronik": "kronik_hastaliklar",
+        "sindirim": "sindirim_sorunlari",
+        "alerji": "alerjiler",
+        "ilac": "ilaclar",
+        "hedef": "hedef_tip",
+        "mutfak": "mutfak_stili",
+        "sevilen": "sevilen_yiyecekler",
+        "sevilmeyen": "sevilmeyen_yiyecekler",
+        "ogun": "ogun_duzeni",
+    }
+
+    def _normalize_profile_data(self, data: dict) -> dict:
+        """Alan adı varyasyonlarını standart DB alan adlarına dönüştür."""
+        normalized = {}
+        for key, value in data.items():
+            canonical = self._FIELD_ALIASES.get(key, key)
+            # Zaten standart isimle bir değer varsa onu koruyoruz
+            if canonical not in normalized or normalized[canonical] is None:
+                normalized[canonical] = value
+        return normalized
+
     async def complete_onboarding(self, telegram_id: int, profile_data: dict):
         """
         Onboarding tamamlandığında tüm profil verilerini kaydet.
         profile_data içinde hesaplanmış BMR, TDEE, makrolar da olacak.
+        Alan adı normalize edilir (boy → boy_cm, kilo → kilo_kg, vb.).
         """
+        d = self._normalize_profile_data(profile_data)
+
+        # Sayısal alanları güvenli şekilde cast et
+        def _num(key, typ=float):
+            val = d.get(key)
+            if val is None:
+                return None
+            try:
+                return typ(val)
+            except (ValueError, TypeError):
+                return None
+
+        # Liste alanlarını güvenli şekilde cast et
+        def _list(key):
+            val = d.get(key)
+            if val is None:
+                return None
+            if isinstance(val, list):
+                return val
+            if isinstance(val, str):
+                return [val] if val.strip() else None
+            return None
+
         await self.pool.execute(
             """UPDATE users SET
                 isim = $2, yas = $3, cinsiyet = $4, boy_cm = $5, kilo_kg = $6,
@@ -72,26 +128,27 @@ class Database:
                 hedef_kalori = $29,
                 protein_g = $30, karbonhidrat_g = $31, yag_g = $32, lif_g = $33,
                 su_hedefi_litre = $34,
-                onboarding_step = 99, updated_at = NOW()
+                onboarding_step = 99, onboarding_data = $35, updated_at = NOW()
                WHERE telegram_id = $1""",
             telegram_id,
-            profile_data.get('isim'), profile_data.get('yas'),
-            profile_data.get('cinsiyet'), profile_data.get('boy_cm'),
-            profile_data.get('kilo_kg'), profile_data.get('vucut_yag_orani'),
-            profile_data.get('yagsiz_kutle_kg'), profile_data.get('bel_cevresi_cm'),
-            profile_data.get('vyo_yontemi'), profile_data.get('aktivite_seviyesi'),
-            profile_data.get('kronik_hastaliklar'), profile_data.get('sindirim_sorunlari'),
-            profile_data.get('alerjiler'), json.dumps(profile_data.get('ilaclar', []), ensure_ascii=False),
-            profile_data.get('hedef_tip'), profile_data.get('hedef_kilo'),
-            profile_data.get('agresiflik'), profile_data.get('mutfak_stili'),
-            profile_data.get('sevilen_yiyecekler'), profile_data.get('sevilmeyen_yiyecekler'),
-            profile_data.get('ogun_duzeni'), profile_data.get('if_penceresi'),
-            profile_data.get('bmr'), profile_data.get('neat'),
-            profile_data.get('tef'), profile_data.get('eat_gunluk'),
-            profile_data.get('tdee'), profile_data.get('hedef_kalori'),
-            profile_data.get('protein_g'), profile_data.get('karbonhidrat_g'),
-            profile_data.get('yag_g'), profile_data.get('lif_g'),
-            profile_data.get('su_hedefi_litre'),
+            d.get('isim'), _num('yas', int),
+            d.get('cinsiyet'), _num('boy_cm'),
+            _num('kilo_kg'), _num('vucut_yag_orani'),
+            _num('yagsiz_kutle_kg'), _num('bel_cevresi_cm'),
+            d.get('vyo_yontemi'), d.get('aktivite_seviyesi'),
+            _list('kronik_hastaliklar'), _list('sindirim_sorunlari'),
+            _list('alerjiler'), json.dumps(d.get('ilaclar', []), ensure_ascii=False),
+            d.get('hedef_tip'), _num('hedef_kilo'),
+            d.get('agresiflik'), d.get('mutfak_stili'),
+            _list('sevilen_yiyecekler'), _list('sevilmeyen_yiyecekler'),
+            d.get('ogun_duzeni'), d.get('if_penceresi'),
+            _num('bmr'), _num('neat'),
+            _num('tef'), _num('eat_gunluk'),
+            _num('tdee'), _num('hedef_kalori'),
+            _num('protein_g'), _num('karbonhidrat_g'),
+            _num('yag_g'), _num('lif_g'),
+            _num('su_hedefi_litre'),
+            json.dumps(d, ensure_ascii=False),  # Tüm veriyi onboarding_data'da da sakla (fallback)
         )
     
     async def update_user_weight(self, telegram_id: int, kilo: float):

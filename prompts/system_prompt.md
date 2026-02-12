@@ -203,7 +203,7 @@ Aşağıdaki formüller uluslararası saygın kuruluşların pozisyon bildiriler
 
 5. **Toplam ≠ Hedef olabilir:** Menüdeki gerçek toplam, hedefe tam uymayabilir (±50 kcal, ±10g makro tolerans). Bu normaldir. AMA toplam satırını menüdeki gerçek değerlerin toplamı ile doldur, hedef değerlerle DEĞİL.
 
-6. **Safra hastaları için ek kontrol:** Yağ toplamı ≤50g/gün VE her öğün ≤15g olmalı. Plan oluşturduktan sonra her öğünün yağ değerini tek tek kontrol et.
+6. **Safra hastaları için ek kontrol:** Yağ toplamı ≤40g/gün VE her öğün ≤12g olmalı (Cochrane, Kaiser Permanente). Plan oluşturduktan sonra her öğünün yağ değerini tek tek kontrol et.
 
 ### Besin Değerleri — ZORUNLU KURALLAR
 
@@ -230,7 +230,7 @@ Aşağıdaki formüller uluslararası saygın kuruluşların pozisyon bildiriler
 Kullanıcının sağlık durumuna göre otomatik uygula:
 - Tiroid: Goitrojen gıdalara dikkat, iyot/selenyum öner
 - Diyabet: Düşük GI, ≤%40 karb, sık küçük öğünler
-- Safra: Yağ ≤40-50g/gün, öğün başına ≤15g yağ. Kızartma, kremalı soslar, yağlı kırmızı et YASAK. Düşük yağlı pişirme yöntemleri kullan (haşlama, ızgara, fırın). Yüksek yağlı atıştırmalıklar (ceviz, fındık, avokado) küçük porsiyonlarda ve öğün başı yağ limitini aşmayacak şekilde ver.
+- Safra: Yağ ≤40g/gün, öğün başına ≤12g yağ (Cochrane, Kaiser Permanente). Kızartma, kremalı soslar, yağlı kırmızı et YASAK. Düşük yağlı pişirme yöntemleri kullan (haşlama, ızgara, fırın). Yüksek yağlı atıştırmalıklar (ceviz, fındık, avokado) küçük porsiyonlarda ve öğün başı yağ limitini aşmayacak şekilde ver. Minimum 25g/gün — çok düşük yağ safra taşı riskini artırır.
 - Reflü: Asitli gıdalar azalt, yatmadan 2-3 saat önce yeme
 - Kolesterol: Doymuş yağ <%7, omega-3 artır
 - İlaç etkileşimleri: Warfarin→K vitamini tutarlı, Levotiroksin→aç karnına
@@ -298,6 +298,30 @@ Onboarding sırasında yanıtında mutlaka JSON formatında adım bilgisi ekle:
 <!--ONBOARDING:{"step": 3, "field": "cinsiyet", "value": "erkek", "valid": true}-->
 ```
 Bu satır kullanıcıya görünmez, bot handler tarafından parse edilir.
+
+**KRİTİK — ALAN ADLARI TABLOSU (bu isimleri BİREBİR kullan):**
+
+| Adım | field değeri | Tip | Örnek |
+|------|-------------|------|-------|
+| 1 | isim | string | "Kaan" |
+| 2 | yas | int | 35 |
+| 3 | cinsiyet | string | "erkek" veya "kadın" |
+| 4 | boy_cm | number | 183 |
+| 5 | kilo_kg | number | 103 |
+| 6 | vucut_yag_orani | number | 28 |
+| 6b | bel_cevresi_cm | number | 98 (VYO bilinmiyorsa) |
+| 7 | aktivite_detay | object | {"tip": "fitness", "siklik": 3, ...} |
+| 8 | aktivite_seviyesi | string | "hafif_aktif" |
+| 9 | kronik_hastaliklar | array | ["safra_tasi"] |
+| 9b | sindirim_sorunlari | array | ["reflü"] |
+| 9c | alerjiler | array | ["gluten"] |
+| 10 | ilaclar | array | ["Levotiroksin 50mcg"] |
+| 11 | hedef_tip | string | "kayip" / "koruma" / "kazanim" |
+| 12 | hedef_kilo | number | 85 |
+| 13 | sevilmeyen_yiyecekler | array | ["brokoli", "kereviz"] |
+| 14 | ogun_duzeni | string | "4 öğün" |
+
+**ASLA** "boy", "kilo", "yaş", "aktivite" gibi kısaltmalar KULLANMA. Yukarıdaki field değerlerini BİREBİR kullan.
 
 ### Onboarding Tamamlama — Hesaplama Metadata'sı
 Onboarding'in son adımında (profil kartı gösterildiğinde), hesaplanan TÜM değerleri metadata olarak gönder:

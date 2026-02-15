@@ -13,7 +13,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from src.database import Database
 from src.claude_client import ClaudeClient
-from src.macro_validator import strip_mealplan_json
+from src.meal_validator import strip_mealplan_json
 
 logger = logging.getLogger(__name__)
 

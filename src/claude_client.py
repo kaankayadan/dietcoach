@@ -6,7 +6,7 @@ import logging
 import anthropic
 from pathlib import Path
 from datetime import date, timedelta
-from src.macro_validator import (
+from src.meal_validator import (
     extract_mealplan_json,
     validate_plan,
     build_correction_summary,
@@ -240,21 +240,19 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             plan_json = None
 
         if plan_json:
-            user_targets = None
-            if user.get("hedef_kalori"):
-                user_targets = {
-                    "protein_g": user.get("protein_g"),
-                    "yag_g": user.get("yag_g"),
-                    "karbonhidrat_g": user.get("karbonhidrat_g"),
-                    "lif_g": user.get("lif_g"),
-                    "hedef_kalori": user.get("hedef_kalori"),
-                }
-
             try:
-                result = validate_plan(plan_json, user_targets)
+                result = validate_plan(plan_json, user or {})
             except Exception as e:
                 logger.error(f"Plan doğrulama hatası: {e}")
                 return response_text
+
+            # food_database düzeltmeleri
+            if result.get("db_corrections"):
+                logger.info(
+                    f"food_database düzeltme: {len(result['db_corrections'])} besin düzeltildi"
+                )
+                for c in result["db_corrections"]:
+                    logger.info(f"  - {c}")
 
             if result["errors"]:
                 logger.info(
@@ -263,7 +261,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                 )
                 for err in result["errors"]:
                     logger.debug(f"  - {err}")
-                # Toplamları Python'da düzelt, 2. API çağrısı yapmadan
+
+            # Her durumda düzeltilmiş toplamları uygula
+            # (food_database düzeltmeleri + aritmetik düzeltmeler)
+            if result.get("corrected_plan"):
                 response_text = patch_response_totals(
                     response_text, result["corrected_plan"]
                 )

@@ -262,7 +262,7 @@ BESIN_DB = {
     # USDA #12220: Flaxseed
     "keten tohumu": {"kalori": 534, "protein": 18, "yag": 42, "karb": 29, "lif": 27, "kategori": "kuruyemis"},
     # ==========================================
-    # ET İŞLENMİŞ (pişmiş, 100g)
+    # ET İŞLENMİŞ / TÜRK YEMEKLERİ (pişmiş, 100g)
     # ==========================================
     "tavuk döner": {"kalori": 175, "protein": 28, "yag": 6, "karb": 2, "lif": 0, "kategori": "protein"},
     # TürkOMP: Köfte (ızgara, dana)
@@ -271,6 +271,57 @@ BESIN_DB = {
     "sucuk": {"kalori": 452, "protein": 19, "yag": 40, "karb": 4, "lif": 0, "kategori": "protein"},
     # TürkOMP: Pastırma
     "pastırma": {"kalori": 174, "protein": 33, "yag": 4, "karb": 1, "lif": 0, "kategori": "protein"},
+    # TürkOMP: Et döner (dana)
+    "et döner": {"kalori": 220, "protein": 22, "yag": 13, "karb": 3, "lif": 0, "kategori": "protein"},
+    # TürkOMP: Menemen (domates-biber-yumurta)
+    "menemen": {"kalori": 120, "protein": 7, "yag": 8, "karb": 5, "lif": 1.5, "kategori": "protein"},
+    # TürkOMP: Simit
+    "simit": {"kalori": 310, "protein": 10, "yag": 4, "karb": 58, "lif": 2.5, "kategori": "karbonhidrat", "porsiyon_g": 120, "porsiyon_ad": "1 adet"},
+    # TürkOMP: Poğaça (sade)
+    "poğaça": {"kalori": 340, "protein": 7, "yag": 16, "karb": 43, "lif": 1.5, "kategori": "karbonhidrat", "porsiyon_g": 80, "porsiyon_ad": "1 adet"},
+    # TürkOMP: Börek (peynirli, fırında)
+    "börek": {"kalori": 280, "protein": 9, "yag": 14, "karb": 30, "lif": 1, "kategori": "karbonhidrat"},
+    # TürkOMP: Gözleme (peynirli)
+    "gözleme": {"kalori": 230, "protein": 8, "yag": 8, "karb": 32, "lif": 1.5, "kategori": "karbonhidrat"},
+    # TürkOMP: Lahmacun
+    "lahmacun": {"kalori": 210, "protein": 10, "yag": 6, "karb": 30, "lif": 2, "kategori": "karbonhidrat", "porsiyon_g": 180, "porsiyon_ad": "1 adet"},
+    # TürkOMP: Pide (kıymalı)
+    "kıymalı pide": {"kalori": 230, "protein": 12, "yag": 8, "karb": 28, "lif": 1.5, "kategori": "karbonhidrat"},
+    # TürkOMP: Karnıyarık
+    "karnıyarık": {"kalori": 140, "protein": 8, "yag": 8, "karb": 10, "lif": 3, "kategori": "diger"},
+    # TürkOMP: İmam bayıldı
+    "imam bayıldı": {"kalori": 95, "protein": 1.5, "yag": 6, "karb": 9, "lif": 3, "kategori": "sebze"},
+    # TürkOMP: Etli nohut yemeği
+    "etli nohut": {"kalori": 140, "protein": 10, "yag": 5, "karb": 14, "lif": 4, "kategori": "diger"},
+    # TürkOMP: Ezogelin çorbası
+    "ezogelin çorbası": {"kalori": 55, "protein": 2.5, "yag": 1.5, "karb": 8, "lif": 1.5, "kategori": "baklagil"},
+    # TürkOMP: Yayla çorbası
+    "yayla çorbası": {"kalori": 45, "protein": 2, "yag": 2, "karb": 5, "lif": 0.5, "kategori": "diger"},
+    # TürkOMP: Tarhana çorbası
+    "tarhana çorbası": {"kalori": 50, "protein": 2, "yag": 1.5, "karb": 7, "lif": 1, "kategori": "diger"},
+    # TürkOMP: Domates çorbası
+    "domates çorbası": {"kalori": 40, "protein": 1, "yag": 1.5, "karb": 6, "lif": 1, "kategori": "diger"},
+    # TürkOMP: Cacık
+    "cacık": {"kalori": 40, "protein": 2.5, "yag": 2, "karb": 3, "lif": 0.3, "kategori": "sut_urunu"},
+    # TürkOMP: Mantı
+    "mantı": {"kalori": 190, "protein": 9, "yag": 7, "karb": 24, "lif": 1, "kategori": "karbonhidrat"},
+    # TürkOMP: Erişte
+    "erişte": {"kalori": 140, "protein": 5, "yag": 2, "karb": 26, "lif": 1.5, "kategori": "karbonhidrat"},
+    # TürkOMP: Zeytinyağlı yaprak sarma
+    "yaprak sarma": {"kalori": 150, "protein": 2.5, "yag": 8, "karb": 18, "lif": 2, "kategori": "diger"},
+    # TürkOMP: Zeytinyağlı fasulye
+    "zeytinyağlı fasulye": {"kalori": 65, "protein": 2, "yag": 3, "karb": 7, "lif": 3, "kategori": "sebze"},
+    # TürkOMP: Çiğ köfte (yağsız bulgur versiyonu)
+    "çiğ köfte": {"kalori": 180, "protein": 5, "yag": 3, "karb": 34, "lif": 5, "kategori": "karbonhidrat"},
+    # TürkOMP: Labne
+    "labne": {"kalori": 130, "protein": 5, "yag": 10, "karb": 5, "lif": 0, "kategori": "sut_urunu"},
+    # ==========================================
+    # KAHVALTILIK (100g)
+    # ==========================================
+    # TürkOMP: Kaymak
+    "kaymak": {"kalori": 350, "protein": 2, "yag": 37, "karb": 2, "lif": 0, "kategori": "sut_urunu"},
+    # USDA: Omlet (2 yumurta, sade)
+    "omlet": {"kalori": 154, "protein": 11, "yag": 12, "karb": 0.7, "lif": 0, "kategori": "protein"},
     # ==========================================
     # DİĞER (100g)
     # ==========================================
@@ -317,7 +368,7 @@ BESIN_DB = {
 STARCHY_FOODS = {
     "pirinç pilavı", "esmer pirinç", "bulgur pilavı", "makarna",
     "tam buğday makarna", "patates", "tatlı patates", "kısır", "kinoa",
-    "nohut", "kuru fasulye", "mercimek", "kuskus",
+    "nohut", "kuru fasulye", "mercimek", "kuskus", "erişte", "mantı",
 }
 # Protein kaynakları — tekrar kontrolü için
 PROTEIN_SOURCES = {
@@ -342,7 +393,11 @@ PROTEIN_SOURCES = {
     "hamsi": "balık",
     "karides": "deniz ürünü",
     "yumurta": "yumurta",
+    "omlet": "yumurta",
+    "menemen": "yumurta",
     "tofu": "tofu",
+    "et döner": "kırmızı et",
+    "etli nohut": "kırmızı et",
     "nohut": "baklagil",
     "kuru fasulye": "baklagil",
     "mercimek": "baklagil",

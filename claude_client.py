@@ -2,9 +2,18 @@
 Claude API Client — Her çağrıda kullanıcının güncel profilini context olarak gönderir.
 Bu dosya tüm sistemin beyni: kullanıcıyı "tanıyan" AI burada oluşur.
 """
+import logging
 import anthropic
 from pathlib import Path
 from datetime import date, timedelta
+from src.macro_validator import (
+    extract_mealplan_json,
+    strip_mealplan_json,
+    validate_plan,
+    build_correction_summary,
+)
+
+logger = logging.getLogger(__name__)
 
 
 class ClaudeClient:
@@ -215,9 +224,68 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         # Claude API çağrısı
         response = self.client.messages.create(
             model=model,
-            max_tokens=2000,
+            max_tokens=4000,
             system=full_system,
             messages=messages,
         )
-        
-        return response.content[0].text
+
+        response_text = response.content[0].text
+
+        # Plan yanıtlarını doğrula
+        plan_json = extract_mealplan_json(response_text)
+        if plan_json:
+            user_targets = None
+            if user.get("hedef_kalori"):
+                user_targets = {
+                    "protein_g": user.get("protein_g"),
+                    "yag_g": user.get("yag_g"),
+                    "karbonhidrat_g": user.get("karbonhidrat_g"),
+                    "lif_g": user.get("lif_g"),
+                    "hedef_kalori": user.get("hedef_kalori"),
+                }
+
+            result = validate_plan(plan_json, user_targets)
+
+            if not result["valid"] or result["warnings"]:
+                logger.info(
+                    f"Plan doğrulama: {len(result['errors'])} hata, "
+                    f"{len(result['warnings'])} uyarı"
+                )
+                # Hata varsa Claude'a düzeltme yaptır
+                if not result["valid"]:
+                    correction_info = build_correction_summary(result)
+                    corrected_totals = result["corrected_totals"]
+
+                    # Claude'a düzeltme mesajı gönder
+                    messages.append({"role": "assistant", "content": response_text})
+                    messages.append({
+                        "role": "user",
+                        "content": (
+                            f"[SİSTEM — KULLANICIYA GÖRÜNMEZ] Python doğrulaması aritmetik hata buldu.\n"
+                            f"{correction_info}\n\n"
+                            f"Planı AYNI besinlerle tekrar yaz ama bu sefer öğün toplamlarını ve "
+                            f"günlük toplamı şu DOĞRU değerlerle göster:\n"
+                            f"Günlük: {corrected_totals['kcal']:.0f} kcal | "
+                            f"P: {corrected_totals['p']:.0f}g | Y: {corrected_totals['y']:.0f}g | "
+                            f"K: {corrected_totals['k']:.0f}g | L: {corrected_totals['l']:.0f}g\n\n"
+                            f"Öğün bazında doğru toplamlar:\n"
+                            + "\n".join(
+                                f"- {o['ogun']}: P:{o['toplam']['p']:.0f}g Y:{o['toplam']['y']:.0f}g "
+                                f"K:{o['toplam']['k']:.0f}g L:{o['toplam']['l']:.0f}g {o['toplam']['kcal']:.0f} kcal"
+                                for o in result["corrected_plan"]["ogunler"]
+                            )
+                            + "\n\nAyrıca hedef uyarılarını da kullanıcıya bildir. "
+                            "MEALPLAN_JSON bloğunu tekrar eklemeyi unutma."
+                        ),
+                    })
+
+                    corrected_response = self.client.messages.create(
+                        model=model,
+                        max_tokens=4000,
+                        system=full_system,
+                        messages=messages,
+                    )
+                    response_text = corrected_response.content[0].text
+                    logger.info("Plan aritmetik düzeltmesi uygulandı")
+
+        return response_text

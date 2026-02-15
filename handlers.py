@@ -13,6 +13,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from src.database import Database
 from src.claude_client import ClaudeClient
+from src.macro_validator import strip_mealplan_json
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +75,10 @@ class BotHandlers:
         response_clean = await self._parse_onboarding_metadata(
             telegram_id, ctx["user"], response
         )
-        
+
+        # MEALPLAN_JSON bloğunu temizle (kullanıcıya görünmez)
+        response_clean = strip_mealplan_json(response_clean)
+
         # Mesajları kaydet
         user_id = ctx["user"]["id"]
         await self.db.save_message(user_id, "user", message)

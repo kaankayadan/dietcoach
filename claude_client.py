@@ -159,8 +159,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
     def _select_model(self, message: str, is_onboarding: bool) -> str:
         """Mesaj karmaşıklığına göre model seç — maliyet optimizasyonu."""
         heavy_triggers = [
-            '/plan', '/haftalik', 'plan oluştur', 'plan yap', 'haftalık plan',
-            'diyet listesi', '/alternatif', 'alternatif öner',
+            '/plan', '/haftalik', 'plan oluştur', 'plan yap', 'plan hazırla',
+            'yeni plan', 'haftalık plan', 'diyet listesi', 'diyet planı',
+            '/alternatif', 'alternatif öner',
         ]
         if is_onboarding:
             return self.model_heavy
@@ -232,7 +233,12 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         response_text = response.content[0].text
 
         # Plan yanıtlarını doğrula
-        plan_json = extract_mealplan_json(response_text)
+        try:
+            plan_json = extract_mealplan_json(response_text)
+        except Exception as e:
+            logger.warning(f"MEALPLAN_JSON parse hatası: {e}")
+            plan_json = None
+
         if plan_json:
             user_targets = None
             if user.get("hedef_kalori"):
@@ -244,7 +250,11 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                     "hedef_kalori": user.get("hedef_kalori"),
                 }
 
-            result = validate_plan(plan_json, user_targets)
+            try:
+                result = validate_plan(plan_json, user_targets)
+            except Exception as e:
+                logger.error(f"Plan doğrulama hatası: {e}")
+                return response_text
 
             if not result["valid"] or result["warnings"]:
                 logger.info(
@@ -279,13 +289,17 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         ),
                     })
 
-                    corrected_response = self.client.messages.create(
-                        model=model,
-                        max_tokens=4000,
-                        system=full_system,
-                        messages=messages,
-                    )
-                    response_text = corrected_response.content[0].text
-                    logger.info("Plan aritmetik düzeltmesi uygulandı")
+                    try:
+                        corrected_response = self.client.messages.create(
+                            model=model,
+                            max_tokens=4000,
+                            system=full_system,
+                            messages=messages,
+                        )
+                        response_text = corrected_response.content[0].text
+                        logger.info("Plan aritmetik düzeltmesi uygulandı")
+                    except Exception as e:
+                        logger.error(f"Plan düzeltme API hatası: {e}")
+                        # Düzeltme başarısız — orijinal yanıtı kullan
 
         return response_text

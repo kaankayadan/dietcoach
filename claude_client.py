@@ -15,9 +15,11 @@ class ClaudeClient:
         self.model_light = "claude-haiku-4-5-20251001"    # Besin sorgusu, kısa yanıt
         self.model_heavy = "claude-sonnet-4-5-20250929"   # Plan oluşturma, onboarding
     
-    def _build_user_context(self, user: dict, recent_meals: list, 
+    def _build_user_context(self, user: dict, recent_meals: list,
                             daily_summary: dict, weekly_summary: dict,
-                            todays_plan: dict) -> str:
+                            todays_plan: dict, weekly_meals: list = None,
+                            weekly_water: list = None,
+                            todays_water: dict = None) -> str:
         """
         Kullanıcının güncel verilerini Claude'a gönderilecek context string'ine dönüştürür.
         Bu fonksiyon her mesajda çağrılır — Claude bu sayede kullanıcıyı 'tanır'.
@@ -90,13 +92,52 @@ Toplam Sapma: {weekly_summary.get('toplam_sapma')} kcal
 Kilo Değişimi: {weekly_summary.get('kilo_degisimi', 'Tartılmadı')} kg
 Telafi: {'Evet, günlük ' + str(weekly_summary.get('telafi_miktari_gunluk')) + ' kcal' if weekly_summary.get('telafi_uygulanacak') else 'Gerek yok'}""")
         
+        # -- Bugünkü Su Durumu --
+        if todays_water:
+            su_hedef = user.get('su_hedefi_litre', 2.5)
+            toplam_litre = (todays_water.get('toplam_ml', 0) or 0) / 1000
+            ctx_parts.append(f"""## Bugünkü Su Tüketimi
+İçilen: {todays_water.get('bardak', 0)} bardak ({toplam_litre:.1f} litre)
+Hedef: {su_hedef} litre
+Kalan: {max(0, float(su_hedef or 2.5) - toplam_litre):.1f} litre""")
+
+        # -- Haftalık Yemek Hafızası (son 7 gün) --
+        if weekly_meals:
+            days = {}
+            for m in weekly_meals:
+                tarih_str = str(m['tarih'])
+                if tarih_str not in days:
+                    days[tarih_str] = []
+                days[tarih_str].append(m)
+
+            meal_lines = []
+            for tarih_str, meals in sorted(days.items()):
+                gun_toplam_kcal = sum(float(m.get('kalori') or 0) for m in meals)
+                gun_meals = ", ".join(
+                    f"{m['ogun_tipi']}: {m['aciklama']} ({m.get('kalori', '?')} kcal)"
+                    for m in meals
+                )
+                meal_lines.append(f"**{tarih_str}** ({gun_toplam_kcal:.0f} kcal): {gun_meals}")
+
+            ctx_parts.append(f"""## Haftalık Yemek Geçmişi (Son 7 Gün)
+{chr(10).join(meal_lines)}""")
+
+        # -- Haftalık Su Geçmişi (son 7 gün) --
+        if weekly_water:
+            water_lines = []
+            for w in weekly_water:
+                litre = (w.get('toplam_ml', 0) or 0) / 1000
+                water_lines.append(f"- {w['tarih']}: {w['bardak']} bardak ({litre:.1f} L)")
+            ctx_parts.append(f"""## Haftalık Su Geçmişi (Son 7 Gün)
+{chr(10).join(water_lines)}""")
+
         # -- Onboarding durumu --
         step = user.get('onboarding_step', 0)
         if step > 0 and step < 99:
             ctx_parts.append(f"""## Onboarding Durumu
 Mevcut adım: {step}/15
 Toplanan veriler: {user.get('onboarding_data', {})}""")
-        
+
         # -- Bugünün tarihi --
         ctx_parts.append(f"\n## Tarih: {date.today().isoformat()} ({self._gun_adi()})")
         
@@ -128,6 +169,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         weekly_summary: dict = None,
         todays_plan: dict = None,
         conversation_history: list = None,
+        weekly_meals: list = None,
+        weekly_water: list = None,
+        todays_water: dict = None,
     ) -> str:
         """
         Ana chat fonksiyonu. Her kullanıcı mesajında çağrılır.
@@ -144,6 +188,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             daily_summary=daily_summary or {},
             weekly_summary=weekly_summary or {},
             todays_plan=todays_plan or {},
+            weekly_meals=weekly_meals or [],
+            weekly_water=weekly_water or [],
+            todays_water=todays_water or {},
         )
         
         # System prompt + context

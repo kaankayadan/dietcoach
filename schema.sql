@@ -222,6 +222,18 @@ CREATE TABLE IF NOT EXISTS konusma_gecmisi (
 );
 
 -- =============================================
+-- 9. SU TAKİBİ
+-- Günlük su tüketim kayıtları (bardak bazında)
+-- =============================================
+CREATE TABLE IF NOT EXISTS su_takibi (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    tarih DATE NOT NULL DEFAULT CURRENT_DATE,
+    miktar_ml INT NOT NULL DEFAULT 200, -- 1 bardak = 200ml
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- =============================================
 -- INDEXLER
 -- =============================================
 CREATE INDEX idx_users_telegram ON users(telegram_id);
@@ -231,3 +243,4 @@ CREATE INDEX idx_ozet_user_tarih ON gunluk_ozet(user_id, tarih);
 CREATE INDEX idx_kilo_user_tarih ON kilo_gecmisi(user_id, tarih);
 CREATE INDEX idx_konusma_user ON konusma_gecmisi(user_id, created_at DESC);
 CREATE INDEX idx_haftalik_user ON haftalik_ozet(user_id, hafta_baslangic);
+CREATE INDEX idx_su_user_tarih ON su_takibi(user_id, tarih);

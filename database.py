@@ -240,6 +240,54 @@ class Database:
         return [dict(r) for r in reversed(rows)]
     
     # ==========================================
+    # SU TAKİBİ
+    # ==========================================
+
+    async def save_water(self, user_id: int, miktar_ml: int = 200):
+        """Su tüketimini kaydet — her /su komutunda."""
+        await self.pool.execute(
+            "INSERT INTO su_takibi (user_id, tarih, miktar_ml) VALUES ($1, $2, $3)",
+            user_id, date.today(), miktar_ml,
+        )
+
+    async def get_todays_water(self, user_id: int) -> dict:
+        """Bugünkü toplam su tüketimini getir."""
+        row = await self.pool.fetchrow(
+            """SELECT COUNT(*) as bardak, COALESCE(SUM(miktar_ml), 0) as toplam_ml
+               FROM su_takibi WHERE user_id = $1 AND tarih = $2""",
+            user_id, date.today(),
+        )
+        return dict(row) if row else {"bardak": 0, "toplam_ml": 0}
+
+    async def get_weekly_water(self, user_id: int) -> list:
+        """Son 7 günlük su tüketimini getir — haftalık hafıza için."""
+        week_ago = date.today() - timedelta(days=7)
+        rows = await self.pool.fetch(
+            """SELECT tarih, COUNT(*) as bardak, SUM(miktar_ml) as toplam_ml
+               FROM su_takibi
+               WHERE user_id = $1 AND tarih > $2
+               GROUP BY tarih ORDER BY tarih""",
+            user_id, week_ago,
+        )
+        return [dict(r) for r in rows]
+
+    # ==========================================
+    # HAFTALIK YEMEK GEÇMİŞİ
+    # ==========================================
+
+    async def get_weekly_meals(self, user_id: int) -> list:
+        """Son 7 günlük öğün kayıtlarını getir — haftalık hafıza için."""
+        week_ago = date.today() - timedelta(days=7)
+        rows = await self.pool.fetch(
+            """SELECT tarih, ogun_tipi, aciklama, kalori, protein, karbonhidrat, yag, lif
+               FROM ogun_kayitlari
+               WHERE user_id = $1 AND tarih > $2
+               ORDER BY tarih, created_at""",
+            user_id, week_ago,
+        )
+        return [dict(r) for r in rows]
+
+    # ==========================================
     # KİLO GEÇMİŞİ
     # ==========================================
     

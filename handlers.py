@@ -40,6 +40,9 @@ class BotHandlers:
             "weekly_summary": await self.db.get_weekly_summary(user_id),
             "todays_plan": await self.db.get_todays_plan(user_id),
             "conversation_history": await self.db.get_conversation_history(user_id),
+            "weekly_meals": await self.db.get_weekly_meals(user_id),
+            "weekly_water": await self.db.get_weekly_water(user_id),
+            "todays_water": await self.db.get_todays_water(user_id),
         }
     
     async def _send_to_claude(self, update: Update, message: str):
@@ -62,6 +65,9 @@ class BotHandlers:
             weekly_summary=ctx["weekly_summary"],
             todays_plan=ctx["todays_plan"],
             conversation_history=ctx["conversation_history"],
+            weekly_meals=ctx["weekly_meals"],
+            weekly_water=ctx["weekly_water"],
+            todays_water=ctx["todays_water"],
         )
         
         # Onboarding metadata parse et (kullanıcıya görünmez)
@@ -167,6 +173,15 @@ class BotHandlers:
     
     async def cmd_su(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else "1"
+        telegram_id = update.effective_user.id
+        user = await self.db.get_user(telegram_id)
+        if user:
+            try:
+                bardak = int(text)
+            except ValueError:
+                bardak = 1
+            for _ in range(max(1, min(bardak, 20))):
+                await self.db.save_water(user["id"], 200)
         await self._send_to_claude(update, f"/su — {text} bardak su içtim")
     
     async def cmd_guncelle(self, update: Update, context: ContextTypes.DEFAULT_TYPE):

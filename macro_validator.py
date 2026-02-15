@@ -6,10 +6,10 @@ Claude plan üretirken gizli bir JSON bloğu ekler:
 
 Bu modül:
 1. JSON'ı parse eder
-2. Öğün başı toplamları doğrular
+2. Öğün başı toplamları doğrular (±%5 tolerans)
 3. Günlük toplamları doğrular
 4. Kullanıcının makro hedeflerine uyumu kontrol eder
-5. Hata varsa düzeltilmiş metin üretir
+5. Hata varsa Python tarafında düzeltir (2. API çağrısı yapmadan)
 """
 import re
 import json
@@ -18,26 +18,52 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-# Kabul edilebilir yuvarlama toleransı (gram/kcal)
-TOLERANCE = 3
+# ±%5 tolerans, minimum 3g/kcal (küçük değerler için)
+TOLERANCE_PCT = 0.05
+TOLERANCE_MIN = 3
+
+# Besin bazında makro→kcal tutarlılık toleransı (%15 veya 15 kcal)
+FOOD_KCAL_TOLERANCE_PCT = 0.15
+FOOD_KCAL_TOLERANCE_MIN = 15
+
+
+def _within_tolerance(calculated: float, stated: float) -> bool:
+    """±%5 tolerans içinde mi? Küçük değerler için minimum 3 birim."""
+    if calculated == 0 and stated == 0:
+        return True
+    threshold = max(abs(calculated) * TOLERANCE_PCT, TOLERANCE_MIN)
+    return abs(calculated - stated) <= threshold
+
+
+def _food_kcal_ok(calculated_kcal: float, stated_kcal: float) -> bool:
+    """Besin bazında makro→kcal tutarlı mı? ±%15 veya 15 kcal."""
+    if calculated_kcal == 0 and stated_kcal == 0:
+        return True
+    threshold = max(abs(calculated_kcal) * FOOD_KCAL_TOLERANCE_PCT, FOOD_KCAL_TOLERANCE_MIN)
+    return abs(calculated_kcal - stated_kcal) <= threshold
 
 
 def extract_mealplan_json(response: str) -> Optional[dict]:
     """Claude yanıtından gizli MEALPLAN_JSON bloğunu çıkar."""
+    # Önce tam blok dene (açılış + kapanış)
     pattern = r'<!--MEALPLAN_JSON:(.*?)-->'
     match = re.search(pattern, response, re.DOTALL)
-    if not match:
-        return None
-    try:
-        return json.loads(match.group(1).strip())
-    except json.JSONDecodeError as e:
-        logger.warning(f"MEALPLAN_JSON parse hatası: {e}")
-        return None
+    if match:
+        try:
+            return json.loads(match.group(1).strip())
+        except json.JSONDecodeError as e:
+            logger.warning(f"MEALPLAN_JSON parse hatası: {e}")
+            return None
+    return None
 
 
 def strip_mealplan_json(response: str) -> str:
-    """Yanıttan gizli JSON bloğunu temizle (kullanıcıya gösterme)."""
-    return re.sub(r'<!--MEALPLAN_JSON:.*?-->', '', response, flags=re.DOTALL).strip()
+    """Yanıttan gizli JSON bloğunu temizle — tam veya yarıda kalmış."""
+    # Tam blok: <!--MEALPLAN_JSON:...-->
+    cleaned = re.sub(r'<!--MEALPLAN_JSON:.*?-->', '', response, flags=re.DOTALL)
+    # Yarıda kalmış blok: <!--MEALPLAN_JSON:... (kapanış --> yok)
+    cleaned = re.sub(r'<!--MEALPLAN_JSON:.*$', '', cleaned, flags=re.DOTALL)
+    return cleaned.strip()
 
 
 def _calc_kcal(p: float, y: float, k: float) -> float:
@@ -47,35 +73,15 @@ def _calc_kcal(p: float, y: float, k: float) -> float:
 
 def validate_plan(plan_json: dict, user_targets: dict = None) -> dict:
     """
-    Plan JSON'ını doğrula.
-
-    plan_json formatı:
-    {
-        "ogunler": [
-            {
-                "ogun": "kahvaltı",
-                "saat": "07:30",
-                "besinler": [
-                    {"ad": "Yumurta (2 adet)", "p": 12, "y": 10, "k": 1.2, "l": 0, "kcal": 143},
-                    ...
-                ],
-                "toplam": {"p": 26, "y": 22, "k": 66, "l": 6, "kcal": 579}
-            },
-            ...
-        ],
-        "gunluk_toplam": {"p": 135, "y": 40, "k": 500, "l": 30, "kcal": 3024}
-    }
-
-    user_targets formatı:
-    {"protein_g": 132, "yag_g": 40, "karbonhidrat_g": 500, "lif_g": 30, "hedef_kalori": 3024}
+    Plan JSON'ını doğrula. ±%5 toleransla.
 
     Returns:
     {
         "valid": True/False,
-        "errors": [...],
-        "warnings": [...],
-        "corrected_plan": {...},  # düzeltilmiş plan
-        "corrected_totals": {...}  # düzeltilmiş günlük toplam
+        "errors": [...],         # Tolerans dışı hatalar (sadece loglama için)
+        "warnings": [...],       # Hedef sapma uyarıları
+        "corrected_plan": {...}, # Python'un hesapladığı doğru toplamlarla plan
+        "corrected_totals": {...}
     }
     """
     errors = []
@@ -102,22 +108,17 @@ def validate_plan(plan_json: dict, user_targets: dict = None) -> dict:
 
         # Claude'un yazdığı toplam
         stated = ogun.get("toplam", {})
-        stated_p = stated.get("p", 0)
-        stated_y = stated.get("y", 0)
-        stated_k = stated.get("k", 0)
-        stated_l = stated.get("l", 0)
-        stated_kcal = stated.get("kcal", 0)
 
-        # Farkları kontrol et
+        # ±%5 toleransla kontrol
         diffs = []
-        if abs(calc_p - stated_p) > TOLERANCE:
-            diffs.append(f"P: {stated_p}→{calc_p:.1f}")
-        if abs(calc_y - stated_y) > TOLERANCE:
-            diffs.append(f"Y: {stated_y}→{calc_y:.1f}")
-        if abs(calc_k - stated_k) > TOLERANCE:
-            diffs.append(f"K: {stated_k}→{calc_k:.1f}")
-        if abs(calc_kcal - stated_kcal) > TOLERANCE:
-            diffs.append(f"kcal: {stated_kcal}→{calc_kcal:.1f}")
+        if not _within_tolerance(calc_p, stated.get("p", 0)):
+            diffs.append(f"P: {stated.get('p', 0)}→{calc_p:.1f}")
+        if not _within_tolerance(calc_y, stated.get("y", 0)):
+            diffs.append(f"Y: {stated.get('y', 0)}→{calc_y:.1f}")
+        if not _within_tolerance(calc_k, stated.get("k", 0)):
+            diffs.append(f"K: {stated.get('k', 0)}→{calc_k:.1f}")
+        if not _within_tolerance(calc_kcal, stated.get("kcal", 0)):
+            diffs.append(f"kcal: {stated.get('kcal', 0)}→{calc_kcal:.1f}")
 
         if diffs:
             errors.append(f"{ogun_adi} toplam hatası: {', '.join(diffs)}")
@@ -125,13 +126,13 @@ def validate_plan(plan_json: dict, user_targets: dict = None) -> dict:
         # Besin bazında kalori doğrula (makro → kcal tutarlılığı)
         for b in besinler:
             expected_kcal = _calc_kcal(b.get("p", 0), b.get("y", 0), b.get("k", 0))
-            if abs(expected_kcal - b.get("kcal", 0)) > 15:
+            if not _food_kcal_ok(expected_kcal, b.get("kcal", 0)):
                 errors.append(
                     f"{ogun_adi}/{b.get('ad', '?')}: makro→kcal uyumsuz "
                     f"(yazılan {b.get('kcal')} vs hesaplanan {expected_kcal})"
                 )
 
-        # Düzeltilmiş öğün
+        # Düzeltilmiş öğün (her zaman Python hesaplı)
         corrected_ogun = {
             **ogun,
             "toplam": {
@@ -153,13 +154,13 @@ def validate_plan(plan_json: dict, user_targets: dict = None) -> dict:
     # Günlük toplam doğrulaması
     stated_gunluk = plan_json.get("gunluk_toplam", {})
     daily_diffs = []
-    if abs(gunluk_p - stated_gunluk.get("p", 0)) > TOLERANCE:
+    if not _within_tolerance(gunluk_p, stated_gunluk.get("p", 0)):
         daily_diffs.append(f"P: {stated_gunluk.get('p', 0)}→{gunluk_p:.1f}")
-    if abs(gunluk_y - stated_gunluk.get("y", 0)) > TOLERANCE:
+    if not _within_tolerance(gunluk_y, stated_gunluk.get("y", 0)):
         daily_diffs.append(f"Y: {stated_gunluk.get('y', 0)}→{gunluk_y:.1f}")
-    if abs(gunluk_k - stated_gunluk.get("k", 0)) > TOLERANCE:
+    if not _within_tolerance(gunluk_k, stated_gunluk.get("k", 0)):
         daily_diffs.append(f"K: {stated_gunluk.get('k', 0)}→{gunluk_k:.1f}")
-    if abs(gunluk_kcal - stated_gunluk.get("kcal", 0)) > TOLERANCE:
+    if not _within_tolerance(gunluk_kcal, stated_gunluk.get("kcal", 0)):
         daily_diffs.append(f"kcal: {stated_gunluk.get('kcal', 0)}→{gunluk_kcal:.1f}")
     if daily_diffs:
         errors.append(f"Günlük toplam hatası: {', '.join(daily_diffs)}")
@@ -208,39 +209,82 @@ def build_correction_summary(result: dict) -> str:
     lines = []
 
     if result["errors"]:
-        lines.append("⚠️ Aritmetik düzeltmeler yapıldı:")
+        lines.append("Aritmetik düzeltmeler yapıldı:")
         for e in result["errors"]:
-            lines.append(f"  • {e}")
+            lines.append(f"  - {e}")
 
     if result["warnings"]:
-        lines.append("\n📊 Hedef uyarıları:")
+        lines.append("\nHedef uyarıları:")
         for w in result["warnings"]:
-            lines.append(f"  • {w}")
+            lines.append(f"  - {w}")
 
     t = result["corrected_totals"]
-    lines.append(f"\n✅ Doğrulanmış Günlük Toplam:")
+    lines.append(f"\nDoğrulanmış Günlük Toplam:")
     lines.append(f"Kalori: {t['kcal']:.0f} kcal | P: {t['p']:.0f}g | Y: {t['y']:.0f}g | K: {t['k']:.0f}g | L: {t['l']:.0f}g")
 
     return "\n".join(lines)
 
 
-def format_corrected_plan(corrected_plan: dict) -> str:
-    """Düzeltilmiş planı kullanıcıya gösterilecek formatta biçimlendir."""
-    lines = []
+def patch_response_totals(response_text: str, corrected_plan: dict) -> str:
+    """
+    Claude'un yanıtındaki öğün ve günlük toplamları Python'un hesapladığı
+    doğru değerlerle değiştir. 2. API çağrısı yapmadan düzeltme.
 
-    for ogun in corrected_plan["ogunler"]:
+    Strateji: "Öğün toplamı →" satırlarını ve "GÜNLÜK TOPLAM" bölümünü
+    regex ile bulup Python değerleriyle değiştir.
+    """
+    text = response_text
+
+    # Her öğün için toplamı düzelt
+    for ogun in corrected_plan.get("ogunler", []):
         t = ogun["toplam"]
-        lines.append(f"\n🍽️ {ogun.get('ogun', '').upper()} ({ogun.get('saat', '')})")
+        ogun_adi = ogun.get("ogun", "")
 
-        for b in ogun.get("besinler", []):
-            lines.append(f"  • {b['ad']}  —  P:{b['p']}g Y:{b['y']}g K:{b['k']}g | {b['kcal']} kcal")
+        # "Öğün toplamı → P: XXg | Y: XXg | K: XXg | L: XXg | XXX kcal" formatını bul/değiştir
+        # Farklı formatları yakala
+        pattern = (
+            r'(\*\*Öğün toplamı?\s*→\s*)'
+            r'P:\s*[\d.]+g\s*\|\s*Y:\s*[\d.]+g\s*\|\s*K:\s*[\d.]+g\s*\|\s*L:\s*[\d.]+g\s*\|\s*[\d.]+ kcal\*\*'
+        )
+        replacement = (
+            f'**Öğün toplamı → '
+            f'P: {t["p"]:.1f}g | Y: {t["y"]:.1f}g | K: {t["k"]:.1f}g | L: {t["l"]:.1f}g | {t["kcal"]:.0f} kcal**'
+        )
+        # Sadece ilk eşleşmeyi değiştir (sırayla öğünlere uygulanacak)
+        text = re.sub(pattern, replacement, text, count=1)
 
-        lines.append(f"  → Öğün: P:{t['p']:.0f}g | Y:{t['y']:.0f}g | K:{t['k']:.0f}g | L:{t['l']:.0f}g | {t['kcal']:.0f} kcal")
+    # Günlük toplam bölümünü düzelt
+    gt = corrected_plan.get("gunluk_toplam", {})
 
-    t = corrected_plan["gunluk_toplam"]
-    lines.append(f"\n{'='*40}")
-    lines.append(f"📊 GÜNLÜK TOPLAM")
-    lines.append(f"Kalori: {t['kcal']:.0f} kcal")
-    lines.append(f"Protein: {t['p']:.0f}g | Yağ: {t['y']:.0f}g | Karb: {t['k']:.0f}g | Lif: {t['l']:.0f}g")
+    # "Kalori: XXXX kcal" formatını değiştir
+    text = re.sub(
+        r'(\*\*Kalori:\*\*)\s*[\d.,]+ kcal',
+        f'**Kalori:** {gt["kcal"]:.0f} kcal',
+        text
+    )
+    # "Protein: XXXg" formatını değiştir
+    text = re.sub(
+        r'(\*\*Protein:\*\*)\s*[\d.,]+g',
+        f'**Protein:** {gt["p"]:.1f}g',
+        text
+    )
+    # "Yağ: XXg"
+    text = re.sub(
+        r'(\*\*Yağ:\*\*)\s*[\d.,]+g',
+        f'**Yağ:** {gt["y"]:.1f}g',
+        text
+    )
+    # "Karb: XXXg"
+    text = re.sub(
+        r'(\*\*Karb:\*\*)\s*[\d.,]+g',
+        f'**Karb:** {gt["k"]:.1f}g',
+        text
+    )
+    # "Lif: XXg"
+    text = re.sub(
+        r'(\*\*Lif:\*\*)\s*[\d.,]+g',
+        f'**Lif:** {gt["l"]:.1f}g',
+        text
+    )
 
-    return "\n".join(lines)
+    return text

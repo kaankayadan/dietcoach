@@ -8,9 +8,9 @@ from pathlib import Path
 from datetime import date, timedelta
 from src.macro_validator import (
     extract_mealplan_json,
-    strip_mealplan_json,
     validate_plan,
     build_correction_summary,
+    patch_response_totals,
 )
 
 logger = logging.getLogger(__name__)
@@ -256,50 +256,23 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                 logger.error(f"Plan doğrulama hatası: {e}")
                 return response_text
 
-            if not result["valid"] or result["warnings"]:
+            if result["errors"]:
                 logger.info(
-                    f"Plan doğrulama: {len(result['errors'])} hata, "
-                    f"{len(result['warnings'])} uyarı"
+                    f"Plan doğrulama: {len(result['errors'])} hata — "
+                    f"Python tarafında düzeltiliyor (2. API çağrısı yok)"
                 )
-                # Hata varsa Claude'a düzeltme yaptır
-                if not result["valid"]:
-                    correction_info = build_correction_summary(result)
-                    corrected_totals = result["corrected_totals"]
+                for err in result["errors"]:
+                    logger.debug(f"  - {err}")
+                # Toplamları Python'da düzelt, 2. API çağrısı yapmadan
+                response_text = patch_response_totals(
+                    response_text, result["corrected_plan"]
+                )
 
-                    # Claude'a düzeltme mesajı gönder
-                    messages.append({"role": "assistant", "content": response_text})
-                    messages.append({
-                        "role": "user",
-                        "content": (
-                            f"[SİSTEM — KULLANICIYA GÖRÜNMEZ] Python doğrulaması aritmetik hata buldu.\n"
-                            f"{correction_info}\n\n"
-                            f"Planı AYNI besinlerle tekrar yaz ama bu sefer öğün toplamlarını ve "
-                            f"günlük toplamı şu DOĞRU değerlerle göster:\n"
-                            f"Günlük: {corrected_totals['kcal']:.0f} kcal | "
-                            f"P: {corrected_totals['p']:.0f}g | Y: {corrected_totals['y']:.0f}g | "
-                            f"K: {corrected_totals['k']:.0f}g | L: {corrected_totals['l']:.0f}g\n\n"
-                            f"Öğün bazında doğru toplamlar:\n"
-                            + "\n".join(
-                                f"- {o['ogun']}: P:{o['toplam']['p']:.0f}g Y:{o['toplam']['y']:.0f}g "
-                                f"K:{o['toplam']['k']:.0f}g L:{o['toplam']['l']:.0f}g {o['toplam']['kcal']:.0f} kcal"
-                                for o in result["corrected_plan"]["ogunler"]
-                            )
-                            + "\n\nAyrıca hedef uyarılarını da kullanıcıya bildir. "
-                            "MEALPLAN_JSON bloğunu tekrar eklemeyi unutma."
-                        ),
-                    })
-
-                    try:
-                        corrected_response = self.client.messages.create(
-                            model=model,
-                            max_tokens=4000,
-                            system=full_system,
-                            messages=messages,
-                        )
-                        response_text = corrected_response.content[0].text
-                        logger.info("Plan aritmetik düzeltmesi uygulandı")
-                    except Exception as e:
-                        logger.error(f"Plan düzeltme API hatası: {e}")
-                        # Düzeltme başarısız — orijinal yanıtı kullan
+            if result["warnings"]:
+                logger.info(
+                    f"Plan uyarıları: {len(result['warnings'])} uyarı"
+                )
+                for w in result["warnings"]:
+                    logger.debug(f"  - {w}")
 
         return response_text

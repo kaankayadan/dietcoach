@@ -156,18 +156,24 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
         return gunler[date.today().weekday()]
     
+    # Plan oluşturma tetikleyicileri
+    PLAN_TRIGGERS = [
+        '/plan', '/haftalik', 'plan oluştur', 'plan yap', 'plan hazırla',
+        'yeni plan', 'haftalık plan', 'diyet listesi', 'diyet planı',
+        '/alternatif', 'alternatif öner',
+    ]
+
+    def _is_plan_request(self, message: str) -> bool:
+        """Mesaj plan oluşturma isteği mi?"""
+        msg_lower = message.lower()
+        return any(trigger in msg_lower for trigger in self.PLAN_TRIGGERS)
+
     def _select_model(self, message: str, is_onboarding: bool) -> str:
         """Mesaj karmaşıklığına göre model seç — maliyet optimizasyonu."""
-        heavy_triggers = [
-            '/plan', '/haftalik', 'plan oluştur', 'plan yap', 'plan hazırla',
-            'yeni plan', 'haftalık plan', 'diyet listesi', 'diyet planı',
-            '/alternatif', 'alternatif öner',
-        ]
         if is_onboarding:
             return self.model_heavy
-        for trigger in heavy_triggers:
-            if trigger in message.lower():
-                return self.model_heavy
+        if self._is_plan_request(message):
+            return self.model_heavy
         return self.model_light
     
     async def chat(
@@ -222,15 +228,40 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         is_onboarding = user.get('onboarding_step', 0) > 0 and user.get('onboarding_step', 0) < 99
         model = self._select_model(user_message, is_onboarding)
         
+        # Plan isteklerinde daha yüksek max_tokens (JSON truncation önleme)
+        is_plan = self._is_plan_request(user_message)
+        max_tokens = 8000 if is_plan else 4000
+
         # Claude API çağrısı
         response = self.client.messages.create(
             model=model,
-            max_tokens=4000,
+            max_tokens=max_tokens,
             system=full_system,
             messages=messages,
         )
 
         response_text = response.content[0].text
+
+        # Truncation kontrolü — max_tokens'a ulaşıldıysa JSON eksik olabilir
+        if response.stop_reason == "max_tokens":
+            logger.warning(
+                f"Yanıt max_tokens ({max_tokens}) nedeniyle kesildi! "
+                f"Model: {model}, Plan isteği: {is_plan}"
+            )
+            # Plan isteklerinde truncation olduysa daha yüksek token ile tekrar dene
+            if is_plan and max_tokens < 12000:
+                logger.info("Truncation nedeniyle plan isteği 12000 token ile yeniden deneniyor...")
+                retry_response = self.client.messages.create(
+                    model=model,
+                    max_tokens=12000,
+                    system=full_system,
+                    messages=messages,
+                )
+                if retry_response.stop_reason != "max_tokens":
+                    response_text = retry_response.content[0].text
+                    logger.info("Retry başarılı — tam yanıt alındı")
+                else:
+                    logger.error("Retry'da da truncation oldu — orijinal yanıt kullanılacak")
 
         # Plan yanıtlarını doğrula
         try:

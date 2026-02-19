@@ -198,8 +198,9 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                     logger.info(f"food_database düzeltme: {correction_msg}")
 
             elif not db_match and gram > 0:
-                # DB'de yok — Claude değerine güveniyoruz ama logluyoruz
-                logger.debug(f"food_database'de bulunamadı: {ad}")
+                # DB'de yok — Claude değerine güveniyoruz ama uyarı veriyoruz
+                logger.warning(f"food_database'de bulunamadı: {ad} ({gram}g) — değerler doğrulanamadı")
+                warnings.append(f"{ad} besin veritabanında yok — makro değerleri doğrulanamadı")
 
             # ── Makro→kcal tutarlılık kontrolü ──
             expected_kcal = _calc_kcal(b_p, b_y, b_k)

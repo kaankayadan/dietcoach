@@ -58,6 +58,17 @@ NUMERIC_FIELDS = {
     "yas": int,
 }
 
+# Profil alanları — mevcut profil ile merge için
+PROFILE_FIELDS = [
+    "isim", "yas", "cinsiyet", "boy_cm", "kilo_kg",
+    "vucut_yag_orani", "yagsiz_kutle_kg", "bel_cevresi_cm",
+    "vyo_yontemi", "aktivite_seviyesi",
+    "kronik_hastaliklar", "sindirim_sorunlari", "alerjiler", "ilaclar",
+    "hedef_tip", "hedef_kilo", "agresiflik",
+    "mutfak_stili", "sevilen_yiyecekler", "sevilmeyen_yiyecekler",
+    "ogun_duzeni", "if_penceresi",
+]
+
 # Telegram mesaj limiti
 MAX_MSG_LENGTH = 4096
 
@@ -67,13 +78,13 @@ class BotHandlers:
         self.db = db
         self.claude = claude
         self.settings = settings
-    
+
     async def _get_full_context(self, telegram_id: int) -> dict:
         """Kullanıcının tüm güncel verilerini topla — her mesajda çağrılır."""
         user = await self.db.get_user(telegram_id)
         if not user:
             return {"user": None}
-        
+
         user_id = user["id"]
         return {
             "user": user,
@@ -86,18 +97,18 @@ class BotHandlers:
             "weekly_water": await self.db.get_weekly_water(user_id),
             "todays_water": await self.db.get_todays_water(user_id),
         }
-    
+
     async def _send_to_claude(self, update: Update, message: str):
         """Mesajı Claude'a gönder, yanıtı kullanıcıya ilet."""
         telegram_id = update.effective_user.id
         ctx = await self._get_full_context(telegram_id)
-        
+
         if not ctx["user"]:
             await update.message.reply_text(
                 "Henüz kayıtlı değilsin! /baslat yazarak başlayabilirsin 🌟"
             )
             return
-        
+
         # Claude'a gönder
         response = await self.claude.chat(
             user_message=message,
@@ -111,7 +122,7 @@ class BotHandlers:
             weekly_water=ctx["weekly_water"],
             todays_water=ctx["todays_water"],
         )
-        
+
         # Onboarding metadata parse et (kullanıcıya görünmez)
         response_clean = await self._parse_onboarding_metadata(
             telegram_id, ctx["user"], response
@@ -124,19 +135,72 @@ class BotHandlers:
         user_id = ctx["user"]["id"]
         await self.db.save_message(user_id, "user", message)
         await self.db.save_message(user_id, "assistant", response_clean)
-        
+
         # Telegram'a gönder (uzun mesajları böl)
         await self._send_long_message(update, response_clean)
-    
+
+    def _normalize_data(self, data: dict) -> dict:
+        """Array ve numeric alanları DB'ye uygun tipe dönüştür."""
+        # Array alanları: string → list
+        for field in ARRAY_FIELDS:
+            val = data.get(field)
+            if isinstance(val, str):
+                data[field] = [v.strip() for v in val.split(",") if v.strip()]
+            elif val is not None and not isinstance(val, list):
+                data[field] = [str(val)]
+
+        # Numeric alanları: string → int/float
+        for field, type_fn in NUMERIC_FIELDS.items():
+            val = data.get(field)
+            if val is not None:
+                try:
+                    data[field] = type_fn(float(val))
+                except (ValueError, TypeError):
+                    pass
+
+        return data
+
+    async def _save_profile(self, telegram_id: int, user: dict, new_data: dict):
+        """
+        Profil kaydet — mevcut kullanıcı verilerini koru, sadece yeni değerleri üstüne yaz.
+        Hedefleri yeniden hesapla ve DB'ye kaydet.
+        """
+        # Mevcut profil verilerini DB sütunlarından al (source of truth)
+        existing = {}
+        for field in PROFILE_FIELDS:
+            val = user.get(field)
+            if val is not None:
+                existing[field] = val
+
+        # Yeni veriyi mevcut verinin üstüne yaz
+        merged = {**existing, **new_data}
+
+        # Normalize et
+        merged = self._normalize_data(merged)
+
+        # BMR / TDEE / Makro hedeflerini Python'da hesapla
+        targets = calculate_user_targets(merged)
+        if targets:
+            merged.update(targets)
+            logger.info(
+                f"Profil kaydedildi — hedefler: "
+                f"TDEE={targets.get('tdee')} → Hedef={targets.get('hedef_kalori')} kcal | "
+                f"P:{targets.get('protein_g')}g K:{targets.get('karbonhidrat_g')}g "
+                f"Y:{targets.get('yag_g')}g"
+            )
+        else:
+            logger.warning("Profil kaydedildi ama hedef hesaplanamadı — eksik veri")
+
+        await self.db.complete_onboarding(telegram_id, merged)
+
     async def _parse_onboarding_metadata(self, telegram_id: int, user: dict, response: str) -> str:
         """
         Claude'un yanıtındaki onboarding metadata'sını parse et.
         Format: <!--ONBOARDING:{"step": 3, "field": "cinsiyet", "value": "erkek", "valid": true}-->
 
-        Onboarding tamamlandığında:
-        1. Array/numeric alanları normalize et
-        2. BMR/TDEE/makro hedeflerini Python'da hesapla
-        3. Tüm veriyi DB'ye kaydet
+        Hem yeni onboarding (/baslat) hem profil güncelleme (/guncelle) için çalışır.
+        - Yeni kullanıcı: veriyi biriktirir, step 15'te complete_onboarding çağırır
+        - Mevcut kullanıcı (step=99): her metadata'da hemen profili günceller
         """
         pattern = r'<!--ONBOARDING:(.*?)-->'
         matches = re.findall(pattern, response)
@@ -144,10 +208,12 @@ class BotHandlers:
         if not matches:
             return response
 
-        # Mevcut onboarding verisini bir kez yükle (loop dışında)
+        # Mevcut onboarding verisini bir kez yükle (loop dışında — multi-field bug fix)
         onboarding_data = json.loads(user.get("onboarding_data") or "{}")
         latest_step = user.get("onboarding_step", 0)
+        is_existing_user = latest_step == 99
         should_complete = False
+        fields_updated = []
 
         for match in matches:
             try:
@@ -158,53 +224,44 @@ class BotHandlers:
                     field = FIELD_ALIASES.get(field, field)
 
                     onboarding_data[field] = meta["value"]
+                    fields_updated.append(field)
 
                     step = meta.get("step", latest_step)
-                    latest_step = max(latest_step, step + 1)
+                    if not is_existing_user:
+                        latest_step = max(latest_step, step + 1)
 
                     if step + 1 > 15 or meta.get("complete"):
                         should_complete = True
             except (json.JSONDecodeError, KeyError) as e:
                 logger.warning(f"Onboarding metadata parse hatası: {e}")
 
-        if should_complete:
-            # Array alanlarını normalize et (string → list)
-            for field in ARRAY_FIELDS:
-                val = onboarding_data.get(field)
-                if isinstance(val, str):
-                    onboarding_data[field] = [
-                        v.strip() for v in val.split(",") if v.strip()
-                    ]
-                elif val is not None and not isinstance(val, list):
-                    onboarding_data[field] = [str(val)]
+        if not fields_updated:
+            clean = re.sub(pattern, '', response).strip()
+            return clean
 
-            # Numeric alanları normalize et (string → int/float)
-            for field, type_fn in NUMERIC_FIELDS.items():
-                val = onboarding_data.get(field)
-                if val is not None:
-                    try:
-                        onboarding_data[field] = type_fn(float(val))
-                    except (ValueError, TypeError):
-                        pass
+        if is_existing_user:
+            # ── Mevcut kullanıcı (profil güncelleme) ──
+            # Her metadata'da hemen profili güncelle — merge ile
+            logger.info(f"Profil güncelleme: {', '.join(fields_updated)}")
+            await self._save_profile(telegram_id, user, onboarding_data)
 
-            # BMR / TDEE / Makro hedeflerini Python'da hesapla
-            targets = calculate_user_targets(onboarding_data)
+        elif should_complete:
+            # ── Yeni kullanıcı — onboarding tamamlandı ──
+            logger.info(f"Yeni kullanıcı onboarding tamamlandı")
+            merged = self._normalize_data(onboarding_data)
+            targets = calculate_user_targets(merged)
             if targets:
-                onboarding_data.update(targets)
+                merged.update(targets)
                 logger.info(
-                    f"Onboarding tamamlandı — hedefler hesaplandı: "
-                    f"TDEE={targets.get('tdee')} → Hedef={targets.get('hedef_kalori')} kcal | "
-                    f"P:{targets.get('protein_g')}g K:{targets.get('karbonhidrat_g')}g "
-                    f"Y:{targets.get('yag_g')}g"
+                    f"Hedefler hesaplandı: TDEE={targets.get('tdee')} → "
+                    f"Hedef={targets.get('hedef_kalori')} kcal"
                 )
             else:
-                logger.warning(
-                    "Onboarding tamamlandı ama hedef hesaplanamadı — "
-                    "eksik veri olabilir"
-                )
+                logger.warning("Hedef hesaplanamadı — eksik veri olabilir")
+            await self.db.complete_onboarding(telegram_id, merged)
 
-            await self.db.complete_onboarding(telegram_id, onboarding_data)
         else:
+            # ── Yeni kullanıcı — onboarding devam ediyor ──
             await self.db.update_onboarding(
                 telegram_id, latest_step, onboarding_data
             )
@@ -212,7 +269,7 @@ class BotHandlers:
         # Metadata'yı yanıttan temizle
         clean = re.sub(pattern, '', response).strip()
         return clean
-    
+
     async def _send_long_message(self, update: Update, text: str):
         """Telegram 4096 karakter limitine göre mesajı böl."""
         if len(text) <= MAX_MSG_LENGTH:
@@ -221,31 +278,31 @@ class BotHandlers:
             parts = [text[i:i+MAX_MSG_LENGTH] for i in range(0, len(text), MAX_MSG_LENGTH)]
             for part in parts:
                 await update.message.reply_text(part)
-    
+
     # ==========================================
     # KOMUT HANDLER'LARI
     # ==========================================
-    
+
     async def cmd_baslat(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Onboarding başlat."""
         telegram_id = update.effective_user.id
         user = await self.db.get_user(telegram_id)
-        
+
         if user and user["onboarding_step"] == 99:
             await update.message.reply_text(
                 "Zaten kayıtlısın! Profil bilgilerini güncellemek istersen /guncelle yazabilirsin 😊"
             )
             return
-        
+
         await self.db.create_user(telegram_id)
         await self._send_to_claude(update, "/baslat — Yeni kullanıcı onboarding başlat")
-    
+
     async def cmd_profil(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/profil — Profil kartımı göster")
-    
+
     async def cmd_plan(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/plan — Bugünkü beslenme planımı göster veya oluştur")
-    
+
     async def cmd_yedim(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else ""
         if text:
@@ -254,24 +311,24 @@ class BotHandlers:
             await update.message.reply_text(
                 "Ne yediğini yaz! Örnek: /yedim 1 kase mercimek çorbası + 1 dilim ekmek"
             )
-    
+
     async def cmd_durum(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/durum — Bugünkü uyum durumumu göster")
-    
+
     async def cmd_hafta(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/hafta — Haftalık özet raporumu göster")
-    
+
     async def cmd_alternatif(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else "bir sonraki öğün"
         await self._send_to_claude(update, f"/alternatif — {text} için alternatif öner")
-    
+
     async def cmd_besin(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else ""
         if text:
             await self._send_to_claude(update, f"/besin — {text} besin değerlerini göster")
         else:
             await update.message.reply_text("Hangi besini sorgulamak istiyorsun? Örnek: /besin tavuk göğsü")
-    
+
     async def cmd_su(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else "1"
         telegram_id = update.effective_user.id
@@ -284,13 +341,13 @@ class BotHandlers:
             for _ in range(max(1, min(bardak, 20))):
                 await self.db.save_water(user["id"], 200)
         await self._send_to_claude(update, f"/su — {text} bardak su içtim")
-    
+
     async def cmd_guncelle(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/guncelle — Profil bilgilerimi güncellemek istiyorum")
-    
+
     async def cmd_hedef(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/hedef — İlerleme raporumu göster")
-    
+
     async def cmd_yardim(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         help_text = """🥗 *Beslenme Koçu Komutları*
 
@@ -309,15 +366,15 @@ class BotHandlers:
 💬 Komut kullanmadan da yazabilirsin!
 "Öğlen ne yesem?" veya "100g pirinçte ne kadar kalori var?" gibi."""
         await update.message.reply_text(help_text, parse_mode="Markdown")
-    
+
     # ==========================================
     # SERBEST METİN VE FOTOĞRAF
     # ==========================================
-    
+
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Komut olmayan her metin mesajı Claude'a gönder."""
         await self._send_to_claude(update, update.message.text)
-    
+
     async def handle_photo(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Yemek fotoğrafı — şimdilik caption'ı kullan."""
         caption = update.message.caption or "Yemek fotoğrafı gönderildi"

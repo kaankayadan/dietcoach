@@ -29,9 +29,9 @@ FOOD_KCAL_TOLERANCE_MIN = 15
 DB_MAKRO_TOLERANS = 3         # gram sapma (100g başına)
 DB_KCAL_TOLERANS = 20         # kcal sapma (100g başına)
 
-# Hedef sapma
-KALORI_HEDEF_TOLERANS = 75    # kcal
-MAKRO_HEDEF_TOLERANS = 15     # gram
+# Hedef sapma (yüzde bazlı — kullanıcı hedefine göre)
+KALORI_HEDEF_TOLERANS_PCT = 0.10   # ±%10
+MAKRO_HEDEF_TOLERANS_PCT = 0.15    # ±%15
 
 
 # ── Yardımcı Fonksiyonlar ───────────────────────────────────
@@ -316,22 +316,29 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
         hedef_k = user.get("karbonhidrat_g")
         hedef_l = user.get("lif_g")
 
-        if hedef_kcal and abs(gunluk_kcal - hedef_kcal) > KALORI_HEDEF_TOLERANS:
-            fark = gunluk_kcal - hedef_kcal
-            yuksek_dusuk = "yüksek" if fark > 0 else "düşük"
-            errors.append(
-                f"Günlük kalori hedeften {yuksek_dusuk}: "
-                f"{gunluk_kcal:.0f} vs hedef {hedef_kcal} kcal (fark: {fark:+.0f})"
-            )
-        if hedef_p and abs(gunluk_p - hedef_p) > MAKRO_HEDEF_TOLERANS:
-            errors.append(
-                f"Günlük protein hedeften sapma: {gunluk_p:.0f}g vs hedef {hedef_p}g"
-            )
-        if hedef_y and abs(gunluk_y - hedef_y) > MAKRO_HEDEF_TOLERANS:
-            errors.append(
-                f"Günlük yağ hedeften sapma: {gunluk_y:.0f}g vs hedef {hedef_y}g"
-            )
-        if hedef_l and gunluk_l < hedef_l * 0.7:
+        # Yüzde bazlı tolerans — hedefin %10/%15'i
+        if hedef_kcal:
+            kcal_tolerans = float(hedef_kcal) * KALORI_HEDEF_TOLERANS_PCT
+            if abs(gunluk_kcal - float(hedef_kcal)) > kcal_tolerans:
+                fark = gunluk_kcal - float(hedef_kcal)
+                yuksek_dusuk = "yüksek" if fark > 0 else "düşük"
+                warnings.append(
+                    f"Günlük kalori hedeften {yuksek_dusuk}: "
+                    f"{gunluk_kcal:.0f} vs hedef {hedef_kcal} kcal (fark: {fark:+.0f})"
+                )
+        if hedef_p:
+            p_tolerans = float(hedef_p) * MAKRO_HEDEF_TOLERANS_PCT
+            if abs(gunluk_p - float(hedef_p)) > p_tolerans:
+                warnings.append(
+                    f"Günlük protein hedeften sapma: {gunluk_p:.0f}g vs hedef {hedef_p}g"
+                )
+        if hedef_y:
+            y_tolerans = float(hedef_y) * MAKRO_HEDEF_TOLERANS_PCT
+            if abs(gunluk_y - float(hedef_y)) > y_tolerans:
+                warnings.append(
+                    f"Günlük yağ hedeften sapma: {gunluk_y:.0f}g vs hedef {hedef_y}g"
+                )
+        if hedef_l and gunluk_l < float(hedef_l) * 0.7:
             warnings.append(
                 f"Lif yetersiz: {gunluk_l:.0f}g (hedef: {hedef_l}g)"
             )

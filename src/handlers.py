@@ -14,8 +14,49 @@ from telegram.ext import ContextTypes
 from src.database import Database
 from src.claude_client import ClaudeClient
 from src.meal_validator import strip_mealplan_json
+from src.target_calculator import calculate_user_targets
 
 logger = logging.getLogger(__name__)
+
+# Alan adı normalizasyonu — Claude bazen farklı isimler kullanabilir
+FIELD_ALIASES = {
+    "boy": "boy_cm",
+    "kilo": "kilo_kg",
+    "vücut_yağ_oranı": "vucut_yag_orani",
+    "vucut_yag": "vucut_yag_orani",
+    "vyo": "vucut_yag_orani",
+    "aktivite": "aktivite_seviyesi",
+    "hedef": "hedef_tip",
+    "hastalik": "kronik_hastaliklar",
+    "hastaliklar": "kronik_hastaliklar",
+    "saglik": "kronik_hastaliklar",
+    "sindirim": "sindirim_sorunlari",
+    "alerji": "alerjiler",
+    "ilac": "ilaclar",
+    "mutfak": "mutfak_stili",
+    "sevilen": "sevilen_yiyecekler",
+    "sevilmeyen": "sevilmeyen_yiyecekler",
+    "ogun": "ogun_duzeni",
+}
+
+# DB'de TEXT[] olan alanlar — list olmalı
+ARRAY_FIELDS = [
+    "kronik_hastaliklar",
+    "sindirim_sorunlari",
+    "alerjiler",
+    "sevilen_yiyecekler",
+    "sevilmeyen_yiyecekler",
+]
+
+# DB'de numeric olan alanlar
+NUMERIC_FIELDS = {
+    "boy_cm": float,
+    "kilo_kg": float,
+    "vucut_yag_orani": float,
+    "hedef_kilo": float,
+    "bel_cevresi_cm": float,
+    "yas": int,
+}
 
 # Telegram mesaj limiti
 MAX_MSG_LENGTH = 4096
@@ -91,27 +132,83 @@ class BotHandlers:
         """
         Claude'un yanıtındaki onboarding metadata'sını parse et.
         Format: <!--ONBOARDING:{"step": 3, "field": "cinsiyet", "value": "erkek", "valid": true}-->
+
+        Onboarding tamamlandığında:
+        1. Array/numeric alanları normalize et
+        2. BMR/TDEE/makro hedeflerini Python'da hesapla
+        3. Tüm veriyi DB'ye kaydet
         """
         pattern = r'<!--ONBOARDING:(.*?)-->'
         matches = re.findall(pattern, response)
-        
+
+        if not matches:
+            return response
+
+        # Mevcut onboarding verisini bir kez yükle (loop dışında)
+        onboarding_data = json.loads(user.get("onboarding_data") or "{}")
+        latest_step = user.get("onboarding_step", 0)
+        should_complete = False
+
         for match in matches:
             try:
                 meta = json.loads(match)
-                if meta.get("valid"):
-                    onboarding_data = json.loads(user.get("onboarding_data") or "{}")
-                    onboarding_data[meta["field"]] = meta["value"]
-                    
-                    new_step = meta.get("step", user["onboarding_step"]) + 1
-                    
-                    # Son adımsa onboarding'i tamamla
-                    if new_step > 15 or meta.get("complete"):
-                        await self.db.complete_onboarding(telegram_id, onboarding_data)
-                    else:
-                        await self.db.update_onboarding(telegram_id, new_step, onboarding_data)
+                if meta.get("valid") and "field" in meta:
+                    # Alan adını normalize et
+                    field = meta["field"]
+                    field = FIELD_ALIASES.get(field, field)
+
+                    onboarding_data[field] = meta["value"]
+
+                    step = meta.get("step", latest_step)
+                    latest_step = max(latest_step, step + 1)
+
+                    if step + 1 > 15 or meta.get("complete"):
+                        should_complete = True
             except (json.JSONDecodeError, KeyError) as e:
                 logger.warning(f"Onboarding metadata parse hatası: {e}")
-        
+
+        if should_complete:
+            # Array alanlarını normalize et (string → list)
+            for field in ARRAY_FIELDS:
+                val = onboarding_data.get(field)
+                if isinstance(val, str):
+                    onboarding_data[field] = [
+                        v.strip() for v in val.split(",") if v.strip()
+                    ]
+                elif val is not None and not isinstance(val, list):
+                    onboarding_data[field] = [str(val)]
+
+            # Numeric alanları normalize et (string → int/float)
+            for field, type_fn in NUMERIC_FIELDS.items():
+                val = onboarding_data.get(field)
+                if val is not None:
+                    try:
+                        onboarding_data[field] = type_fn(float(val))
+                    except (ValueError, TypeError):
+                        pass
+
+            # BMR / TDEE / Makro hedeflerini Python'da hesapla
+            targets = calculate_user_targets(onboarding_data)
+            if targets:
+                onboarding_data.update(targets)
+                logger.info(
+                    f"Onboarding tamamlandı — hedefler hesaplandı: "
+                    f"TDEE={targets.get('tdee')} → Hedef={targets.get('hedef_kalori')} kcal | "
+                    f"P:{targets.get('protein_g')}g K:{targets.get('karbonhidrat_g')}g "
+                    f"Y:{targets.get('yag_g')}g"
+                )
+            else:
+                logger.warning(
+                    "Onboarding tamamlandı ama hedef hesaplanamadı — "
+                    "eksik veri olabilir"
+                )
+
+            await self.db.complete_onboarding(telegram_id, onboarding_data)
+        else:
+            await self.db.update_onboarding(
+                telegram_id, latest_step, onboarding_data
+            )
+
         # Metadata'yı yanıttan temizle
         clean = re.sub(pattern, '', response).strip()
         return clean

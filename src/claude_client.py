@@ -229,8 +229,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         model = self._select_model(user_message, is_onboarding)
         
         # Plan isteklerinde daha yüksek max_tokens (JSON truncation önleme)
+        # Makro Blok + İlham formatı daha uzun yanıtlar üretir (alternatifler + ilham + rol alanları)
         is_plan = self._is_plan_request(user_message)
-        max_tokens = 8000 if is_plan else 4000
+        max_tokens = 10000 if is_plan else 4000
 
         # Claude API çağrısı
         response = self.client.messages.create(
@@ -249,11 +250,11 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                 f"Model: {model}, Plan isteği: {is_plan}"
             )
             # Plan isteklerinde truncation olduysa daha yüksek token ile tekrar dene
-            if is_plan and max_tokens < 12000:
-                logger.info("Truncation nedeniyle plan isteği 12000 token ile yeniden deneniyor...")
+            if is_plan and max_tokens < 16000:
+                logger.info("Truncation nedeniyle plan isteği 16000 token ile yeniden deneniyor...")
                 retry_response = self.client.messages.create(
                     model=model,
-                    max_tokens=12000,
+                    max_tokens=16000,
                     system=full_system,
                     messages=messages,
                 )

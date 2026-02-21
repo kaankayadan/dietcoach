@@ -15,7 +15,7 @@ import json
 import logging
 from typing import Optional
 
-from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES
+from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES, ILHAM_TARIFLERI
 
 logger = logging.getLogger(__name__)
 
@@ -140,6 +140,9 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
     gunluk_l = 0
     gunluk_kcal = 0
 
+    # Geçerli rol değerleri
+    VALID_ROLES = {"protein", "karbonhidrat", "lif", "yag"}
+
     for ogun in ogunler:
         besinler = ogun.get("besinler", [])
         ogun_adi = ogun.get("ogun", "?")
@@ -154,11 +157,18 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
         for besin in besinler:
             ad = besin.get("ad", "?")
             gram = besin.get("gram", 0)
+            rol = besin.get("rol", "")
             b_p = besin.get("p", 0)
             b_y = besin.get("y", 0)
             b_k = besin.get("k", 0)
             b_l = besin.get("l", 0)
             b_kcal = besin.get("kcal", 0)
+
+            # ── rol alanı kontrolü ──
+            if rol and rol not in VALID_ROLES:
+                warnings.append(
+                    f"{ogun_adi}/{ad}: geçersiz rol '{rol}' (beklenen: {', '.join(VALID_ROLES)})"
+                )
 
             # ── food_database cross-check ──
             db_match = _find_food_in_db(ad)
@@ -220,6 +230,8 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
             }
             if gram > 0:
                 corrected_besin["gram"] = gram
+            if rol:
+                corrected_besin["rol"] = rol
             corrected_besinler.append(corrected_besin)
 
             ogun_p += b_p
@@ -267,7 +279,18 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                 f"{ogun_adi} öğününde birden fazla nişastalı besin: {', '.join(starchy_in_meal)}"
             )
 
-        # Düzeltilmiş öğün
+        # ── Alternatif malzeme kontrolü ──
+        alternatifler = ogun.get("alternatifler", [])
+        for alt in alternatifler:
+            koy_str = alt.get("koy", "")
+            # "Süzme yoğurt 100g" → "süzme yoğurt" temizle
+            koy_clean = re.sub(r'\d+\s*g\b', '', koy_str).strip()
+            if koy_clean and not _find_food_in_db(koy_clean):
+                warnings.append(
+                    f"{ogun_adi} alternatif '{koy_str}' besin veritabanında bulunamadı"
+                )
+
+        # Düzeltilmiş öğün — hedef, alternatifler ve ilham alanlarını koru
         corrected_ogun = {
             **ogun,
             "besinler": corrected_besinler,
@@ -279,6 +302,7 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                 "kcal": round(ogun_kcal, 1),
             }
         }
+        # hedef, alternatifler, ilham alanları zaten **ogun spread ile korunuyor
         corrected_ogunler.append(corrected_ogun)
 
         gunluk_p += ogun_p

@@ -30,8 +30,9 @@ DB_MAKRO_TOLERANS = 3         # gram sapma (100g başına)
 DB_KCAL_TOLERANS = 20         # kcal sapma (100g başına)
 
 # Hedef sapma (yüzde bazlı — kullanıcı hedefine göre)
-KALORI_HEDEF_TOLERANS_PCT = 0.10   # ±%10
-MAKRO_HEDEF_TOLERANS_PCT = 0.15    # ±%15
+KALORI_HEDEF_TOLERANS_PCT = 0.05   # ±%5
+PROTEIN_HEDEF_TOLERANS_PCT = 0.10  # ±%10 — protein için daha sıkı
+MAKRO_HEDEF_TOLERANS_PCT = 0.10    # ±%10 — yağ/karb için
 
 
 # ── Yardımcı Fonksiyonlar ───────────────────────────────────
@@ -352,10 +353,13 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                     f"{gunluk_kcal:.0f} vs hedef {hedef_kcal} kcal (fark: {fark:+.0f})"
                 )
         if hedef_p:
-            p_tolerans = float(hedef_p) * MAKRO_HEDEF_TOLERANS_PCT
+            p_tolerans = float(hedef_p) * PROTEIN_HEDEF_TOLERANS_PCT
             if abs(gunluk_p - float(hedef_p)) > p_tolerans:
+                fark_p = gunluk_p - float(hedef_p)
+                yuksek_dusuk_p = "yüksek" if fark_p > 0 else "düşük"
                 warnings.append(
-                    f"Günlük protein hedeften sapma: {gunluk_p:.0f}g vs hedef {hedef_p}g"
+                    f"Günlük protein hedeften {yuksek_dusuk_p}: "
+                    f"{gunluk_p:.0f}g vs hedef {hedef_p}g (fark: {fark_p:+.0f}g, %{abs(fark_p)/float(hedef_p)*100:.0f})"
                 )
         if hedef_y:
             y_tolerans = float(hedef_y) * MAKRO_HEDEF_TOLERANS_PCT

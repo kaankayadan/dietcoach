@@ -10,29 +10,57 @@ Tüm değerler 100g PİŞMİŞ/HAZIR hali içindir (aksi belirtilmedikçe).
 # Yapı: {"kalori": kcal, "protein": g, "yag": g, "karb": g, "lif": g}
 BESIN_DB = {
     # ==========================================
-    # PROTEİN KAYNAKLARI (pişmiş, 100g)
+    # PROTEİN KAYNAKLARI — KÜMES (pişmiş, 100g)
     # ==========================================
     # USDA #05062: Chicken, breast, without skin, roasted
     "tavuk göğsü": {"kalori": 165, "protein": 31, "yag": 3.6, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA #05096: Chicken, thigh, without skin, roasted
     "tavuk but": {"kalori": 209, "protein": 26, "yag": 10.9, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Chicken, drumstick, roasted
+    "tavuk baget": {"kalori": 172, "protein": 28, "yag": 5.7, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA #05224: Turkey, breast, without skin, roasted
     "hindi göğsü": {"kalori": 135, "protein": 30, "yag": 1, "karb": 0, "lif": 0, "kategori": "protein"},
     "hindi bonfile": {"kalori": 135, "protein": 30, "yag": 1, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Turkey, thigh, roasted
+    "hindi but": {"kalori": 170, "protein": 28, "yag": 6, "karb": 0, "lif": 0, "kategori": "protein"},
+    # ==========================================
+    # PROTEİN KAYNAKLARI — KIRMIZI ET (pişmiş, 100g)
+    # ==========================================
     # USDA #23557: Beef, ground, 80% lean, cooked
     "dana kıyma": {"kalori": 254, "protein": 26, "yag": 16, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA #23232: Beef, tenderloin, roasted
     "dana bonfile": {"kalori": 217, "protein": 28, "yag": 11, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA #23573: Beef, eye of round, roasted (yağsız parça)
     "dana biftek": {"kalori": 175, "protein": 30, "yag": 5.5, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Beef, chuck, lean, braised
+    "dana kuşbaşı": {"kalori": 195, "protein": 29, "yag": 8, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA #17224: Lamb, leg, roasted, lean
     "kuzu eti": {"kalori": 220, "protein": 30, "yag": 10, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Lamb, loin chop, lean, cooked
+    "kuzu pirzola": {"kalori": 240, "protein": 28, "yag": 14, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Beef liver, cooked
+    "ciğer": {"kalori": 175, "protein": 26, "yag": 5, "karb": 4, "lif": 0, "kategori": "protein"},
+    # ==========================================
+    # PROTEİN KAYNAKLARI — BALIK & DENİZ ÜRÜNLERİ (pişmiş, 100g)
+    # ==========================================
     # USDA #15086: Salmon, Atlantic, farmed, cooked
     "somon": {"kalori": 208, "protein": 20, "yag": 13, "karb": 0, "lif": 0, "kategori": "protein"},
     # TürkOMP #85: Levrek, yetiştirme, pişmiş
     "levrek": {"kalori": 124, "protein": 24, "yag": 2.6, "karb": 0, "lif": 0, "kategori": "protein"},
     # TürkOMP: Çipura, pişmiş
     "çipura": {"kalori": 135, "protein": 23, "yag": 4.5, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Rainbow trout, cooked
+    "alabalık": {"kalori": 119, "protein": 20.5, "yag": 3.5, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Whiting, cooked
+    "mezgit": {"kalori": 90, "protein": 19, "yag": 1.3, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Sardine, canned in oil, drained
+    "sardalya": {"kalori": 208, "protein": 25, "yag": 11, "karb": 0, "lif": 0, "kategori": "protein"},
+    # TürkOMP: Palamut, pişmiş
+    "palamut": {"kalori": 158, "protein": 26, "yag": 5.3, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Bluefish, cooked
+    "lüfer": {"kalori": 159, "protein": 26, "yag": 5.4, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA: Jack mackerel, cooked
+    "istavrit": {"kalori": 134, "protein": 24, "yag": 3.5, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA #15121: Tuna, canned in water, drained
     "ton balığı": {"kalori": 116, "protein": 25.5, "yag": 1, "karb": 0, "lif": 0, "kategori": "protein"},
     "ton balığı konserve": {"kalori": 116, "protein": 25.5, "yag": 1, "karb": 0, "lif": 0, "kategori": "protein"},
@@ -42,6 +70,13 @@ BESIN_DB = {
     "hamsi": {"kalori": 131, "protein": 20, "yag": 5, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA #15151: Shrimp, cooked
     "karides": {"kalori": 99, "protein": 24, "yag": 0.3, "karb": 0.2, "lif": 0, "kategori": "protein"},
+    # USDA: Mussel, cooked
+    "midye": {"kalori": 172, "protein": 24, "yag": 4.5, "karb": 7.4, "lif": 0, "kategori": "protein"},
+    # USDA: Squid, cooked
+    "kalamar": {"kalori": 175, "protein": 18, "yag": 7.5, "karb": 7.8, "lif": 0, "kategori": "protein"},
+    # ==========================================
+    # PROTEİN KAYNAKLARI — DİĞER (100g)
+    # ==========================================
     # USDA #01129: Egg, whole, cooked (100g)
     "yumurta": {"kalori": 155, "protein": 13, "yag": 11, "karb": 1.1, "lif": 0, "kategori": "protein", "porsiyon_g": 60, "porsiyon_ad": "1 adet"},
     # USDA #16427: Tofu, firm
@@ -55,6 +90,8 @@ BESIN_DB = {
     "beyaz peynir yarım yağlı": {"kalori": 210, "protein": 19, "yag": 14, "karb": 1.5, "lif": 0, "kategori": "sut_urunu"},
     # USDA #01025: Kaşar benzeri — semi-hard cheese
     "kaşar peynir": {"kalori": 350, "protein": 25, "yag": 27, "karb": 2, "lif": 0, "kategori": "sut_urunu"},
+    # TürkOMP: Taze kaşar peyniri
+    "taze kaşar": {"kalori": 313, "protein": 23, "yag": 24, "karb": 1.5, "lif": 0, "kategori": "sut_urunu"},
     # TürkOMP: Lor peyniri — yarım yağlı
     "lor peyniri": {"kalori": 98, "protein": 11, "yag": 4, "karb": 3.4, "lif": 0, "kategori": "sut_urunu"},
     # USDA: Cottage cheese, low fat (lor benzeri)
@@ -67,8 +104,14 @@ BESIN_DB = {
     "tulum peyniri": {"kalori": 300, "protein": 20, "yag": 24, "karb": 1, "lif": 0, "kategori": "sut_urunu"},
     # USDA: Mozzarella, part skim
     "mozzarella": {"kalori": 280, "protein": 28, "yag": 17, "karb": 3.1, "lif": 0, "kategori": "sut_urunu"},
-    # USDA #01287: Greek yogurt, plain, nonfat — %2 yağ versiyonu
-    "yunan yoğurdu": {"kalori": 73, "protein": 10, "yag": 2, "karb": 4, "lif": 0, "kategori": "sut_urunu"},
+    # USDA: Halloumi cheese
+    "hellim": {"kalori": 321, "protein": 25, "yag": 25, "karb": 1.7, "lif": 0, "kategori": "sut_urunu"},
+    # TürkOMP: Van otlu peyniri
+    "otlu peynir": {"kalori": 280, "protein": 18, "yag": 22, "karb": 2, "lif": 0, "kategori": "sut_urunu"},
+    # USDA: Goat cheese, semi-soft
+    "keçi peyniri": {"kalori": 364, "protein": 22, "yag": 30, "karb": 1, "lif": 0, "kategori": "sut_urunu"},
+    # TürkOMP: Yoğurt, tam yağlı
+    "yoğurt": {"kalori": 63, "protein": 3.5, "yag": 3.3, "karb": 4.7, "lif": 0, "kategori": "sut_urunu"},
     # TürkOMP: Süzme yoğurt (%10 yağlı)
     "süzme yoğurt": {"kalori": 90, "protein": 6, "yag": 5, "karb": 5, "lif": 0, "kategori": "sut_urunu"},
     # TürkOMP: Süzme yoğurt (%0 yağ)
@@ -96,6 +139,8 @@ BESIN_DB = {
     "tam buğday ekmek": {"kalori": 260, "protein": 10, "yag": 4, "karb": 48, "lif": 7, "kategori": "karbonhidrat", "porsiyon_g": 25, "porsiyon_ad": "1 dilim"},
     # TürkOMP #126: Ekmek, beyaz
     "beyaz ekmek": {"kalori": 265, "protein": 9, "yag": 3.2, "karb": 49, "lif": 2.7, "kategori": "karbonhidrat", "porsiyon_g": 25, "porsiyon_ad": "1 dilim"},
+    # TürkOMP: Kepekli ekmek
+    "kepekli ekmek": {"kalori": 248, "protein": 10, "yag": 3.4, "karb": 44, "lif": 6, "kategori": "karbonhidrat", "porsiyon_g": 25, "porsiyon_ad": "1 dilim"},
     # USDA #08120: Oatmeal, cooked
     "yulaf ezmesi": {"kalori": 68, "protein": 2.4, "yag": 1.4, "karb": 12, "lif": 1.7, "kategori": "karbonhidrat"},
     # USDA: Oats, dry (çiğ yulaf — smoothie için)
@@ -108,6 +153,17 @@ BESIN_DB = {
     "tatlı patates": {"kalori": 90, "protein": 2.0, "yag": 0.1, "karb": 21, "lif": 3.3, "kategori": "karbonhidrat"},
     # TürkOMP: Kısır (bulgur salatası)
     "kısır": {"kalori": 135, "protein": 3, "yag": 4, "karb": 23, "lif": 5, "kategori": "karbonhidrat"},
+    # USDA: Couscous, cooked
+    "kuskus": {"kalori": 112, "protein": 3.8, "yag": 0.2, "karb": 23, "lif": 1.4, "kategori": "karbonhidrat"},
+    # USDA: Vermicelli, cooked
+    "şehriye": {"kalori": 138, "protein": 4.5, "yag": 0.7, "karb": 28, "lif": 1, "kategori": "karbonhidrat"},
+    # USDA: Orzo, cooked
+    "arpa şehriye": {"kalori": 125, "protein": 4, "yag": 0.5, "karb": 26, "lif": 1.2, "kategori": "karbonhidrat"},
+    # USDA: Granola, plain
+    "granola": {"kalori": 450, "protein": 10, "yag": 20, "karb": 60, "lif": 5, "kategori": "karbonhidrat"},
+    # ==========================================
+    # BAKLAGİLLER (pişmiş, 100g)
+    # ==========================================
     # USDA #16057: Chickpeas, cooked
     "nohut": {"kalori": 164, "protein": 8.9, "yag": 2.6, "karb": 27, "lif": 7.6, "kategori": "baklagil"},
     # USDA #16029: Kidney beans, cooked
@@ -116,10 +172,14 @@ BESIN_DB = {
     "mercimek": {"kalori": 116, "protein": 9, "yag": 0.4, "karb": 20, "lif": 7.9, "kategori": "baklagil"},
     # TürkOMP: Kırmızı mercimek çorbası
     "kırmızı mercimek çorbası": {"kalori": 56, "protein": 3.5, "yag": 1.5, "karb": 8, "lif": 2, "kategori": "baklagil"},
-    # USDA: Granola, plain
-    "granola": {"kalori": 450, "protein": 10, "yag": 20, "karb": 60, "lif": 5, "kategori": "karbonhidrat"},
-    # USDA: Couscous, cooked
-    "kuskus": {"kalori": 112, "protein": 3.8, "yag": 0.2, "karb": 23, "lif": 1.4, "kategori": "karbonhidrat"},
+    # USDA: Green peas, cooked
+    "bezelye": {"kalori": 84, "protein": 5.4, "yag": 0.4, "karb": 15.6, "lif": 5.7, "kategori": "baklagil"},
+    # USDA: Pinto beans, cooked (barbunya)
+    "barbunya": {"kalori": 143, "protein": 9, "yag": 0.7, "karb": 26, "lif": 9, "kategori": "baklagil"},
+    # USDA: Fava beans, cooked
+    "bakla": {"kalori": 88, "protein": 7.6, "yag": 0.4, "karb": 12.4, "lif": 5.4, "kategori": "baklagil"},
+    # USDA: Black-eyed peas, cooked
+    "kuru börülce": {"kalori": 116, "protein": 7.7, "yag": 0.5, "karb": 21, "lif": 6.5, "kategori": "baklagil"},
     # ==========================================
     # EKMEK ÇEŞİTLERİ (100g)
     # ==========================================
@@ -133,6 +193,14 @@ BESIN_DB = {
     "pide ekmeği": {"kalori": 266, "protein": 9.8, "yag": 1.7, "karb": 55, "lif": 6.1, "kategori": "karbonhidrat", "porsiyon_g": 60, "porsiyon_ad": "1 adet"},
     # USDA: Rice cake
     "pirinç patlağı": {"kalori": 387, "protein": 8, "yag": 2.8, "karb": 82, "lif": 1.2, "kategori": "karbonhidrat", "porsiyon_g": 9, "porsiyon_ad": "1 adet"},
+    # TürkOMP: Bazlama
+    "bazlama": {"kalori": 265, "protein": 8, "yag": 3, "karb": 51, "lif": 2, "kategori": "karbonhidrat", "porsiyon_g": 100, "porsiyon_ad": "1 adet"},
+    # TürkOMP: Yufka
+    "yufka": {"kalori": 290, "protein": 8.5, "yag": 1.5, "karb": 62, "lif": 1.8, "kategori": "karbonhidrat", "porsiyon_g": 50, "porsiyon_ad": "1 yaprak"},
+    # USDA: Rye bread
+    "çavdar ekmeği": {"kalori": 259, "protein": 8.5, "yag": 3.3, "karb": 48, "lif": 5.8, "kategori": "karbonhidrat", "porsiyon_g": 30, "porsiyon_ad": "1 dilim"},
+    # USDA: Cornbread
+    "mısır ekmeği": {"kalori": 261, "protein": 6.7, "yag": 7.1, "karb": 44, "lif": 2.4, "kategori": "karbonhidrat", "porsiyon_g": 60, "porsiyon_ad": "1 dilim"},
     # USDA: All-purpose flour
     "un": {"kalori": 364, "protein": 10, "yag": 1, "karb": 76, "lif": 2.7, "kategori": "karbonhidrat"},
     # USDA: Pancake, plain
@@ -156,6 +224,8 @@ BESIN_DB = {
     "kırmızı biber": {"kalori": 31, "protein": 1, "yag": 0.3, "karb": 6, "lif": 2.1, "kategori": "sebze"},
     # USDA #11282: Onion, raw
     "soğan": {"kalori": 40, "protein": 1.1, "yag": 0.1, "karb": 9.3, "lif": 1.7, "kategori": "sebze"},
+    # USDA: Spring onion / green onion
+    "taze soğan": {"kalori": 32, "protein": 1.8, "yag": 0.2, "karb": 7.3, "lif": 2.6, "kategori": "sebze"},
     # USDA #11124: Carrot, raw
     "havuç": {"kalori": 41, "protein": 0.9, "yag": 0.2, "karb": 9.6, "lif": 2.8, "kategori": "sebze"},
     # USDA #11477: Zucchini, raw
@@ -174,6 +244,8 @@ BESIN_DB = {
     "yeşil fasulye": {"kalori": 35, "protein": 1.9, "yag": 0.3, "karb": 7.1, "lif": 3.2, "kategori": "sebze"},
     # USDA: Cabbage, raw
     "lahana": {"kalori": 25, "protein": 1.3, "yag": 0.1, "karb": 5.8, "lif": 2.5, "kategori": "sebze"},
+    # USDA: Red cabbage, raw
+    "kırmızı lahana": {"kalori": 31, "protein": 1.4, "yag": 0.2, "karb": 7.4, "lif": 2.1, "kategori": "sebze"},
     # USDA #11260: Mushroom, white, raw
     "mantar": {"kalori": 22, "protein": 3.1, "yag": 0.3, "karb": 3.3, "lif": 1, "kategori": "sebze"},
     # USDA: Celery, raw
@@ -182,6 +254,20 @@ BESIN_DB = {
     "enginar": {"kalori": 47, "protein": 3.3, "yag": 0.2, "karb": 10.5, "lif": 5.4, "kategori": "sebze"},
     # USDA: Leek, raw
     "pırasa": {"kalori": 61, "protein": 1.5, "yag": 0.3, "karb": 14, "lif": 1.8, "kategori": "sebze"},
+    # USDA: Okra, cooked
+    "bamya": {"kalori": 33, "protein": 1.9, "yag": 0.2, "karb": 7, "lif": 3.2, "kategori": "sebze"},
+    # USDA: Purslane, raw
+    "semizotu": {"kalori": 20, "protein": 2, "yag": 0.4, "karb": 3.4, "lif": 1, "kategori": "sebze"},
+    # USDA: Swiss chard, raw
+    "pazı": {"kalori": 19, "protein": 1.8, "yag": 0.2, "karb": 3.7, "lif": 1.6, "kategori": "sebze"},
+    # USDA: Radish, raw
+    "turp": {"kalori": 16, "protein": 0.7, "yag": 0.1, "karb": 3.4, "lif": 1.6, "kategori": "sebze"},
+    # USDA: Asparagus, cooked
+    "kuşkonmaz": {"kalori": 20, "protein": 2.2, "yag": 0.1, "karb": 3.9, "lif": 2.1, "kategori": "sebze"},
+    # USDA: Beet, cooked
+    "pancar": {"kalori": 44, "protein": 1.7, "yag": 0.2, "karb": 10, "lif": 2.8, "kategori": "sebze"},
+    # USDA: Brussels sprouts, cooked
+    "brüksel lahanası": {"kalori": 36, "protein": 2.6, "yag": 0.5, "karb": 7.1, "lif": 2.6, "kategori": "sebze"},
     # ==========================================
     # MEYVELER (çiğ, 100g)
     # ==========================================
@@ -219,6 +305,16 @@ BESIN_DB = {
     "nar": {"kalori": 83, "protein": 1.7, "yag": 1.2, "karb": 19, "lif": 4, "kategori": "meyve"},
     # USDA: Melon, cantaloupe
     "kavun": {"kalori": 34, "protein": 0.8, "yag": 0.2, "karb": 8.2, "lif": 0.9, "kategori": "meyve"},
+    # USDA: Plum, raw
+    "erik": {"kalori": 46, "protein": 0.7, "yag": 0.3, "karb": 11, "lif": 1.4, "kategori": "meyve"},
+    # USDA: Apricot, raw
+    "kayısı": {"kalori": 48, "protein": 1.4, "yag": 0.4, "karb": 11, "lif": 2, "kategori": "meyve"},
+    # USDA: Sour cherry, raw
+    "vişne": {"kalori": 50, "protein": 1, "yag": 0.3, "karb": 12, "lif": 1.6, "kategori": "meyve"},
+    # USDA: Grapefruit, raw
+    "greyfurt": {"kalori": 42, "protein": 0.8, "yag": 0.1, "karb": 11, "lif": 1.6, "kategori": "meyve"},
+    # USDA: Tangerine, raw
+    "mandalina": {"kalori": 53, "protein": 0.8, "yag": 0.3, "karb": 13, "lif": 1.8, "kategori": "meyve"},
     # ==========================================
     # KURU MEYVELER (100g)
     # ==========================================
@@ -230,6 +326,8 @@ BESIN_DB = {
     "hurma": {"kalori": 277, "protein": 1.8, "yag": 0.2, "karb": 75, "lif": 7, "kategori": "kuru_meyve"},
     # USDA #09299: Raisins
     "kuru üzüm": {"kalori": 299, "protein": 3.1, "yag": 0.5, "karb": 79, "lif": 3.7, "kategori": "kuru_meyve"},
+    # USDA: Prune (dried plum)
+    "kuru erik": {"kalori": 240, "protein": 2.2, "yag": 0.4, "karb": 64, "lif": 7.1, "kategori": "kuru_meyve"},
     # ==========================================
     # YAĞLAR VE KURUYEMİŞLER (100g)
     # ==========================================
@@ -241,6 +339,8 @@ BESIN_DB = {
     "hindistan cevizi yağı": {"kalori": 862, "protein": 0, "yag": 100, "karb": 0, "lif": 0, "kategori": "yag", "porsiyon_g": 14, "porsiyon_ad": "1 yemek kaşığı"},
     # USDA #12061: Almonds
     "badem": {"kalori": 579, "protein": 21, "yag": 50, "karb": 22, "lif": 12.5, "kategori": "kuruyemis"},
+    # USDA: Almond butter
+    "badem ezmesi": {"kalori": 614, "protein": 21, "yag": 56, "karb": 19, "lif": 4, "kategori": "kuruyemis"},
     # USDA #12155: Walnuts
     "ceviz": {"kalori": 654, "protein": 15, "yag": 65, "karb": 14, "lif": 6.7, "kategori": "kuruyemis"},
     # USDA #12120: Hazelnuts
@@ -261,6 +361,8 @@ BESIN_DB = {
     "chia tohumu": {"kalori": 486, "protein": 17, "yag": 31, "karb": 42, "lif": 34, "kategori": "kuruyemis"},
     # USDA #12220: Flaxseed
     "keten tohumu": {"kalori": 534, "protein": 18, "yag": 42, "karb": 29, "lif": 27, "kategori": "kuruyemis"},
+    # USDA: Sesame seeds
+    "susam": {"kalori": 573, "protein": 18, "yag": 50, "karb": 23, "lif": 12, "kategori": "kuruyemis"},
     # ==========================================
     # İŞLENMİŞ ET / ŞARKÜTÜRE (100g)
     # ==========================================
@@ -288,6 +390,19 @@ BESIN_DB = {
     "simit": {"kalori": 310, "protein": 10, "yag": 4, "karb": 58, "lif": 2.5, "kategori": "karbonhidrat", "porsiyon_g": 120, "porsiyon_ad": "1 adet"},
     # TürkOMP: Erişte (pişmiş)
     "erişte": {"kalori": 140, "protein": 5, "yag": 2, "karb": 26, "lif": 1.5, "kategori": "karbonhidrat"},
+    # ==========================================
+    # ÇORBALAR (100g hazır porsiyon)
+    # ==========================================
+    # TürkOMP: Tarhana çorbası
+    "tarhana çorbası": {"kalori": 40, "protein": 1.5, "yag": 1, "karb": 7, "lif": 0.5, "kategori": "corba"},
+    # TürkOMP: Ezogelin çorbası
+    "ezogelin çorbası": {"kalori": 45, "protein": 2, "yag": 1.5, "karb": 7, "lif": 1.5, "kategori": "corba"},
+    # TürkOMP: Yayla çorbası
+    "yayla çorbası": {"kalori": 35, "protein": 1.5, "yag": 1.5, "karb": 4, "lif": 0.3, "kategori": "corba"},
+    # TürkOMP: Domates çorbası
+    "domates çorbası": {"kalori": 30, "protein": 0.8, "yag": 1, "karb": 5, "lif": 0.7, "kategori": "corba"},
+    # USDA: Chicken broth with meat
+    "tavuk suyu çorba": {"kalori": 25, "protein": 3, "yag": 1, "karb": 1, "lif": 0, "kategori": "corba"},
     # ==========================================
     # YEŞİLLİK & BAHARAT (100g)
     # ==========================================
@@ -346,34 +461,52 @@ STARCHY_FOODS = {
     "pirinç pilavı", "esmer pirinç", "bulgur pilavı", "makarna",
     "tam buğday makarna", "patates", "tatlı patates", "kısır", "kinoa",
     "nohut", "kuru fasulye", "mercimek", "kuskus", "erişte",
+    "şehriye", "arpa şehriye", "bezelye", "barbunya", "bakla", "kuru börülce",
 }
 # Protein kaynakları — tekrar kontrolü için
 PROTEIN_SOURCES = {
     "tavuk göğsü": "tavuk",
     "tavuk but": "tavuk",
+    "tavuk baget": "tavuk",
     "tavuk füme": "tavuk",
     "hindi göğsü": "hindi",
     "hindi bonfile": "hindi",
+    "hindi but": "hindi",
     "hindi füme": "hindi",
     "dana kıyma": "kırmızı et",
     "dana bonfile": "kırmızı et",
     "dana biftek": "kırmızı et",
+    "dana kuşbaşı": "kırmızı et",
     "kuzu eti": "kırmızı et",
+    "kuzu pirzola": "kırmızı et",
+    "ciğer": "sakatat",
     "sucuk": "kırmızı et",
     "pastırma": "kırmızı et",
     "somon": "balık",
     "levrek": "balık",
     "çipura": "balık",
+    "alabalık": "balık",
+    "mezgit": "balık",
+    "sardalya": "balık",
+    "palamut": "balık",
+    "lüfer": "balık",
+    "istavrit": "balık",
     "ton balığı": "balık",
     "ton balığı konserve": "balık",
     "ton balığı taze": "balık",
     "hamsi": "balık",
     "karides": "deniz ürünü",
+    "midye": "deniz ürünü",
+    "kalamar": "deniz ürünü",
     "yumurta": "yumurta",
     "tofu": "tofu",
     "nohut": "baklagil",
     "kuru fasulye": "baklagil",
     "mercimek": "baklagil",
+    "bezelye": "baklagil",
+    "barbunya": "baklagil",
+    "bakla": "baklagil",
+    "kuru börülce": "baklagil",
 }
 
 # ==========================================
@@ -390,6 +523,16 @@ ILHAM_TARIFLERI = {
         {"ad": "Avokadolu Tost", "malzemeler": ["tam buğday ekmek", "avokado", "yumurta", "kırmızı biber"]},
         {"ad": "Yoğurtlu Kahvaltı", "malzemeler": ["süzme yoğurt", "yulaf ezmesi kuru", "çilek", "bal", "ceviz"]},
         {"ad": "Sahanda Yumurta", "malzemeler": ["yumurta", "tereyağı", "domates", "biber"]},
+        {"ad": "Menemen", "malzemeler": ["yumurta", "domates", "biber", "soğan", "zeytinyağı"]},
+        {"ad": "Sucuklu Yumurta", "malzemeler": ["yumurta", "sucuk", "domates"]},
+        {"ad": "Çılbır", "malzemeler": ["yumurta", "yoğurt", "tereyağı", "kırmızı biber"]},
+        {"ad": "Peynir Tabağı", "malzemeler": ["beyaz peynir", "kaşar peynir", "zeytin", "domates", "salatalık", "tam buğday ekmek"]},
+        {"ad": "Kaşarlı Tost", "malzemeler": ["tam buğday ekmek", "kaşar peynir", "domates"]},
+        {"ad": "Tahinli Pekmezli Kahvaltı", "malzemeler": ["tahin", "pekmez", "tam buğday ekmek", "beyaz peynir"]},
+        {"ad": "Çökelekli Kahvaltı", "malzemeler": ["çökelek", "tam buğday ekmek", "domates", "zeytinyağı", "ceviz"]},
+        {"ad": "Simit Kahvaltı", "malzemeler": ["simit", "beyaz peynir", "domates", "çay"]},
+        {"ad": "Pastırmalı Yumurta", "malzemeler": ["yumurta", "pastırma", "domates"]},
+        {"ad": "Bazlama Kahvaltı", "malzemeler": ["bazlama", "lor peyniri", "bal", "ceviz"]},
     ],
     "ara_ogun": [
         {"ad": "Meyveli Yoğurt", "malzemeler": ["süzme yoğurt", "çilek", "badem"]},
@@ -399,6 +542,17 @@ ILHAM_TARIFLERI = {
         {"ad": "Lor Peynirli Atıştırmalık", "malzemeler": ["lor peyniri", "domates", "ceviz"]},
         {"ad": "Muzlu Yulaf", "malzemeler": ["muz", "yulaf ezmesi kuru", "süt", "chia tohumu"]},
         {"ad": "Humus + Sebze", "malzemeler": ["humus", "havuç", "salatalık"]},
+        {"ad": "Yoğurt + Bal + Ceviz", "malzemeler": ["yoğurt", "bal", "ceviz"]},
+        {"ad": "Fındıklı Yoğurt", "malzemeler": ["süzme yoğurt", "fındık", "bal"]},
+        {"ad": "Kuru Meyve Tabağı", "malzemeler": ["kuru kayısı", "kuru incir", "badem"]},
+        {"ad": "Muz + Badem Ezmesi", "malzemeler": ["muz", "badem ezmesi"]},
+        {"ad": "Pirinç Patlağı + Peynir", "malzemeler": ["pirinç patlağı", "lor peyniri", "domates"]},
+        {"ad": "Meyve Salatası", "malzemeler": ["elma", "portakal", "kivi", "nar"]},
+        {"ad": "Energy Ball", "malzemeler": ["hurma", "badem", "yulaf ezmesi kuru", "chia tohumu"]},
+        {"ad": "Ayran + Peynir", "malzemeler": ["ayran", "beyaz peynir", "salatalık"]},
+        {"ad": "Çikolatalı Muz", "malzemeler": ["muz", "bitter çikolata", "fındık"]},
+        {"ad": "Havuç Çubukları + Humus", "malzemeler": ["havuç", "humus"]},
+        {"ad": "Antep Fıstıklı Yoğurt", "malzemeler": ["süzme yoğurt", "antep fıstığı", "bal"]},
     ],
     "ana_ogun": [
         {"ad": "Izgara Tavuk + Pilav + Salata", "malzemeler": ["tavuk göğsü", "bulgur pilavı", "yeşil salata", "domates", "zeytinyağı"]},
@@ -406,10 +560,34 @@ ILHAM_TARIFLERI = {
         {"ad": "Köfte + Bulgur", "malzemeler": ["dana kıyma", "bulgur pilavı", "yeşil salata", "domates"]},
         {"ad": "Tavuk Salata Bowl", "malzemeler": ["tavuk göğsü", "kinoa", "ıspanak", "avokado", "domates"]},
         {"ad": "Balık + Sebze Sote", "malzemeler": ["levrek", "kabak", "havuç", "biber", "zeytinyağı"]},
-        {"ad": "Mercimek + Pirinç + Yoğurt", "malzemeler": ["mercimek", "pirinç pilavı", "süzme yoğurt"]},
+        {"ad": "Mercimek + Pirinç + Yoğurt", "malzemeler": ["mercimek", "pirinç pilavı", "yoğurt"]},
         {"ad": "Hindi + Makarna + Sebze", "malzemeler": ["hindi göğsü", "tam buğday makarna", "brokoli", "zeytinyağı"]},
         {"ad": "Nohut Yemeği + Pirinç", "malzemeler": ["nohut", "pirinç pilavı", "yeşil salata"]},
         {"ad": "Ton Balıklı Salata", "malzemeler": ["ton balığı konserve", "yeşil salata", "mısır", "domates", "zeytinyağı"]},
-        {"ad": "Patlıcan + Kıyma + Pilav", "malzemeler": ["patlıcan", "dana kıyma", "pirinç pilavı", "süzme yoğurt"]},
+        {"ad": "Patlıcan Musakka + Pilav", "malzemeler": ["patlıcan", "dana kıyma", "pirinç pilavı", "yoğurt"]},
+        {"ad": "Fırında Tavuk But + Sebze", "malzemeler": ["tavuk but", "patates", "havuç", "biber", "zeytinyağı"]},
+        {"ad": "Karnıyarık", "malzemeler": ["patlıcan", "dana kıyma", "domates", "biber", "pirinç pilavı"]},
+        {"ad": "Etli Nohut", "malzemeler": ["dana kuşbaşı", "nohut", "domates", "pirinç pilavı"]},
+        {"ad": "Etli Bezelye", "malzemeler": ["dana kuşbaşı", "bezelye", "patates", "domates"]},
+        {"ad": "Zeytinyağlı Fasulye", "malzemeler": ["yeşil fasulye", "domates", "soğan", "zeytinyağı", "tam buğday ekmek"]},
+        {"ad": "Fırında Somon + Sebze", "malzemeler": ["somon", "brokoli", "havuç", "zeytinyağı"]},
+        {"ad": "Tavuk Şiş + Bulgur", "malzemeler": ["tavuk göğsü", "bulgur pilavı", "biber", "soğan", "domates"]},
+        {"ad": "Mercimek Köftesi + Salata", "malzemeler": ["mercimek", "bulgur pilavı", "yeşil salata", "domates", "nar"]},
+        {"ad": "Barbunya Pilaki", "malzemeler": ["barbunya", "soğan", "havuç", "domates", "zeytinyağı"]},
+        {"ad": "Fırında Köfte + Patates", "malzemeler": ["dana kıyma", "patates", "domates", "biber"]},
+        {"ad": "Kabak Mücver", "malzemeler": ["kabak", "yumurta", "un", "beyaz peynir", "dereotu"]},
+        {"ad": "Karnabahar Graten", "malzemeler": ["karnabahar", "kaşar peynir", "süt", "yumurta"]},
+        {"ad": "Alabalık + Pilav", "malzemeler": ["alabalık", "pirinç pilavı", "yeşil salata", "zeytinyağı"]},
+        {"ad": "Mantarlı Tavuk Sote", "malzemeler": ["tavuk göğsü", "mantar", "biber", "soğan", "zeytinyağı"]},
+        {"ad": "Sebzeli Hindi Güveç", "malzemeler": ["hindi but", "kabak", "patlıcan", "biber", "domates"]},
+        {"ad": "Kuru Fasulye + Pirinç", "malzemeler": ["kuru fasulye", "pirinç pilavı", "turşu", "soğan"]},
+        {"ad": "İmam Bayıldı", "malzemeler": ["patlıcan", "domates", "soğan", "biber", "zeytinyağı"]},
+        {"ad": "Ispanaklı Yumurta + Ekmek", "malzemeler": ["ıspanak", "yumurta", "soğan", "tam buğday ekmek"]},
+        {"ad": "Çipura + Salata", "malzemeler": ["çipura", "yeşil salata", "domates", "zeytinyağı", "tam buğday ekmek"]},
+        {"ad": "Bamya Yemeği + Pilav", "malzemeler": ["bamya", "domates", "soğan", "zeytinyağı", "bulgur pilavı"]},
+        {"ad": "Pırasa Yemeği + Yoğurt", "malzemeler": ["pırasa", "havuç", "pirinç pilavı", "yoğurt", "zeytinyağı"]},
+        {"ad": "Enginar Zeytinyağlı", "malzemeler": ["enginar", "havuç", "bezelye", "zeytinyağı", "tam buğday ekmek"]},
+        {"ad": "Palamut Izgara + Salata", "malzemeler": ["palamut", "roka", "domates", "soğan", "zeytinyağı"]},
+        {"ad": "Semizotu Yemeği", "malzemeler": ["semizotu", "yoğurt", "pirinç pilavı", "zeytinyağı"]},
     ],
 }

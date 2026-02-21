@@ -76,13 +76,24 @@ Plan oluştururken **yemek tarifi değil, makro hedeflere uygun malzeme seti** s
 - "Peynir yerine → 100g süzme yoğurt (makro ≈ eşdeğer)"
 - "Ekmek yerine → 40g yulaf ezmesi (makro ≈ eşdeğer)"
 
+### Makro Hedef Hassasiyeti (KRİTİK)
+Günlük toplam makro değerlerinin hedeften sapması **±%10'u geçmemeli**. Özellikle:
+- **Protein:** Hedefin ±%10'u içinde tut. Fazla protein böbrek yükünü artırır, eksik protein kas kaybına yol açar.
+- **Yağ:** Hedefin ±%10'u içinde tut. Hormonal denge için yağ kritik.
+- **Kalori:** Hedefin ±%5'i içinde tut.
+- **Karb:** Kalan kaloriyi doldurur, diğer makrolar tutunca otomatik düzelir.
+
+Plan oluştururken her öğünün makro toplamını zihinsel olarak doğrula. Günlük toplamı kontrol et, hedeften sapma varsa öğünleri ayarla.
+
 ### Yağ Dengeleme Kuralı (KRİTİK)
-Öğünün toplam yağ hedefini hesaplarken:
-1. Önce protein kaynağının yağ içeriğini hesapla (yumurta ~5g/adet, peynir yüksek yağ)
+Öğünün toplam yağ hedefini hesaplarken **SAYISAL** hesap yap:
+1. Önce protein kaynağının yağ içeriğini hesapla (yumurta ~5.5g/adet, peynir yüksek yağ, tavuk but ~10.9g/100g)
 2. Sonra karbonhidrat kaynağının yağını ekle (kuruyemiş, yulaf vb.)
-3. Kalan yağ açığı varsa zeytinyağı/tereyağı/avokado ile tamamla
-4. Yağ zaten yeterliyse veya fazlaysa ek yağ kaynağı ÖNERME
-5. Lif grubundaki zeytin de yağ katkısı sağlar, bunu da hesaba kat
+3. Lif grubundaki zeytin de yağ katkısı sağlar (5 zeytin ≈ 2.2g yağ), bunu da hesaba kat
+4. Toplam yağı hesapla ve öğün yağ hedefiyle karşılaştır
+5. Kalan yağ açığı varsa zeytinyağı/tereyağı/avokado ile tamamla
+6. Yağ zaten yeterliyse veya fazlaysa ek yağ kaynağı ÖNERME — bu çok önemli
+7. Günlük toplam yağ hedefini her öğünden sonra takip et
 
 ### Öğün Bazlı Malzeme Havuzu (food_database)
 
@@ -91,29 +102,31 @@ Aşağıdaki malzemelerin makro değerleri Python tarafında doğrulanmış (Tü
 **KAHVALTI Malzeme Havuzu:**
 | Rol | Malzemeler |
 |-----|-----------|
-| Protein | yumurta, beyaz peynir (tam/yarım yağlı), lor peyniri (normal/yağsız), çökelek, labne, süzme yoğurt (normal/yağsız), yunan yoğurdu, hindi füme, tavuk füme, kaşar peynir, tulum peyniri |
-| Karbonhidrat | tam buğday ekmek, beyaz ekmek, yulaf ezmesi (pişmiş/kuru), simit (dikkatli — yüksek kalori), pankek, granola, tam buğday lavaş, pide ekmeği |
-| Lif & Sebze | domates, salatalık, biber, yeşil salata, roka, maydanoz, dereotu, zeytin |
+| Protein | yumurta, beyaz peynir (tam/yarım yağlı), lor peyniri (normal/yağsız), çökelek, labne, süzme yoğurt (normal/yağsız), yoğurt, hindi füme, tavuk füme, kaşar peynir, taze kaşar, tulum peyniri, hellim, otlu peynir, keçi peyniri |
+| Karbonhidrat | tam buğday ekmek, beyaz ekmek, kepekli ekmek, yulaf ezmesi (pişmiş/kuru), simit (dikkatli — yüksek kalori), pankek, granola, tam buğday lavaş, pide ekmeği, bazlama, yufka, çavdar ekmeği |
+| Lif & Sebze | domates, salatalık, biber, yeşil salata, roka, maydanoz, dereotu, zeytin, turp, taze soğan |
 | Yağ | zeytinyağı, tereyağı, ceviz, badem, fındık, avokado |
 
 **ARA ÖĞÜN Malzeme Havuzu:**
 | Rol | Malzemeler |
 |-----|-----------|
-| Protein | süzme yoğurt (normal/yağsız), yunan yoğurdu, lor peyniri, protein tozu, yumurta, ayran, kefir |
-| Karbonhidrat | elma, muz, portakal, çilek, kivi, armut, şeftali, yaban mersini, ahududu, pirinç patlağı, kuru kayısı, kuru incir, hurma (az miktar) |
-| Yağ | badem, ceviz, fındık, yer fıstığı, fıstık ezmesi, kaju, antep fıstığı, ay çekirdeği, kabak çekirdeği, chia tohumu, keten tohumu |
+| Protein | süzme yoğurt (normal/yağsız), yoğurt, lor peyniri, protein tozu, yumurta, ayran, kefir |
+| Karbonhidrat | elma, muz, portakal, çilek, kivi, armut, şeftali, yaban mersini, ahududu, erik, kayısı, vişne, greyfurt, mandalina, pirinç patlağı, kuru kayısı, kuru incir, hurma (az miktar) |
+| Yağ | badem, badem ezmesi, ceviz, fındık, yer fıstığı, fıstık ezmesi, kaju, antep fıstığı, ay çekirdeği, kabak çekirdeği, chia tohumu, keten tohumu, susam |
 
 **ANA ÖĞÜN (Öğle/Akşam) Malzeme Havuzu:**
 | Rol | Malzemeler |
 |-----|-----------|
-| Protein | tavuk göğsü, tavuk but, hindi göğsü, hindi bonfile, dana kıyma, dana bonfile, dana biftek, kuzu eti, somon, levrek, çipura, ton balığı (konserve/taze), hamsi, karides, yumurta, tofu, nohut, kuru fasulye, mercimek |
-| Karbonhidrat | pirinç pilavı, esmer pirinç, bulgur pilavı, makarna, tam buğday makarna, kinoa, patates, tatlı patates, kuskus, tam buğday ekmek, tam buğday lavaş, erişte |
-| Lif & Sebze | brokoli, ıspanak (çiğ/pişmiş), domates, salatalık, biber, kırmızı biber, havuç, kabak, patlıcan, karnabahar, yeşil salata, yeşil fasulye, lahana, mantar, kereviz, enginar, pırasa, mısır, soğan, roka, maydanoz |
+| Protein | tavuk göğsü, tavuk but, tavuk baget, hindi göğsü, hindi bonfile, hindi but, dana kıyma, dana bonfile, dana biftek, dana kuşbaşı, kuzu eti, kuzu pirzola, ciğer, somon, levrek, çipura, alabalık, mezgit, sardalya, palamut, lüfer, istavrit, ton balığı (konserve/taze), hamsi, karides, midye, kalamar, yumurta, tofu, nohut, kuru fasulye, mercimek, bezelye, barbunya, bakla, kuru börülce |
+| Karbonhidrat | pirinç pilavı, esmer pirinç, bulgur pilavı, makarna, tam buğday makarna, kinoa, patates, tatlı patates, kuskus, şehriye, arpa şehriye, tam buğday ekmek, tam buğday lavaş, erişte |
+| Lif & Sebze | brokoli, ıspanak (çiğ/pişmiş), domates, salatalık, biber, kırmızı biber, havuç, kabak, patlıcan, karnabahar, yeşil salata, yeşil fasulye, lahana, kırmızı lahana, mantar, kereviz, enginar, pırasa, bamya, semizotu, pazı, kuşkonmaz, pancar, brüksel lahanası, mısır, soğan, taze soğan, roka, maydanoz |
 | Yağ | zeytinyağı, tereyağı, avokado, zeytin |
 
-**Meyveler (tüm öğünler):** elma, muz, portakal, çilek, ahududu, yaban mersini, kivi, üzüm, incir, armut, şeftali, karpuz, kiraz, ananas, mango, nar, kavun
+**Çorbalar (ana öğünlere ek):** kırmızı mercimek çorbası, tarhana çorbası, ezogelin çorbası, yayla çorbası, domates çorbası, tavuk suyu çorba
 
-**Kuru Meyveler:** kuru kayısı, kuru incir, hurma, kuru üzüm
+**Meyveler (tüm öğünler):** elma, muz, portakal, çilek, ahududu, yaban mersini, kivi, üzüm, incir, armut, şeftali, karpuz, kiraz, ananas, mango, nar, kavun, erik, kayısı, vişne, greyfurt, mandalina
+
+**Kuru Meyveler:** kuru kayısı, kuru incir, hurma, kuru üzüm, kuru erik
 
 **Ek malzemeler:** bal, tahin, humus, pekmez, reçel, bitter çikolata, protein tozu, smoothie, cacık, süt, yağsız süt
 

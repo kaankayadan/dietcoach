@@ -182,8 +182,9 @@ def validate_plan(plan_json: dict, user_targets: dict = None) -> dict:
         hedef_kcal = user_targets.get("hedef_kalori")
 
         if hedef_p and abs(gunluk_p - hedef_p) > hedef_p * 0.10:
-            warnings.append(f"Protein hedeften sapma: {gunluk_p:.0f}g vs hedef {hedef_p}g")
-        if hedef_y and abs(gunluk_y - hedef_y) > hedef_y * 0.15:
+            fark_p = gunluk_p - hedef_p
+            warnings.append(f"Protein hedeften sapma: {gunluk_p:.0f}g vs hedef {hedef_p}g (fark: {fark_p:+.0f}g, %{abs(fark_p)/hedef_p*100:.0f})")
+        if hedef_y and abs(gunluk_y - hedef_y) > hedef_y * 0.10:
             warnings.append(f"Yağ hedeften sapma: {gunluk_y:.0f}g vs hedef {hedef_y}g")
         if hedef_kcal and abs(gunluk_kcal - hedef_kcal) > hedef_kcal * 0.05:
             warnings.append(f"Kalori hedeften sapma: {gunluk_kcal:.0f} vs hedef {hedef_kcal} kcal")

@@ -6,7 +6,7 @@ Birleşik Yemek Planı Doğrulayıcı — macro_validator + food_database cross-
 2. Her besini food_database ile cross-check yap (gram varsa)
    → Yanlış değerleri otomatik düzelt (2. API çağrısı yok)
 3. Öğün ve günlük toplamları yeniden hesapla
-4. Kullanıcı hedefleriyle karşılaştır
+4. Kullanıcı hedefleriyle karşılaştır — AŞIM VARSA GRAMAJLARI ÖLÇEKLE
 5. Protein dağıtım/tekrar, nişastalı çakışma, sağlık kuralları kontrol et
 6. Düzeltilmiş planı döndür
 """
@@ -15,7 +15,7 @@ import json
 import logging
 from typing import Optional
 
-from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES, ILHAM_TARIFLERI
+from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES
 
 logger = logging.getLogger(__name__)
 
@@ -25,14 +25,14 @@ TOLERANCE_MIN = 3             # Küçük değerler için minimum 3 birim
 FOOD_KCAL_TOLERANCE_PCT = 0.15
 FOOD_KCAL_TOLERANCE_MIN = 15
 
-# food_database cross-check
-DB_MAKRO_TOLERANS = 3         # gram sapma (100g başına)
-DB_KCAL_TOLERANS = 20         # kcal sapma (100g başına)
+# food_database cross-check — HER ZAMAN DB değerlerini kullan
+DB_MAKRO_TOLERANS = 1.5       # gram sapma — sıkılaştırıldı (eskiden 3)
+DB_KCAL_TOLERANS = 10         # kcal sapma — sıkılaştırıldı (eskiden 20)
 
 # Hedef sapma (yüzde bazlı — kullanıcı hedefine göre)
 KALORI_HEDEF_TOLERANS_PCT = 0.05   # ±%5
-PROTEIN_HEDEF_TOLERANS_PCT = 0.10  # ±%10 — protein için daha sıkı
-MAKRO_HEDEF_TOLERANS_PCT = 0.10    # ±%10 — yağ/karb için
+PROTEIN_HEDEF_TOLERANS_PCT = 0.10  # ±%10
+MAKRO_HEDEF_TOLERANS_PCT = 0.10    # ±%10
 
 
 # ── Yardımcı Fonksiyonlar ───────────────────────────────────
@@ -98,11 +98,225 @@ def strip_mealplan_json(response: str) -> str:
     return cleaned.strip()
 
 
+# ── food_database ile kesin hesaplama ─────────────────────────
+
+def _recalculate_besin_from_db(besin: dict) -> dict:
+    """
+    Bir besinin makro değerlerini food_database'den KESİN hesapla.
+    DB'de varsa Claude'un değerlerini tamamen yok say, DB'den hesapla.
+    DB'de yoksa Claude'un değerlerini koru.
+    """
+    ad = besin.get("ad", "?")
+    gram = besin.get("gram", 0)
+    rol = besin.get("rol", "")
+
+    db_match = _find_food_in_db(ad)
+
+    if db_match and gram > 0:
+        db_key, db_entry = db_match
+        carpan = gram / 100.0
+        return {
+            "ad": ad,
+            "gram": gram,
+            "rol": rol,
+            "p": round(db_entry["protein"] * carpan, 1),
+            "y": round(db_entry["yag"] * carpan, 1),
+            "k": round(db_entry["karb"] * carpan, 1),
+            "l": round(db_entry.get("lif", 0) * carpan, 1),
+            "kcal": round(db_entry["kalori"] * carpan, 0),
+            "_db_key": db_key,
+        }
+    else:
+        # DB'de yok — Claude değerlerini koru
+        return {
+            "ad": ad,
+            "gram": gram,
+            "rol": rol,
+            "p": besin.get("p", 0),
+            "y": besin.get("y", 0),
+            "k": besin.get("k", 0),
+            "l": besin.get("l", 0),
+            "kcal": besin.get("kcal", 0),
+            "_db_key": None,
+        }
+
+
+def _scale_besin(besin: dict, new_gram: float) -> dict:
+    """Bir besinin gramajını değiştirip makroları yeniden hesapla."""
+    ad = besin.get("ad", "?")
+    db_match = _find_food_in_db(ad)
+
+    if db_match and new_gram > 0:
+        db_key, db_entry = db_match
+        carpan = new_gram / 100.0
+        result = dict(besin)
+        result["gram"] = round(new_gram, 0)
+        result["p"] = round(db_entry["protein"] * carpan, 1)
+        result["y"] = round(db_entry["yag"] * carpan, 1)
+        result["k"] = round(db_entry["karb"] * carpan, 1)
+        result["l"] = round(db_entry.get("lif", 0) * carpan, 1)
+        result["kcal"] = round(db_entry["kalori"] * carpan, 0)
+        return result
+    else:
+        # DB'de yoksa oranla ölçekle
+        old_gram = besin.get("gram", 0)
+        if old_gram <= 0:
+            return dict(besin)
+        ratio = new_gram / old_gram
+        result = dict(besin)
+        result["gram"] = round(new_gram, 0)
+        result["p"] = round(besin["p"] * ratio, 1)
+        result["y"] = round(besin["y"] * ratio, 1)
+        result["k"] = round(besin["k"] * ratio, 1)
+        result["l"] = round(besin["l"] * ratio, 1)
+        result["kcal"] = round(besin["kcal"] * ratio, 0)
+        return result
+
+
+def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
+    """
+    Günlük makro toplamlarının hedefi aşmamasını ZORLA.
+    Aşım varsa protein kaynaklarının gramajını orantılı küçült.
+
+    Returns: (adjusted_ogunler, adjustments_log)
+    """
+    hedef_p = float(user.get("protein_g") or 0)
+    hedef_y = float(user.get("yag_g") or 0)
+    hedef_k = float(user.get("karbonhidrat_g") or 0)
+    hedef_kcal = float(user.get("hedef_kalori") or 0)
+
+    if not hedef_p or not hedef_y:
+        return corrected_ogunler, []
+
+    adjustments = []
+    p_tolerans = hedef_p * PROTEIN_HEDEF_TOLERANS_PCT
+    y_tolerans = hedef_y * MAKRO_HEDEF_TOLERANS_PCT
+
+    # ── Protein aşımı düzeltme (iteratif) ──
+    for iteration in range(3):  # max 3 iterasyon
+        total_p = sum(b["p"] for o in corrected_ogunler for b in o.get("besinler", []))
+
+        if total_p <= hedef_p + p_tolerans:
+            break
+
+        if iteration == 0:
+            adjustments.append(
+                f"Protein hedef aşımı: {total_p:.0f}g vs hedef {hedef_p:.0f}g — "
+                f"gramajlar küçültülüyor ({total_p - hedef_p:.0f}g fazla)"
+            )
+
+        # Protein kaynağı olan besinleri bul
+        protein_besinler = []
+        for oi, ogun in enumerate(corrected_ogunler):
+            for bi, besin in enumerate(ogun.get("besinler", [])):
+                is_protein_source = False
+                if besin.get("rol") == "protein":
+                    is_protein_source = True
+                else:
+                    db_match = _find_food_in_db(besin.get("ad", ""))
+                    if db_match:
+                        _, db_entry = db_match
+                        if db_entry.get("kategori") in ("protein", "sut_urunu"):
+                            is_protein_source = True
+                if is_protein_source and besin.get("p", 0) > 0 and besin.get("gram", 0) > 15:
+                    protein_besinler.append((oi, bi, besin))
+
+        if not protein_besinler:
+            break
+
+        # Protein-dışı kaynaklardan gelen proteini hesapla
+        non_protein_p = total_p - sum(b["p"] for _, _, b in protein_besinler)
+        # Protein kaynaklarından gelmesi gereken miktar
+        target_from_protein_sources = max(0, hedef_p - non_protein_p)
+        current_from_protein_sources = sum(b["p"] for _, _, b in protein_besinler)
+
+        if current_from_protein_sources <= 0:
+            break
+
+        scale = target_from_protein_sources / current_from_protein_sources
+        scale = max(0.3, min(scale, 1.0))  # min %30, max %100
+
+        for oi, bi, besin in protein_besinler:
+            old_gram = besin.get("gram", 0)
+            if old_gram > 0:
+                new_gram = round(old_gram * scale)
+                new_gram = max(new_gram, 10)
+                scaled = _scale_besin(besin, new_gram)
+                corrected_ogunler[oi]["besinler"][bi] = scaled
+                if old_gram != new_gram:
+                    adjustments.append(
+                        f"  {besin['ad']}: {old_gram:.0f}g → {new_gram:.0f}g"
+                    )
+
+    # ── Yağ aşımı düzeltme ──
+    # Yeniden hesapla (protein düzeltmesi yağı da değiştirmiş olabilir)
+    total_y = sum(b["y"] for o in corrected_ogunler for b in o.get("besinler", []))
+
+    if total_y > hedef_y + y_tolerans:
+        fazla_y = total_y - hedef_y
+        adjustments.append(
+            f"Yağ hedef aşımı: {total_y:.0f}g vs hedef {hedef_y:.0f}g — "
+            f"yağ kaynakları küçültülüyor ({fazla_y:.0f}g fazla)"
+        )
+
+        # Yağ yoğun besinleri bul (zeytinyağı, tereyağı, kuruyemişler)
+        yag_besinler = []
+        for oi, ogun in enumerate(corrected_ogunler):
+            for bi, besin in enumerate(ogun.get("besinler", [])):
+                is_fat_source = False
+                if besin.get("rol") == "yag":
+                    is_fat_source = True
+                else:
+                    db_match = _find_food_in_db(besin.get("ad", ""))
+                    if db_match:
+                        _, db_entry = db_match
+                        if db_entry.get("kategori") in ("yag", "kuruyemis"):
+                            is_fat_source = True
+                if is_fat_source and besin.get("y", 0) > 0:
+                    yag_besinler.append((oi, bi, besin))
+
+        if yag_besinler:
+            current_fat_sum = sum(b["y"] for _, _, b in yag_besinler)
+            if current_fat_sum > 0:
+                needed_reduction = total_y - hedef_y
+                scale = max(0.3, 1 - (needed_reduction / current_fat_sum))
+
+                for oi, bi, besin in yag_besinler:
+                    old_gram = besin.get("gram", 0)
+                    if old_gram > 0:
+                        new_gram = round(old_gram * scale)
+                        new_gram = max(new_gram, 3)  # minimum 3g yağ
+                        scaled = _scale_besin(besin, new_gram)
+                        corrected_ogunler[oi]["besinler"][bi] = scaled
+                        if old_gram != new_gram:
+                            adjustments.append(
+                                f"  {besin['ad']}: {old_gram:.0f}g → {new_gram:.0f}g"
+                            )
+
+    # Öğün toplamlarını yeniden hesapla
+    for ogun in corrected_ogunler:
+        op = sum(b["p"] for b in ogun.get("besinler", []))
+        oy = sum(b["y"] for b in ogun.get("besinler", []))
+        ok = sum(b["k"] for b in ogun.get("besinler", []))
+        ol = sum(b["l"] for b in ogun.get("besinler", []))
+        okcal = sum(b["kcal"] for b in ogun.get("besinler", []))
+        ogun["toplam"] = {
+            "p": round(op, 1), "y": round(oy, 1), "k": round(ok, 1),
+            "l": round(ol, 1), "kcal": round(okcal, 0),
+        }
+
+    return corrected_ogunler, adjustments
+
+
 # ── Ana Doğrulama ────────────────────────────────────────────
 
 def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> dict:
     """
     Plan JSON'ını kapsamlı doğrula ve otomatik düzelt.
+
+    KRİTİK: Her besin food_database'den KESİN hesaplanır.
+    Claude'un verdiği makro değerleri yok sayılır — gramaj + DB kaynağı kullanılır.
+    Makro hedefleri aşılmışsa gramajlar otomatik küçültülür.
 
     Args:
         plan_json: Claude'un ürettiği plan (p/y/k/l/kcal format)
@@ -116,7 +330,7 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
             "warnings": [str],
             "corrected_plan": {"ogunler": [...], "gunluk_toplam": {...}},
             "corrected_totals": {...},
-            "db_corrections": [str]   # food_database'den yapılan düzeltmeler
+            "db_corrections": [str]
         }
     """
     errors = []
@@ -141,7 +355,6 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
     gunluk_l = 0
     gunluk_kcal = 0
 
-    # Geçerli rol değerleri
     VALID_ROLES = {"protein", "karbonhidrat", "lif", "yag"}
 
     for ogun in ogunler:
@@ -159,115 +372,61 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
             ad = besin.get("ad", "?")
             gram = besin.get("gram", 0)
             rol = besin.get("rol", "")
-            b_p = besin.get("p", 0)
-            b_y = besin.get("y", 0)
-            b_k = besin.get("k", 0)
-            b_l = besin.get("l", 0)
-            b_kcal = besin.get("kcal", 0)
 
-            # ── rol alanı kontrolü ──
+            # rol alanı kontrolü
             if rol and rol not in VALID_ROLES:
                 warnings.append(
-                    f"{ogun_adi}/{ad}: geçersiz rol '{rol}' (beklenen: {', '.join(VALID_ROLES)})"
+                    f"{ogun_adi}/{ad}: geçersiz rol '{rol}'"
                 )
 
-            # ── food_database cross-check ──
-            db_match = _find_food_in_db(ad)
+            # KRİTİK: food_database'den KESİN hesapla
+            recalc = _recalculate_besin_from_db(besin)
 
-            if db_match and gram > 0:
-                db_key, db_entry = db_match
-                carpan = gram / 100.0
-
-                db_p = round(db_entry["protein"] * carpan, 1)
-                db_y = round(db_entry["yag"] * carpan, 1)
-                db_k = round(db_entry["karb"] * carpan, 1)
-                db_l = round(db_entry.get("lif", 0) * carpan, 1)
-                db_kcal = round(db_entry["kalori"] * carpan, 0)
-
-                # Sapma var mı?
-                corrections_made = []
-                tolerans_carpan = max(carpan, 0.5)  # min 50g tolerans tabanı
-
-                if abs(b_p - db_p) > DB_MAKRO_TOLERANS * tolerans_carpan:
-                    corrections_made.append(f"P: {b_p}→{db_p}g")
-                    b_p = db_p
-                if abs(b_y - db_y) > DB_MAKRO_TOLERANS * tolerans_carpan:
-                    corrections_made.append(f"Y: {b_y}→{db_y}g")
-                    b_y = db_y
-                if abs(b_k - db_k) > DB_MAKRO_TOLERANS * tolerans_carpan:
-                    corrections_made.append(f"K: {b_k}→{db_k}g")
-                    b_k = db_k
-                if abs(b_l - db_l) > DB_MAKRO_TOLERANS * tolerans_carpan:
-                    b_l = db_l
-                if abs(b_kcal - db_kcal) > DB_KCAL_TOLERANS * tolerans_carpan:
-                    corrections_made.append(f"kcal: {b_kcal}→{db_kcal}")
-                    b_kcal = db_kcal
-
-                if corrections_made:
-                    correction_msg = f"{ad} ({gram}g) → DB ({db_key}): {', '.join(corrections_made)}"
-                    db_corrections.append(correction_msg)
-                    logger.info(f"food_database düzeltme: {correction_msg}")
-
-            elif not db_match and gram > 0:
-                # DB'de yok — Claude değerine güveniyoruz ama uyarı veriyoruz
-                logger.warning(f"food_database'de bulunamadı: {ad} ({gram}g) — değerler doğrulanamadı")
+            # Claude değerleriyle karşılaştır — fark varsa logla
+            if recalc["_db_key"]:
+                old_p = besin.get("p", 0)
+                old_y = besin.get("y", 0)
+                old_k = besin.get("k", 0)
+                old_kcal = besin.get("kcal", 0)
+                diffs = []
+                if abs(old_p - recalc["p"]) > DB_MAKRO_TOLERANS:
+                    diffs.append(f"P:{old_p}→{recalc['p']}g")
+                if abs(old_y - recalc["y"]) > DB_MAKRO_TOLERANS:
+                    diffs.append(f"Y:{old_y}→{recalc['y']}g")
+                if abs(old_k - recalc["k"]) > DB_MAKRO_TOLERANS:
+                    diffs.append(f"K:{old_k}→{recalc['k']}g")
+                if abs(old_kcal - recalc["kcal"]) > DB_KCAL_TOLERANS:
+                    diffs.append(f"kcal:{old_kcal}→{recalc['kcal']}")
+                if diffs:
+                    msg = f"{ad} ({gram}g) → DB ({recalc['_db_key']}): {', '.join(diffs)}"
+                    db_corrections.append(msg)
+                    logger.info(f"food_database düzeltme: {msg}")
+            elif gram > 0:
                 warnings.append(f"{ad} besin veritabanında yok — makro değerleri doğrulanamadı")
 
-            # ── Makro→kcal tutarlılık kontrolü ──
-            expected_kcal = _calc_kcal(b_p, b_y, b_k)
-            if abs(expected_kcal - b_kcal) > max(b_kcal * FOOD_KCAL_TOLERANCE_PCT, FOOD_KCAL_TOLERANCE_MIN):
-                errors.append(
-                    f"{ogun_adi}/{ad}: makro→kcal uyumsuz "
-                    f"(yazılan {b_kcal} vs hesaplanan {expected_kcal})"
-                )
-
-            corrected_besin = {
-                "ad": ad,
-                "p": b_p,
-                "y": b_y,
-                "k": b_k,
-                "l": b_l,
-                "kcal": b_kcal,
-            }
-            if gram > 0:
-                corrected_besin["gram"] = gram
-            if rol:
-                corrected_besin["rol"] = rol
+            # _db_key'i temizle
+            corrected_besin = {k: v for k, v in recalc.items() if k != "_db_key"}
+            if not corrected_besin.get("gram"):
+                corrected_besin.pop("gram", None)
+            if not corrected_besin.get("rol"):
+                corrected_besin.pop("rol", None)
             corrected_besinler.append(corrected_besin)
 
-            ogun_p += b_p
-            ogun_y += b_y
-            ogun_k += b_k
-            ogun_l += b_l
-            ogun_kcal += b_kcal
+            ogun_p += recalc["p"]
+            ogun_y += recalc["y"]
+            ogun_k += recalc["k"]
+            ogun_l += recalc["l"]
+            ogun_kcal += recalc["kcal"]
 
-        # ── Öğün toplam doğrulama ──
-        stated = ogun.get("toplam", {})
-        diffs = []
-        if not _within_tolerance(ogun_p, stated.get("p", 0)):
-            diffs.append(f"P: {stated.get('p', 0)}→{ogun_p:.1f}")
-        if not _within_tolerance(ogun_y, stated.get("y", 0)):
-            diffs.append(f"Y: {stated.get('y', 0)}→{ogun_y:.1f}")
-        if not _within_tolerance(ogun_k, stated.get("k", 0)):
-            diffs.append(f"K: {stated.get('k', 0)}→{ogun_k:.1f}")
-        if not _within_tolerance(ogun_kcal, stated.get("kcal", 0)):
-            diffs.append(f"kcal: {stated.get('kcal', 0)}→{ogun_kcal:.1f}")
-        if diffs:
-            errors.append(f"{ogun_adi} toplam hatası: {', '.join(diffs)}")
-
-        # ── Protein dağıtım kontrolü ──
+        # Protein dağıtım kontrolü
         ana_ogunler = ["kahvaltı", "öğle", "akşam"]
         if ogun_adi.lower() in ana_ogunler:
-            if ogun_p < 20:
-                warnings.append(
-                    f"{ogun_adi} öğününde protein düşük: {ogun_p:.0f}g (min 25g önerilen)"
-                )
+            if ogun_p < 15:
+                warnings.append(f"{ogun_adi}: protein düşük ({ogun_p:.0f}g)")
             elif ogun_p > 50:
-                warnings.append(
-                    f"{ogun_adi} öğününde protein yüksek: {ogun_p:.0f}g (max 45g önerilen)"
-                )
+                warnings.append(f"{ogun_adi}: protein yüksek ({ogun_p:.0f}g)")
 
-        # ── Nişastalı besin çakışması ──
+        # Nişastalı besin çakışması
         starchy_in_meal = []
         for besin in corrected_besinler:
             ad_lower = besin["ad"].lower()
@@ -276,22 +435,15 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                     starchy_in_meal.append(starchy)
                     break
         if len(starchy_in_meal) >= 2:
-            warnings.append(
-                f"{ogun_adi} öğününde birden fazla nişastalı besin: {', '.join(starchy_in_meal)}"
-            )
+            warnings.append(f"{ogun_adi}: birden fazla nişastalı besin ({', '.join(starchy_in_meal)})")
 
-        # ── Alternatif malzeme kontrolü ──
-        alternatifler = ogun.get("alternatifler", [])
-        for alt in alternatifler:
+        # Alternatif malzeme kontrolü
+        for alt in ogun.get("alternatifler", []):
             koy_str = alt.get("koy", "")
-            # "Süzme yoğurt 100g" → "süzme yoğurt" temizle
             koy_clean = re.sub(r'\d+\s*g\b', '', koy_str).strip()
             if koy_clean and not _find_food_in_db(koy_clean):
-                warnings.append(
-                    f"{ogun_adi} alternatif '{koy_str}' besin veritabanında bulunamadı"
-                )
+                warnings.append(f"{ogun_adi}: alternatif '{koy_str}' DB'de yok")
 
-        # Düzeltilmiş öğün — hedef, alternatifler ve ilham alanlarını koru
         corrected_ogun = {
             **ogun,
             "besinler": corrected_besinler,
@@ -300,10 +452,9 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                 "y": round(ogun_y, 1),
                 "k": round(ogun_k, 1),
                 "l": round(ogun_l, 1),
-                "kcal": round(ogun_kcal, 1),
+                "kcal": round(ogun_kcal, 0),
             }
         }
-        # hedef, alternatifler, ilham alanları zaten **ogun spread ile korunuyor
         corrected_ogunler.append(corrected_ogun)
 
         gunluk_p += ogun_p
@@ -312,67 +463,63 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
         gunluk_l += ogun_l
         gunluk_kcal += ogun_kcal
 
-    # ── Günlük toplam doğrulama ──
-    stated_gunluk = plan_json.get("gunluk_toplam", {})
-    daily_diffs = []
-    if not _within_tolerance(gunluk_p, stated_gunluk.get("p", 0)):
-        daily_diffs.append(f"P: {stated_gunluk.get('p', 0)}→{gunluk_p:.1f}")
-    if not _within_tolerance(gunluk_y, stated_gunluk.get("y", 0)):
-        daily_diffs.append(f"Y: {stated_gunluk.get('y', 0)}→{gunluk_y:.1f}")
-    if not _within_tolerance(gunluk_k, stated_gunluk.get("k", 0)):
-        daily_diffs.append(f"K: {stated_gunluk.get('k', 0)}→{gunluk_k:.1f}")
-    if not _within_tolerance(gunluk_kcal, stated_gunluk.get("kcal", 0)):
-        daily_diffs.append(f"kcal: {stated_gunluk.get('kcal', 0)}→{gunluk_kcal:.1f}")
-    if daily_diffs:
-        errors.append(f"Günlük toplam hatası: {', '.join(daily_diffs)}")
+    # ── MAKRO HEDEF AŞIMI KONTROLÜ — gramajları ölçekle ──
+    macro_adjustments = []
+    if user:
+        corrected_ogunler, macro_adjustments = _enforce_macro_targets(
+            corrected_ogunler, user
+        )
+        if macro_adjustments:
+            for adj in macro_adjustments:
+                logger.info(f"Makro hedef düzeltme: {adj}")
+                db_corrections.append(adj)
+
+    # Günlük toplamları yeniden hesapla (düzeltmeler sonrası)
+    gunluk_p = sum(b["p"] for o in corrected_ogunler for b in o.get("besinler", []))
+    gunluk_y = sum(b["y"] for o in corrected_ogunler for b in o.get("besinler", []))
+    gunluk_k = sum(b["k"] for o in corrected_ogunler for b in o.get("besinler", []))
+    gunluk_l = sum(b["l"] for o in corrected_ogunler for b in o.get("besinler", []))
+    gunluk_kcal = sum(b["kcal"] for o in corrected_ogunler for b in o.get("besinler", []))
 
     corrected_totals = {
         "p": round(gunluk_p, 1),
         "y": round(gunluk_y, 1),
         "k": round(gunluk_k, 1),
         "l": round(gunluk_l, 1),
-        "kcal": round(gunluk_kcal, 1),
+        "kcal": round(gunluk_kcal, 0),
     }
 
-    # ── Kullanıcı hedefleriyle karşılaştır ──
+    # ── Kullanıcı hedefleriyle son karşılaştırma (düzeltme sonrası) ──
     if user:
         hedef_kcal = user.get("hedef_kalori")
         hedef_p = user.get("protein_g")
         hedef_y = user.get("yag_g")
-        hedef_k = user.get("karbonhidrat_g")
         hedef_l = user.get("lif_g")
 
-        # Yüzde bazlı tolerans — hedefin %10/%15'i
         if hedef_kcal:
-            kcal_tolerans = float(hedef_kcal) * KALORI_HEDEF_TOLERANS_PCT
-            if abs(gunluk_kcal - float(hedef_kcal)) > kcal_tolerans:
-                fark = gunluk_kcal - float(hedef_kcal)
-                yuksek_dusuk = "yüksek" if fark > 0 else "düşük"
-                warnings.append(
-                    f"Günlük kalori hedeften {yuksek_dusuk}: "
-                    f"{gunluk_kcal:.0f} vs hedef {hedef_kcal} kcal (fark: {fark:+.0f})"
-                )
-        if hedef_p:
-            p_tolerans = float(hedef_p) * PROTEIN_HEDEF_TOLERANS_PCT
-            if abs(gunluk_p - float(hedef_p)) > p_tolerans:
-                fark_p = gunluk_p - float(hedef_p)
-                yuksek_dusuk_p = "yüksek" if fark_p > 0 else "düşük"
-                warnings.append(
-                    f"Günlük protein hedeften {yuksek_dusuk_p}: "
-                    f"{gunluk_p:.0f}g vs hedef {hedef_p}g (fark: {fark_p:+.0f}g, %{abs(fark_p)/float(hedef_p)*100:.0f})"
-                )
-        if hedef_y:
-            y_tolerans = float(hedef_y) * MAKRO_HEDEF_TOLERANS_PCT
-            if abs(gunluk_y - float(hedef_y)) > y_tolerans:
-                warnings.append(
-                    f"Günlük yağ hedeften sapma: {gunluk_y:.0f}g vs hedef {hedef_y}g"
-                )
-        if hedef_l and gunluk_l < float(hedef_l) * 0.7:
-            warnings.append(
-                f"Lif yetersiz: {gunluk_l:.0f}g (hedef: {hedef_l}g)"
-            )
+            kcal_tol = float(hedef_kcal) * KALORI_HEDEF_TOLERANS_PCT
+            fark = gunluk_kcal - float(hedef_kcal)
+            if abs(fark) > kcal_tol:
+                yd = "yüksek" if fark > 0 else "düşük"
+                warnings.append(f"Kalori hedeften {yd}: {gunluk_kcal:.0f} vs {hedef_kcal} kcal ({fark:+.0f})")
 
-        # ── Protein tekrar kontrolü (aynı gün: öğle vs akşam) ──
+        if hedef_p:
+            p_tol = float(hedef_p) * PROTEIN_HEDEF_TOLERANS_PCT
+            fark_p = gunluk_p - float(hedef_p)
+            if abs(fark_p) > p_tol:
+                yd = "yüksek" if fark_p > 0 else "düşük"
+                warnings.append(f"Protein hedeften {yd}: {gunluk_p:.0f}g vs {hedef_p}g ({fark_p:+.0f}g)")
+
+        if hedef_y:
+            y_tol = float(hedef_y) * MAKRO_HEDEF_TOLERANS_PCT
+            fark_y = gunluk_y - float(hedef_y)
+            if abs(fark_y) > y_tol:
+                warnings.append(f"Yağ hedeften sapma: {gunluk_y:.0f}g vs {hedef_y}g")
+
+        if hedef_l and gunluk_l < float(hedef_l) * 0.7:
+            warnings.append(f"Lif yetersiz: {gunluk_l:.0f}g (hedef: {hedef_l}g)")
+
+        # Protein tekrar kontrolü (aynı gün: öğle vs akşam)
         ogun_proteinleri = {}
         for ogun in corrected_ogunler:
             ogun_tip = ogun.get("ogun", "").lower()
@@ -389,11 +536,9 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
         aksam_prot = ogun_proteinleri.get("akşam", set()) | ogun_proteinleri.get("aksam", set())
         tekrar = ogle_prot & aksam_prot
         if tekrar:
-            warnings.append(
-                f"Öğle ve akşam aynı protein kaynağı: {', '.join(tekrar)}"
-            )
+            warnings.append(f"Öğle ve akşam aynı protein kaynağı: {', '.join(tekrar)}")
 
-        # ── Ardışık gün protein tekrarı ──
+        # Ardışık gün protein tekrarı
         if previous_plan:
             prev_proteins = set()
             for ogun in previous_plan.get("ogunler", []):
@@ -406,49 +551,33 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
             current_proteins = ogle_prot | aksam_prot
             ardisik_tekrar = prev_proteins & current_proteins
             if ardisik_tekrar:
-                warnings.append(
-                    f"Dünkü planla aynı protein: {', '.join(ardisik_tekrar)}"
-                )
+                warnings.append(f"Dünkü planla aynı protein: {', '.join(ardisik_tekrar)}")
 
-        # ── Sağlık kuralları ──
+        # Sağlık kuralları
         hastaliklar = user.get("kronik_hastaliklar") or []
         hastalik_str = str(hastaliklar).lower()
 
-        # Safra
         if "safra" in hastalik_str:
             if gunluk_y > 40:
-                errors.append(
-                    f"Safra hastası — günlük yağ {gunluk_y:.0f}g (limit: 40g)"
-                )
+                errors.append(f"Safra hastası — günlük yağ {gunluk_y:.0f}g (limit: 40g)")
             for ogun in corrected_ogunler:
                 ogun_yag = ogun["toplam"]["y"]
                 if ogun_yag > 12:
-                    errors.append(
-                        f"Safra hastası — {ogun.get('ogun', '?')} yağ {ogun_yag:.0f}g (limit: 12g/öğün)"
-                    )
+                    errors.append(f"Safra hastası — {ogun.get('ogun', '?')} yağ {ogun_yag:.0f}g (limit: 12g/öğün)")
 
-        # Diyabet
         if "diyabet" in hastalik_str and hedef_kcal and hedef_kcal > 0:
-            karb_orani = (gunluk_k * 4) / hedef_kcal * 100
+            karb_orani = (gunluk_k * 4) / float(hedef_kcal) * 100
             if karb_orani > 42:
-                warnings.append(
-                    f"Diyabet — karb oranı %{karb_orani:.0f} (ADA önerisi: ≤%40)"
-                )
+                warnings.append(f"Diyabet — karb oranı %{karb_orani:.0f} (ADA: ≤%40)")
 
-        # Protein üst sınır
         yagsiz_kutle = user.get("yagsiz_kutle_kg", 0)
         if yagsiz_kutle and gunluk_p > float(yagsiz_kutle) * 2.2:
-            errors.append(
-                f"Protein aşırı: {gunluk_p:.0f}g (ISSN üst sınır: LBM×2.2 = {float(yagsiz_kutle)*2.2:.0f}g)"
-            )
+            errors.append(f"Protein aşırı: {gunluk_p:.0f}g (ISSN üst sınır: LBM×2.2 = {float(yagsiz_kutle)*2.2:.0f}g)")
 
-        # Yağ alt sınır (%20 minimum)
         if hedef_kcal and hedef_kcal > 0 and "safra" not in hastalik_str:
-            yag_orani = (gunluk_y * 9) / hedef_kcal * 100
+            yag_orani = (gunluk_y * 9) / float(hedef_kcal) * 100
             if yag_orani < 18:
-                errors.append(
-                    f"Yağ oranı çok düşük: %{yag_orani:.0f} (minimum: %20)"
-                )
+                errors.append(f"Yağ oranı çok düşük: %{yag_orani:.0f} (minimum: %20)")
 
     corrected_plan = {
         "ogunler": corrected_ogunler,
@@ -466,6 +595,61 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
 
 
 # ── Özet ve Patch ────────────────────────────────────────────
+
+def patch_ingredient_grams(response_text: str, original_plan: dict, corrected_plan: dict) -> str:
+    """
+    Makro hedef düzeltmesi sonucu gramajı değişen malzemelerin
+    görünen metindeki gramajlarını da güncelle.
+
+    Örnek: "3 yumurta (180g)" → "2 yumurta (120g)" gibi değişiklikleri uygular.
+    """
+    text = response_text
+    orig_ogunler = original_plan.get("ogunler", [])
+    corr_ogunler = corrected_plan.get("ogunler", [])
+
+    for oi, (orig_ogun, corr_ogun) in enumerate(zip(orig_ogunler, corr_ogunler)):
+        orig_besinler = orig_ogun.get("besinler", [])
+        corr_besinler = corr_ogun.get("besinler", [])
+
+        for bi, (orig_b, corr_b) in enumerate(zip(orig_besinler, corr_besinler)):
+            orig_gram = orig_b.get("gram", 0)
+            corr_gram = corr_b.get("gram", 0)
+
+            if orig_gram != corr_gram and orig_gram > 0 and corr_gram > 0:
+                ad = orig_b.get("ad", "")
+
+                # "180g" → "120g" gibi gramaj değişikliklerini yakala
+                # Çeşitli formatlar: "180g", "(180g)", "180 g"
+                pattern_gram = rf'(\b{int(orig_gram)})\s*g\b'
+                replacement_gram = f'{int(corr_gram)}g'
+
+                # Sadece bu besinle ilgili satırdaki gramajı değiştir
+                # Besin adının geçtiği bölgeyi bul ve orada değiştir
+                ad_lower = ad.lower()
+                lines = text.split('\n')
+                for li, line in enumerate(lines):
+                    if ad_lower in line.lower():
+                        new_line = re.sub(pattern_gram, replacement_gram, line, count=1)
+                        if new_line != line:
+                            lines[li] = new_line
+                            break
+                text = '\n'.join(lines)
+
+                # Porsiyon sayısını da güncelle (ör: "3 yumurta" → "2 yumurta")
+                db_match = _find_food_in_db(ad)
+                if db_match:
+                    _, db_entry = db_match
+                    porsiyon_g = db_entry.get("porsiyon_g")
+                    if porsiyon_g and porsiyon_g > 0:
+                        orig_adet = round(orig_gram / porsiyon_g)
+                        corr_adet = round(corr_gram / porsiyon_g)
+                        if orig_adet != corr_adet and orig_adet > 0:
+                            pattern_adet = rf'\b{orig_adet}\s+{re.escape(ad.lower())}'
+                            replacement_adet = f'{corr_adet} {ad.lower()}'
+                            text = re.sub(pattern_adet, replacement_adet, text, count=1, flags=re.IGNORECASE)
+
+    return text
+
 
 def build_correction_summary(result: dict) -> str:
     """Doğrulama sonucunu okunabilir Türkçe özete çevir."""
@@ -500,28 +684,51 @@ def patch_response_totals(response_text: str, corrected_plan: dict) -> str:
     """
     Claude'un yanıtındaki öğün ve günlük toplamları Python'un hesapladığı
     doğru değerlerle değiştir. 2. API çağrısı yapmadan düzeltme.
+
+    Birden fazla format varyantını destekler:
+    - "P: 26g | Y: 20g | K: 48g | Lif: 6g | ~450 kcal"
+    - "**Makro:** P: 26g | Y: 20g | K: 48g | Lif: 6g | ~450 kcal"
+    - "P: 26g | Y: 20g | K: 48g | L: 6g | ~450 kcal"
     """
     text = response_text
 
-    # Her öğün için toplamı düzelt
+    # Her öğün için makro satırını düzelt
     for ogun in corrected_plan.get("ogunler", []):
         t = ogun["toplam"]
+
+        # Çok genel makro satırı pattern — P:XX | Y:XX | K:XX formatını yakala
+        # Her öğün için sırayla ilk eşleşmeyi değiştir
         pattern = (
-            r'(\*\*Öğün toplamı?\s*→\s*)'
-            r'P:\s*[\d.]+g\s*\|\s*Y:\s*[\d.]+g\s*\|\s*K:\s*[\d.]+g\s*\|\s*L:\s*[\d.]+g\s*\|\s*[\d.]+ kcal\*\*'
+            r'(?:\*\*)?(?:Makro:?\s*)?(?:\*\*)?\s*'
+            r'P:\s*[\d.]+\s*g?\s*\|\s*Y:\s*[\d.]+\s*g?\s*\|\s*K:\s*[\d.]+\s*g?\s*\|\s*'
+            r'(?:Lif|L):\s*[\d.]+\s*g?\s*\|\s*~?[\d.,]+\s*kcal'
         )
         replacement = (
-            f'**Öğün toplamı → '
-            f'P: {t["p"]:.1f}g | Y: {t["y"]:.1f}g | K: {t["k"]:.1f}g | L: {t["l"]:.1f}g | {t["kcal"]:.0f} kcal**'
+            f'P: {t["p"]:.0f}g | Y: {t["y"]:.0f}g | K: {t["k"]:.0f}g | '
+            f'L: {t["l"]:.0f}g | {t["kcal"]:.0f} kcal'
         )
         text = re.sub(pattern, replacement, text, count=1)
 
-    # Günlük toplam bölümünü düzelt
+    # Günlük toplam satırını düzelt — çeşitli formatlar
     gt = corrected_plan.get("gunluk_toplam", {})
-    text = re.sub(r'(\*\*Kalori:\*\*)\s*[\d.,]+ kcal', f'**Kalori:** {gt["kcal"]:.0f} kcal', text)
-    text = re.sub(r'(\*\*Protein:\*\*)\s*[\d.,]+g', f'**Protein:** {gt["p"]:.1f}g', text)
-    text = re.sub(r'(\*\*Yağ:\*\*)\s*[\d.,]+g', f'**Yağ:** {gt["y"]:.1f}g', text)
-    text = re.sub(r'(\*\*Karb:\*\*)\s*[\d.,]+g', f'**Karb:** {gt["k"]:.1f}g', text)
-    text = re.sub(r'(\*\*Lif:\*\*)\s*[\d.,]+g', f'**Lif:** {gt["l"]:.1f}g', text)
+
+    # "1.760 kcal | P: 106g ✅ | Y: 58g ✅ | K: 220g ✅ | Lif: 30g ✅" formatı
+    pattern_daily = (
+        r'[\d.,]+\s*kcal\s*\|\s*P:\s*[\d.]+\s*g?\s*[✅❌]?\s*\|\s*'
+        r'Y:\s*[\d.]+\s*g?\s*[✅❌]?\s*\|\s*K:\s*[\d.]+\s*g?\s*[✅❌]?\s*\|\s*'
+        r'(?:Lif|L):\s*[\d.]+\s*g?\s*[✅❌]?'
+    )
+    replacement_daily = (
+        f'{gt["kcal"]:.0f} kcal | P: {gt["p"]:.0f}g | Y: {gt["y"]:.0f}g | '
+        f'K: {gt["k"]:.0f}g | L: {gt["l"]:.0f}g'
+    )
+    text = re.sub(pattern_daily, replacement_daily, text)
+
+    # "**Kalori:** XXX kcal" formatı
+    text = re.sub(r'(\*\*Kalori:\*\*)\s*[\d.,]+\s*kcal', f'**Kalori:** {gt["kcal"]:.0f} kcal', text)
+    text = re.sub(r'(\*\*Protein:\*\*)\s*[\d.,]+\s*g', f'**Protein:** {gt["p"]:.0f}g', text)
+    text = re.sub(r'(\*\*Yağ:\*\*)\s*[\d.,]+\s*g', f'**Yağ:** {gt["y"]:.0f}g', text)
+    text = re.sub(r'(\*\*Karb:\*\*)\s*[\d.,]+\s*g', f'**Karb:** {gt["k"]:.0f}g', text)
+    text = re.sub(r'(\*\*Lif:\*\*)\s*[\d.,]+\s*g', f'**Lif:** {gt["l"]:.0f}g', text)
 
     return text

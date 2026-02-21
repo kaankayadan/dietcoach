@@ -11,6 +11,7 @@ from src.meal_validator import (
     validate_plan,
     build_correction_summary,
     patch_response_totals,
+    patch_ingredient_grams,
 )
 
 logger = logging.getLogger(__name__)
@@ -295,8 +296,12 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                     logger.debug(f"  - {err}")
 
             # Her durumda düzeltilmiş toplamları uygula
-            # (food_database düzeltmeleri + aritmetik düzeltmeler)
             if result.get("corrected_plan"):
+                # Önce gramaj değişikliklerini uygula (ör: 180g→120g)
+                response_text = patch_ingredient_grams(
+                    response_text, plan_json, result["corrected_plan"]
+                )
+                # Sonra makro toplamlarını düzelt
                 response_text = patch_response_totals(
                     response_text, result["corrected_plan"]
                 )

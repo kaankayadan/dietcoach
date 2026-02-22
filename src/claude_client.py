@@ -168,6 +168,8 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         'yarınki plan', 'yarinki plan', 'yarın plan', 'yarin plan',
         'bugünkü plan', 'bugunku plan', 'günlük plan', 'gunluk plan',
         'plan öner', 'plan oner',
+        'ne yesem', 'ne yemeliyim', 'öğün öner', 'ogun oner',
+        'yemek öner', 'yemek oner', 'liste yap', 'liste ver',
     ]
 
     def _is_plan_request(self, message: str) -> bool:
@@ -319,15 +321,25 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         
         # Mevcut mesajı ekle
         messages.append({"role": "user", "content": user_message})
-        
+
         # Model seç
         is_onboarding = user.get('onboarding_step', 0) > 0 and user.get('onboarding_step', 0) < 99
         model = self._select_model(user_message, is_onboarding)
-        
+
         # Plan isteklerinde daha yüksek max_tokens (JSON truncation önleme)
-        # Makro Blok + İlham formatı daha uzun yanıtlar üretir (alternatifler + ilham + rol alanları)
         is_plan = self._is_plan_request(user_message)
-        max_tokens = 10000 if is_plan else 4000
+        max_tokens = 12000 if is_plan else 4000
+
+        # Plan isteğinde hedefleri kullanıcı mesajına ekle (Claude daha iyi dikkat eder)
+        if is_plan and user.get("hedef_kalori"):
+            hedef_prefix = (
+                f"[HEDEFLER: {user.get('hedef_kalori')} kcal | "
+                f"P: {user.get('protein_g', '?')}g | "
+                f"Y: {user.get('yag_g', '?')}g | "
+                f"K: {user.get('karbonhidrat_g', '?')}g | "
+                f"L: {user.get('lif_g', '?')}g]\n\n"
+            )
+            messages[-1]["content"] = hedef_prefix + messages[-1]["content"]
 
         # Claude API çağrısı
         response = self.client.messages.create(

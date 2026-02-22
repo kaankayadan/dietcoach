@@ -82,22 +82,32 @@ BÖLÜM 3 — ALTERNATİFLER: Her öğünde en az 1 alternatif malzeme öner (ma
 
 ### Makro Hedef Hassasiyeti (KRİTİK — EN ÖNEMLİ KURAL)
 
-Günlük toplam makro degerleri hedefi ASLA asmamali. Bu kural ihlal edilemez.
+Günlük toplam makro degerleri hedefe YAKIN olmali. ±%15 tolerans kabul edilir.
 
-- Protein: Hedefi ASLA asma. Hedef 82g ise gunluk toplam 82g civarinda olmali, 90g bile kabul edilemez.
-- Yag: Hedefi ASLA asma. Her malzemenin yag icerigini HESAPLA.
+- Protein: Hedefe yakin tut ama GERCEKCI PORSIYONLARI KORU. Hedef 65g ise 55-75g arasi kabul edilir.
+- Yag: Hedefe yakin tut.
 - Kalori: Hedefin ±%5'i icinde tut.
 - Karb: Kalan kaloriyi doldurur.
 
-HESAPLAMA ZORUNLULUGU: Plan olusturken her malzeme icin food_database degerlerini kullan.
-Ornek: 3 yumurta (180g) = P:23.4g, Y:19.8g, K:2g (100g yumurta: P:13, Y:11, K:1.1)
-Ornek: 25g beyaz peynir = P:4.5g, Y:5.75g (100g beyaz peynir: P:18, Y:23)
-Bu iki malzemenin toplam yagi: 19.8 + 5.75 = 25.55g — bu zaten tek ogun icin cok yuksek olabilir!
+PORSIYON KURALI (KRİTİK — ASLA İHLAL ETME):
+- Et/balik: MINIMUM 100g, MAKSIMUM 180g (ör: 120g tavuk, 150g levrek)
+- Yogurt: MINIMUM 100g, MAKSIMUM 200g
+- Peynir: MINIMUM 20g, MAKSIMUM 50g
+- Baklagil: MINIMUM 80g, MAKSIMUM 200g
+- Yumurta: 1 adet 60g veya 2 adet 120g (40g yumurta diye bir sey YOK)
 
-Her ogun icin makro toplamini hesapla ve gunluk toplamın hedefi asmadigini DOGRULA.
-Asim varsa malzeme gramajlarini azalt veya daha yagsiz/proteinsiz alternatif sec.
+PROTEIN BUTCESI — Plan olusturmadan ONCE hesapla:
+1. Protein hedefini gor (ornegin 65g)
+2. Ekmek, pilav, yogurt gibi yan kaynaklardan ~15-20g protein gelecek
+3. Kalan ~45-50g proteini et/balik/baklagil ile doldur
+4. 65g hedef icin: Gunluk 1-2 protein kaynagi YETER (orn: 150g tavuk + 100g nohut)
+5. 3 ana ogunde de ayri et koymaya calisMA — 1-2 ana ogune yeter
 
-Python tarafinda food_database ile cross-check yapilir ve asim varsa gramajlar otomatik kucultulur. Ama sen de dogru hesapla ki duzeltme gerekmesin.
+MAKRO HESAPLAMA:
+- Python tarafinda food_database ile cross-check yapilir
+- Senin yazdigin makro degerleri Python tarafindan duzeltilir
+- MEALPLAN_JSON icerisinde besin degerlerini YAKLASIK yaz, Python duzeltecek
+- AMA gramajlar ve malzeme secimi SENDEN gelir — gercekci ol
 
 ### Yag Dengeleme Kurali (KRİTİK)
 Her malzemenin yag icerigini food_database degerlerinden hesapla:

@@ -49,6 +49,36 @@ def _calc_kcal(p: float, y: float, k: float) -> float:
     return round(p * 4 + y * 9 + k * 4, 1)
 
 
+def _turkish_to_ascii(text: str) -> str:
+    """
+    Türkçe özel karakterleri ASCII eşlenikleriyle değiştir.
+    "süzme yoğurt yağsız" → "suzme yogurt yagsiz"
+    Claude bazen ASCII Türkçe kullanır, DB ise doğru Türkçe.
+    """
+    table = str.maketrans({
+        'ğ': 'g', 'Ğ': 'G',
+        'ş': 's', 'Ş': 'S',
+        'ç': 'c', 'Ç': 'C',
+        'ö': 'o', 'Ö': 'O',
+        'ü': 'u', 'Ü': 'U',
+        'ı': 'i', 'İ': 'I',
+    })
+    return text.translate(table)
+
+
+# ASCII-normalized DB keys cache (lazy init)
+_ASCII_DB_CACHE: dict = {}
+
+
+def _get_ascii_db_cache() -> dict:
+    """BESIN_DB anahtarlarının ASCII versiyonlarını döndür (cache)."""
+    if not _ASCII_DB_CACHE:
+        for db_key, db_val in BESIN_DB.items():
+            ascii_key = _turkish_to_ascii(db_key)
+            _ASCII_DB_CACHE[ascii_key] = (db_key, db_val)
+    return _ASCII_DB_CACHE
+
+
 def _turkish_desuffix(text: str) -> str:
     """
     Türkçe ünsüz yumuşaması ters çevirimi.
@@ -109,17 +139,33 @@ def _find_food_in_db(ad: str) -> Optional[tuple]:
     if desuffixed != ad_clean and desuffixed in BESIN_DB:
         return desuffixed, BESIN_DB[desuffixed]
 
+    # 1c. ASCII normalizasyon ile tam eşleşme
+    # Claude bazen "suzme yogurt yagsiz" yazar, DB'de "süzme yoğurt yağsız" var
+    ascii_cache = _get_ascii_db_cache()
+    ad_ascii = _turkish_to_ascii(ad_clean)
+    if ad_ascii in ascii_cache:
+        return ascii_cache[ad_ascii]
+
+    # Desuffix sonucu da ASCII ile dene
+    desuffixed_ascii = _turkish_to_ascii(desuffixed) if desuffixed != ad_clean else None
+    if desuffixed_ascii and desuffixed_ascii in ascii_cache:
+        return ascii_cache[desuffixed_ascii]
+
     # 2. DB key besin adında geçiyor mu? (her iki yönde kontrol)
+    # Hem orijinal (Türkçe karakter) hem ASCII normalizasyonla dene
     best_match = None
     best_len = 0
-    # Ayrıca desuffix edilmiş haliyle de dene
     candidates = {ad_clean}
     if desuffixed != ad_clean:
         candidates.add(desuffixed)
 
     for db_key, db_val in BESIN_DB.items():
+        db_key_ascii = _turkish_to_ascii(db_key)
         for cand in candidates:
-            if db_key in cand or cand in db_key:
+            cand_ascii = _turkish_to_ascii(cand)
+            # Hem orijinal hem ASCII versiyonlarda karşılaştır
+            if (db_key in cand or cand in db_key or
+                    db_key_ascii in cand_ascii or cand_ascii in db_key_ascii):
                 # En uzun eşleşmeyi tercih et (daha spesifik)
                 if len(db_key) > best_len:
                     best_match = (db_key, db_val)
@@ -434,7 +480,12 @@ def _scale_besin(besin: dict, new_gram: float) -> dict:
 def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
     """
     Günlük makro toplamlarının hedefi aşmamasını ZORLA.
-    Aşım varsa protein kaynaklarının gramajını orantılı küçült.
+    Aşım varsa protein kaynaklarının gramajını AKILLI şekilde küçült:
+    - Gerçekçi minimum porsiyonları koru (et: 80g, süt ürünü: 80g)
+    - Baklagilleri de protein kaynağı olarak say
+    - Tüm kaynakları aynı oranda küçültmek yerine, en büyük aşım kaynağını
+      öncelikle küçült
+    - Minimum porsiyonun altına asla düşme
 
     Returns: (adjusted_ogunler, adjustments_log)
     """
@@ -450,60 +501,82 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
     p_tolerans = hedef_p * PROTEIN_HEDEF_TOLERANS_PCT
     y_tolerans = hedef_y * MAKRO_HEDEF_TOLERANS_PCT
 
-    # ── Protein aşımı düzeltme (iteratif) ──
-    for iteration in range(3):  # max 3 iterasyon
-        total_p = sum(b["p"] for o in corrected_ogunler for b in o.get("besinler", []))
+    # Kategori bazlı minimum porsiyonlar (gram)
+    MIN_PORTION = {
+        "protein": 80,      # Et, balık, yumurta: min 80g
+        "sut_urunu": 80,    # Yoğurt, peynir: min 80g
+        "baklagil": 60,     # Nohut, mercimek: min 60g
+    }
 
-        if total_p <= hedef_p + p_tolerans:
-            break
+    # ── Protein aşımı düzeltme ──
+    total_p = sum(b["p"] for o in corrected_ogunler for b in o.get("besinler", []))
 
-        if iteration == 0:
-            adjustments.append(
-                f"Protein hedef aşımı: {total_p:.0f}g vs hedef {hedef_p:.0f}g — "
-                f"gramajlar küçültülüyor ({total_p - hedef_p:.0f}g fazla)"
-            )
+    if total_p > hedef_p + p_tolerans:
+        adjustments.append(
+            f"Protein hedef aşımı: {total_p:.0f}g vs hedef {hedef_p:.0f}g — "
+            f"gramajlar küçültülüyor ({total_p - hedef_p:.0f}g fazla)"
+        )
 
-        # Protein kaynağı olan besinleri bul
+        # Protein kaynağı olan besinleri bul (baklagiller dahil)
         protein_besinler = []
         for oi, ogun in enumerate(corrected_ogunler):
             for bi, besin in enumerate(ogun.get("besinler", [])):
                 is_protein_source = False
+                kategori = ""
                 if besin.get("rol") == "protein":
                     is_protein_source = True
-                else:
-                    db_match = _find_food_in_db(besin.get("ad", ""))
-                    if db_match:
-                        _, db_entry = db_match
-                        if db_entry.get("kategori") in ("protein", "sut_urunu"):
-                            is_protein_source = True
+                db_match = _find_food_in_db(besin.get("ad", ""))
+                if db_match:
+                    _, db_entry = db_match
+                    kategori = db_entry.get("kategori", "")
+                    if kategori in ("protein", "sut_urunu", "baklagil"):
+                        is_protein_source = True
                 if is_protein_source and besin.get("p", 0) > 0 and besin.get("gram", 0) > 15:
-                    protein_besinler.append((oi, bi, besin))
+                    min_gram = MIN_PORTION.get(kategori, 30)
+                    protein_besinler.append((oi, bi, besin, kategori, min_gram))
 
-        if not protein_besinler:
-            break
+        if protein_besinler:
+            # Protein kaynaklarını protein yoğunluğuna göre sırala (en yoğun ilk)
+            # Böylece en çok protein veren kaynaklar önce küçültülür
+            protein_besinler.sort(
+                key=lambda x: x[2].get("p", 0) / max(x[2].get("gram", 1), 1),
+                reverse=True,
+            )
 
-        # Protein-dışı kaynaklardan gelen proteini hesapla
-        non_protein_p = total_p - sum(b["p"] for _, _, b in protein_besinler)
-        # Protein kaynaklarından gelmesi gereken miktar
-        target_from_protein_sources = max(0, hedef_p - non_protein_p)
-        current_from_protein_sources = sum(b["p"] for _, _, b in protein_besinler)
+            # Hedef protein: protein kaynaklarından gelmesi gereken miktar
+            non_protein_p = total_p - sum(b["p"] for _, _, b, _, _ in protein_besinler)
+            target_from_sources = max(0, hedef_p - non_protein_p)
+            current_from_sources = sum(b["p"] for _, _, b, _, _ in protein_besinler)
 
-        if current_from_protein_sources <= 0:
-            break
+            if current_from_sources > 0 and target_from_sources < current_from_sources:
+                # Oransal ölçekleme — ama minimum porsiyonlara saygı göster
+                scale = target_from_sources / current_from_sources
+                scale = max(0.5, min(scale, 1.0))  # min %50, max %100
 
-        scale = target_from_protein_sources / current_from_protein_sources
-        scale = max(0.3, min(scale, 1.0))  # min %30, max %100
+                for oi, bi, besin, kategori, min_gram in protein_besinler:
+                    old_gram = besin.get("gram", 0)
+                    if old_gram > 0:
+                        new_gram = round(old_gram * scale)
+                        # Gerçekçi minimum porsiyonu koru — ama sadece orijinal
+                        # porsiyon zaten minimumun üzerindeyse. Küçük porsiyonları
+                        # (ör: 30g peynir) zorlama, bu bilinçli bir seçim olabilir.
+                        if old_gram >= min_gram:
+                            new_gram = max(new_gram, min_gram)
+                        scaled = _scale_besin(besin, new_gram)
+                        corrected_ogunler[oi]["besinler"][bi] = scaled
+                        if old_gram != new_gram:
+                            adjustments.append(
+                                f"  {besin['ad']}: {old_gram:.0f}g → {new_gram:.0f}g"
+                            )
 
-        for oi, bi, besin in protein_besinler:
-            old_gram = besin.get("gram", 0)
-            if old_gram > 0:
-                new_gram = round(old_gram * scale)
-                new_gram = max(new_gram, 10)
-                scaled = _scale_besin(besin, new_gram)
-                corrected_ogunler[oi]["besinler"][bi] = scaled
-                if old_gram != new_gram:
+                # Minimum porsiyonlar nedeniyle hâlâ aşım varsa → kabul et, log'la
+                new_total_p = sum(
+                    b["p"] for o in corrected_ogunler for b in o.get("besinler", [])
+                )
+                if new_total_p > hedef_p + p_tolerans:
                     adjustments.append(
-                        f"  {besin['ad']}: {old_gram:.0f}g → {new_gram:.0f}g"
+                        f"  ⚠ Gerçekçi porsiyonlarla protein {new_total_p:.0f}g "
+                        f"(hedef {hedef_p:.0f}g) — minimum porsiyonlar korundu"
                     )
 
     # ── Yağ aşımı düzeltme ──
@@ -537,7 +610,7 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
             current_fat_sum = sum(b["y"] for _, _, b in yag_besinler)
             if current_fat_sum > 0:
                 needed_reduction = total_y - hedef_y
-                scale = max(0.3, 1 - (needed_reduction / current_fat_sum))
+                scale = max(0.5, 1 - (needed_reduction / current_fat_sum))
 
                 for oi, bi, besin in yag_besinler:
                     old_gram = besin.get("gram", 0)

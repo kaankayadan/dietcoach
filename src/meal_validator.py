@@ -689,40 +689,69 @@ def patch_response_totals(response_text: str, corrected_plan: dict) -> str:
     - "P: 26g | Y: 20g | K: 48g | Lif: 6g | ~450 kcal"
     - "**Makro:** P: 26g | Y: 20g | K: 48g | Lif: 6g | ~450 kcal"
     - "P: 26g | Y: 20g | K: 48g | L: 6g | ~450 kcal"
+
+    Düzeltmeler:
+    - finditer + reverse replace ile her öğün makro satırını DOĞRU sırada düzeltir
+    - Başlık kalorilerini de günceller (ör: "— 440 kcal")
+    - Emoji variation selector'ları tolere eden günlük toplam regex'i
     """
     text = response_text
-
-    # Her öğün için makro satırını düzelt
-    for ogun in corrected_plan.get("ogunler", []):
-        t = ogun["toplam"]
-
-        # Çok genel makro satırı pattern — P:XX | Y:XX | K:XX formatını yakala
-        # Her öğün için sırayla ilk eşleşmeyi değiştir
-        pattern = (
-            r'(?:\*\*)?(?:Makro:?\s*)?(?:\*\*)?\s*'
-            r'P:\s*[\d.]+\s*g?\s*\|\s*Y:\s*[\d.]+\s*g?\s*\|\s*K:\s*[\d.]+\s*g?\s*\|\s*'
-            r'(?:Lif|L):\s*[\d.]+\s*g?\s*\|\s*~?[\d.,]+\s*kcal'
-        )
-        replacement = (
-            f'P: {t["p"]:.0f}g | Y: {t["y"]:.0f}g | K: {t["k"]:.0f}g | '
-            f'L: {t["l"]:.0f}g | {t["kcal"]:.0f} kcal'
-        )
-        text = re.sub(pattern, replacement, text, count=1)
-
-    # Günlük toplam satırını düzelt — çeşitli formatlar
+    ogunler = corrected_plan.get("ogunler", [])
     gt = corrected_plan.get("gunluk_toplam", {})
 
-    # "1.760 kcal | P: 106g ✅ | Y: 58g ✅ | K: 220g ✅ | Lif: 30g ✅" formatı
+    if not gt:
+        return text
+
+    # ── 1. Per-meal macro lines ──────────────────────────────────
+    # Pattern: [optional **Makro:**] P: Xg | Y: Xg | K: Xg | L/Lif: Xg | [~]XXX kcal
+    # Group 1: prefix (ör: "**Makro:** ")
+    meal_macro_pattern = (
+        r'((?:\*\*)?(?:Makro:?\s*)?(?:\*\*)?\s*)'
+        r'P:\s*[\d.]+\s*g?\s*\|\s*Y:\s*[\d.]+\s*g?\s*\|\s*K:\s*[\d.]+\s*g?\s*\|\s*'
+        r'(?:Lif|L):\s*[\d.]+\s*g?\s*\|\s*~?[\d.,]+\s*kcal'
+    )
+
+    matches = list(re.finditer(meal_macro_pattern, text))
+
+    # Sondan başa doğru değiştir — pozisyon kayması olmasın
+    for i in range(min(len(matches), len(ogunler)) - 1, -1, -1):
+        t = ogunler[i]["toplam"]
+        m = matches[i]
+        prefix = m.group(1)  # "**Makro:** " prefix'ini koru
+        replacement = (
+            f'{prefix}P: {t["p"]:.0f}g | Y: {t["y"]:.0f}g | K: {t["k"]:.0f}g | '
+            f'L: {t["l"]:.0f}g | {t["kcal"]:.0f} kcal'
+        )
+        text = text[:m.start()] + replacement + text[m.end():]
+
+    logger.debug(f"patch_response_totals: {len(matches)} makro satırı, {len(ogunler)} öğün eşleşti")
+
+    # ── 2. Header calories (ör: "— 440 kcal") ───────────────────
+    header_pattern = r'—\s*~?[\d.,]+\s*kcal'
+    header_matches = list(re.finditer(header_pattern, text))
+
+    for i in range(min(len(header_matches), len(ogunler)) - 1, -1, -1):
+        t = ogunler[i]["toplam"]
+        m = header_matches[i]
+        replacement = f'— {t["kcal"]:.0f} kcal'
+        text = text[:m.start()] + replacement + text[m.end():]
+
+    logger.debug(f"patch_response_totals: {len(header_matches)} başlık kalorisi güncellendi")
+
+    # ── 3. Daily total line ──────────────────────────────────────
+    # Format: "XXX kcal | P: XXg [emoji/any] | Y: XXg ... | K: XXg ... | L: XXg ..."
+    # [^\|\n]* emoji variation selector'ları ve diğer karakterleri tolere eder
     pattern_daily = (
-        r'[\d.,]+\s*kcal\s*\|\s*P:\s*[\d.]+\s*g?\s*[✅❌]?\s*\|\s*'
-        r'Y:\s*[\d.]+\s*g?\s*[✅❌]?\s*\|\s*K:\s*[\d.]+\s*g?\s*[✅❌]?\s*\|\s*'
-        r'(?:Lif|L):\s*[\d.]+\s*g?\s*[✅❌]?'
+        r'[\d.,]+\s*kcal\s*\|\s*P:\s*[\d.]+\s*g?\s*[^\|\n]*\|\s*'
+        r'Y:\s*[\d.]+\s*g?\s*[^\|\n]*\|\s*K:\s*[\d.]+\s*g?\s*[^\|\n]*\|\s*'
+        r'(?:Lif|L):\s*[\d.]+\s*g?'
     )
     replacement_daily = (
         f'{gt["kcal"]:.0f} kcal | P: {gt["p"]:.0f}g | Y: {gt["y"]:.0f}g | '
         f'K: {gt["k"]:.0f}g | L: {gt["l"]:.0f}g'
     )
-    text = re.sub(pattern_daily, replacement_daily, text)
+    text, daily_count = re.subn(pattern_daily, replacement_daily, text)
+    logger.debug(f"patch_response_totals: günlük toplam {daily_count} kez güncellendi")
 
     # "**Kalori:** XXX kcal" formatı
     text = re.sub(r'(\*\*Kalori:\*\*)\s*[\d.,]+\s*kcal', f'**Kalori:** {gt["kcal"]:.0f} kcal', text)

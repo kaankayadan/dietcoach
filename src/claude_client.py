@@ -298,7 +298,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             )
             # Sonra makro toplamlarını düzelt
             response_text = patch_response_totals(
-                response_text, result["corrected_plan"]
+                response_text, result["corrected_plan"], user
             )
 
         if result["warnings"]:

@@ -1623,7 +1623,7 @@ def build_correction_summary(result: dict) -> str:
     return "\n".join(lines)
 
 
-def patch_response_totals(response_text: str, corrected_plan: dict) -> str:
+def patch_response_totals(response_text: str, corrected_plan: dict, user: dict = None) -> str:
     """
     Claude'un yanıtındaki öğün ve günlük toplamları Python'un hesapladığı
     doğru değerlerle değiştir. 2. API çağrısı yapmadan düzeltme.
@@ -1726,5 +1726,46 @@ def patch_response_totals(response_text: str, corrected_plan: dict) -> str:
     text = re.sub(r'(\*\*Yağ:\*\*)\s*[\d.,]+\s*g', f'**Yağ:** {gt["y"]:.0f}g', text)
     text = re.sub(r'(\*\*Karb:\*\*)\s*[\d.,]+\s*g', f'**Karb:** {gt["k"]:.0f}g', text)
     text = re.sub(r'(\*\*Lif:\*\*)\s*[\d.,]+\s*g', f'**Lif:** {gt["l"]:.0f}g', text)
+
+    # ── 5. NOTLARIM bölümünü doğru özetle değiştir ──────────────
+    if user and user.get("hedef_kalori"):
+        hedef_kcal = float(user["hedef_kalori"])
+        hedef_p = float(user.get("protein_g") or 0)
+        hedef_y = float(user.get("yag_g") or 0)
+        hedef_k = float(user.get("karbonhidrat_g") or 0)
+
+        actual_kcal = gt.get("kcal", 0)
+        actual_p = gt.get("p", 0)
+        actual_y = gt.get("y", 0)
+        actual_k = gt.get("k", 0)
+
+        # Fark hesapla
+        def _durum(actual, hedef, tolerans_pct=0.10):
+            if hedef == 0:
+                return ""
+            fark_pct = (actual - hedef) / hedef
+            if abs(fark_pct) <= tolerans_pct:
+                return "tam hedefte"
+            elif fark_pct > 0:
+                return f"{fark_pct*100:+.0f}% fazla"
+            else:
+                return f"{fark_pct*100:+.0f}%"
+
+        notlar = (
+            f"Kalori: {actual_kcal:.0f} kcal (hedef {hedef_kcal:.0f}) — {_durum(actual_kcal, hedef_kcal, 0.05)}\n"
+            f"Protein: {actual_p:.0f}g (hedef {hedef_p:.0f}g) — {_durum(actual_p, hedef_p)}\n"
+            f"Yag: {actual_y:.0f}g (hedef {hedef_y:.0f}g) — {_durum(actual_y, hedef_y)}\n"
+            f"Karb: {actual_k:.0f}g (hedef {hedef_k:.0f}g) — {_durum(actual_k, hedef_k)}"
+        )
+
+        # NOTLARIM bölümünü bul ve değiştir
+        # Farklı formatlar: "## NOTLARIM", "**NOTLARIM**", "NOTLARIM:"
+        notlarim_pattern = r'((?:##\s*|\*\*)?NOTLARIM[\*:]*)\s*\n(.*?)(?=\n---|\n##|\nSu\s|$)'
+        notlarim_match = re.search(notlarim_pattern, text, re.DOTALL | re.IGNORECASE)
+        if notlarim_match:
+            header = notlarim_match.group(1)
+            replacement = f"{header}\n{notlar}"
+            text = text[:notlarim_match.start()] + replacement + text[notlarim_match.end():]
+            logger.debug("NOTLARIM bölümü doğru özetle değiştirildi")
 
     return text

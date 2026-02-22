@@ -98,6 +98,177 @@ def strip_mealplan_json(response: str) -> str:
     return cleaned.strip()
 
 
+# ── Fallback: Görünür metinden plan çıkarma ───────────────────
+
+# Öğün başlıkları — metinde aranacak
+_MEAL_KEYWORDS = [
+    ("kahvaltı", "kahvalti"),
+    ("kahvalti", "kahvalti"),
+    ("ara öğün", "ara_ogun"),
+    ("ara ogun", "ara_ogun"),
+    ("öğle yemeği", "ogle"),
+    ("öğle", "ogle"),
+    ("ogle", "ogle"),
+    ("akşam yemeği", "aksam"),
+    ("akşam", "aksam"),
+    ("aksam", "aksam"),
+]
+
+# DB key'lerini uzunluğa göre sırala — uzun eşleşmeler öncelikli
+_SORTED_DB_KEYS = sorted(BESIN_DB.keys(), key=len, reverse=True)
+
+
+def _extract_foods_from_line(line: str) -> list:
+    """
+    Bir malzeme satırından (gram, besin_adı) çiftlerini çıkar.
+    Desteklenen formatlar:
+      - "1 yumurta (40g) + 12g beyaz peynir"
+      - "170g tavuk göğsü (ızgara)"
+      - "2 dilim kepekli ekmek (60g)"
+      - "7 adet zeytin (24g)"
+      - "1 yemek kaşığı zeytinyağı (10g)"
+    """
+    results = []
+    # "+" ile ayrılmış parçaları işle
+    parts = re.split(r'\+', line)
+
+    for part in parts:
+        part_lower = part.lower().strip()
+        if not part_lower:
+            continue
+
+        # Gram değeri bul: "(40g)", "40g", "40 g"
+        gram_match = re.search(r'(\d+)\s*g\b', part_lower)
+        if not gram_match:
+            continue
+        gram = float(gram_match.group(1))
+        if gram <= 0:
+            continue
+
+        # Parantez içi, emoji, ve format karakterlerini temizle
+        clean = re.sub(r'\([^)]*\)', '', part_lower)  # parantez içi
+        clean = re.sub(r'\*+', '', clean)               # bold yıldızlar
+        clean = re.sub(r'[→>]', '', clean)               # oklar
+        clean = re.sub(r'\d+\s*g\b', '', clean)          # gram
+        clean = re.sub(r'\d+\s*(adet|dilim|porsiyon|kase|su\s+bardağı|bardak|'
+                        r'yemek\s+kaşığı|çay\s+kaşığı|yk|çk)\s*', '', clean)
+        clean = re.sub(r'(ızgara|haşlama|fırında|buharda|pişmiş|çiğ|kuru|'
+                        r'pişirme|rendel\w+|yağsız|yarım\s+yağlı|tam\s+yağlı)', '', clean)
+        clean = clean.strip(' -,.')
+
+        # DB'den en uzun eşleşmeyi bul
+        best_key = None
+        for db_key in _SORTED_DB_KEYS:
+            if db_key in clean or db_key in part_lower:
+                best_key = db_key
+                break
+
+        if best_key:
+            results.append((best_key, gram))
+
+    return results
+
+
+def fallback_extract_plan_from_text(response_text: str) -> Optional[dict]:
+    """
+    JSON blok yoksa görünür metinden malzeme+gram çıkarıp
+    food_database yapısında plan dict oluştur.
+
+    Bu plan daha sonra validate_plan() ile aynı pipeline'dan geçer:
+    food_database cross-check, makro hedef enforcement, patching.
+    """
+    lines = response_text.split('\n')
+    ogunler = []
+    current_ogun_name = None
+    current_besinler = []
+    in_ingredient_section = False
+
+    for line in lines:
+        line_stripped = line.strip()
+        line_lower = line_stripped.lower()
+
+        # Öğün başlığı mı? (### KAHVALTI, ### ARA ÖĞÜN, vs.)
+        is_header = ('###' in line or '—' in line_lower or '---' in line_stripped)
+        if is_header:
+            for keyword, ogun_key in _MEAL_KEYWORDS:
+                if keyword in line_lower:
+                    # Önceki öğünü kaydet
+                    if current_ogun_name and current_besinler:
+                        ogunler.append({
+                            "ogun": current_ogun_name,
+                            "besinler": current_besinler,
+                            "toplam": {"p": 0, "y": 0, "k": 0, "l": 0, "kcal": 0},
+                        })
+                    current_ogun_name = ogun_key
+                    current_besinler = []
+                    in_ingredient_section = False
+                    break
+
+        if not current_ogun_name:
+            continue
+
+        # "Malzemelerin" bölümünü tespit et
+        if 'malzeme' in line_lower:
+            in_ingredient_section = True
+            continue
+
+        # "Ne yapabilirsin", "Alternatif", "Makro" satırlarında malzeme bölümü biter
+        if any(k in line_lower for k in ['ne yapabilirsin', 'alternatif', 'makro:', 'p:', '💡', '🔄']):
+            in_ingredient_section = False
+            continue
+
+        # Malzeme satırı mı? ("→", ">", "-" ile başlar ve gram değeri içerir)
+        if not in_ingredient_section:
+            continue
+        if not ('→' in line or '>' in line or line_stripped.startswith('-')):
+            continue
+        if 'g' not in line_lower:
+            continue
+
+        # Malzemeleri çıkar
+        foods = _extract_foods_from_line(line)
+        for db_key, gram in foods:
+            db_entry = BESIN_DB[db_key]
+            kategori = db_entry.get("kategori", "")
+            # Rol: kategori → rol mapping
+            rol_map = {
+                "protein": "protein", "sut_urunu": "protein",
+                "karbonhidrat": "karbonhidrat", "baklagil": "karbonhidrat",
+                "sebze": "lif", "meyve": "lif", "kuru_meyve": "karbonhidrat",
+                "yag": "yag", "kuruyemis": "yag",
+            }
+            rol = rol_map.get(kategori, "")
+
+            current_besinler.append({
+                "ad": db_key.title(),
+                "gram": gram,
+                "rol": rol,
+                "p": 0, "y": 0, "k": 0, "l": 0, "kcal": 0,
+            })
+
+    # Son öğünü kaydet
+    if current_ogun_name and current_besinler:
+        ogunler.append({
+            "ogun": current_ogun_name,
+            "besinler": current_besinler,
+            "toplam": {"p": 0, "y": 0, "k": 0, "l": 0, "kcal": 0},
+        })
+
+    if not ogunler:
+        logger.warning("fallback_extract: Metinden hiç öğün çıkarılamadı")
+        return None
+
+    total_foods = sum(len(o["besinler"]) for o in ogunler)
+    logger.info(
+        f"fallback_extract: {len(ogunler)} öğün, {total_foods} besin metinden çıkarıldı"
+    )
+
+    return {
+        "ogunler": ogunler,
+        "gunluk_toplam": {"p": 0, "y": 0, "k": 0, "l": 0, "kcal": 0},
+    }
+
+
 # ── food_database ile kesin hesaplama ─────────────────────────
 
 def _recalculate_besin_from_db(besin: dict) -> dict:
@@ -641,9 +812,9 @@ def patch_ingredient_grams(response_text: str, original_plan: dict, corrected_pl
                     _, db_entry = db_match
                     porsiyon_g = db_entry.get("porsiyon_g")
                     if porsiyon_g and porsiyon_g > 0:
-                        orig_adet = round(orig_gram / porsiyon_g)
-                        corr_adet = round(corr_gram / porsiyon_g)
-                        if orig_adet != corr_adet and orig_adet > 0:
+                        orig_adet = max(1, round(orig_gram / porsiyon_g))
+                        corr_adet = max(1, round(corr_gram / porsiyon_g))
+                        if orig_adet != corr_adet:
                             pattern_adet = rf'\b{orig_adet}\s+{re.escape(ad.lower())}'
                             replacement_adet = f'{corr_adet} {ad.lower()}'
                             text = re.sub(pattern_adet, replacement_adet, text, count=1, flags=re.IGNORECASE)

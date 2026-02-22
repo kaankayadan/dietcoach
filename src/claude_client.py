@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import date, timedelta
 from src.meal_validator import (
     extract_mealplan_json,
+    fallback_extract_plan_from_text,
     validate_plan,
     build_correction_summary,
     patch_response_totals,
@@ -271,6 +272,24 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         except Exception as e:
             logger.warning(f"MEALPLAN_JSON parse hatası: {e}")
             plan_json = None
+
+        # JSON yoksa ve plan isteğiyse → fallback text parser
+        if not plan_json and is_plan:
+            logger.warning(
+                "MEALPLAN_JSON bulunamadı — fallback text parser devreye giriyor"
+            )
+            try:
+                plan_json = fallback_extract_plan_from_text(response_text)
+                if plan_json:
+                    logger.info(
+                        f"Fallback parser başarılı: "
+                        f"{len(plan_json.get('ogunler', []))} öğün çıkarıldı"
+                    )
+                else:
+                    logger.warning("Fallback parser da plan çıkaramadı")
+            except Exception as e:
+                logger.error(f"Fallback parser hatası: {e}")
+                plan_json = None
 
         if plan_json:
             try:

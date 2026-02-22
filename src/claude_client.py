@@ -23,6 +23,13 @@ class ClaudeClient:
     def __init__(self, api_key: str, system_prompt_path: str):
         self.client = anthropic.Anthropic(api_key=api_key)
         self.system_prompt = Path(system_prompt_path).read_text(encoding="utf-8")
+        # Modüler prompt parçaları — duruma göre eklenir
+        modules_dir = Path(system_prompt_path).parent / "modules"
+        self._modules = {}
+        for mod_file in modules_dir.glob("*.md"):
+            content = mod_file.read_text(encoding="utf-8")
+            self._modules[mod_file.stem] = content
+            logger.info(f"Prompt modülü yüklendi: {mod_file.stem} ({len(content.split())} kelime)")
         # Basit sorgular için ucuz model, plan oluşturma için güçlü model
         self.model_light = "claude-haiku-4-5-20251001"    # Besin sorgusu, kısa yanıt
         self.model_heavy = "claude-sonnet-4-5-20250929"   # Plan oluşturma, onboarding
@@ -158,6 +165,32 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
     def _gun_adi(self) -> str:
         gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
         return gunler[date.today().weekday()]
+
+    def _compose_system_prompt(self, user: dict, is_plan: bool, is_onboarding: bool) -> str:
+        """
+        Duruma göre modüler system prompt oluştur.
+        Core prompt her zaman gönderilir, modüller koşullu eklenir.
+        """
+        parts = [self.system_prompt]
+
+        # Plan isteğinde: porsiyon kuralları, yağ dengeleme, örnek format
+        if is_plan and "plan_reference" in self._modules:
+            parts.append(self._modules["plan_reference"])
+
+        # Onboarding sürecinde: adımlar, metadata formatı, hesaplama kuralları
+        if is_onboarding and "onboarding" in self._modules:
+            parts.append(self._modules["onboarding"])
+
+        # Sağlık koşulları varsa: diyet kısıtlamaları, ilaç etkileşimleri
+        has_health = bool(
+            user.get("kronik_hastaliklar")
+            or user.get("sindirim_sorunlari")
+            or user.get("ilaclar")
+        )
+        if has_health and "health_rules" in self._modules:
+            parts.append(self._modules["health_rules"])
+
+        return "\n\n---\n\n".join(parts)
     
     # Plan oluşturma tetikleyicileri
     PLAN_TRIGGERS = [
@@ -306,10 +339,16 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             weekly_water=weekly_water or [],
             todays_water=todays_water or {},
         )
-        
-        # System prompt + context
-        full_system = f"{self.system_prompt}\n\n---\n\n{user_context}"
-        
+
+        # Model ve durumu belirle
+        is_onboarding = user.get('onboarding_step', 0) > 0 and user.get('onboarding_step', 0) < 99
+        model = self._select_model(user_message, is_onboarding)
+        is_plan = self._is_plan_request(user_message)
+
+        # Modüler system prompt + context
+        system_prompt = self._compose_system_prompt(user or {}, is_plan, is_onboarding)
+        full_system = f"{system_prompt}\n\n---\n\n{user_context}"
+
         # Konuşma geçmişi (son 15 mesaj)
         messages = []
         if conversation_history:
@@ -318,16 +357,11 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                     "role": msg["rol"],
                     "content": msg["mesaj"],
                 })
-        
+
         # Mevcut mesajı ekle
         messages.append({"role": "user", "content": user_message})
 
-        # Model seç
-        is_onboarding = user.get('onboarding_step', 0) > 0 and user.get('onboarding_step', 0) < 99
-        model = self._select_model(user_message, is_onboarding)
-
         # Plan isteklerinde daha yüksek max_tokens (JSON truncation önleme)
-        is_plan = self._is_plan_request(user_message)
         max_tokens = 12000 if is_plan else 4000
 
         # Plan isteğinde hedefleri kullanıcı mesajına ekle (Claude daha iyi dikkat eder)

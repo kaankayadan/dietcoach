@@ -79,6 +79,73 @@ def _get_ascii_db_cache() -> dict:
     return _ASCII_DB_CACHE
 
 
+# ── Yaygın besin eşanlamlıları (alias → DB key) ──────────────────────
+# Claude sık kullanır ama DB'de farklı isimle var olan besinler
+FOOD_ALIASES = {
+    # Sebze
+    "taze fasulye": "yeşil fasulye",
+    # Kümes
+    "tavuk": "tavuk göğsü",
+    "tavuk parçalı": "tavuk göğsü",
+    "tavuk parça": "tavuk göğsü",
+    "tavuk eti": "tavuk göğsü",
+    "hindi": "hindi göğsü",
+    "hindi eti": "hindi göğsü",
+    # Kırmızı et
+    "dana eti": "dana kuşbaşı",
+    "et": "dana kuşbaşı",
+    "kuşbaşı": "dana kuşbaşı",
+    "kıyma": "dana kıyma",
+    # Balık
+    "balık": "levrek",
+    # Karb
+    "ekmek": "beyaz ekmek",
+    "pirinç": "pirinç pilavı",
+    "pirinc": "pirinç pilavı",
+    "pilav": "pirinç pilavı",
+    "bulgur": "bulgur pilavı",
+    # Baklagil
+    "fasulye": "kuru fasulye",
+    # Çorba
+    "çorba": "kırmızı mercimek çorbası",
+    "mercimek çorbası": "kırmızı mercimek çorbası",
+    "tavuklu çorba": "tavuklu sebze çorbası",
+    "tavuk çorbası": "tavuklu sebze çorbası",
+    "sebze çorbası": "ezogelin çorbası",
+    # Salata
+    "salata": "yeşil salata",
+    "karışık salata": "yeşil salata",
+    "yeşillik": "yeşil salata",
+    "yesil salata": "yeşil salata",
+    "çoban salata": "çoban salatası",
+}
+
+# ASCII versiyonları da ekle
+_FOOD_ALIASES_ASCII = {}
+for k, v in FOOD_ALIASES.items():
+    _FOOD_ALIASES_ASCII[_turkish_to_ascii(k)] = v
+
+
+def _word_boundary_contains(haystack: str, needle: str) -> bool:
+    """
+    needle, haystack içinde KELIME SINIRINDA mı geçiyor?
+    "zeytin" in "zeytinyağlı taze fasulye" → False (kelime sınırı yok)
+    "taze fasulye" in "zeytinyağlı taze fasulye" → True
+    "yoğurt" in "süzme yoğurt yağsız" → True
+    """
+    start = 0
+    while True:
+        idx = haystack.find(needle, start)
+        if idx == -1:
+            return False
+        before_ok = (idx == 0) or (haystack[idx - 1] == ' ')
+        end_idx = idx + len(needle)
+        after_ok = (end_idx == len(haystack)) or (haystack[end_idx] == ' ')
+        if before_ok and after_ok:
+            return True
+        start = idx + 1
+
+
 def _turkish_desuffix(text: str) -> str:
     """
     Türkçe ünsüz yumuşaması ters çevirimi.
@@ -151,8 +218,34 @@ def _find_food_in_db(ad: str) -> Optional[tuple]:
     if desuffixed_ascii and desuffixed_ascii in ascii_cache:
         return ascii_cache[desuffixed_ascii]
 
-    # 2. DB key besin adında geçiyor mu? (her iki yönde kontrol)
-    # Hem orijinal (Türkçe karakter) hem ASCII normalizasyonla dene
+    # 1d. Alias eşleşme (tam) — "tavuk" → "tavuk göğsü"
+    if ad_clean in FOOD_ALIASES:
+        target = FOOD_ALIASES[ad_clean]
+        if target in BESIN_DB:
+            return target, BESIN_DB[target]
+    if ad_ascii in _FOOD_ALIASES_ASCII:
+        target = _FOOD_ALIASES_ASCII[ad_ascii]
+        if target in BESIN_DB:
+            return target, BESIN_DB[target]
+
+    # 1e. Alias kelime sınırı eşleşme — "zeytinyağlı taze fasulye" → "taze fasulye" alias bulur
+    # En uzun alias eşleşmesini tercih et
+    best_alias = None
+    best_alias_len = 0
+    for alias_key, alias_target in FOOD_ALIASES.items():
+        if len(alias_key) > best_alias_len and _word_boundary_contains(ad_clean, alias_key):
+            best_alias = alias_target
+            best_alias_len = len(alias_key)
+    for alias_key, alias_target in _FOOD_ALIASES_ASCII.items():
+        if len(alias_key) > best_alias_len and _word_boundary_contains(ad_ascii, alias_key):
+            best_alias = alias_target
+            best_alias_len = len(alias_key)
+    if best_alias and best_alias in BESIN_DB:
+        return best_alias, BESIN_DB[best_alias]
+
+    # 2. DB key besin adında geçiyor mu? (kelime sınırı kontrolü ile)
+    # "zeytin" in "zeytinyağlı" → False (kelime sınırı yok)
+    # "yoğurt" in "süzme yoğurt yağsız" → True (kelime sınırı var)
     best_match = None
     best_len = 0
     candidates = {ad_clean}
@@ -163,10 +256,10 @@ def _find_food_in_db(ad: str) -> Optional[tuple]:
         db_key_ascii = _turkish_to_ascii(db_key)
         for cand in candidates:
             cand_ascii = _turkish_to_ascii(cand)
-            # Hem orijinal hem ASCII versiyonlarda karşılaştır
-            if (db_key in cand or cand in db_key or
-                    db_key_ascii in cand_ascii or cand_ascii in db_key_ascii):
-                # En uzun eşleşmeyi tercih et (daha spesifik)
+            if (_word_boundary_contains(cand, db_key) or
+                    _word_boundary_contains(db_key, cand) or
+                    _word_boundary_contains(cand_ascii, db_key_ascii) or
+                    _word_boundary_contains(db_key_ascii, cand_ascii)):
                 if len(db_key) > best_len:
                     best_match = (db_key, db_val)
                     best_len = len(db_key)
@@ -1084,12 +1177,12 @@ def patch_response_totals(response_text: str, corrected_plan: dict) -> str:
     logger.debug(f"patch_response_totals: {len(header_matches)} başlık kalorisi güncellendi")
 
     # ── 3. Daily total line ──────────────────────────────────────
-    # Format: "XXX kcal | P: XXg [emoji/any] | Y: XXg ... | K: XXg ... | L: XXg ..."
-    # [^\|\n]* emoji variation selector'ları ve diğer karakterleri tolere eder
+    # Format: "XXX kcal [✅] | P: XXg [emoji/any] | Y: XXg ... | K: XXg ... | L: XXg ..."
+    # [^\|\n]* emoji/checkmark ve diğer karakterleri tolere eder (kcal ile | arasındaki ✅ dahil)
     pattern_daily = (
-        r'[\d.,]+\s*kcal\s*\|\s*P:\s*[\d.]+\s*g?\s*[^\|\n]*\|\s*'
-        r'Y:\s*[\d.]+\s*g?\s*[^\|\n]*\|\s*K:\s*[\d.]+\s*g?\s*[^\|\n]*\|\s*'
-        r'(?:Lif|L):\s*[\d.]+\s*g?'
+        r'[\d.,]+\s*kcal[^\n|]*\|\s*P:\s*[\d.]+\s*g?[^\|\n]*\|\s*'
+        r'Y:\s*[\d.]+\s*g?[^\|\n]*\|\s*K:\s*[\d.]+\s*g?[^\|\n]*\|\s*'
+        r'(?:Lif|L):\s*[\d.]+\s*g?[^\n]*'
     )
     replacement_daily = (
         f'{gt["kcal"]:.0f} kcal | P: {gt["p"]:.0f}g | Y: {gt["y"]:.0f}g | '

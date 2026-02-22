@@ -236,6 +236,10 @@ BESIN_DB = {
     "karnabahar": {"kalori": 25, "protein": 1.9, "yag": 0.3, "karb": 5, "lif": 2, "kategori": "sebze"},
     # USDA: Lettuce, green leaf
     "yeşil salata": {"kalori": 15, "protein": 1.4, "yag": 0.2, "karb": 2.9, "lif": 1.3, "kategori": "sebze"},
+    # TürkOMP tahmini: Çoban salatası (domates, salatalık, biber, soğan, maydanoz + az zeytinyağı)
+    "çoban salatası": {"kalori": 38, "protein": 1, "yag": 1.8, "karb": 4.5, "lif": 1.2, "kategori": "sebze"},
+    # TürkOMP tahmini: Mevsim salatası (yeşillik ağırlıklı, az yağ)
+    "mevsim salatası": {"kalori": 25, "protein": 1.2, "yag": 0.5, "karb": 4, "lif": 1.5, "kategori": "sebze"},
     # USDA #09037: Avocado, raw
     "avokado": {"kalori": 160, "protein": 2, "yag": 15, "karb": 8.5, "lif": 6.7, "kategori": "sebze"},
     # USDA #11167: Corn, sweet, cooked
@@ -403,6 +407,8 @@ BESIN_DB = {
     "domates çorbası": {"kalori": 30, "protein": 0.8, "yag": 1, "karb": 5, "lif": 0.7, "kategori": "corba"},
     # USDA: Chicken broth with meat
     "tavuk suyu çorba": {"kalori": 25, "protein": 3, "yag": 1, "karb": 1, "lif": 0, "kategori": "corba"},
+    # TürkOMP tahmini: Tavuklu sebze çorbası (havuç, patates, tavuk parça)
+    "tavuklu sebze çorbası": {"kalori": 45, "protein": 4, "yag": 1.5, "karb": 4, "lif": 0.8, "kategori": "corba"},
     # ==========================================
     # YEŞİLLİK & BAHARAT (100g)
     # ==========================================

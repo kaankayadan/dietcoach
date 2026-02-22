@@ -100,6 +100,8 @@ FOOD_ALIASES = {
     "balık": "levrek",
     # Karb
     "ekmek": "beyaz ekmek",
+    "siyah ekmek": "çavdar ekmeği",
+    "esmer ekmek": "çavdar ekmeği",
     "pirinç": "pirinç pilavı",
     "pirinc": "pirinç pilavı",
     "pilav": "pirinç pilavı",

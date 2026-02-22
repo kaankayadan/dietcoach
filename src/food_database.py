@@ -349,6 +349,8 @@ BESIN_DB = {
     "ceviz": {"kalori": 654, "protein": 15, "yag": 65, "karb": 14, "lif": 6.7, "kategori": "kuruyemis"},
     # USDA #12120: Hazelnuts
     "fındık": {"kalori": 628, "protein": 15, "yag": 61, "karb": 17, "lif": 9.7, "kategori": "kuruyemis"},
+    # Hazelnut butter (tahmin — fındıkla neredeyse aynı, biraz daha az lif)
+    "fındık ezmesi": {"kalori": 620, "protein": 15, "yag": 58, "karb": 18, "lif": 5, "kategori": "kuruyemis"},
     # USDA #16090: Peanuts, roasted
     "yer fıstığı": {"kalori": 567, "protein": 26, "yag": 49, "karb": 16, "lif": 8.5, "kategori": "kuruyemis"},
     # USDA #16098: Peanut butter
@@ -367,6 +369,13 @@ BESIN_DB = {
     "keten tohumu": {"kalori": 534, "protein": 18, "yag": 42, "karb": 29, "lif": 27, "kategori": "kuruyemis"},
     # USDA: Sesame seeds
     "susam": {"kalori": 573, "protein": 18, "yag": 50, "karb": 23, "lif": 12, "kategori": "kuruyemis"},
+    # ==========================================
+    # KOMPOZİT YEMEKLER (pişmiş, 100g)
+    # ==========================================
+    # Türk usulü ızgara köfte (dana kıyma ~%60, bulgur ~%25, soğan+baharat ~%15)
+    "köfte": {"kalori": 185, "protein": 17, "yag": 10, "karb": 7, "lif": 1.5, "kategori": "protein"},
+    # Izgara tavuk köfte (tavuk kıyma + ekmek içi + baharat)
+    "tavuk köfte": {"kalori": 155, "protein": 19, "yag": 6, "karb": 6, "lif": 0.5, "kategori": "protein"},
     # ==========================================
     # İŞLENMİŞ ET / ŞARKÜTÜRE (100g)
     # ==========================================

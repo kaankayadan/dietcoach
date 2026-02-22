@@ -958,6 +958,108 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
                                 f"  {besin['ad']}: {old_gram:.0f}g → {new_gram:.0f}g"
                             )
 
+    # ── Kalori dengeleme (karbonhidrat/yağ ölçekleme) ──
+    # Protein ve yağ düzeltildikten sonra kalori hedefini kontrol et.
+    # Karbonhidrat ve yağ kaynaklarını ölçekleyerek kalori dengesini sağla.
+    if hedef_kcal > 0:
+        total_kcal_now = sum(
+            b["kcal"] for o in corrected_ogunler for b in o.get("besinler", [])
+        )
+
+        # Kalori %10'dan fazla DÜŞÜK → porsiyon büyüt
+        if total_kcal_now < hedef_kcal * 0.90:
+            deficit_kcal = hedef_kcal - total_kcal_now
+            adjustments.append(
+                f"Kalori düşük: {total_kcal_now:.0f} vs hedef {hedef_kcal:.0f} kcal "
+                f"({deficit_kcal:.0f} kcal eksik) — porsiyonlar büyütülüyor"
+            )
+
+            # Büyütülebilir besinleri bul (protein kaynakları hariç — zaten ayarlandı)
+            scalable = []
+            SCALE_UP_MAX = {
+                "karbonhidrat": 300, "baklagil": 250,
+                "yag": 25, "kuruyemis": 40, "meyve": 200,
+            }
+            for oi, ogun in enumerate(corrected_ogunler):
+                for bi, besin in enumerate(ogun.get("besinler", [])):
+                    if besin.get("gram", 0) <= 0:
+                        continue
+                    db_match = _find_food_in_db(besin.get("ad", ""))
+                    if not db_match:
+                        continue
+                    _, db_entry = db_match
+                    kategori = db_entry.get("kategori", "")
+                    if kategori in SCALE_UP_MAX:
+                        scalable.append(
+                            (oi, bi, besin, kategori, SCALE_UP_MAX[kategori])
+                        )
+
+            if scalable:
+                current_scalable_kcal = sum(
+                    b["kcal"] for _, _, b, _, _ in scalable
+                )
+                if current_scalable_kcal > 0:
+                    raw_scale = 1 + (deficit_kcal / current_scalable_kcal)
+                    scale = min(raw_scale, 2.0)  # Maks 2x büyütme
+
+                    for oi, bi, besin, kategori, max_g in scalable:
+                        old_gram = besin.get("gram", 0)
+                        new_gram = round(old_gram * scale)
+                        new_gram = min(new_gram, max_g)
+                        if new_gram > old_gram:
+                            scaled = _scale_besin(besin, new_gram)
+                            corrected_ogunler[oi]["besinler"][bi] = scaled
+                            adjustments.append(
+                                f"  {besin['ad']}: {old_gram:.0f}g → "
+                                f"{new_gram:.0f}g"
+                            )
+
+                # Log: kalan eksiklik
+                new_total = sum(
+                    b["kcal"] for o in corrected_ogunler
+                    for b in o.get("besinler", [])
+                )
+                if new_total < hedef_kcal * 0.90:
+                    adjustments.append(
+                        f"  ⚠ Porsiyon sınırlarıyla kalori {new_total:.0f} kcal "
+                        f"(hedef {hedef_kcal:.0f}) — maks porsiyon sınırları korundu"
+                    )
+
+        # Kalori %10'dan fazla YÜKSEK → karb porsiyonlarını küçült
+        elif total_kcal_now > hedef_kcal * 1.10:
+            surplus_kcal = total_kcal_now - hedef_kcal
+            adjustments.append(
+                f"Kalori yüksek: {total_kcal_now:.0f} vs hedef {hedef_kcal:.0f} kcal "
+                f"({surplus_kcal:.0f} kcal fazla) — porsiyonlar küçültülüyor"
+            )
+
+            karb_besinler = []
+            for oi, ogun in enumerate(corrected_ogunler):
+                for bi, besin in enumerate(ogun.get("besinler", [])):
+                    if besin.get("gram", 0) <= 30:
+                        continue
+                    db_match = _find_food_in_db(besin.get("ad", ""))
+                    if db_match:
+                        _, db_entry = db_match
+                        if db_entry.get("kategori") in ("karbonhidrat", "baklagil"):
+                            karb_besinler.append((oi, bi, besin))
+
+            if karb_besinler:
+                current_kcal = sum(b["kcal"] for _, _, b in karb_besinler)
+                if current_kcal > 0:
+                    scale = max(1 - (surplus_kcal / current_kcal), 0.6)
+                    for oi, bi, besin in karb_besinler:
+                        old_gram = besin.get("gram", 0)
+                        new_gram = round(old_gram * scale)
+                        new_gram = max(new_gram, 80)  # min 80g
+                        if new_gram < old_gram:
+                            scaled = _scale_besin(besin, new_gram)
+                            corrected_ogunler[oi]["besinler"][bi] = scaled
+                            adjustments.append(
+                                f"  {besin['ad']}: {old_gram:.0f}g → "
+                                f"{new_gram:.0f}g"
+                            )
+
     # Öğün toplamlarını yeniden hesapla
     for ogun in corrected_ogunler:
         op = sum(b["p"] for b in ogun.get("besinler", []))

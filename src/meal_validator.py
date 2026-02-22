@@ -910,7 +910,16 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
     hedef_k = float(user.get("karbonhidrat_g") or 0)
     hedef_kcal = float(user.get("hedef_kalori") or 0)
 
+    logger.info(
+        f"Makro enforcement başlıyor: hedef P:{hedef_p:.0f}g Y:{hedef_y:.0f}g "
+        f"K:{hedef_k:.0f}g {hedef_kcal:.0f}kcal"
+    )
+
     if not hedef_p or not hedef_y:
+        logger.warning(
+            f"Makro enforcement ATLANIYYOR: protein_g={user.get('protein_g')!r} "
+            f"yag_g={user.get('yag_g')!r} — hedefler eksik!"
+        )
         return corrected_ogunler, []
 
     adjustments = []
@@ -1394,6 +1403,11 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
 
     # ── MAKRO HEDEF AŞIMI KONTROLÜ — gramajları ölçekle ──
     macro_adjustments = []
+    logger.info(
+        f"DB düzeltme sonrası toplamlar: P:{gunluk_p:.0f}g Y:{gunluk_y:.0f}g "
+        f"K:{gunluk_k:.0f}g {gunluk_kcal:.0f}kcal — "
+        f"user keys: {sorted(k for k in (user or {}) if user.get(k) is not None)}"
+    )
     if user:
         corrected_ogunler, macro_adjustments = _enforce_macro_targets(
             corrected_ogunler, user

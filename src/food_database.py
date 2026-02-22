@@ -568,84 +568,78 @@ PROTEIN_SOURCES = {
 }
 
 # ==========================================
+# MEYVE GRUPLARI — Glisemik indeks bazlı
+# 1. Grup (düşük GI) → öncelikli, günlük kullanım
+# 2. Grup (yüksek GI) → sınırlı, haftada 2-3 kez
+# ==========================================
+MEYVE_GRUBU_1 = {
+    "elma", "armut", "portakal", "mandalina", "greyfurt",
+    "çilek", "kivi", "kayısı", "şeftali", "vişne", "erik", "ahududu",
+}
+MEYVE_GRUBU_2 = {
+    "muz", "üzüm", "karpuz", "kavun", "incir",
+    "nar", "kiraz", "ananas", "mango",
+}
+
+# ==========================================
+# İZİN VERİLEN EKMEK TÜRLERİ — Sadece bunlar planlarda kullanılabilir
+# ==========================================
+IZINLI_EKMEKLER = {
+    "tam buğday ekmek", "kepekli ekmek", "çavdar ekmeği",
+    "tam buğday lavaş",
+}
+
+# ==========================================
 # İLHAM TARİFLERİ — Makro değeri taşımaz, sadece hazırlama fikri
-# Kullanıcıya bağlayıcı değil, AI coach'un önerebileceği fikirler
+# Profesyonel diyetisyen yaklaşımına uygun, doğal ve işlenmemiş gıdalar
 # ==========================================
 ILHAM_TARIFLERI = {
     "kahvalti": [
-        {"ad": "Sebzeli Omlet", "malzemeler": ["yumurta", "domates", "biber", "maydanoz", "zeytinyağı"]},
-        {"ad": "Peynirli Tost", "malzemeler": ["tam buğday ekmek", "beyaz peynir", "domates"]},
-        {"ad": "Yulaf Bowl", "malzemeler": ["yulaf ezmesi", "süt", "muz", "badem", "bal"]},
-        {"ad": "Haşlanmış Yumurta Tabağı", "malzemeler": ["yumurta", "beyaz peynir", "domates", "salatalık", "zeytin"]},
-        {"ad": "Lor Peynirli Kahvaltı", "malzemeler": ["lor peyniri", "tam buğday ekmek", "domates", "ceviz", "bal"]},
-        {"ad": "Avokadolu Tost", "malzemeler": ["tam buğday ekmek", "avokado", "yumurta", "kırmızı biber"]},
-        {"ad": "Yoğurtlu Kahvaltı", "malzemeler": ["süzme yoğurt", "yulaf ezmesi kuru", "çilek", "bal", "ceviz"]},
-        {"ad": "Sahanda Yumurta", "malzemeler": ["yumurta", "tereyağı", "domates", "biber"]},
-        {"ad": "Menemen", "malzemeler": ["yumurta", "domates", "biber", "soğan", "zeytinyağı"]},
-        {"ad": "Sucuklu Yumurta", "malzemeler": ["yumurta", "sucuk", "domates"]},
-        {"ad": "Çılbır", "malzemeler": ["yumurta", "yoğurt", "tereyağı", "kırmızı biber"]},
-        {"ad": "Peynir Tabağı", "malzemeler": ["beyaz peynir", "kaşar peynir", "zeytin", "domates", "salatalık", "tam buğday ekmek"]},
-        {"ad": "Kaşarlı Tost", "malzemeler": ["tam buğday ekmek", "kaşar peynir", "domates"]},
-        {"ad": "Tahinli Pekmezli Kahvaltı", "malzemeler": ["tahin", "pekmez", "tam buğday ekmek", "beyaz peynir"]},
-        {"ad": "Çökelekli Kahvaltı", "malzemeler": ["çökelek", "tam buğday ekmek", "domates", "zeytinyağı", "ceviz"]},
-        {"ad": "Simit Kahvaltı", "malzemeler": ["simit", "beyaz peynir", "domates", "çay"]},
-        {"ad": "Pastırmalı Yumurta", "malzemeler": ["yumurta", "pastırma", "domates"]},
-        {"ad": "Bazlama Kahvaltı", "malzemeler": ["bazlama", "lor peyniri", "bal", "ceviz"]},
+        # Standart diyetisyen kahvaltısı: yumurta + lor/peynir + zeytin + ceviz + salata + ekmek
+        {"ad": "Haşlanmış Yumurta Tabağı", "malzemeler": ["yumurta", "lor peyniri", "zeytin", "domates", "salatalık", "marul", "ceviz", "tam buğday ekmek"]},
+        {"ad": "Sebzeli Omlet + Lor", "malzemeler": ["yumurta", "domates", "biber", "maydanoz", "zeytinyağı", "lor peyniri", "zeytin", "marul"]},
+        {"ad": "Menemen + Peynir Tabağı", "malzemeler": ["yumurta", "domates", "biber", "soğan", "zeytinyağı", "lor peyniri", "zeytin", "ceviz"]},
+        {"ad": "Lor Peynirli Kahvaltı", "malzemeler": ["yumurta", "lor peyniri", "tam buğday ekmek", "domates", "turp", "zeytin", "fındık"]},
+        {"ad": "Çökelekli Kahvaltı", "malzemeler": ["yumurta", "çökelek", "tam buğday ekmek", "domates", "salatalık", "zeytin", "ceviz"]},
+        {"ad": "Avokadolu Kahvaltı", "malzemeler": ["yumurta", "avokado", "tam buğday ekmek", "domates", "roka", "zeytin"]},
+        {"ad": "Yoğurtlu Kahvaltı", "malzemeler": ["yumurta", "süzme yoğurt", "ceviz", "domates", "salatalık", "zeytin"]},
+        {"ad": "Peynir Tabağı + Salata", "malzemeler": ["yumurta", "beyaz peynir yarım yağlı", "zeytin", "domates", "salatalık", "marul", "turp", "tam buğday ekmek"]},
     ],
     "ara_ogun": [
-        {"ad": "Meyveli Yoğurt", "malzemeler": ["süzme yoğurt", "çilek", "badem"]},
-        {"ad": "Protein Smoothie", "malzemeler": ["protein tozu", "muz", "süt", "fıstık ezmesi"]},
-        {"ad": "Kuruyemiş Mix", "malzemeler": ["badem", "ceviz", "kuru kayısı"]},
-        {"ad": "Elma + Fıstık Ezmesi", "malzemeler": ["elma", "fıstık ezmesi"]},
-        {"ad": "Lor Peynirli Atıştırmalık", "malzemeler": ["lor peyniri", "domates", "ceviz"]},
-        {"ad": "Muzlu Yulaf", "malzemeler": ["muz", "yulaf ezmesi kuru", "süt", "chia tohumu"]},
-        {"ad": "Humus + Sebze", "malzemeler": ["humus", "havuç", "salatalık"]},
-        {"ad": "Yoğurt + Bal + Ceviz", "malzemeler": ["yoğurt", "bal", "ceviz"]},
-        {"ad": "Fındıklı Yoğurt", "malzemeler": ["süzme yoğurt", "fındık", "bal"]},
-        {"ad": "Kuru Meyve Tabağı", "malzemeler": ["kuru kayısı", "kuru incir", "badem"]},
-        {"ad": "Muz + Badem Ezmesi", "malzemeler": ["muz", "badem ezmesi"]},
-        {"ad": "Pirinç Patlağı + Peynir", "malzemeler": ["pirinç patlağı", "lor peyniri", "domates"]},
-        {"ad": "Meyve Salatası", "malzemeler": ["elma", "portakal", "kivi", "nar"]},
-        {"ad": "Energy Ball", "malzemeler": ["hurma", "badem", "yulaf ezmesi kuru", "chia tohumu"]},
-        {"ad": "Ayran + Peynir", "malzemeler": ["ayran", "beyaz peynir", "salatalık"]},
-        {"ad": "Çikolatalı Muz", "malzemeler": ["muz", "bitter çikolata", "fındık"]},
-        {"ad": "Havuç Çubukları + Humus", "malzemeler": ["havuç", "humus"]},
-        {"ad": "Antep Fıstıklı Yoğurt", "malzemeler": ["süzme yoğurt", "antep fıstığı", "bal"]},
+        # Meyve + yeşilçay + kuruyemiş + opsiyonel süt ürünü
+        {"ad": "Meyve + Yeşilçay", "malzemeler": ["elma", "fındık"]},
+        {"ad": "Meyve + Kuruyemiş", "malzemeler": ["armut", "badem"]},
+        {"ad": "Meyve + Ayran", "malzemeler": ["portakal", "ayran", "ceviz"]},
+        {"ad": "Meyve + Yoğurt + Kuruyemiş", "malzemeler": ["kivi", "yoğurt", "badem"]},
+        {"ad": "Kefir + Meyve", "malzemeler": ["kefir", "elma", "ceviz"]},
+        {"ad": "Havuç + Kuruyemiş", "malzemeler": ["havuç", "badem", "fındık"]},
+        {"ad": "Kuru Meyve + Kuruyemiş", "malzemeler": ["kuru kayısı", "badem"]},
     ],
     "ana_ogun": [
-        {"ad": "Izgara Tavuk + Pilav + Salata", "malzemeler": ["tavuk göğsü", "bulgur pilavı", "yeşil salata", "domates", "zeytinyağı"]},
-        {"ad": "Somon + Patates + Brokoli", "malzemeler": ["somon", "patates", "brokoli", "zeytinyağı"]},
-        {"ad": "Köfte + Bulgur", "malzemeler": ["dana kıyma", "bulgur pilavı", "yeşil salata", "domates"]},
-        {"ad": "Tavuk Salata Bowl", "malzemeler": ["tavuk göğsü", "kinoa", "ıspanak", "avokado", "domates"]},
-        {"ad": "Balık + Sebze Sote", "malzemeler": ["levrek", "kabak", "havuç", "biber", "zeytinyağı"]},
-        {"ad": "Mercimek + Pirinç + Yoğurt", "malzemeler": ["mercimek", "pirinç pilavı", "yoğurt"]},
-        {"ad": "Hindi + Makarna + Sebze", "malzemeler": ["hindi göğsü", "tam buğday makarna", "brokoli", "zeytinyağı"]},
-        {"ad": "Nohut Yemeği + Pirinç", "malzemeler": ["nohut", "pirinç pilavı", "yeşil salata"]},
-        {"ad": "Ton Balıklı Salata", "malzemeler": ["ton balığı konserve", "yeşil salata", "mısır", "domates", "zeytinyağı"]},
-        {"ad": "Patlıcan Musakka + Pilav", "malzemeler": ["patlıcan", "dana kıyma", "pirinç pilavı", "yoğurt"]},
-        {"ad": "Fırında Tavuk But + Sebze", "malzemeler": ["tavuk but", "patates", "havuç", "biber", "zeytinyağı"]},
-        {"ad": "Karnıyarık", "malzemeler": ["patlıcan", "dana kıyma", "domates", "biber", "pirinç pilavı"]},
-        {"ad": "Etli Nohut", "malzemeler": ["dana kuşbaşı", "nohut", "domates", "pirinç pilavı"]},
-        {"ad": "Etli Bezelye", "malzemeler": ["dana kuşbaşı", "bezelye", "patates", "domates"]},
-        {"ad": "Zeytinyağlı Fasulye", "malzemeler": ["yeşil fasulye", "domates", "soğan", "zeytinyağı", "tam buğday ekmek"]},
-        {"ad": "Fırında Somon + Sebze", "malzemeler": ["somon", "brokoli", "havuç", "zeytinyağı"]},
-        {"ad": "Tavuk Şiş + Bulgur", "malzemeler": ["tavuk göğsü", "bulgur pilavı", "biber", "soğan", "domates"]},
-        {"ad": "Mercimek Köftesi + Salata", "malzemeler": ["mercimek", "bulgur pilavı", "yeşil salata", "domates", "nar"]},
-        {"ad": "Barbunya Pilaki", "malzemeler": ["barbunya", "soğan", "havuç", "domates", "zeytinyağı"]},
-        {"ad": "Fırında Köfte + Patates", "malzemeler": ["dana kıyma", "patates", "domates", "biber"]},
-        {"ad": "Kabak Mücver", "malzemeler": ["kabak", "yumurta", "un", "beyaz peynir", "dereotu"]},
-        {"ad": "Karnabahar Graten", "malzemeler": ["karnabahar", "kaşar peynir", "süt", "yumurta"]},
-        {"ad": "Alabalık + Pilav", "malzemeler": ["alabalık", "pirinç pilavı", "yeşil salata", "zeytinyağı"]},
-        {"ad": "Mantarlı Tavuk Sote", "malzemeler": ["tavuk göğsü", "mantar", "biber", "soğan", "zeytinyağı"]},
-        {"ad": "Sebzeli Hindi Güveç", "malzemeler": ["hindi but", "kabak", "patlıcan", "biber", "domates"]},
-        {"ad": "Kuru Fasulye + Pirinç", "malzemeler": ["kuru fasulye", "pirinç pilavı", "turşu", "soğan"]},
-        {"ad": "İmam Bayıldı", "malzemeler": ["patlıcan", "domates", "soğan", "biber", "zeytinyağı"]},
-        {"ad": "Ispanaklı Yumurta + Ekmek", "malzemeler": ["ıspanak", "yumurta", "soğan", "tam buğday ekmek"]},
-        {"ad": "Çipura + Salata", "malzemeler": ["çipura", "yeşil salata", "domates", "zeytinyağı", "tam buğday ekmek"]},
-        {"ad": "Bamya Yemeği + Pilav", "malzemeler": ["bamya", "domates", "soğan", "zeytinyağı", "bulgur pilavı"]},
-        {"ad": "Pırasa Yemeği + Yoğurt", "malzemeler": ["pırasa", "havuç", "pirinç pilavı", "yoğurt", "zeytinyağı"]},
-        {"ad": "Enginar Zeytinyağlı", "malzemeler": ["enginar", "havuç", "bezelye", "zeytinyağı", "tam buğday ekmek"]},
+        # Kırmızı et günleri
+        {"ad": "Izgara Köfte + Salata", "malzemeler": ["köfte", "yeşil salata", "domates", "salatalık", "zeytinyağı"]},
+        {"ad": "Haşlama Dana + Sebze", "malzemeler": ["dana kuşbaşı", "kabak", "brokoli", "yeşil salata", "zeytinyağı"]},
+        # Tavuk/hindi günleri
+        {"ad": "Izgara Tavuk + Salata", "malzemeler": ["tavuk göğsü", "yeşil salata", "domates", "salatalık", "zeytinyağı"]},
+        {"ad": "Fırında Hindi + Sebze", "malzemeler": ["hindi göğsü", "brokoli", "karnabahar", "yeşil salata", "zeytinyağı"]},
+        {"ad": "Tavuk Sote + Salata", "malzemeler": ["tavuk göğsü", "mantar", "biber", "soğan", "zeytinyağı", "yeşil salata"]},
+        # Balık günleri
+        {"ad": "Izgara Balık + Salata", "malzemeler": ["levrek", "roka", "domates", "soğan", "zeytinyağı"]},
+        {"ad": "Fırında Balık + Sebze", "malzemeler": ["çipura", "kabak", "biber", "yeşil salata", "zeytinyağı"]},
         {"ad": "Palamut Izgara + Salata", "malzemeler": ["palamut", "roka", "domates", "soğan", "zeytinyağı"]},
-        {"ad": "Semizotu Yemeği", "malzemeler": ["semizotu", "yoğurt", "pirinç pilavı", "zeytinyağı"]},
+        # Baklagil günleri
+        {"ad": "Nohut Yemeği + Yoğurt + Salata", "malzemeler": ["nohut", "yoğurt", "yeşil salata", "domates", "zeytinyağı"]},
+        {"ad": "Kuru Fasulye + Yoğurt + Salata", "malzemeler": ["kuru fasulye", "yoğurt", "yeşil salata", "zeytinyağı"]},
+        {"ad": "Mercimek + Bulgur + Yoğurt", "malzemeler": ["mercimek", "bulgur pilavı", "yoğurt", "yeşil salata"]},
+        {"ad": "Barbunya Pilaki + Salata", "malzemeler": ["barbunya", "soğan", "domates", "zeytinyağı", "yeşil salata"]},
+        # Sebze ağırlıklı akşam yemekleri
+        {"ad": "Zeytinyağlı Kabak + Yoğurt + Salata", "malzemeler": ["kabak", "soğan", "domates", "zeytinyağı", "yoğurt", "yeşil salata"]},
+        {"ad": "Zeytinyağlı Fasulye + Yoğurt + Salata", "malzemeler": ["yeşil fasulye", "domates", "soğan", "zeytinyağı", "yoğurt", "yeşil salata"]},
+        {"ad": "Zeytinyağlı Pırasa + Yoğurt", "malzemeler": ["pırasa", "zeytinyağı", "yoğurt", "yeşil salata"]},
+        {"ad": "Ispanaklı Yumurta + Salata", "malzemeler": ["ıspanak", "yumurta", "soğan", "zeytinyağı", "yeşil salata"]},
+        {"ad": "Karnabahar Sote + Yoğurt + Salata", "malzemeler": ["karnabahar", "soğan", "zeytinyağı", "yoğurt", "yeşil salata"]},
+        {"ad": "Brokoli Sote + Yoğurt + Salata", "malzemeler": ["brokoli", "soğan", "zeytinyağı", "yoğurt", "yeşil salata"]},
+        {"ad": "İmam Bayıldı + Yoğurt + Salata", "malzemeler": ["patlıcan", "domates", "soğan", "biber", "zeytinyağı", "yoğurt"]},
+        {"ad": "Enginar Zeytinyağlı + Salata", "malzemeler": ["enginar", "bezelye", "zeytinyağı", "yeşil salata"]},
     ],
 }

@@ -15,7 +15,7 @@ import json
 import logging
 from typing import Optional
 
-from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES, BANNED_FOODS
+from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES, BANNED_FOODS, IZINLI_EKMEKLER
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +88,37 @@ def _is_banned_food(ad: str) -> bool:
         if banned_lower in ad_lower or banned_ascii in ad_ascii:
             return True
     return False
+
+
+def _is_unapproved_bread(ad: str) -> bool:
+    """
+    Ekmek türlerini kontrol et — sadece IZINLI_EKMEKLER kabul edilir.
+    İzinsiz ekmek (beyaz ekmek, simit, bazlama vb.) uyarı üretir.
+    """
+    ad_lower = ad.lower().strip()
+    ad_clean = re.sub(r'\(.*?\)', '', ad_lower).strip()
+
+    # DB'de eşleşme bul
+    db_match = _find_food_in_db(ad_clean) if 'ekmek' in ad_lower or 'simit' in ad_lower or 'bazlama' in ad_lower or 'lavaş' in ad_lower or 'lavas' in ad_lower else None
+    if not db_match:
+        return False
+
+    db_key, db_entry = db_match
+    kategori = db_entry.get("kategori", "")
+    if kategori != "karbonhidrat":
+        return False
+
+    # Ekmek/hamur ürünü mü?
+    ekmek_keywords = {"ekmek", "simit", "bazlama", "lavaş", "yufka", "pide ekmeği"}
+    is_bread = any(kw in db_key for kw in ekmek_keywords)
+    if not is_bread:
+        return False
+
+    # İzinli listede mi?
+    if db_key in IZINLI_EKMEKLER:
+        return False
+
+    return True
 
 
 # ASCII-normalized DB keys cache (lazy init)
@@ -1060,6 +1091,12 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                     logger.info(f"food_database düzeltme: {msg}")
             elif gram > 0:
                 warnings.append(f"{ad} besin veritabanında yok — makro değerleri doğrulanamadı")
+
+            # İzinsiz ekmek kontrolü
+            if _is_unapproved_bread(ad):
+                warnings.append(
+                    f"{ogun_adi}/{ad}: İzinsiz ekmek türü — sadece tam tahıllı/ekşi mayalı ekmek kullanılmalı"
+                )
 
             # _db_key'i temizle
             corrected_besin = {k: v for k, v in recalc.items() if k != "_db_key"}

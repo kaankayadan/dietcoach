@@ -109,6 +109,31 @@ class BotHandlers:
             )
             return
 
+        # Eksik hedef tespiti: onboarding tamamlanmış ama kilo/boy/hedef eksik
+        user = ctx["user"]
+        if (
+            user.get("onboarding_step") == 99
+            and not user.get("hedef_kalori")
+        ):
+            eksik = []
+            if not user.get("kilo_kg"):
+                eksik.append("kilo (kg)")
+            if not user.get("boy_cm"):
+                eksik.append("boy (cm)")
+            if eksik:
+                logger.warning(
+                    f"Eksik profil verisi tespit edildi: {', '.join(eksik)} — "
+                    f"kullanıcıya soruluyor"
+                )
+                message = (
+                    f"[SİSTEM NOTU: Kullanıcının profilinde {', '.join(eksik)} bilgisi eksik. "
+                    f"Hedefler hesaplanamıyor. Lütfen önce bu bilgileri sor ve "
+                    f"her biri için metadata üret: "
+                    f'<!--ONBOARDING:{{"step": 4, "field": "boy_cm", "value": X, "valid": true}}--> '
+                    f'<!--ONBOARDING:{{"step": 5, "field": "kilo_kg", "value": X, "valid": true, "complete": true}}-->]\n\n'
+                    f"{message}"
+                )
+
         # Claude'a gönder
         response = await self.claude.chat(
             user_message=message,
@@ -247,18 +272,37 @@ class BotHandlers:
 
         elif should_complete:
             # ── Yeni kullanıcı — onboarding tamamlandı ──
-            logger.info(f"Yeni kullanıcı onboarding tamamlandı")
             merged = self._normalize_data(onboarding_data)
-            targets = calculate_user_targets(merged)
-            if targets:
-                merged.update(targets)
-                logger.info(
-                    f"Hedefler hesaplandı: TDEE={targets.get('tdee')} → "
-                    f"Hedef={targets.get('hedef_kalori')} kcal"
+
+            # KRİTİK: kilo ve boy olmadan onboarding tamamlanamaz
+            has_kilo = merged.get("kilo_kg") is not None
+            has_boy = merged.get("boy_cm") is not None
+            if not has_kilo or not has_boy:
+                eksik = []
+                if not has_kilo:
+                    eksik.append("kilo_kg")
+                if not has_boy:
+                    eksik.append("boy_cm")
+                logger.warning(
+                    f"Onboarding tamamlanamıyor — eksik zorunlu alan: {', '.join(eksik)}. "
+                    f"Mevcut data: {sorted(k for k in merged if merged[k] is not None)}"
+                )
+                # Tamamlama, zorla devam — kilo/boy gelene kadar
+                await self.db.update_onboarding(
+                    telegram_id, latest_step, onboarding_data
                 )
             else:
-                logger.warning("Hedef hesaplanamadı — eksik veri olabilir")
-            await self.db.complete_onboarding(telegram_id, merged)
+                logger.info(f"Yeni kullanıcı onboarding tamamlandı")
+                targets = calculate_user_targets(merged)
+                if targets:
+                    merged.update(targets)
+                    logger.info(
+                        f"Hedefler hesaplandı: TDEE={targets.get('tdee')} → "
+                        f"Hedef={targets.get('hedef_kalori')} kcal"
+                    )
+                else:
+                    logger.warning("Hedef hesaplanamadı — eksik veri olabilir")
+                await self.db.complete_onboarding(telegram_id, merged)
 
         else:
             # ── Yeni kullanıcı — onboarding devam ediyor ──

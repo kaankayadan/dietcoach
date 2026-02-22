@@ -178,6 +178,84 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             return self.model_heavy
         return self.model_light
     
+    def _validate_and_patch_plan(
+        self, response_text: str, is_plan: bool, user: dict
+    ) -> tuple:
+        """
+        Plan yanıtını doğrula ve düzelt.
+
+        Returns: (patched_text, result_dict) — result_dict None olabilir.
+        """
+        # Plan yanıtlarını doğrula
+        try:
+            plan_json = extract_mealplan_json(response_text)
+        except Exception as e:
+            logger.warning(f"MEALPLAN_JSON parse hatası: {e}")
+            plan_json = None
+
+        # JSON yoksa ve plan isteğiyse → fallback text parser
+        if not plan_json and is_plan:
+            logger.warning(
+                "MEALPLAN_JSON bulunamadı — fallback text parser devreye giriyor"
+            )
+            try:
+                plan_json = fallback_extract_plan_from_text(response_text)
+                if plan_json:
+                    logger.info(
+                        f"Fallback parser başarılı: "
+                        f"{len(plan_json.get('ogunler', []))} öğün çıkarıldı"
+                    )
+                else:
+                    logger.warning("Fallback parser da plan çıkaramadı")
+            except Exception as e:
+                logger.error(f"Fallback parser hatası: {e}")
+                plan_json = None
+
+        if not plan_json:
+            return response_text, None
+
+        try:
+            result = validate_plan(plan_json, user or {})
+        except Exception as e:
+            logger.error(f"Plan doğrulama hatası: {e}")
+            return response_text, None
+
+        # food_database düzeltmeleri
+        if result.get("db_corrections"):
+            logger.info(
+                f"food_database düzeltme: {len(result['db_corrections'])} besin düzeltildi"
+            )
+            for c in result["db_corrections"]:
+                logger.info(f"  - {c}")
+
+        if result["errors"]:
+            logger.info(
+                f"Plan doğrulama: {len(result['errors'])} hata — "
+                f"Python tarafında düzeltiliyor (2. API çağrısı yok)"
+            )
+            for err in result["errors"]:
+                logger.debug(f"  - {err}")
+
+        # Her durumda düzeltilmiş toplamları uygula
+        if result.get("corrected_plan"):
+            # Önce gramaj değişikliklerini uygula (ör: 180g→120g)
+            response_text = patch_ingredient_grams(
+                response_text, plan_json, result["corrected_plan"]
+            )
+            # Sonra makro toplamlarını düzelt
+            response_text = patch_response_totals(
+                response_text, result["corrected_plan"]
+            )
+
+        if result["warnings"]:
+            logger.info(
+                f"Plan uyarıları: {len(result['warnings'])} uyarı"
+            )
+            for w in result["warnings"]:
+                logger.debug(f"  - {w}")
+
+        return response_text, result
+
     async def chat(
         self,
         user_message: str,
@@ -266,70 +344,82 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                 else:
                     logger.error("Retry'da da truncation oldu — orijinal yanıt kullanılacak")
 
-        # Plan yanıtlarını doğrula
-        try:
-            plan_json = extract_mealplan_json(response_text)
-        except Exception as e:
-            logger.warning(f"MEALPLAN_JSON parse hatası: {e}")
-            plan_json = None
+        # Plan yanıtını doğrula, düzelt ve gerekirse kalori retry uygula
+        response_text, result = self._validate_and_patch_plan(
+            response_text, is_plan, user
+        )
 
-        # JSON yoksa ve plan isteğiyse → fallback text parser
-        if not plan_json and is_plan:
-            logger.warning(
-                "MEALPLAN_JSON bulunamadı — fallback text parser devreye giriyor"
-            )
-            try:
-                plan_json = fallback_extract_plan_from_text(response_text)
-                if plan_json:
-                    logger.info(
-                        f"Fallback parser başarılı: "
-                        f"{len(plan_json.get('ogunler', []))} öğün çıkarıldı"
+        # ── Kalori kontrolü + otomatik retry ──────────────────────
+        # Düzeltilmiş plan hedeften >%15 düşükse, Claude'a tekrar sor
+        if (
+            is_plan
+            and result
+            and result.get("corrected_totals")
+            and user.get("hedef_kalori")
+        ):
+            hedef_kcal = float(user["hedef_kalori"])
+            actual_kcal = float(result["corrected_totals"]["kcal"])
+            sapma_pct = (hedef_kcal - actual_kcal) / hedef_kcal if hedef_kcal > 0 else 0
+
+            if sapma_pct > 0.15:
+                logger.warning(
+                    f"Kalori hedeften çok düşük: {actual_kcal:.0f} vs {hedef_kcal:.0f} kcal "
+                    f"(-%{sapma_pct*100:.0f}) — retry tetikleniyor"
+                )
+
+                # Retry mesajı: Claude'a açık talimat ver
+                retry_msg = (
+                    f"Oluşturduğun plan toplam {actual_kcal:.0f} kcal çıktı ama "
+                    f"hedefim {hedef_kcal:.0f} kcal. Plan hedef kaloriye çok uzak. "
+                    f"Lütfen aynı formatta yeni bir plan oluştur ama bu sefer "
+                    f"porsiyonları büyüt ve/veya ek besinler ekle — "
+                    f"günlük toplamı {hedef_kcal:.0f} kcal hedefine yaklaştır "
+                    f"(±%5 tolerans kabul edilir). "
+                    f"Protein hedefi: {user.get('protein_g', '?')}g, "
+                    f"Yağ hedefi: {user.get('yag_g', '?')}g, "
+                    f"Karb hedefi: {user.get('karbonhidrat_g', '?')}g."
+                )
+
+                # Mevcut konuşmaya asistan yanıtı ve retry mesajını ekle
+                retry_messages = list(messages)
+                retry_messages.append({"role": "assistant", "content": response_text})
+                retry_messages.append({"role": "user", "content": retry_msg})
+
+                try:
+                    retry_response = self.client.messages.create(
+                        model=model,
+                        max_tokens=max_tokens,
+                        system=full_system,
+                        messages=retry_messages,
                     )
-                else:
-                    logger.warning("Fallback parser da plan çıkaramadı")
-            except Exception as e:
-                logger.error(f"Fallback parser hatası: {e}")
-                plan_json = None
+                    retry_text = retry_response.content[0].text
 
-        if plan_json:
-            try:
-                result = validate_plan(plan_json, user or {})
-            except Exception as e:
-                logger.error(f"Plan doğrulama hatası: {e}")
-                return response_text
+                    # Retry yanıtını da doğrula
+                    retry_text, retry_result = self._validate_and_patch_plan(
+                        retry_text, True, user
+                    )
 
-            # food_database düzeltmeleri
-            if result.get("db_corrections"):
-                logger.info(
-                    f"food_database düzeltme: {len(result['db_corrections'])} besin düzeltildi"
-                )
-                for c in result["db_corrections"]:
-                    logger.info(f"  - {c}")
+                    # Retry daha iyi mi kontrol et
+                    if retry_result and retry_result.get("corrected_totals"):
+                        retry_kcal = float(retry_result["corrected_totals"]["kcal"])
+                        retry_sapma = abs(hedef_kcal - retry_kcal) / hedef_kcal if hedef_kcal > 0 else 1
+                        orig_sapma = abs(hedef_kcal - actual_kcal) / hedef_kcal if hedef_kcal > 0 else 1
 
-            if result["errors"]:
-                logger.info(
-                    f"Plan doğrulama: {len(result['errors'])} hata — "
-                    f"Python tarafında düzeltiliyor (2. API çağrısı yok)"
-                )
-                for err in result["errors"]:
-                    logger.debug(f"  - {err}")
+                        if retry_sapma < orig_sapma:
+                            logger.info(
+                                f"Retry başarılı: {retry_kcal:.0f} kcal "
+                                f"(sapma %{retry_sapma*100:.0f} vs önceki %{orig_sapma*100:.0f})"
+                            )
+                            response_text = retry_text
+                        else:
+                            logger.warning(
+                                f"Retry iyileştirme sağlamadı: {retry_kcal:.0f} kcal "
+                                f"(sapma %{retry_sapma*100:.0f}) — orijinal plan korunuyor"
+                            )
+                    else:
+                        logger.warning("Retry yanıtı doğrulanamadı — orijinal plan korunuyor")
 
-            # Her durumda düzeltilmiş toplamları uygula
-            if result.get("corrected_plan"):
-                # Önce gramaj değişikliklerini uygula (ör: 180g→120g)
-                response_text = patch_ingredient_grams(
-                    response_text, plan_json, result["corrected_plan"]
-                )
-                # Sonra makro toplamlarını düzelt
-                response_text = patch_response_totals(
-                    response_text, result["corrected_plan"]
-                )
-
-            if result["warnings"]:
-                logger.info(
-                    f"Plan uyarıları: {len(result['warnings'])} uyarı"
-                )
-                for w in result["warnings"]:
-                    logger.debug(f"  - {w}")
+                except Exception as e:
+                    logger.error(f"Kalori retry hatası: {e} — orijinal plan korunuyor")
 
         return response_text

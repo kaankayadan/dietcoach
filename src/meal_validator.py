@@ -507,6 +507,56 @@ def fallback_extract_plan_from_text(response_text: str) -> Optional[dict]:
     }
 
 
+# ── Porsiyon-Gram Tutarlılık Kontrolü ─────────────────────────
+
+def _fix_portion_gram_mismatch(besin: dict) -> tuple:
+    """
+    Claude'un "N adet X (Yg)" yazmasındaki gram tutarsızlığını düzelt.
+
+    Örnek: "5 adet ceviz (10g)" → 5 × 4g = 20g olmalı, 10g değil.
+    Eğer besin adında "N adet" veya "N " + besin_adı geçiyorsa ve
+    DB'de porsiyon_g varsa, gram değerini düzelt.
+
+    Returns: (corrected_gram, correction_msg or None)
+    """
+    ad = besin.get("ad", "")
+    gram = besin.get("gram", 0)
+    if not ad or gram <= 0:
+        return gram, None
+
+    db_match = _find_food_in_db(ad)
+    if not db_match:
+        return gram, None
+
+    db_key, db_entry = db_match
+    porsiyon_g = db_entry.get("porsiyon_g")
+    if not porsiyon_g or porsiyon_g <= 0:
+        return gram, None
+
+    # JSON "ad" alanından adet bilgisi çıkar
+    # "5 adet ceviz" → 5, "Ceviz" → None, "2 yumurta" → 2
+    adet_match = re.search(r'(\d+)\s*(?:adet\s+)?', ad.lower())
+    if not adet_match:
+        return gram, None
+
+    adet = int(adet_match.group(1))
+    if adet <= 0 or adet > 20:  # mantıksız adet
+        return gram, None
+
+    expected_gram = round(adet * porsiyon_g)
+    tolerance = max(expected_gram * 0.25, 5)  # %25 veya 5g tolerans
+
+    if abs(gram - expected_gram) > tolerance:
+        msg = (
+            f"{ad}: {adet} adet × {porsiyon_g}g = {expected_gram}g olmalı, "
+            f"Claude {gram:.0f}g yazmış → {expected_gram}g olarak düzeltildi"
+        )
+        logger.info(f"Porsiyon-gram düzeltme: {msg}")
+        return expected_gram, msg
+
+    return gram, None
+
+
 # ── food_database ile kesin hesaplama ─────────────────────────
 
 def _recalculate_besin_from_db(besin: dict) -> dict:
@@ -818,6 +868,14 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                 warnings.append(
                     f"{ogun_adi}/{ad}: geçersiz rol '{rol}'"
                 )
+
+            # Porsiyon-gram tutarlılık kontrolü
+            # "5 adet ceviz (10g)" → 5 × 4g = 20g olmalı
+            corrected_gram, portion_msg = _fix_portion_gram_mismatch(besin)
+            if portion_msg:
+                db_corrections.append(portion_msg)
+                besin = dict(besin)
+                besin["gram"] = corrected_gram
 
             # KRİTİK: food_database'den KESİN hesapla
             recalc = _recalculate_besin_from_db(besin)

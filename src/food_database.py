@@ -120,8 +120,8 @@ BESIN_DB = {
     "süt": {"kalori": 60, "protein": 3.2, "yag": 3.2, "karb": 4.8, "lif": 0, "kategori": "sut_urunu"},
     # TürkOMP: Ayran
     "ayran": {"kalori": 35, "protein": 1.7, "yag": 1.5, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
-    # USDA: Kefir, plain
-    "kefir": {"kalori": 63, "protein": 3.3, "yag": 3.5, "karb": 4.0, "lif": 0, "kategori": "sut_urunu"},
+    # USDA: Kefir, plain (200ml = 200g standart porsiyon)
+    "kefir": {"kalori": 63, "protein": 3.3, "yag": 3.5, "karb": 4.0, "lif": 0, "kategori": "sut_urunu", "porsiyon_g": 200, "porsiyon_ad": "1 bardak"},
     # ==========================================
     # KARBONHİDRAT KAYNAKLARI (pişmiş, 100g)
     # ==========================================
@@ -323,15 +323,15 @@ BESIN_DB = {
     # KURU MEYVELER (100g)
     # ==========================================
     # USDA #09032: Dried apricot
-    "kuru kayısı": {"kalori": 241, "protein": 3.4, "yag": 0.5, "karb": 63, "lif": 7.3, "kategori": "kuru_meyve"},
+    "kuru kayısı": {"kalori": 241, "protein": 3.4, "yag": 0.5, "karb": 63, "lif": 7.3, "kategori": "kuru_meyve", "porsiyon_g": 8, "porsiyon_ad": "1 adet"},
     # USDA #09094: Dried fig
-    "kuru incir": {"kalori": 249, "protein": 3.3, "yag": 0.9, "karb": 64, "lif": 9.8, "kategori": "kuru_meyve"},
+    "kuru incir": {"kalori": 249, "protein": 3.3, "yag": 0.9, "karb": 64, "lif": 9.8, "kategori": "kuru_meyve", "porsiyon_g": 20, "porsiyon_ad": "1 adet"},
     # USDA #09421: Dates, deglet noor
-    "hurma": {"kalori": 277, "protein": 1.8, "yag": 0.2, "karb": 75, "lif": 7, "kategori": "kuru_meyve"},
+    "hurma": {"kalori": 277, "protein": 1.8, "yag": 0.2, "karb": 75, "lif": 7, "kategori": "kuru_meyve", "porsiyon_g": 8, "porsiyon_ad": "1 adet"},
     # USDA #09299: Raisins
     "kuru üzüm": {"kalori": 299, "protein": 3.1, "yag": 0.5, "karb": 79, "lif": 3.7, "kategori": "kuru_meyve"},
     # USDA: Prune (dried plum)
-    "kuru erik": {"kalori": 240, "protein": 2.2, "yag": 0.4, "karb": 64, "lif": 7.1, "kategori": "kuru_meyve"},
+    "kuru erik": {"kalori": 240, "protein": 2.2, "yag": 0.4, "karb": 64, "lif": 7.1, "kategori": "kuru_meyve", "porsiyon_g": 10, "porsiyon_ad": "1 adet"},
     # ==========================================
     # YAĞLAR VE KURUYEMİŞLER (100g)
     # ==========================================
@@ -342,23 +342,23 @@ BESIN_DB = {
     # USDA: Coconut oil
     "hindistan cevizi yağı": {"kalori": 862, "protein": 0, "yag": 100, "karb": 0, "lif": 0, "kategori": "yag", "porsiyon_g": 14, "porsiyon_ad": "1 yemek kaşığı"},
     # USDA #12061: Almonds
-    "badem": {"kalori": 579, "protein": 21, "yag": 50, "karb": 22, "lif": 12.5, "kategori": "kuruyemis"},
+    "badem": {"kalori": 579, "protein": 21, "yag": 50, "karb": 22, "lif": 12.5, "kategori": "kuruyemis", "porsiyon_g": 1.2, "porsiyon_ad": "1 adet"},
     # USDA: Almond butter
-    "badem ezmesi": {"kalori": 614, "protein": 21, "yag": 56, "karb": 19, "lif": 4, "kategori": "kuruyemis"},
+    "badem ezmesi": {"kalori": 614, "protein": 21, "yag": 56, "karb": 19, "lif": 4, "kategori": "kuruyemis", "porsiyon_g": 15, "porsiyon_ad": "1 yemek kaşığı"},
     # USDA #12155: Walnuts
-    "ceviz": {"kalori": 654, "protein": 15, "yag": 65, "karb": 14, "lif": 6.7, "kategori": "kuruyemis"},
+    "ceviz": {"kalori": 654, "protein": 15, "yag": 65, "karb": 14, "lif": 6.7, "kategori": "kuruyemis", "porsiyon_g": 4, "porsiyon_ad": "1 adet iç"},
     # USDA #12120: Hazelnuts
-    "fındık": {"kalori": 628, "protein": 15, "yag": 61, "karb": 17, "lif": 9.7, "kategori": "kuruyemis"},
+    "fındık": {"kalori": 628, "protein": 15, "yag": 61, "karb": 17, "lif": 9.7, "kategori": "kuruyemis", "porsiyon_g": 1.5, "porsiyon_ad": "1 adet"},
     # Hazelnut butter (tahmin — fındıkla neredeyse aynı, biraz daha az lif)
-    "fındık ezmesi": {"kalori": 620, "protein": 15, "yag": 58, "karb": 18, "lif": 5, "kategori": "kuruyemis"},
+    "fındık ezmesi": {"kalori": 620, "protein": 15, "yag": 58, "karb": 18, "lif": 5, "kategori": "kuruyemis", "porsiyon_g": 15, "porsiyon_ad": "1 yemek kaşığı"},
     # USDA #16090: Peanuts, roasted
-    "yer fıstığı": {"kalori": 567, "protein": 26, "yag": 49, "karb": 16, "lif": 8.5, "kategori": "kuruyemis"},
+    "yer fıstığı": {"kalori": 567, "protein": 26, "yag": 49, "karb": 16, "lif": 8.5, "kategori": "kuruyemis", "porsiyon_g": 1, "porsiyon_ad": "1 adet"},
     # USDA #16098: Peanut butter
     "fıstık ezmesi": {"kalori": 588, "protein": 25, "yag": 50, "karb": 20, "lif": 6, "kategori": "kuruyemis"},
     # USDA #12087: Cashews
     "kaju": {"kalori": 553, "protein": 18, "yag": 44, "karb": 30, "lif": 3.3, "kategori": "kuruyemis"},
     # USDA #12151: Pistachios
-    "antep fıstığı": {"kalori": 560, "protein": 20, "yag": 45, "karb": 28, "lif": 10, "kategori": "kuruyemis"},
+    "antep fıstığı": {"kalori": 560, "protein": 20, "yag": 45, "karb": 28, "lif": 10, "kategori": "kuruyemis", "porsiyon_g": 0.6, "porsiyon_ad": "1 adet"},
     # USDA #12036: Sunflower seeds
     "ay çekirdeği": {"kalori": 584, "protein": 21, "yag": 51, "karb": 20, "lif": 8.6, "kategori": "kuruyemis"},
     # USDA #12220: Pumpkin seeds
@@ -515,6 +515,8 @@ PROTEIN_SOURCES = {
     "kalamar": "deniz ürünü",
     "yumurta": "yumurta",
     "tofu": "tofu",
+    "köfte": "kırmızı et",
+    "tavuk köfte": "tavuk",
     "nohut": "baklagil",
     "kuru fasulye": "baklagil",
     "mercimek": "baklagil",

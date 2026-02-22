@@ -744,17 +744,17 @@ def _enforce_minimum_portion(besin: dict) -> tuple:
             return besin, msg
         return besin, None
 
-    # Et/balık: min 100g, maks 180g
+    # Et/balık: min 80g, maks 180g
     if kategori == "protein" and db_key not in ("yumurta", "tofu"):
         new_gram = gram
-        if gram < 100 and gram >= 30:  # 30g altı bilinçli küçük parça olabilir
-            new_gram = 100
+        if gram < 80 and gram >= 30:  # 30g altı bilinçli küçük parça olabilir
+            new_gram = 80
         elif gram > 180:
             new_gram = 180
         if new_gram != gram:
             msg = (
                 f"{ad}: {gram:.0f}g → {new_gram:.0f}g "
-                f"(et/balık porsiyon sınırı: 100-180g)"
+                f"(et/balık porsiyon sınırı: 80-180g)"
             )
             logger.info(f"Minimum porsiyon: {msg}")
             besin = dict(besin)
@@ -917,9 +917,9 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
     p_tolerans = hedef_p * PROTEIN_HEDEF_TOLERANS_PCT
     y_tolerans = hedef_y * MAKRO_HEDEF_TOLERANS_PCT
 
-    # Kategori bazlı minimum porsiyonlar (gram) — plan_reference.md ile uyumlu
+    # Kategori bazlı minimum porsiyonlar (gram) — düşük hedefli kullanıcılar için
     MIN_PORTION = {
-        "protein": 100,     # Et, balık: min 100g, maks 180g
+        "protein": 80,      # Et, balık: min 80g, maks 180g
         "sut_urunu": 80,    # Yoğurt: min 100g, peynir: min 20g (ayrı kontrol)
         "baklagil": 80,     # Nohut, mercimek: min 80g
     }
@@ -967,7 +967,7 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
             if current_from_sources > 0 and target_from_sources < current_from_sources:
                 # Oransal ölçekleme — ama minimum porsiyonlara saygı göster
                 scale = target_from_sources / current_from_sources
-                scale = max(0.5, min(scale, 1.0))  # min %50, max %100
+                scale = max(0.4, min(scale, 1.0))  # min %40, max %100
 
                 for oi, bi, besin, kategori, min_gram in protein_besinler:
                     old_gram = besin.get("gram", 0)

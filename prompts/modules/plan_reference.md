@@ -7,7 +7,7 @@ Gunluk toplam makro degerleri hedefe YAKIN olmali. ±%15 tolerans kabul edilir.
 - Karb: Kalan kaloriyi MUTLAKA doldur — karb her zaman en buyuk makrodur, eksik birakma
 
 ## Porsiyon Kurallari (ASLA IHLAL ETME)
-- Et/balik: MINIMUM 100g, MAKSIMUM 250g (ör: 150g tavuk, 250g balik)
+- Et/balik: MINIMUM 80g, MAKSIMUM 250g (ör: 150g tavuk, 250g balik)
 - Yogurt: MINIMUM 100g, MAKSIMUM 250g (standart: 200ml)
 - Peynir: MINIMUM 20g, MAKSIMUM 60g (lor icin 60-80g, beyaz peynir icin 40-60g)
 - Baklagil: MINIMUM 80g, MAKSIMUM 200g

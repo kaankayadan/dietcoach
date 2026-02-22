@@ -418,6 +418,8 @@ BESIN_DB = {
     "tavuk suyu çorba": {"kalori": 25, "protein": 3, "yag": 1, "karb": 1, "lif": 0, "kategori": "corba"},
     # TürkOMP tahmini: Tavuklu sebze çorbası (havuç, patates, tavuk parça)
     "tavuklu sebze çorbası": {"kalori": 45, "protein": 4, "yag": 1.5, "karb": 4, "lif": 0.8, "kategori": "corba"},
+    # TürkOMP tahmini: Düğün çorbası (et suyu, yumurta-limon, un)
+    "düğün çorbası": {"kalori": 55, "protein": 3.5, "yag": 2.5, "karb": 5, "lif": 0.3, "kategori": "corba"},
     # ==========================================
     # YEŞİLLİK & BAHARAT (100g)
     # ==========================================

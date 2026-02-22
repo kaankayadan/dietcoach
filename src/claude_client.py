@@ -213,9 +213,12 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
     def _select_model(self, message: str, is_onboarding: bool) -> str:
         """Mesaj karmaşıklığına göre model seç — maliyet optimizasyonu."""
         if is_onboarding:
+            logger.info(f"Model seçimi: {self.model_heavy} (onboarding)")
             return self.model_heavy
         if self._is_plan_request(message):
+            logger.info(f"Model seçimi: {self.model_heavy} (plan isteği)")
             return self.model_heavy
+        logger.info(f"Model seçimi: {self.model_light} (genel sorgu)")
         return self.model_light
     
     def _validate_and_patch_plan(
@@ -384,6 +387,42 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         )
 
         response_text = response.content[0].text
+
+        # ── Haiku plan ürettiyse → Sonnet'e yükselt ──────────────────
+        # Kullanıcı mesajı plan trigger'larına uymamış ama Haiku plan
+        # yapısı üretmiş olabilir. Bu durumda Sonnet ile yeniden üret.
+        if model == self.model_light and response_has_meal_structure(response_text):
+            logger.warning(
+                "Haiku plan yapısı üretti ama plan isteği algılanmamıştı — "
+                "Sonnet ile yeniden üretiliyor"
+            )
+            model = self.model_heavy
+            is_plan = True
+            max_tokens = 12000
+            # System prompt'u plan modülleri ile yeniden oluştur
+            system_prompt = self._compose_system_prompt(user or {}, True, is_onboarding)
+            full_system = f"{system_prompt}\n\n---\n\n{user_context}"
+            # Hedef bilgisini ekle
+            if user.get("hedef_kalori") and not any(
+                "[HEDEFLER:" in m.get("content", "") for m in messages
+            ):
+                hedef_prefix = (
+                    f"[HEDEFLER: {user.get('hedef_kalori')} kcal | "
+                    f"P: {user.get('protein_g', '?')}g | "
+                    f"Y: {user.get('yag_g', '?')}g | "
+                    f"K: {user.get('karbonhidrat_g', '?')}g | "
+                    f"L: {user.get('lif_g', '?')}g]\n\n"
+                )
+                messages[-1]["content"] = hedef_prefix + messages[-1]["content"]
+
+            response = self.client.messages.create(
+                model=model,
+                max_tokens=max_tokens,
+                system=full_system,
+                messages=messages,
+            )
+            response_text = response.content[0].text
+            logger.info(f"Sonnet ile yeniden üretim tamamlandı")
 
         # Truncation kontrolü — max_tokens'a ulaşıldıysa JSON eksik olabilir
         if response.stop_reason == "max_tokens":

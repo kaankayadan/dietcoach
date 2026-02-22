@@ -114,6 +114,7 @@ FOOD_ALIASES = {
     "tavuklu çorba": "tavuklu sebze çorbası",
     "tavuk çorbası": "tavuklu sebze çorbası",
     "sebze çorbası": "ezogelin çorbası",
+    "düğün çorba": "düğün çorbası",
     # Salata
     "salata": "yeşil salata",
     "karışık salata": "yeşil salata",
@@ -557,6 +558,121 @@ def _fix_portion_gram_mismatch(besin: dict) -> tuple:
     return gram, None
 
 
+def _enforce_minimum_portion(besin: dict) -> tuple:
+    """
+    Minimum porsiyon kurallarını uygula (plan_reference.md ile uyumlu).
+
+    Kurallar:
+    - Et/balık: min 100g, maks 180g
+    - Yoğurt: min 100g, maks 200g
+    - Peynir: min 20g, maks 50g
+    - Baklagil: min 80g, maks 200g
+    - Yumurta: 60g katları olmalı (1=60g, 2=120g, 3=180g)
+
+    Returns: (corrected_besin, correction_msg or None)
+    """
+    ad = besin.get("ad", "")
+    gram = besin.get("gram", 0)
+    if not ad or gram <= 0:
+        return besin, None
+
+    db_match = _find_food_in_db(ad)
+    if not db_match:
+        return besin, None
+
+    db_key, db_entry = db_match
+    kategori = db_entry.get("kategori", "")
+
+    # Yumurta özel kuralı: 60g katları olmalı
+    if db_key == "yumurta":
+        if gram % 60 != 0:
+            # En yakın 60g katına yuvarla (en az 60g)
+            adet = max(1, round(gram / 60))
+            new_gram = adet * 60
+            msg = (
+                f"{ad}: yumurta {gram:.0f}g → {new_gram:.0f}g "
+                f"({adet} adet × 60g) olarak düzeltildi"
+            )
+            logger.info(f"Minimum porsiyon: {msg}")
+            besin = dict(besin)
+            besin["gram"] = new_gram
+            return besin, msg
+        return besin, None
+
+    # Et/balık: min 100g, maks 180g
+    if kategori == "protein" and db_key not in ("yumurta", "tofu"):
+        new_gram = gram
+        if gram < 100 and gram >= 30:  # 30g altı bilinçli küçük parça olabilir
+            new_gram = 100
+        elif gram > 180:
+            new_gram = 180
+        if new_gram != gram:
+            msg = (
+                f"{ad}: {gram:.0f}g → {new_gram:.0f}g "
+                f"(et/balık porsiyon sınırı: 100-180g)"
+            )
+            logger.info(f"Minimum porsiyon: {msg}")
+            besin = dict(besin)
+            besin["gram"] = new_gram
+            return besin, msg
+
+    # Yoğurt: min 100g, maks 200g (peynirler hariç)
+    if kategori == "sut_urunu":
+        is_yogurt = any(k in db_key for k in ("yoğurt", "yogurt", "kefir", "ayran", "cacık"))
+        is_peynir = any(k in db_key for k in ("peynir", "kaşar", "lor", "çökelek", "tulum", "feta", "hellim", "mozzarella", "ricotta", "labne"))
+
+        if is_yogurt:
+            new_gram = gram
+            if gram < 100 and gram >= 30:
+                new_gram = 100
+            elif gram > 200:
+                new_gram = 200
+            if new_gram != gram:
+                msg = (
+                    f"{ad}: {gram:.0f}g → {new_gram:.0f}g "
+                    f"(yoğurt porsiyon sınırı: 100-200g)"
+                )
+                logger.info(f"Minimum porsiyon: {msg}")
+                besin = dict(besin)
+                besin["gram"] = new_gram
+                return besin, msg
+
+        elif is_peynir:
+            new_gram = gram
+            if gram < 20 and gram >= 5:
+                new_gram = 20
+            elif gram > 50:
+                new_gram = 50
+            if new_gram != gram:
+                msg = (
+                    f"{ad}: {gram:.0f}g → {new_gram:.0f}g "
+                    f"(peynir porsiyon sınırı: 20-50g)"
+                )
+                logger.info(f"Minimum porsiyon: {msg}")
+                besin = dict(besin)
+                besin["gram"] = new_gram
+                return besin, msg
+
+    # Baklagil: min 80g, maks 200g
+    if kategori == "baklagil":
+        new_gram = gram
+        if gram < 80 and gram >= 30:
+            new_gram = 80
+        elif gram > 200:
+            new_gram = 200
+        if new_gram != gram:
+            msg = (
+                f"{ad}: {gram:.0f}g → {new_gram:.0f}g "
+                f"(baklagil porsiyon sınırı: 80-200g)"
+            )
+            logger.info(f"Minimum porsiyon: {msg}")
+            besin = dict(besin)
+            besin["gram"] = new_gram
+            return besin, msg
+
+    return besin, None
+
+
 # ── food_database ile kesin hesaplama ─────────────────────────
 
 def _recalculate_besin_from_db(besin: dict) -> dict:
@@ -656,11 +772,11 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
     p_tolerans = hedef_p * PROTEIN_HEDEF_TOLERANS_PCT
     y_tolerans = hedef_y * MAKRO_HEDEF_TOLERANS_PCT
 
-    # Kategori bazlı minimum porsiyonlar (gram)
+    # Kategori bazlı minimum porsiyonlar (gram) — plan_reference.md ile uyumlu
     MIN_PORTION = {
-        "protein": 80,      # Et, balık, yumurta: min 80g
-        "sut_urunu": 80,    # Yoğurt, peynir: min 80g
-        "baklagil": 60,     # Nohut, mercimek: min 60g
+        "protein": 100,     # Et, balık: min 100g, maks 180g
+        "sut_urunu": 80,    # Yoğurt: min 100g, peynir: min 20g (ayrı kontrol)
+        "baklagil": 80,     # Nohut, mercimek: min 80g
     }
 
     # ── Protein aşımı düzeltme ──
@@ -876,6 +992,13 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
                 db_corrections.append(portion_msg)
                 besin = dict(besin)
                 besin["gram"] = corrected_gram
+
+            # Minimum porsiyon kontrolü — plan_reference.md kuralları
+            # Et/balık: min 100g, maks 180g | Yoğurt: min 100g | Peynir: min 20g
+            # Baklagil: min 80g | Yumurta: 60g katları
+            besin, min_msg = _enforce_minimum_portion(besin)
+            if min_msg:
+                db_corrections.append(min_msg)
 
             # KRİTİK: food_database'den KESİN hesapla
             recalc = _recalculate_besin_from_db(besin)

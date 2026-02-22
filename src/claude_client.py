@@ -462,30 +462,50 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             actual_kcal = float(result["corrected_totals"]["kcal"])
             sapma_pct = (hedef_kcal - actual_kcal) / hedef_kcal if hedef_kcal > 0 else 0
 
-            if sapma_pct > 0.10:
+            # Kalori düşükse VEYA yüksekse retry tetikle
+            if sapma_pct > 0.10 or sapma_pct < -0.15:
+                yuksek_mi = sapma_pct < 0
+                yon = "yüksek" if yuksek_mi else "düşük"
                 logger.warning(
-                    f"Kalori hedeften çok düşük: {actual_kcal:.0f} vs {hedef_kcal:.0f} kcal "
-                    f"(-%{sapma_pct*100:.0f}) — retry tetikleniyor"
+                    f"Kalori hedeften çok {yon}: {actual_kcal:.0f} vs {hedef_kcal:.0f} kcal "
+                    f"({sapma_pct*100:+.0f}%) — retry tetikleniyor"
                 )
 
                 # Retry mesajı: Claude'a açık talimat ver
                 actual_p = result["corrected_totals"]["p"]
                 actual_y = result["corrected_totals"]["y"]
                 actual_k = result["corrected_totals"]["k"]
-                retry_msg = (
-                    f"Oluşturduğun plan: {actual_kcal:.0f} kcal "
-                    f"(P:{actual_p:.0f}g Y:{actual_y:.0f}g K:{actual_k:.0f}g). "
-                    f"Hedefler: {hedef_kcal:.0f} kcal "
-                    f"(P:{user.get('protein_g', '?')}g "
-                    f"Y:{user.get('yag_g', '?')}g "
-                    f"K:{user.get('karbonhidrat_g', '?')}g). "
-                    f"Plan hedeflere çok uzak. "
-                    f"Lütfen aynı formatta yeni bir plan oluştur: "
-                    f"karbonhidrat kaynaklarının porsiyonlarını büyüt "
-                    f"(bulgur 200g, baklagil 200g gibi), "
-                    f"protein bütçesine dikkat et (günlük TEK ana et porsiyonu), "
-                    f"günlük toplamı {hedef_kcal:.0f} kcal ±%5 hedefine yaklaştır."
-                )
+
+                if yuksek_mi:
+                    retry_msg = (
+                        f"Oluşturduğun plan: {actual_kcal:.0f} kcal "
+                        f"(P:{actual_p:.0f}g Y:{actual_y:.0f}g K:{actual_k:.0f}g). "
+                        f"Hedefler: {hedef_kcal:.0f} kcal "
+                        f"(P:{user.get('protein_g', '?')}g "
+                        f"Y:{user.get('yag_g', '?')}g "
+                        f"K:{user.get('karbonhidrat_g', '?')}g). "
+                        f"Plan hedeflerin ÇOK üstünde ({actual_kcal - hedef_kcal:.0f} kcal fazla). "
+                        f"Lütfen aynı formatta yeni bir plan oluştur: "
+                        f"porsiyonları küçült (et/balık 80-120g, baklagil 80-120g), "
+                        f"zeytinyağı miktarını azalt (günde toplam 2 yemek kaşığı maks), "
+                        f"protein bütçesine dikkat et (günlük TEK ana et porsiyonu), "
+                        f"günlük toplamı {hedef_kcal:.0f} kcal ±%5 hedefine yaklaştır."
+                    )
+                else:
+                    retry_msg = (
+                        f"Oluşturduğun plan: {actual_kcal:.0f} kcal "
+                        f"(P:{actual_p:.0f}g Y:{actual_y:.0f}g K:{actual_k:.0f}g). "
+                        f"Hedefler: {hedef_kcal:.0f} kcal "
+                        f"(P:{user.get('protein_g', '?')}g "
+                        f"Y:{user.get('yag_g', '?')}g "
+                        f"K:{user.get('karbonhidrat_g', '?')}g). "
+                        f"Plan hedeflere çok uzak. "
+                        f"Lütfen aynı formatta yeni bir plan oluştur: "
+                        f"karbonhidrat kaynaklarının porsiyonlarını büyüt "
+                        f"(bulgur 200g, baklagil 200g gibi), "
+                        f"protein bütçesine dikkat et (günlük TEK ana et porsiyonu), "
+                        f"günlük toplamı {hedef_kcal:.0f} kcal ±%5 hedefine yaklaştır."
+                    )
 
                 # Mevcut konuşmaya asistan yanıtı ve retry mesajını ekle
                 retry_messages = list(messages)

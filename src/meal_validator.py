@@ -1010,7 +1010,7 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
             f"yağ kaynakları küçültülüyor ({fazla_y:.0f}g fazla)"
         )
 
-        # Yağ yoğun besinleri bul (zeytinyağı, tereyağı, kuruyemişler)
+        # Yağ yoğun besinleri bul — önce saf yağ/kuruyemiş, sonra yağ yoğun süt ürünleri
         yag_besinler = []
         for oi, ogun in enumerate(corrected_ogunler):
             for bi, besin in enumerate(ogun.get("besinler", [])):
@@ -1021,7 +1021,11 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
                     db_match = _find_food_in_db(besin.get("ad", ""))
                     if db_match:
                         _, db_entry = db_match
-                        if db_entry.get("kategori") in ("yag", "kuruyemis"):
+                        kat = db_entry.get("kategori", "")
+                        if kat in ("yag", "kuruyemis"):
+                            is_fat_source = True
+                        # Yağ oranı yüksek süt ürünleri de hedefle (kefir, yoğurt)
+                        elif kat == "sut_urunu" and besin.get("y", 0) > 3:
                             is_fat_source = True
                 if is_fat_source and besin.get("y", 0) > 0:
                     yag_besinler.append((oi, bi, besin))
@@ -1030,7 +1034,7 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
             current_fat_sum = sum(b["y"] for _, _, b in yag_besinler)
             if current_fat_sum > 0:
                 needed_reduction = total_y - hedef_y
-                scale = max(0.5, 1 - (needed_reduction / current_fat_sum))
+                scale = max(0.3, 1 - (needed_reduction / current_fat_sum))
 
                 for oi, bi, besin in yag_besinler:
                     old_gram = besin.get("gram", 0)
@@ -1061,11 +1065,20 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
             )
 
             # Büyütülebilir besinleri bul (protein kaynakları hariç — zaten ayarlandı)
+            # Yağ hedefin üstündeyse yağ/kuruyemiş büyütme!
+            total_y_now = sum(
+                b["y"] for o in corrected_ogunler for b in o.get("besinler", [])
+            )
+            yag_asmis = total_y_now >= hedef_y
+
             scalable = []
             SCALE_UP_MAX = {
                 "karbonhidrat": 300, "baklagil": 250,
-                "yag": 25, "kuruyemis": 40, "meyve": 200,
+                "meyve": 200,
             }
+            if not yag_asmis:
+                SCALE_UP_MAX["yag"] = 25
+                SCALE_UP_MAX["kuruyemis"] = 40
             for oi, ogun in enumerate(corrected_ogunler):
                 for bi, besin in enumerate(ogun.get("besinler", [])):
                     if besin.get("gram", 0) <= 0:
@@ -1111,7 +1124,7 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
                         f"(hedef {hedef_kcal:.0f}) — maks porsiyon sınırları korundu"
                     )
 
-        # Kalori %10'dan fazla YÜKSEK → karb porsiyonlarını küçült
+        # Kalori %10'dan fazla YÜKSEK → tüm küçültülebilir porsiyonları küçült
         elif total_kcal_now > hedef_kcal * 1.10:
             surplus_kcal = total_kcal_now - hedef_kcal
             adjustments.append(
@@ -1119,25 +1132,35 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
                 f"({surplus_kcal:.0f} kcal fazla) — porsiyonlar küçültülüyor"
             )
 
-            karb_besinler = []
+            # Tüm küçültülebilir besinleri bul (protein hariç — zaten ayarlandı)
+            SCALE_DOWN_MIN = {
+                "karbonhidrat": 50, "baklagil": 50,
+                "meyve": 80, "sut_urunu": 50,
+                "yag": 3, "kuruyemis": 5,
+                "sebze": 80,
+            }
+            scalable_besinler = []
             for oi, ogun in enumerate(corrected_ogunler):
                 for bi, besin in enumerate(ogun.get("besinler", [])):
-                    if besin.get("gram", 0) <= 30:
+                    if besin.get("gram", 0) <= 20:
                         continue
                     db_match = _find_food_in_db(besin.get("ad", ""))
                     if db_match:
                         _, db_entry = db_match
-                        if db_entry.get("kategori") in ("karbonhidrat", "baklagil"):
-                            karb_besinler.append((oi, bi, besin))
+                        kat = db_entry.get("kategori", "")
+                        if kat in SCALE_DOWN_MIN:
+                            scalable_besinler.append(
+                                (oi, bi, besin, kat, SCALE_DOWN_MIN[kat])
+                            )
 
-            if karb_besinler:
-                current_kcal = sum(b["kcal"] for _, _, b in karb_besinler)
+            if scalable_besinler:
+                current_kcal = sum(b["kcal"] for _, _, b, _, _ in scalable_besinler)
                 if current_kcal > 0:
-                    scale = max(1 - (surplus_kcal / current_kcal), 0.6)
-                    for oi, bi, besin in karb_besinler:
+                    scale = max(1 - (surplus_kcal / current_kcal), 0.4)
+                    for oi, bi, besin, kat, min_g in scalable_besinler:
                         old_gram = besin.get("gram", 0)
                         new_gram = round(old_gram * scale)
-                        new_gram = max(new_gram, 80)  # min 80g
+                        new_gram = max(new_gram, min_g)
                         if new_gram < old_gram:
                             scaled = _scale_besin(besin, new_gram)
                             corrected_ogunler[oi]["besinler"][bi] = scaled
@@ -1145,6 +1168,30 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
                                 f"  {besin['ad']}: {old_gram:.0f}g → "
                                 f"{new_gram:.0f}g"
                             )
+
+    # ── Son çare: global ölçekleme ──
+    # Tüm bireysel düzeltmelerden sonra hâlâ %15'ten fazla aşım varsa
+    # TÜM besinleri orantılı küçült (protein dahil)
+    if hedef_kcal > 0:
+        final_kcal = sum(
+            b["kcal"] for o in corrected_ogunler for b in o.get("besinler", [])
+        )
+        if final_kcal > hedef_kcal * 1.15:
+            global_scale = hedef_kcal / final_kcal
+            # Çok agresif olma — en fazla %30 küçültme
+            global_scale = max(global_scale, 0.7)
+            adjustments.append(
+                f"Global ölçekleme: {final_kcal:.0f} → ~{final_kcal * global_scale:.0f} kcal "
+                f"(×{global_scale:.2f})"
+            )
+            for ogun in corrected_ogunler:
+                for bi, besin in enumerate(ogun.get("besinler", [])):
+                    old_gram = besin.get("gram", 0)
+                    if old_gram > 10:
+                        new_gram = round(old_gram * global_scale)
+                        new_gram = max(new_gram, 10)
+                        if new_gram != old_gram:
+                            ogun["besinler"][bi] = _scale_besin(besin, new_gram)
 
     # Öğün toplamlarını yeniden hesapla
     for ogun in corrected_ogunler:

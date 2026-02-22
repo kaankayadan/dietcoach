@@ -473,6 +473,45 @@ BESIN_DB = {
     # USDA: Reçel / jam
     "reçel": {"kalori": 250, "protein": 0.4, "yag": 0.1, "karb": 65, "lif": 0.6, "kategori": "tatlandirici", "porsiyon_g": 20, "porsiyon_ad": "1 yemek kaşığı"},
 }
+# ==========================================
+# YASAK BESİNLER — Diyet planında ASLA önerilmemeli
+# Yüksek kalorili, düşük besin değerli işlenmiş hamur işleri ve atıştırmalıklar
+# Validator bu listeyi kontrol eder ve plan'dan çıkarır
+# ==========================================
+BANNED_FOODS = {
+    # Hamur işleri (yüksek yağ + rafine karbonhidrat, düşük besin değeri)
+    "poğaça", "pogaca",
+    "açma", "acma",
+    "börek", "borek", "su böreği", "sigara böreği", "kol böreği", "tepsi böreği",
+    "çörek", "corek",
+    "simit poğaça",
+    "kruvasan", "croissant",
+    "milföy", "milfoy", "puf böreği",
+    # Tatlılar ve şekerli ürünler
+    "kurabiye", "bisküvi", "biskuvi",
+    "pasta", "kek", "brownie",
+    "baklava", "künefe", "kadayıf", "kadayif",
+    "revani", "şekerpare", "sekerpare",
+    "tulumba", "lokma",
+    "dondurma",
+    "waffle", "krep şekerli",
+    "çikolatalı gofret", "gofret",
+    # Kızartmalar ve fast food
+    "patates kızartması", "patates kizartmasi", "french fries",
+    "hamburger", "cheeseburger",
+    "pizza",
+    "nugget", "tavuk nugget",
+    "sosisli sandviç", "hot dog",
+    # Şekerli içecekler
+    "kola", "gazoz", "fanta", "sprite",
+    "meyve suyu şekerli", "hazır meyve suyu",
+    "enerji içeceği", "energy drink",
+    # İşlenmiş atıştırmalıklar
+    "cips", "cipsi", "patates cipsi",
+    "çikolata sütlü", "sütlü çikolata", "çikolata bar",
+    "şeker", "akide şekeri", "lokum",
+}
+
 # Karbonhidrat kategorisindeki besinler — aynı öğünde 2+ olmamalı
 STARCHY_FOODS = {
     "pirinç pilavı", "esmer pirinç", "bulgur pilavı", "makarna",

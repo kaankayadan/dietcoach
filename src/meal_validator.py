@@ -15,7 +15,7 @@ import json
 import logging
 from typing import Optional
 
-from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES
+from src.food_database import BESIN_DB, STARCHY_FOODS, PROTEIN_SOURCES, BANNED_FOODS
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +64,30 @@ def _turkish_to_ascii(text: str) -> str:
         'ı': 'i', 'İ': 'I',
     })
     return text.translate(table)
+
+
+def _is_banned_food(ad: str) -> bool:
+    """
+    Besin adının yasak listesinde olup olmadığını kontrol et.
+    Tam eşleşme + alt-string eşleşme + ASCII normalizasyon ile kontrol eder.
+    """
+    ad_lower = ad.lower().strip()
+    ad_ascii = _turkish_to_ascii(ad_lower)
+
+    # Parantez içini temizle
+    ad_clean = re.sub(r'\(.*?\)', '', ad_lower).strip()
+    ad_clean_ascii = _turkish_to_ascii(ad_clean)
+
+    for banned in BANNED_FOODS:
+        banned_lower = banned.lower()
+        banned_ascii = _turkish_to_ascii(banned_lower)
+        # Tam eşleşme
+        if banned_lower in (ad_lower, ad_clean, ad_ascii, ad_clean_ascii):
+            return True
+        # Alt-string: "peynirli poğaça" içinde "poğaça" var mı?
+        if banned_lower in ad_lower or banned_ascii in ad_ascii:
+            return True
+    return False
 
 
 # ASCII-normalized DB keys cache (lazy init)
@@ -376,6 +400,10 @@ def _extract_foods_from_line(line: str) -> list:
             # Temizlenmemiş orijinal metin ile de dene
             db_result = _find_food_in_db(part_lower)
         if db_result:
+            # Yasak besin kontrolü
+            if _is_banned_food(db_result[0]):
+                logger.warning(f"Yasak besin fallback parse'da engellendi: {db_result[0]}")
+                continue
             results.append((db_result[0], gram))
 
     return results
@@ -978,6 +1006,14 @@ def validate_plan(plan_json: dict, user: dict, previous_plan: dict = None) -> di
             ad = besin.get("ad", "?")
             gram = besin.get("gram", 0)
             rol = besin.get("rol", "")
+
+            # YASAK BESİN KONTROLÜ — plandan çıkar
+            if _is_banned_food(ad):
+                errors.append(
+                    f"{ogun_adi}/{ad}: YASAK BESİN — diyet planında kullanılamaz"
+                )
+                logger.warning(f"Yasak besin tespit edildi ve çıkarıldı: {ad} ({ogun_adi})")
+                continue  # Bu besini plana dahil etme
 
             # rol alanı kontrolü
             if rol and rol not in VALID_ROLES:

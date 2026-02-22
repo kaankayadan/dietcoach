@@ -248,29 +248,39 @@ def _extract_foods_from_line(line: str) -> list:
             continue
 
         # Parantez içi, emoji, ve format karakterlerini temizle
-        clean = re.sub(r'\([^)]*\)', '', part_lower)  # parantez içi
-        clean = re.sub(r'\*+', '', clean)               # bold yıldızlar
-        clean = re.sub(r'[→>]', '', clean)               # oklar
-        clean = re.sub(r'\d+\s*(?:g|ml)\b', '', clean)   # gram veya ml
-        clean = re.sub(r'\d+\s*(adet|dilim|porsiyon|kase|su\s+bardağı|bardak|'
-                        r'yemek\s+kaşığı|çay\s+kaşığı|yk|çk)\s*', '', clean)
-        clean = re.sub(r'(ızgara|haşlama|fırında|buharda|pişmiş|çiğ|kuru|'
-                        r'pişirme|rendel\w+|yağsız|yarım\s+yağlı|tam\s+yağlı)', '', clean)
-        clean = clean.strip(' -,.')
+        # DİKKAT: "kuru", "yağsız" gibi kelimeler hem yemek hazırlama hem de
+        # besin adı olabilir (kuru fasulye, süzme yoğurt yağsız).
+        # Bu yüzden ÖNCE hafif temizlik ile DB'de ara, bulamazsa
+        # agresif temizlik ile tekrar dene.
 
-        # DB'den en iyi eşleşmeyi bul
-        # _find_food_in_db: tam eşleşme > Türkçe desuffix > çift yönlü substring
-        # Her zaman en uzun (en spesifik) eşleşmeyi seçer
-        best_key = None
-        db_result = _find_food_in_db(clean)
+        # Hafif temizlik: sadece format karakterleri ve sayıları temizle
+        light_clean = re.sub(r'\([^)]*\)', '', part_lower)   # parantez içi
+        light_clean = re.sub(r'\*+', '', light_clean)          # bold yıldızlar
+        light_clean = re.sub(r'[→>]', '', light_clean)          # oklar
+        light_clean = re.sub(r'\d+\s*(?:g|ml)\b', '', light_clean)  # gram veya ml
+        light_clean = re.sub(r'\d+\s*(adet|dilim|porsiyon|kase|su\s+bardağı|bardak|'
+                              r'yemek\s+kaşığı|çay\s+kaşığı|yk|çk)\s*', '', light_clean)
+        light_clean = light_clean.strip(' -,.')
+
+        # Önce hafif temizlik ile dene (kuru fasulye, süzme yoğurt yağsız korunur)
+        db_result = _find_food_in_db(light_clean)
+
+        if not db_result:
+            # Agresif temizlik: pişirme yöntemleri ve tanımlayıcıları da temizle
+            aggressive_clean = re.sub(
+                r'(ızgara|haşlama|fırında|buharda|pişmiş|çiğ|kuru|'
+                r'pişirme|rendel\w+|yağsız|yarım\s+yağlı|tam\s+yağlı)',
+                '', light_clean,
+            )
+            aggressive_clean = aggressive_clean.strip(' -,.')
+            if aggressive_clean and aggressive_clean != light_clean:
+                db_result = _find_food_in_db(aggressive_clean)
+
         if not db_result:
             # Temizlenmemiş orijinal metin ile de dene
             db_result = _find_food_in_db(part_lower)
         if db_result:
-            best_key = db_result[0]
-
-        if best_key:
-            results.append((best_key, gram))
+            results.append((db_result[0], gram))
 
     return results
 
@@ -557,10 +567,14 @@ def _enforce_macro_targets(corrected_ogunler: list, user: dict) -> tuple:
                     old_gram = besin.get("gram", 0)
                     if old_gram > 0:
                         new_gram = round(old_gram * scale)
-                        # Gerçekçi minimum porsiyonu koru — ama sadece orijinal
-                        # porsiyon zaten minimumun üzerindeyse. Küçük porsiyonları
-                        # (ör: 30g peynir) zorlama, bu bilinçli bir seçim olabilir.
-                        if old_gram >= min_gram:
+                        # Gerçekçi minimum porsiyonu koru.
+                        # Et/balık (kategori=protein): HER ZAMAN minimum uygula
+                        # (60g somon diye bir şey yok — Claude hatası)
+                        # Süt ürünü/baklagil: sadece orijinal porsiyon minimumun
+                        # üzerindeyse uygula (30g peynir bilinçli bir seçim)
+                        if kategori == "protein":
+                            new_gram = max(new_gram, min_gram)
+                        elif old_gram >= min_gram:
                             new_gram = max(new_gram, min_gram)
                         scaled = _scale_besin(besin, new_gram)
                         corrected_ogunler[oi]["besinler"][bi] = scaled

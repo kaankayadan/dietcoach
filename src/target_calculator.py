@@ -47,8 +47,23 @@ def calculate_user_targets(data: dict) -> dict:
     cinsiyet = str(data.get("cinsiyet", "")).lower().strip()
     vyo = _safe_float(data.get("vucut_yag_orani"))
     aktivite = str(data.get("aktivite_seviyesi", "")).lower().strip()
-    hedef_tip = str(data.get("hedef_tip", "koruma")).lower().strip()
+    hedef_tip = str(data.get("hedef_tip", "")).lower().strip()
     agresiflik = str(data.get("agresiflik", "dengeli")).lower().strip()
+
+    # hedef_tip eksikse hedef_kilo'dan otomatik çıkar
+    hedef_kilo = _safe_float(data.get("hedef_kilo"))
+    if not hedef_tip or hedef_tip == "none":
+        if hedef_kilo and kilo:
+            if hedef_kilo < kilo - 1:
+                hedef_tip = "kayip"
+                logger.info(f"hedef_tip otomatik: kayıp (hedef {hedef_kilo}kg < mevcut {kilo}kg)")
+            elif hedef_kilo > kilo + 1:
+                hedef_tip = "kazanim"
+                logger.info(f"hedef_tip otomatik: kazanım (hedef {hedef_kilo}kg > mevcut {kilo}kg)")
+            else:
+                hedef_tip = "koruma"
+        else:
+            hedef_tip = "koruma"
 
     if not kilo or not boy or not yas:
         logger.warning(

@@ -153,19 +153,35 @@ FOOD_ALIASES = {
     "kıyma": "dana kıyma",
     # Balık
     "balık": "levrek",
-    # Karb
+    # Karb — Ekmek türleri
+    # DİKKAT: "ekmek" tek başına beyaz ekmek alias'ı, ama "tam tahıllı ekmek" vb.
+    # daha uzun alias olduğu için öncelik kazanır (en uzun eşleşme kuralı).
     "ekmek": "beyaz ekmek",
+    "tam tahıllı ekmek": "tam buğday ekmek",
+    "tam tahıllı ekşi mayalı ekmek": "tam buğday ekmek",
+    "tam tahilli eksi mayali ekmek": "tam buğday ekmek",
+    "ekşi mayalı ekmek": "tam buğday ekmek",
+    "eksi mayali ekmek": "tam buğday ekmek",
+    "tam buğday ekmeği": "tam buğday ekmek",
+    "tam tahıllı": "tam buğday ekmek",
+    "kepek ekmek": "kepekli ekmek",
+    "kepek ekmeği": "kepekli ekmek",
     "siyah ekmek": "çavdar ekmeği",
     "esmer ekmek": "çavdar ekmeği",
+    # Karb — Diğer
     "pirinç": "pirinç pilavı",
     "pirinc": "pirinç pilavı",
     "pilav": "pirinç pilavı",
     "bulgur": "bulgur pilavı",
+    "sade bulgur pilavı": "bulgur pilavı",
+    "sade bulgur pilavi": "bulgur pilavı",
     # Baklagil
     "fasulye": "kuru fasulye",
     # Çorba
     "çorba": "kırmızı mercimek çorbası",
     "mercimek çorbası": "kırmızı mercimek çorbası",
+    "mercimek corbasi": "kırmızı mercimek çorbası",
+    "kirmizi mercimek corbasi": "kırmızı mercimek çorbası",
     "tavuklu çorba": "tavuklu sebze çorbası",
     "tavuk çorbası": "tavuklu sebze çorbası",
     "sebze çorbası": "ezogelin çorbası",
@@ -176,6 +192,12 @@ FOOD_ALIASES = {
     "yeşillik": "yeşil salata",
     "yesil salata": "yeşil salata",
     "çoban salata": "çoban salatası",
+    # Süt ürünleri
+    "sade yoğurt": "yoğurt",
+    "sade yogurt": "yoğurt",
+    "yogurt": "yoğurt",
+    # Yağ
+    "zeytinyagi": "zeytinyağı",
 }
 
 # ASCII versiyonları da ekle
@@ -373,6 +395,7 @@ def _extract_foods_from_line(line: str) -> list:
       - "2 dilim kepekli ekmek (60g)"
       - "7 adet zeytin (24g)"
       - "1 yemek kaşığı zeytinyağı (10g)"
+      - "3 yemek kaşığı zeytinyağı" (gram yok → otomatik hesapla)
       - "1 kase mercimek çorbası (250ml)"
     """
     results = []
@@ -392,7 +415,43 @@ def _extract_foods_from_line(line: str) -> list:
             if ml_match:
                 gram = float(ml_match.group(1))
             else:
-                continue
+                # Kaşık bazlı ölçüm: "3 yemek kaşığı zeytinyağı" → 3 × 14g = 42g
+                spoon_match = re.search(
+                    r'(\d+)\s*(?:yemek\s+kaşığı|yemek\s+kasigi|yk)\b', part_lower
+                )
+                if spoon_match:
+                    spoon_count = int(spoon_match.group(1))
+                    # Hangi besin olduğunu bul ve porsiyon_g kullan
+                    spoon_clean = re.sub(
+                        r'\d+\s*(?:yemek\s+kaşığı|yemek\s+kasigi|yk)\s*', '', part_lower
+                    ).strip(' -,.()>')
+                    spoon_db = _find_food_in_db(spoon_clean)
+                    if spoon_db:
+                        db_key, db_entry = spoon_db
+                        porsiyon_g = db_entry.get("porsiyon_g", 14)  # varsayılan 14g (1 yk)
+                        gram = spoon_count * porsiyon_g
+                    else:
+                        gram = spoon_count * 14  # varsayılan: 1 yk ≈ 14g
+                else:
+                    # Çay kaşığı: "1 çk zeytinyağı" → 1 × 5g
+                    tsp_match = re.search(
+                        r'(\d+)\s*(?:çay\s+kaşığı|cay\s+kasigi|tatlı\s+kaşığı|tatli\s+kasigi|çk|ck|tk)\b',
+                        part_lower,
+                    )
+                    if tsp_match:
+                        tsp_count = int(tsp_match.group(1))
+                        tsp_clean = re.sub(
+                            r'\d+\s*(?:çay\s+kaşığı|cay\s+kasigi|tatlı\s+kaşığı|tatli\s+kasigi|çk|ck|tk)\s*',
+                            '', part_lower,
+                        ).strip(' -,.()>')
+                        tsp_db = _find_food_in_db(tsp_clean)
+                        if tsp_db:
+                            db_key, db_entry = tsp_db
+                            gram = tsp_count * 5  # 1 çk/tk ≈ 5g
+                        else:
+                            continue
+                    else:
+                        continue
         else:
             gram = float(gram_match.group(1))
         if gram <= 0:
@@ -405,12 +464,22 @@ def _extract_foods_from_line(line: str) -> list:
         # agresif temizlik ile tekrar dene.
 
         # Hafif temizlik: sadece format karakterleri ve sayıları temizle
-        light_clean = re.sub(r'\([^)]*\)', '', part_lower)   # parantez içi
+        light_clean = re.sub(r'\([^)]*\)', '', part_lower)   # parantez içi (tam çift)
+        light_clean = re.sub(r'[()]', '', light_clean)         # kalan tek parantezler
         light_clean = re.sub(r'\*+', '', light_clean)          # bold yıldızlar
         light_clean = re.sub(r'[→>]', '', light_clean)          # oklar
         light_clean = re.sub(r'\d+\s*(?:g|ml)\b', '', light_clean)  # gram veya ml
-        light_clean = re.sub(r'\d+\s*(adet|dilim|porsiyon|kase|su\s+bardağı|bardak|'
-                              r'yemek\s+kaşığı|çay\s+kaşığı|yk|çk)\s*', '', light_clean)
+        # Kaşık/adet/dilim ölçü birimleri (Türkçe + ASCII)
+        light_clean = re.sub(r'\d+\s*(adet|dilim|porsiyon|kase|su\s+bardağı|su\s+bardagi|'
+                              r'bardak|corba\s+kasigi|çorba\s+kaşığı|'
+                              r'yemek\s+kaşığı|yemek\s+kasigi|'
+                              r'çay\s+kaşığı|cay\s+kasigi|'
+                              r'tatlı\s+kaşığı|tatli\s+kasigi|'
+                              r'yk|çk|ck|tk)\s*',
+                              '', light_clean)
+        # Rol etiketlerini temizle: "Protein:", "Yag:", "Lif:", "Karb:", "Yan:"
+        light_clean = re.sub(r'^(protein|yag|yağ|lif|karb|karbonhidrat|yan)\s*:\s*',
+                              '', light_clean)
         light_clean = light_clean.strip(' -,.')
 
         # Önce hafif temizlik ile dene (kuru fasulye, süzme yoğurt yağsız korunur)
@@ -419,8 +488,10 @@ def _extract_foods_from_line(line: str) -> list:
         if not db_result:
             # Agresif temizlik: pişirme yöntemleri ve tanımlayıcıları da temizle
             aggressive_clean = re.sub(
-                r'(ızgara|haşlama|fırında|buharda|pişmiş|çiğ|kuru|'
-                r'pişirme|rendel\w+|yağsız|yarım\s+yağlı|tam\s+yağlı)',
+                r'(ızgara|izgara|haşlama|haslama|fırında|firinda|buharda|'
+                r'pişmiş|pismis|çiğ|kuru|sade|bol\s+limonlu|limonlu|'
+                r'pişirme|rendel\w+|yağsız|yagsiz|yarım\s+yağlı|yarim\s+yagli|'
+                r'tam\s+yağlı|tam\s+yagli|didik|sebze)',
                 '', light_clean,
             )
             aggressive_clean = aggressive_clean.strip(' -,.')
@@ -485,8 +556,19 @@ def fallback_extract_plan_from_text(response_text: str) -> Optional[dict]:
         line_stripped = line.strip()
         line_lower = line_stripped.lower()
 
-        # Öğün başlığı mı? (### KAHVALTI, ### ARA ÖĞÜN, vs.)
+        # Öğün başlığı mı? Çeşitli formatlar:
+        # "### KAHVALTI", "KAHVALTI (08:30) — 420 kcal",
+        # "**KAHVALTI (08:30)**", "KAHVALTI (08:30)"
         is_header = ('###' in line or '—' in line_lower or '---' in line_stripped)
+        # Öğün anahtar kelimesi ile başlayan/içeren satırlar da başlık olabilir
+        # (Malzeme/makro satırlarını hariç tut — ">" veya "P:" içermemeli)
+        if not is_header:
+            has_meal_keyword = any(kw in line_lower for kw, _ in _MEAL_KEYWORDS)
+            not_ingredient = ('>' not in line and '→' not in line and
+                              not line_stripped.startswith('-') and
+                              'P:' not in line)
+            if has_meal_keyword and not_ingredient:
+                is_header = True
         if is_header:
             for keyword, ogun_key in _MEAL_KEYWORDS:
                 if keyword in line_lower:
@@ -515,12 +597,16 @@ def fallback_extract_plan_from_text(response_text: str) -> Optional[dict]:
             in_ingredient_section = False
             continue
 
-        # Malzeme satırı mı? ("→", ">", "-" ile başlar ve gram değeri içerir)
+        # Malzeme satırı mı? ("→", ">", "-" ile başlar ve gram/ml/kaşığı değeri içerir)
         if not in_ingredient_section:
             continue
         if not ('→' in line or '>' in line or line_stripped.startswith('-')):
             continue
-        if 'g' not in line_lower:
+        # gram, ml, veya kaşığı ölçüm birimi olmalı
+        has_measure = ('g' in line_lower or 'ml' in line_lower or
+                       'kaşığı' in line_lower or 'kasigi' in line_lower or
+                       'yk' in line_lower)
+        if not has_measure:
             continue
 
         # Malzemeleri çıkar
@@ -1535,18 +1621,42 @@ def patch_response_totals(response_text: str, corrected_plan: dict) -> str:
     logger.debug(f"patch_response_totals: {len(header_matches)} başlık kalorisi güncellendi")
 
     # ── 3. Daily total line ──────────────────────────────────────
-    # Format: "XXX kcal [✅] | P: XXg [emoji/any] | Y: XXg ... | K: XXg ... | L: XXg ..."
-    # [^\|\n]* emoji/checkmark ve diğer karakterleri tolere eder (kcal ile | arasındaki ✅ dahil)
-    pattern_daily = (
+    # İki farklı format desteklenir:
+    # Format A (kcal önce): "XXX kcal [✅] | P: XXg | Y: XXg | K: XXg | L: XXg"
+    # Format B (kcal sonda): "P: XXg | Y: XXg | K: XXg | L: XXg | XXX kcal"
+    daily_count = 0
+
+    # Format A: kcal | P | Y | K | L
+    pattern_daily_a = (
         r'[\d.,]+\s*kcal[^\n|]*\|\s*P:\s*[\d.]+\s*g?[^\|\n]*\|\s*'
         r'Y:\s*[\d.]+\s*g?[^\|\n]*\|\s*K:\s*[\d.]+\s*g?[^\|\n]*\|\s*'
         r'(?:Lif|L):\s*[\d.]+\s*g?[^\n]*'
     )
-    replacement_daily = (
+    replacement_daily_a = (
         f'{gt["kcal"]:.0f} kcal | P: {gt["p"]:.0f}g | Y: {gt["y"]:.0f}g | '
         f'K: {gt["k"]:.0f}g | L: {gt["l"]:.0f}g'
     )
-    text, daily_count = re.subn(pattern_daily, replacement_daily, text)
+    text, count_a = re.subn(pattern_daily_a, replacement_daily_a, text)
+    daily_count += count_a
+
+    # Format B: P | Y | K | L | kcal — günlük toplam satırında kullanılır
+    # Per-meal satırları da bu formatta ama onlar zaten yukarıda düzeltildi.
+    if daily_count == 0:
+        # Per-meal satırlar zaten düzeltildi, kalan eşleşme(ler) günlük toplamlar.
+        # meal_macro_pattern ile eşleşen ama per-meal olarak düzeltilmemiş satırları bul.
+        remaining_matches = list(re.finditer(meal_macro_pattern, text))
+        # İlk N eşleşme per-meal (zaten düzeltildi), gerisi günlük toplam
+        if len(remaining_matches) > len(ogunler):
+            for m in reversed(remaining_matches[len(ogunler):]):
+                # Prefix'i koru (başındaki \s* newline yakalayabilir)
+                prefix = m.group(1) if m.group(1) else ''
+                replacement = (
+                    f'{prefix}P: {gt["p"]:.0f}g | Y: {gt["y"]:.0f}g | K: {gt["k"]:.0f}g | '
+                    f'L: {gt["l"]:.0f}g | {gt["kcal"]:.0f} kcal'
+                )
+                text = text[:m.start()] + replacement + text[m.end():]
+                daily_count += 1
+
     logger.debug(f"patch_response_totals: günlük toplam {daily_count} kez güncellendi")
 
     # "**Kalori:** XXX kcal" formatı

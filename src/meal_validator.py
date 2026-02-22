@@ -49,6 +49,47 @@ def _calc_kcal(p: float, y: float, k: float) -> float:
     return round(p * 4 + y * 9 + k * 4, 1)
 
 
+def _turkish_desuffix(text: str) -> str:
+    """
+    Türkçe ünsüz yumuşaması ters çevirimi.
+    ekmeği → ekmek, yoğurdu → yoğurt, çorbası → çorba
+    Böylece DB'deki yalın hallerle eşleşme sağlanır.
+    """
+    # Ünsüz yumuşaması: k→ğ, t→d, p→b, ç→c
+    # Ters çevir: son kelimede ğ+ünlü → k, d+ünlü → t, vb.
+    mutations = [
+        ('ğı', 'k'), ('ği', 'k'), ('ğu', 'k'), ('ğü', 'k'),
+        ('du', 't'), ('dü', 't'), ('dı', 't'), ('di', 't'),
+        ('bu', 'p'), ('bü', 'p'), ('bı', 'p'), ('bi', 'p'),
+        ('cu', 'ç'), ('cü', 'ç'), ('cı', 'ç'), ('ci', 'ç'),
+    ]
+    words = text.split()
+    if not words:
+        return text
+
+    last = words[-1]
+    for suffix, replacement in mutations:
+        if last.endswith(suffix):
+            words[-1] = last[:-len(suffix)] + replacement
+            return ' '.join(words)
+
+    # Basit ek kaldırma: -sı, -si, -ası, -esi (iyelik)
+    possessive = [
+        'ası', 'esi', 'sı', 'si', 'su', 'sü',
+        'ı', 'i', 'u', 'ü',
+    ]
+    for suf in possessive:
+        if last.endswith(suf) and len(last) > len(suf) + 2:
+            candidate = last[:-len(suf)]
+            words[-1] = candidate
+            joined = ' '.join(words)
+            if joined in BESIN_DB:
+                return joined
+            words[-1] = last  # geri al
+
+    return text
+
+
 def _find_food_in_db(ad: str) -> Optional[tuple]:
     """Besin adını food_database'de ara. Eşleşen (key, entry) döndür."""
     ad_lower = ad.lower().strip()
@@ -63,15 +104,26 @@ def _find_food_in_db(ad: str) -> Optional[tuple]:
     if ad_clean in BESIN_DB:
         return ad_clean, BESIN_DB[ad_clean]
 
-    # 2. DB key besin adında geçiyor mu?
+    # 1b. Türkçe ünsüz yumuşaması ters çevirimi ile tam eşleşme
+    desuffixed = _turkish_desuffix(ad_clean)
+    if desuffixed != ad_clean and desuffixed in BESIN_DB:
+        return desuffixed, BESIN_DB[desuffixed]
+
+    # 2. DB key besin adında geçiyor mu? (her iki yönde kontrol)
     best_match = None
     best_len = 0
+    # Ayrıca desuffix edilmiş haliyle de dene
+    candidates = {ad_clean}
+    if desuffixed != ad_clean:
+        candidates.add(desuffixed)
+
     for db_key, db_val in BESIN_DB.items():
-        if db_key in ad_clean or ad_clean in db_key:
-            # En uzun eşleşmeyi tercih et (daha spesifik)
-            if len(db_key) > best_len:
-                best_match = (db_key, db_val)
-                best_len = len(db_key)
+        for cand in candidates:
+            if db_key in cand or cand in db_key:
+                # En uzun eşleşmeyi tercih et (daha spesifik)
+                if len(db_key) > best_len:
+                    best_match = (db_key, db_val)
+                    best_len = len(db_key)
 
     return best_match
 
@@ -114,9 +166,6 @@ _MEAL_KEYWORDS = [
     ("aksam", "aksam"),
 ]
 
-# DB key'lerini uzunluğa göre sırala — uzun eşleşmeler öncelikli
-_SORTED_DB_KEYS = sorted(BESIN_DB.keys(), key=len, reverse=True)
-
 
 def _extract_foods_from_line(line: str) -> list:
     """
@@ -127,6 +176,7 @@ def _extract_foods_from_line(line: str) -> list:
       - "2 dilim kepekli ekmek (60g)"
       - "7 adet zeytin (24g)"
       - "1 yemek kaşığı zeytinyağı (10g)"
+      - "1 kase mercimek çorbası (250ml)"
     """
     results = []
     # "+" ile ayrılmış parçaları işle
@@ -140,8 +190,14 @@ def _extract_foods_from_line(line: str) -> list:
         # Gram değeri bul: "(40g)", "40g", "40 g"
         gram_match = re.search(r'(\d+)\s*g\b', part_lower)
         if not gram_match:
-            continue
-        gram = float(gram_match.group(1))
+            # ml desteği: çorbalar için ml ≈ g (su bazlı)
+            ml_match = re.search(r'(\d+)\s*ml\b', part_lower)
+            if ml_match:
+                gram = float(ml_match.group(1))
+            else:
+                continue
+        else:
+            gram = float(gram_match.group(1))
         if gram <= 0:
             continue
 
@@ -149,24 +205,55 @@ def _extract_foods_from_line(line: str) -> list:
         clean = re.sub(r'\([^)]*\)', '', part_lower)  # parantez içi
         clean = re.sub(r'\*+', '', clean)               # bold yıldızlar
         clean = re.sub(r'[→>]', '', clean)               # oklar
-        clean = re.sub(r'\d+\s*g\b', '', clean)          # gram
+        clean = re.sub(r'\d+\s*(?:g|ml)\b', '', clean)   # gram veya ml
         clean = re.sub(r'\d+\s*(adet|dilim|porsiyon|kase|su\s+bardağı|bardak|'
                         r'yemek\s+kaşığı|çay\s+kaşığı|yk|çk)\s*', '', clean)
         clean = re.sub(r'(ızgara|haşlama|fırında|buharda|pişmiş|çiğ|kuru|'
                         r'pişirme|rendel\w+|yağsız|yarım\s+yağlı|tam\s+yağlı)', '', clean)
         clean = clean.strip(' -,.')
 
-        # DB'den en uzun eşleşmeyi bul
+        # DB'den en iyi eşleşmeyi bul
+        # _find_food_in_db: tam eşleşme > Türkçe desuffix > çift yönlü substring
+        # Her zaman en uzun (en spesifik) eşleşmeyi seçer
         best_key = None
-        for db_key in _SORTED_DB_KEYS:
-            if db_key in clean or db_key in part_lower:
-                best_key = db_key
-                break
+        db_result = _find_food_in_db(clean)
+        if not db_result:
+            # Temizlenmemiş orijinal metin ile de dene
+            db_result = _find_food_in_db(part_lower)
+        if db_result:
+            best_key = db_result[0]
 
         if best_key:
             results.append((best_key, gram))
 
     return results
+
+
+def response_has_meal_structure(text: str) -> bool:
+    """
+    Claude'un yanıtının yemek planı yapısı içerip içermediğini kontrol et.
+    Birden fazla öğün başlığı varsa plan yanıtıdır.
+    """
+    text_lower = text.lower()
+    meal_keywords = [
+        'kahvaltı', 'kahvalti',
+        'öğle yemeği', 'öğle', 'ogle',
+        'akşam yemeği', 'akşam', 'aksam',
+        'ara öğün', 'ara ogun',
+    ]
+    found = set()
+    for kw in meal_keywords:
+        if kw in text_lower:
+            # Normalize to base meal type
+            if 'kahvalt' in kw:
+                found.add('kahvalti')
+            elif 'öğle' in kw or 'ogle' in kw:
+                found.add('ogle')
+            elif 'akşam' in kw or 'aksam' in kw:
+                found.add('aksam')
+            elif 'ara' in kw:
+                found.add('ara')
+    return len(found) >= 3
 
 
 def fallback_extract_plan_from_text(response_text: str) -> Optional[dict]:

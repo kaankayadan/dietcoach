@@ -9,6 +9,7 @@ from datetime import date, timedelta
 from src.meal_validator import (
     extract_mealplan_json,
     fallback_extract_plan_from_text,
+    response_has_meal_structure,
     validate_plan,
     build_correction_summary,
     patch_response_totals,
@@ -163,6 +164,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         '/plan', '/haftalik', 'plan oluştur', 'plan yap', 'plan hazırla',
         'yeni plan', 'haftalık plan', 'diyet listesi', 'diyet planı',
         '/alternatif', 'alternatif öner',
+        'planımı', 'planimi', 'plan ver', 'plan iste',
+        'yarınki plan', 'yarinki plan', 'yarın plan', 'yarin plan',
+        'bugünkü plan', 'bugunku plan', 'günlük plan', 'gunluk plan',
+        'plan öner', 'plan oner',
     ]
 
     def _is_plan_request(self, message: str) -> bool:
@@ -193,23 +198,34 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             logger.warning(f"MEALPLAN_JSON parse hatası: {e}")
             plan_json = None
 
-        # JSON yoksa ve plan isteğiyse → fallback text parser
-        if not plan_json and is_plan:
-            logger.warning(
-                "MEALPLAN_JSON bulunamadı — fallback text parser devreye giriyor"
-            )
-            try:
-                plan_json = fallback_extract_plan_from_text(response_text)
-                if plan_json:
+        # JSON yoksa → fallback text parser
+        # Hem açık plan isteğinde hem de yanıt plan yapısı içeriyorsa dene
+        # (Claude JSON bloğu üretmemiş olabilir veya kullanıcı mesajı
+        #  plan trigger'larına uymamış olabilir)
+        if not plan_json:
+            looks_like_plan = response_has_meal_structure(response_text)
+            if is_plan or looks_like_plan:
+                if not is_plan and looks_like_plan:
                     logger.info(
-                        f"Fallback parser başarılı: "
-                        f"{len(plan_json.get('ogunler', []))} öğün çıkarıldı"
+                        "Plan isteği algılanmamıştı ama yanıt plan yapısı içeriyor "
+                        "— fallback parser devreye giriyor"
                     )
                 else:
-                    logger.warning("Fallback parser da plan çıkaramadı")
-            except Exception as e:
-                logger.error(f"Fallback parser hatası: {e}")
-                plan_json = None
+                    logger.warning(
+                        "MEALPLAN_JSON bulunamadı — fallback text parser devreye giriyor"
+                    )
+                try:
+                    plan_json = fallback_extract_plan_from_text(response_text)
+                    if plan_json:
+                        logger.info(
+                            f"Fallback parser başarılı: "
+                            f"{len(plan_json.get('ogunler', []))} öğün çıkarıldı"
+                        )
+                    else:
+                        logger.warning("Fallback parser da plan çıkaramadı")
+                except Exception as e:
+                    logger.error(f"Fallback parser hatası: {e}")
+                    plan_json = None
 
         if not plan_json:
             return response_text, None
@@ -351,9 +367,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         # ── Kalori kontrolü + otomatik retry ──────────────────────
         # Düzeltilmiş plan hedeften >%15 düşükse, Claude'a tekrar sor
+        # is_plan veya result varsa (fallback ile plan tespit edilmişse) retry yap
         if (
-            is_plan
-            and result
+            result
             and result.get("corrected_totals")
             and user.get("hedef_kalori")
         ):

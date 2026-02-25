@@ -18,6 +18,10 @@ BESIN_DB = {
     "tavuk but": {"kalori": 209, "protein": 26, "yag": 10.9, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA: Chicken, drumstick, roasted
     "tavuk baget": {"kalori": 172, "protein": 28, "yag": 5.7, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #173630: Chicken, wing, meat and skin, cooked, roasted
+    "tavuk kanat": {"kalori": 254, "protein": 23.8, "yag": 16.9, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #171061: Chicken, liver, all classes, cooked, simmered
+    "tavuk ciğeri": {"kalori": 167, "protein": 24.5, "yag": 6.5, "karb": 0.9, "lif": 0, "kategori": "protein"},
     # USDA #05224: Turkey, breast, without skin, roasted
     "hindi göğsü": {"kalori": 135, "protein": 30, "yag": 1, "karb": 0, "lif": 0, "kategori": "protein"},
     "hindi bonfile": {"kalori": 135, "protein": 30, "yag": 1, "karb": 0, "lif": 0, "kategori": "protein"},
@@ -38,8 +42,19 @@ BESIN_DB = {
     "kuzu eti": {"kalori": 220, "protein": 30, "yag": 10, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA: Lamb, loin chop, lean, cooked
     "kuzu pirzola": {"kalori": 240, "protein": 28, "yag": 14, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #174702: Beef, ribeye filet, boneless, lean, cooked, grilled
+    "antrikot": {"kalori": 208, "protein": 28.4, "yag": 10.3, "karb": 0, "lif": 0, "kategori": "protein"},
     # USDA: Beef liver, cooked
     "ciğer": {"kalori": 175, "protein": 26, "yag": 5, "karb": 4, "lif": 0, "kategori": "protein"},
+    # USDA #168626: Beef, liver, cooked, braised (daha spesifik)
+    "dana ciğeri": {"kalori": 191, "protein": 29.1, "yag": 5.3, "karb": 5.1, "lif": 0, "kategori": "protein"},
+    # ==========================================
+    # PROTEİN KAYNAKLARI — DOMUZ ETİ (pişmiş, 100g)
+    # ==========================================
+    # USDA #167842: Pork, fresh, loin, top loin, boneless, cooked, roasted
+    "domuz sırtı": {"kalori": 192, "protein": 26.4, "yag": 8.8, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #168380: Pork, fresh, blade, chops, boneless, cooked, broiled
+    "domuz pirzola": {"kalori": 202, "protein": 24.7, "yag": 11.1, "karb": 0, "lif": 0, "kategori": "protein"},
     # ==========================================
     # PROTEİN KAYNAKLARI — BALIK & DENİZ ÜRÜNLERİ (pişmiş, 100g)
     # ==========================================
@@ -74,11 +89,19 @@ BESIN_DB = {
     "midye": {"kalori": 172, "protein": 24, "yag": 4.5, "karb": 7.4, "lif": 0, "kategori": "protein"},
     # USDA: Squid, cooked
     "kalamar": {"kalori": 175, "protein": 18, "yag": 7.5, "karb": 7.8, "lif": 0, "kategori": "protein"},
+    # USDA #175178: Fish, cod, Pacific, cooked
+    "morina": {"kalori": 84, "protein": 20.4, "yag": 0.3, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #175177: Fish, tilapia, cooked, dry heat
+    "tilapia": {"kalori": 128, "protein": 26.2, "yag": 2.7, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #175120: Fish, mackerel, Atlantic, cooked, dry heat
+    "uskumru": {"kalori": 262, "protein": 23.8, "yag": 17.8, "karb": 0, "lif": 0, "kategori": "protein"},
     # ==========================================
     # PROTEİN KAYNAKLARI — DİĞER (100g)
     # ==========================================
     # USDA #01129: Egg, whole, cooked (100g)
     "yumurta": {"kalori": 155, "protein": 13, "yag": 11, "karb": 1.1, "lif": 0, "kategori": "protein", "porsiyon_g": 60, "porsiyon_ad": "1 adet"},
+    # USDA #747997: Eggs, Grade A, Large, egg white
+    "yumurta beyazı": {"kalori": 52, "protein": 10.9, "yag": 0.2, "karb": 0.7, "lif": 0, "kategori": "protein"},
     # USDA #16427: Tofu, firm
     "tofu": {"kalori": 76, "protein": 8, "yag": 4.8, "karb": 1.9, "lif": 0.3, "kategori": "protein"},
     # ==========================================

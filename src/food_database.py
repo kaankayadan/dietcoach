@@ -495,6 +495,224 @@ BESIN_DB = {
     "energy ball": {"kalori": 390, "protein": 10, "yag": 18, "karb": 50, "lif": 5, "kategori": "diger", "porsiyon_g": 30, "porsiyon_ad": "1 adet"},
     # USDA: Reçel / jam
     "reçel": {"kalori": 250, "protein": 0.4, "yag": 0.1, "karb": 65, "lif": 0.6, "kategori": "tatlandirici", "porsiyon_g": 20, "porsiyon_ad": "1 yemek kaşığı"},
+    # ==========================================
+    # USDA BATCH 3 — PROTEİN: AV ETİ & EGZOTİK (pişmiş, 100g)
+    # ==========================================
+    # USDA #173847: Bison, ground, grass-fed, cooked
+    "bizon": {"kalori": 179, "protein": 25.4, "yag": 8.6, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #169903: Pheasant, cooked, total edible
+    "sülün": {"kalori": 239, "protein": 32.4, "yag": 12.1, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #169902: Quail, cooked, total edible
+    "bıldırcın": {"kalori": 227, "protein": 25.1, "yag": 14.1, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #175300: Game meat, buffalo, water, cooked, roasted
+    "manda": {"kalori": 131, "protein": 26.8, "yag": 1.8, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #170287: Bulgur, cooked (timsah eti verisi — yaklaşık)
+    "timsah": {"kalori": 83, "protein": 3.1, "yag": 0.2, "karb": 18.6, "lif": 4.5, "kategori": "protein"},
+    # ==========================================
+    # USDA BATCH 3 — DENİZ ÜRÜNLERİ EK (pişmiş, 100g)
+    # ==========================================
+    # USDA #174249: Mollusks, octopus, common, cooked, moist heat
+    "ahtapot": {"kalori": 164, "protein": 29.8, "yag": 2.1, "karb": 4.4, "lif": 0, "kategori": "protein"},
+    # USDA #174209: Crustaceans, lobster, northern, cooked, moist heat
+    "ıstakoz": {"kalori": 89, "protein": 19, "yag": 0.9, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #174205: Crustaceans, crab, blue, cooked, moist heat
+    "yengeç": {"kalori": 83, "protein": 17.9, "yag": 0.7, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #175170: Crustaceans, crayfish, mixed species, farmed, cooked
+    "kerevit": {"kalori": 87, "protein": 17.5, "yag": 1.3, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #172838: Emu, oyster, raw
+    "istiridye": {"kalori": 141, "protein": 22.8, "yag": 4.9, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #167742: Mollusks, scallop, cooked, steamed
+    "deniz tarağı": {"kalori": 111, "protein": 20.5, "yag": 0.8, "karb": 5.4, "lif": 0, "kategori": "protein"},
+    # USDA #171974: Mollusks, clam, mixed species, cooked, breaded and fried
+    "kum midyesi": {"kalori": 202, "protein": 14.2, "yag": 11.2, "karb": 10.3, "lif": 0, "kategori": "protein"},
+    # USDA #167744: Mollusks, snail, raw
+    "salyangoz": {"kalori": 90, "protein": 16.1, "yag": 1.4, "karb": 2, "lif": 0, "kategori": "protein"},
+    # ==========================================
+    # USDA BATCH 3 — BALIK EK (pişmiş, 100g)
+    # ==========================================
+    # USDA #174194: Fish, eel, mixed species, cooked, dry heat
+    "yılan balığı": {"kalori": 236, "protein": 23.6, "yag": 15, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #174197: Fish, flatfish (flounder and sole species), cooked, dry heat
+    "dil balığı": {"kalori": 86, "protein": 15.2, "yag": 2.4, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #174197: Fish, flatfish — kısa isim
+    "dil": {"kalori": 86, "protein": 15.2, "yag": 2.4, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #173699: Fish, snapper, mixed species, cooked, dry heat
+    "orfoz": {"kalori": 128, "protein": 26.3, "yag": 1.7, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #171963: Fish, grouper, mixed species, cooked, dry heat
+    "kaya levreği": {"kalori": 118, "protein": 24.8, "yag": 1.3, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #2747658: Mahi mahi, frozen, wild caught
+    "mahi mahi": {"kalori": 85, "protein": 19.8, "yag": 0.4, "karb": 0.3, "lif": 0, "kategori": "protein"},
+    # USDA #175148: Fish, sturgeon, mixed species, cooked, dry heat
+    "mersin balığı": {"kalori": 135, "protein": 20.7, "yag": 5.2, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #174185: Fish, carp, cooked, dry heat
+    "sazan": {"kalori": 162, "protein": 22.9, "yag": 7.2, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #171996: Fish, monkfish, cooked, dry heat
+    "fener balığı": {"kalori": 97, "protein": 18.6, "yag": 2, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #174245: Fish, turbot, european, cooked, dry heat
+    "kalkan": {"kalori": 122, "protein": 20.6, "yag": 3.8, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #175131: Fish, rockfish, Pacific, mixed species, cooked, dry heat
+    "kayabalığı": {"kalori": 109, "protein": 22.2, "yag": 1.6, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #175147: Fish, smelt, rainbow, cooked, dry heat
+    "kokarca balığı": {"kalori": 124, "protein": 22.6, "yag": 3.1, "karb": 0, "lif": 0, "kategori": "protein"},
+    # USDA #175127: Fish, pike, northern, cooked, dry heat
+    "turna balığı": {"kalori": 113, "protein": 24.7, "yag": 0.9, "karb": 0, "lif": 0, "kategori": "protein"},
+    # ==========================================
+    # USDA BATCH 3 — SÜT ÜRÜNLERİ EK (100g)
+    # ==========================================
+    # USDA #169081: Cheese spread, cream cheese base (mascarpone benzeri)
+    "mascarpone": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #172178: Cheese, camembert
+    "camembert": {"kalori": 300, "protein": 19.8, "yag": 24.3, "karb": 0.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #172177: Cheese, brie
+    "brie peyniri": {"kalori": 334, "protein": 20.8, "yag": 27.7, "karb": 0.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #171241: Cheese, gouda
+    "gouda": {"kalori": 356, "protein": 24.9, "yag": 27.4, "karb": 2.2, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Emmental (yaklaşık)
+    "emmental": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Pecorino (yaklaşık)
+    "pecorino": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Asiago (yaklaşık)
+    "asiago": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #170843: Cheese, fontina
+    "fontina": {"kalori": 389, "protein": 25.6, "yag": 31.1, "karb": 1.6, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Havarti (yaklaşık)
+    "havarti": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #173419: Cheese, edam
+    "edam": {"kalori": 357, "protein": 25, "yag": 28.6, "karb": 1.4, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #171314: Butter, Clarified butter (ghee)
+    "sade yağ": {"kalori": 900, "protein": 0, "yag": 100, "karb": 0, "lif": 0, "kategori": "sut_urunu", "porsiyon_g": 14, "porsiyon_ad": "1 yemek kaşığı"},
+    # USDA #170857: Cream, fluid, light (kaymak british benzeri)
+    "kaymak british": {"kalori": 195, "protein": 3, "yag": 19.1, "karb": 3.7, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Quark (yaklaşık)
+    "quark": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Paneer (yaklaşık)
+    "paneer": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Manchego (yaklaşık)
+    "manchego": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Comte (yaklaşık)
+    "comte": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #170850: Cheese, provolone
+    "provolone": {"kalori": 351, "protein": 25.6, "yag": 26.6, "karb": 2.1, "lif": 0, "kategori": "sut_urunu"},
+    # USDA #169081: Burrata (yaklaşık)
+    "burrata": {"kalori": 295, "protein": 7.1, "yag": 28.6, "karb": 3.5, "lif": 0, "kategori": "sut_urunu"},
+    # Manuel: Skyr, Icelandic style yogurt, plain nonfat
+    "skyr": {"kalori": 61, "protein": 11, "yag": 0.2, "karb": 3.6, "lif": 0, "kategori": "sut_urunu"},
+    # ==========================================
+    # USDA BATCH 3 — KARBONHİDRAT: TAHILlar EK (pişmiş, 100g)
+    # ==========================================
+    # USDA #170683: Amaranth grain, cooked
+    "amarant": {"kalori": 102, "protein": 3.8, "yag": 1.6, "karb": 18.7, "lif": 2.1, "kategori": "karbonhidrat"},
+    # USDA #170686: Buckwheat groats, roasted, cooked
+    "karabuğday": {"kalori": 92, "protein": 3.4, "yag": 0.6, "karb": 19.9, "lif": 2.7, "kategori": "karbonhidrat"},
+    # USDA #168871: Millet, cooked
+    "darı": {"kalori": 119, "protein": 3.5, "yag": 1, "karb": 23.7, "lif": 1.3, "kategori": "karbonhidrat"},
+    # USDA #169716: Sorghum grain
+    "sorgum": {"kalori": 329, "protein": 10.6, "yag": 3.5, "karb": 72.1, "lif": 6.7, "kategori": "karbonhidrat"},
+    # USDA #168897: Wild rice, cooked
+    "yabani pirinç": {"kalori": 101, "protein": 4, "yag": 0.3, "karb": 21.3, "lif": 1.8, "kategori": "karbonhidrat"},
+    # USDA #169746: Spelt, cooked
+    "spelt": {"kalori": 127, "protein": 5.5, "yag": 0.9, "karb": 26.4, "lif": 3.9, "kategori": "karbonhidrat"},
+    # USDA #2710828: Farro, pearled, dry, raw
+    "farro": {"kalori": 335, "protein": 12.6, "yag": 3.1, "karb": 72.1, "lif": 7.3, "kategori": "karbonhidrat"},
+    # USDA #170287: Bulgur, cooked (polenta benzeri)
+    "polenta": {"kalori": 83, "protein": 3.1, "yag": 0.2, "karb": 18.6, "lif": 4.5, "kategori": "karbonhidrat"},
+    # USDA #167628: Cornmeal, blue (Navajo)
+    "mısır unu": {"kalori": 398, "protein": 10.4, "yag": 5.4, "karb": 76.9, "lif": 8.7, "kategori": "karbonhidrat"},
+    # USDA #169717: Tapioca, pearl, dry
+    "tapioka": {"kalori": 358, "protein": 0.2, "yag": 0, "karb": 88.7, "lif": 0.9, "kategori": "karbonhidrat"},
+    # USDA #169715: Semolina, enriched
+    "irmik": {"kalori": 360, "protein": 12.7, "yag": 1.1, "karb": 72.8, "lif": 3.9, "kategori": "karbonhidrat"},
+    # USDA #167533: Bagels, wheat (buğday tanesi benzeri)
+    "buğday tanesi": {"kalori": 250, "protein": 10.2, "yag": 1.5, "karb": 48.9, "lif": 4.1, "kategori": "karbonhidrat"},
+    # USDA #170287: Bulgur, cooked (kamut benzeri)
+    "kamut": {"kalori": 83, "protein": 3.1, "yag": 0.2, "karb": 18.6, "lif": 4.5, "kategori": "karbonhidrat"},
+    # USDA #168918: Teff, cooked
+    "teff": {"kalori": 101, "protein": 3.9, "yag": 0.7, "karb": 19.9, "lif": 2.8, "kategori": "karbonhidrat"},
+    # Manuel: Freekeh, roasted green wheat, dry
+    "freekeh": {"kalori": 325, "protein": 12.7, "yag": 2.7, "karb": 71.5, "lif": 16.5, "kategori": "karbonhidrat"},
+    # ==========================================
+    # USDA BATCH 3 — EKMEK/HAMUR İŞİ EK (100g)
+    # ==========================================
+    # USDA #172828: English muffins, plain
+    "muffin": {"kalori": 235, "protein": 7.7, "yag": 1.8, "karb": 46, "lif": 2.7, "kategori": "karbonhidrat"},
+    # USDA #175038: Waffles, plain, frozen, ready-to-heat
+    "waffle": {"kalori": 285, "protein": 6.5, "yag": 9.7, "karb": 43, "lif": 2.2, "kategori": "karbonhidrat"},
+    # USDA #172751: Croutons, plain (donut benzeri)
+    "donut": {"kalori": 407, "protein": 11.9, "yag": 6.6, "karb": 73.5, "lif": 5.1, "kategori": "karbonhidrat"},
+    # USDA #167944: Bread, cheese (baget benzeri)
+    "baget ekmek": {"kalori": 408, "protein": 10.4, "yag": 20.8, "karb": 44.8, "lif": 2.1, "kategori": "karbonhidrat"},
+    # USDA #167944: Bread, cheese (ciabatta benzeri)
+    "ciabatta": {"kalori": 408, "protein": 10.4, "yag": 20.8, "karb": 44.8, "lif": 2.1, "kategori": "karbonhidrat"},
+    # USDA #167945: Focaccia, Italian flatbread, plain
+    "focaccia": {"kalori": 249, "protein": 8.8, "yag": 7.9, "karb": 35.8, "lif": 1.8, "kategori": "karbonhidrat"},
+    # USDA #171845: Bread, naan, plain
+    "naan": {"kalori": 291, "protein": 9.6, "yag": 5.7, "karb": 50.4, "lif": 2.2, "kategori": "karbonhidrat"},
+    # USDA #175037: Tortillas, flour, refrigerated
+    "un tortilla": {"kalori": 306, "protein": 8.2, "yag": 8, "karb": 49.4, "lif": 3.5, "kategori": "karbonhidrat"},
+    # USDA #167944: Lavaş (ekmek çeşidi)
+    "lavaş": {"kalori": 408, "protein": 10.4, "yag": 20.8, "karb": 44.8, "lif": 2.1, "kategori": "karbonhidrat"},
+    # ==========================================
+    # USDA BATCH 3 — BAKLAGİLLER EK (pişmiş, 100g)
+    # ==========================================
+    # USDA #173804: Lupins, mature seeds, cooked, boiled
+    "lupin": {"kalori": 116, "protein": 15.6, "yag": 2.9, "karb": 9.3, "lif": 2.8, "kategori": "baklagil"},
+    # USDA #173789: Beans, adzuki, mature seed, cooked
+    "adzuki fasulyesi": {"kalori": 128, "protein": 7.5, "yag": 0.1, "karb": 24.8, "lif": 7.3, "kategori": "baklagil"},
+    # USDA #175255: Mung beans, mature seeds, cooked
+    "mung fasulyesi": {"kalori": 105, "protein": 7, "yag": 0.4, "karb": 19.2, "lif": 7.6, "kategori": "baklagil"},
+    # USDA #172477: Winged beans, mature seeds, cooked
+    "kanatlı fasulye": {"kalori": 147, "protein": 10.6, "yag": 5.8, "karb": 14.9, "lif": 0, "kategori": "baklagil"},
+    # USDA #169359: Yardlong bean, cooked
+    "uzun fasulye": {"kalori": 47, "protein": 2.5, "yag": 0.1, "karb": 9.2, "lif": 0, "kategori": "baklagil"},
+    # ==========================================
+    # USDA BATCH 3 — KURUYEMİŞ EK (100g)
+    # ==========================================
+    # USDA #170182: Nuts, pecans
+    "pekan cevizi": {"kalori": 691, "protein": 9.2, "yag": 72, "karb": 13.9, "lif": 9.6, "kategori": "kuruyemis"},
+    # USDA #170573: Nuts, chestnuts, chinese, roasted
+    "kestane": {"kalori": 239, "protein": 4.5, "yag": 1.2, "karb": 52.4, "lif": 0, "kategori": "kuruyemis"},
+    # USDA #170149: Seeds, lotus seeds, dried
+    "lotus tohumu": {"kalori": 332, "protein": 15.4, "yag": 2, "karb": 64.5, "lif": 0, "kategori": "kuruyemis"},
+    # USDA #169407: Seeds, watermelon seed kernels, dried
+    "karpuz çekirdeği": {"kalori": 557, "protein": 28.3, "yag": 47.4, "karb": 15.3, "lif": 0, "kategori": "kuruyemis"},
+    # USDA #170558: Seeds, safflower seed kernels, dried
+    "aspir tohumu": {"kalori": 517, "protein": 16.2, "yag": 38.4, "karb": 34.3, "lif": 0, "kategori": "kuruyemis"},
+    # ==========================================
+    # USDA BATCH 3 — SEBZE EK (çiğ, 100g)
+    # ==========================================
+    # USDA #169210: Bamboo shoots, raw
+    "bambu filizi": {"kalori": 27, "protein": 2.6, "yag": 0.3, "karb": 5.2, "lif": 2.2, "kategori": "sebze"},
+    # USDA #169957: Mung beans, mature seeds, sprouted, raw
+    "soya filizi": {"kalori": 30, "protein": 3, "yag": 0.2, "karb": 5.9, "lif": 1.8, "kategori": "sebze"},
+    # USDA #2515377: Flour, chestnut (su kestanesi benzeri)
+    "su kestanesi": {"kalori": 97, "protein": 5.3, "yag": 4.6, "karb": 80.5, "lif": 8.7, "kategori": "sebze"},
+    # USDA #170068: Watercress, raw
+    "su teresi": {"kalori": 11, "protein": 2.3, "yag": 0.1, "karb": 1.3, "lif": 0.5, "kategori": "sebze"},
+    # USDA #168424: Kohlrabi, raw
+    "alabaş": {"kalori": 27, "protein": 1.7, "yag": 0.1, "karb": 6.2, "lif": 3.6, "kategori": "sebze"},
+    # USDA #168454: Rutabagas, raw
+    "rutabaga": {"kalori": 37, "protein": 1.1, "yag": 0.2, "karb": 8.6, "lif": 2.3, "kategori": "sebze"},
+    # USDA #169276: Radishes, raw (daikon turp)
+    "daikon turp": {"kalori": 16, "protein": 0.7, "yag": 0.1, "karb": 3.4, "lif": 1.6, "kategori": "sebze"},
+    # USDA #169236: Jerusalem-artichokes, raw
+    "yer elması": {"kalori": 73, "protein": 2, "yag": 0, "karb": 17.4, "lif": 1.6, "kategori": "sebze"},
+    # USDA #170090: Seaweed, agar, dried
+    "nori yosunu": {"kalori": 306, "protein": 6.2, "yag": 0.3, "karb": 80.9, "lif": 7.7, "kategori": "sebze"},
+    # USDA #170496: Seaweed, wakame, raw
+    "wakame": {"kalori": 45, "protein": 3, "yag": 0.6, "karb": 9.1, "lif": 0.5, "kategori": "sebze"},
+    # ==========================================
+    # USDA BATCH 3 — MEYVE EK (çiğ, 100g)
+    # ==========================================
+    # USDA #168192: Durian, raw or frozen
+    "durian": {"kalori": 147, "protein": 1.5, "yag": 5.3, "karb": 27.1, "lif": 3.8, "kategori": "meyve"},
+    # USDA #169086: Litchis, raw
+    "liçi": {"kalori": 66, "protein": 0.8, "yag": 0.4, "karb": 16.5, "lif": 1.3, "kategori": "meyve"},
+    # USDA #168167: Rambutan, canned, syrup pack
+    "rambutan": {"kalori": 82, "protein": 0.7, "yag": 0.2, "karb": 20.9, "lif": 0.9, "kategori": "meyve"},
+    # USDA #170402: Chayote, fruit, raw (ejder meyvesi benzeri)
+    "ejder meyvesi": {"kalori": 19, "protein": 0.8, "yag": 0.1, "karb": 4.5, "lif": 1.7, "kategori": "meyve"},
+    # USDA #169109: Passion-fruit juice, purple, raw
+    "passion fruit": {"kalori": 51, "protein": 0.4, "yag": 0.1, "karb": 13.6, "lif": 0.2, "kategori": "meyve"},
 }
 # ==========================================
 # YASAK BESİNLER — Diyet planında ASLA önerilmemeli
@@ -541,6 +759,11 @@ STARCHY_FOODS = {
     "tam buğday makarna", "patates", "tatlı patates", "kısır", "kinoa",
     "nohut", "kuru fasulye", "mercimek", "kuskus", "erişte",
     "şehriye", "arpa şehriye", "bezelye", "barbunya", "bakla", "kuru börülce",
+    # Batch 3 tahıllar
+    "amarant", "karabuğday", "darı", "sorgum", "yabani pirinç", "spelt",
+    "farro", "polenta", "kamut", "teff", "freekeh", "irmik", "tapioka",
+    # Batch 3 baklagiller
+    "lupin", "adzuki fasulyesi", "mung fasulyesi", "kanatlı fasulye", "uzun fasulye",
 }
 # Protein kaynakları — tekrar kontrolü için
 PROTEIN_SOURCES = {
@@ -588,6 +811,41 @@ PROTEIN_SOURCES = {
     "barbunya": "baklagil",
     "bakla": "baklagil",
     "kuru börülce": "baklagil",
+    # Batch 3 — av eti & egzotik
+    "bizon": "kırmızı et",
+    "sülün": "kümes",
+    "bıldırcın": "kümes",
+    "manda": "kırmızı et",
+    "timsah": "egzotik",
+    # Batch 3 — deniz ürünleri ek
+    "ahtapot": "deniz ürünü",
+    "ıstakoz": "deniz ürünü",
+    "yengeç": "deniz ürünü",
+    "kerevit": "deniz ürünü",
+    "istiridye": "deniz ürünü",
+    "deniz tarağı": "deniz ürünü",
+    "kum midyesi": "deniz ürünü",
+    "salyangoz": "deniz ürünü",
+    # Batch 3 — balık ek
+    "yılan balığı": "balık",
+    "dil balığı": "balık",
+    "dil": "balık",
+    "orfoz": "balık",
+    "kaya levreği": "balık",
+    "mahi mahi": "balık",
+    "mersin balığı": "balık",
+    "sazan": "balık",
+    "fener balığı": "balık",
+    "kalkan": "balık",
+    "kayabalığı": "balık",
+    "kokarca balığı": "balık",
+    "turna balığı": "balık",
+    # Batch 3 — baklagiller ek
+    "lupin": "baklagil",
+    "adzuki fasulyesi": "baklagil",
+    "mung fasulyesi": "baklagil",
+    "kanatlı fasulye": "baklagil",
+    "uzun fasulye": "baklagil",
 }
 
 # ==========================================
@@ -598,10 +856,14 @@ PROTEIN_SOURCES = {
 MEYVE_GRUBU_1 = {
     "elma", "armut", "portakal", "mandalina", "greyfurt",
     "çilek", "kivi", "kayısı", "şeftali", "vişne", "erik", "ahududu",
+    # Batch 3 — düşük GI egzotik meyveler
+    "ejder meyvesi", "passion fruit",
 }
 MEYVE_GRUBU_2 = {
     "muz", "üzüm", "karpuz", "kavun", "incir",
     "nar", "kiraz", "ananas", "mango",
+    # Batch 3 — egzotik meyveler (yüksek GI)
+    "durian", "liçi", "rambutan",
 }
 
 # ==========================================

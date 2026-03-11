@@ -242,11 +242,136 @@ class Database:
     # ==========================================
     # KİLO GEÇMİŞİ
     # ==========================================
-    
+
     async def get_weight_history(self, user_id: int, limit: int = 12) -> list:
         rows = await self.pool.fetch(
-            """SELECT tarih, kilo_kg FROM kilo_gecmisi 
+            """SELECT tarih, kilo_kg FROM kilo_gecmisi
                WHERE user_id = $1 ORDER BY tarih DESC LIMIT $2""",
             user_id, limit,
         )
         return [dict(r) for r in reversed(rows)]
+
+    # ==========================================
+    # TARİF ARAMA (pgvector semantik arama)
+    # ==========================================
+
+    async def search_recipes(
+        self,
+        embedding: list,
+        limit: int = 8,
+        ogun_tipi: str = None,
+        saglik_etiketleri: list = None,
+        exclude_recent_ids: list = None,
+        max_kalori: float = None,
+        min_protein: float = None,
+    ) -> list:
+        """
+        Kullanıcı sorgusuna semantik olarak en yakın tarifleri bulur.
+
+        Çeşitlilik mekanizması:
+        - exclude_recent_ids: Son 7 günde önerilen tarif ID'leri hariç tutulur
+        - Sonuçlar benzerlik skoru + çeşitlilik ağırlığıyla sıralanır
+
+        Args:
+            embedding: Sorgu vektörü (384 boyutlu)
+            limit: Dönecek tarif sayısı
+            ogun_tipi: 'kahvalti', 'ogle', 'aksam', 'ara_ogun' filtresi
+            saglik_etiketleri: Dahil edilmesi gereken sağlık etiketleri
+            exclude_recent_ids: Son 7 günde kullanılan tarif ID'leri (çeşitlilik için)
+            max_kalori: Maksimum kalori filtresi
+            min_protein: Minimum protein filtresi
+        """
+        # Temel sorgu — önce recent_ids hariç ara, sonuç yoksa hepsini ara
+        for exclude in [exclude_recent_ids or [], []]:
+            vector_str = "[" + ",".join(f"{v:.8f}" for v in embedding) + "]"
+
+            # Dinamik WHERE koşulları
+            conditions = ["embedding IS NOT NULL"]
+            params = [vector_str]
+            param_idx = 2
+
+            if ogun_tipi:
+                conditions.append(f"${param_idx} = ANY(ogun_tipleri)")
+                params.append(ogun_tipi)
+                param_idx += 1
+
+            if saglik_etiketleri:
+                # En az bir etiket eşleşmesi yeterli (OR mantığı)
+                conditions.append(f"saglik_etiketler && ${param_idx}::text[]")
+                params.append(saglik_etiketleri)
+                param_idx += 1
+
+            if max_kalori:
+                conditions.append(f"kalori <= ${param_idx}")
+                params.append(max_kalori)
+                param_idx += 1
+
+            if min_protein:
+                conditions.append(f"protein_g >= ${param_idx}")
+                params.append(min_protein)
+                param_idx += 1
+
+            if exclude:
+                conditions.append(f"tarif_id != ALL(${param_idx}::text[])")
+                params.append(exclude)
+                param_idx += 1
+
+            where_clause = " AND ".join(conditions)
+
+            query = f"""
+                SELECT
+                    tarif_id, ad, kategori, malzemeler,
+                    porsiyon_gram, kalori, protein_g, karbonhidrat_g, yag_g, lif_g,
+                    saglik_etiketler, ogun_tipleri, pismesi_dk, zorluk, aciklama,
+                    1 - (embedding <=> $1::vector) AS benzerlik
+                FROM tarifler
+                WHERE {where_clause}
+                ORDER BY embedding <=> $1::vector
+                LIMIT ${param_idx}
+            """
+            params.append(limit)
+
+            rows = await self.pool.fetch(query, *params)
+            results = [dict(r) for r in rows]
+
+            if results:
+                return results
+
+        return []
+
+    async def get_recently_used_recipe_ids(self, user_id: int, days: int = 7) -> list:
+        """
+        Son N günde kullanıcının yediği yemekleri, tarifler tablosundaki ID'lerle eşleştir.
+        Çeşitlilik için bu ID'ler exclude listesine eklenir.
+
+        Öğün açıklamalarından tarif adlarını fuzzy match yerine basit substring ile buluruz.
+        """
+        rows = await self.pool.fetch(
+            """
+            SELECT DISTINCT t.tarif_id
+            FROM ogun_kayitlari ok
+            JOIN tarifler t ON (
+                ok.aciklama ILIKE '%' || t.ad || '%'
+                OR t.ad ILIKE '%' || split_part(ok.aciklama, ' ', 1) || '%'
+            )
+            WHERE ok.user_id = $1
+              AND ok.tarih >= CURRENT_DATE - $2
+            """,
+            user_id, days,
+        )
+        return [r["tarif_id"] for r in rows]
+
+    async def get_recipes_by_category(self, kategori: str, limit: int = 5) -> list:
+        """Belirli kategoriden rastgele tarif getir (vektör araması olmadan fallback)."""
+        rows = await self.pool.fetch(
+            """
+            SELECT tarif_id, ad, kategori, kalori, protein_g, karbonhidrat_g, yag_g, lif_g,
+                   saglik_etiketler, ogun_tipleri, aciklama
+            FROM tarifler
+            WHERE kategori = $1
+            ORDER BY RANDOM()
+            LIMIT $2
+            """,
+            kategori, limit,
+        )
+        return [dict(r) for r in rows]

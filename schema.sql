@@ -222,6 +222,43 @@ CREATE TABLE IF NOT EXISTS konusma_gecmisi (
 );
 
 -- =============================================
+-- 9. TARİF VERİTABANI (pgvector ile semantik arama)
+-- Lokal embedding modeli ile vektörleştirilmiş Türk yemek tarifleri.
+-- index_recipes.py scriptiyle bir kez doldurulur, sonra RAG için kullanılır.
+-- =============================================
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE IF NOT EXISTS tarifler (
+    id SERIAL PRIMARY KEY,
+    tarif_id VARCHAR(100) UNIQUE NOT NULL,   -- recipes.json'daki "id" alanı
+    ad VARCHAR(200) NOT NULL,
+    kategori VARCHAR(50),
+    malzemeler TEXT[],
+    porsiyon_gram INT,
+    kalori DECIMAL(6,1),
+    protein_g DECIMAL(5,1),
+    karbonhidrat_g DECIMAL(5,1),
+    yag_g DECIMAL(5,1),
+    lif_g DECIMAL(4,1),
+    saglik_etiketler TEXT[],
+    ogun_tipleri TEXT[],
+    pismesi_dk INT,
+    zorluk VARCHAR(20),
+    aciklama TEXT,
+    tam_metin TEXT,                          -- embedding'e gönderilen ham metin
+    embedding vector(384),                   -- paraphrase-multilingual-MiniLM-L12-v2 çıktısı
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Vektör benzerlik araması için IVFFlat indeksi (cosine similarity)
+-- NOT: İndeks oluşturabilmek için tabloda en az 100 satır olmalıdır.
+-- index_recipes.py çalıştırıldıktan sonra şu komutla indeks eklenebilir:
+-- CREATE INDEX idx_tarifler_embedding ON tarifler USING ivfflat (embedding vector_cosine_ops) WITH (lists = 10);
+CREATE INDEX IF NOT EXISTS idx_tarifler_kategori ON tarifler(kategori);
+CREATE INDEX IF NOT EXISTS idx_tarifler_ogun ON tarifler USING GIN(ogun_tipleri);
+CREATE INDEX IF NOT EXISTS idx_tarifler_etiket ON tarifler USING GIN(saglik_etiketler);
+
+-- =============================================
 -- INDEXLER
 -- =============================================
 CREATE INDEX idx_users_telegram ON users(telegram_id);

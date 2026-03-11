@@ -53,7 +53,7 @@ class BotHandlers:
             )
             return
         
-        # Claude'a gönder
+        # Claude'a gönder (db parametresi ile RAG etkin)
         response = await self.claude.chat(
             user_message=message,
             user=ctx["user"],
@@ -62,6 +62,7 @@ class BotHandlers:
             weekly_summary=ctx["weekly_summary"],
             todays_plan=ctx["todays_plan"],
             conversation_history=ctx["conversation_history"],
+            db=self.db,
         )
         
         # Onboarding metadata parse et (kullanıcıya görünmez)

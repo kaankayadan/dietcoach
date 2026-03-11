@@ -2,7 +2,6 @@
 Türk Beslenme Koçu — Telegram Bot
 Ana giriş noktası
 """
-import asyncio
 import logging
 from telegram.ext import (
     ApplicationBuilder,
@@ -23,28 +22,34 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def main():
+def main():
     settings = Settings()
-    
-    # Veritabanı bağlantısı
     db = Database(settings.database_url)
-    await db.connect()
-    logger.info("✅ Veritabanı bağlantısı kuruldu")
-    
-    # Claude API client
     claude = ClaudeClient(
         api_key=settings.anthropic_api_key,
         system_prompt_path="system_prompt.md",
     )
-    logger.info("✅ Claude API client hazır")
-    
-    # Telegram bot
-    app = ApplicationBuilder().token(settings.telegram_token).build()
-    
-    # Handler'ları oluştur
+
+    async def post_init(app):
+        await db.connect()
+        logger.info("✅ Veritabanı bağlantısı kuruldu")
+        scheduler = ReminderScheduler(db=db, app=app)
+        scheduler.start()
+        logger.info("✅ Hatırlatma scheduler başlatıldı")
+
+    async def post_shutdown(app):
+        await db.close()
+
     handlers = BotHandlers(db=db, claude=claude, settings=settings)
-    
-    # Komut handler'ları
+
+    app = (
+        ApplicationBuilder()
+        .token(settings.telegram_token)
+        .post_init(post_init)
+        .post_shutdown(post_shutdown)
+        .build()
+    )
+
     app.add_handler(CommandHandler("baslat", handlers.cmd_baslat))
     app.add_handler(CommandHandler("start", handlers.cmd_baslat))
     app.add_handler(CommandHandler("profil", handlers.cmd_profil))
@@ -58,25 +63,16 @@ async def main():
     app.add_handler(CommandHandler("guncelle", handlers.cmd_guncelle))
     app.add_handler(CommandHandler("hedef", handlers.cmd_hedef))
     app.add_handler(CommandHandler("yardim", handlers.cmd_yardim))
-    
-    # Serbest metin handler (komut olmayan her mesaj)
+
     app.add_handler(MessageHandler(
         filters.TEXT & ~filters.COMMAND,
         handlers.handle_message,
     ))
-    
-    # Fotoğraf handler (yemek fotoğrafı)
     app.add_handler(MessageHandler(filters.PHOTO, handlers.handle_photo))
-    
-    # Hatırlatma scheduler
-    scheduler = ReminderScheduler(db=db, app=app)
-    scheduler.start()
-    logger.info("✅ Hatırlatma scheduler başlatıldı")
-    
-    # Bot'u başlat
+
     logger.info("🥗 Beslenme Koçu Bot başlatılıyor...")
-    await app.run_polling()
+    app.run_polling()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

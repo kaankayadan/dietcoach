@@ -4,7 +4,7 @@ Hatırlatma Sistemi — Öğün saatlerinde bildirim, gün sonu takip, haftalık
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from src.database import Database
+from database import Database
 
 logger = logging.getLogger(__name__)
 

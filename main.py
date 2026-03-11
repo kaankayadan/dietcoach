@@ -10,11 +10,11 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from config.settings import Settings
-from src.handlers import BotHandlers
-from src.database import Database
-from src.claude_client import ClaudeClient
-from src.scheduler import ReminderScheduler
+from settings import Settings
+from handlers import BotHandlers
+from database import Database
+from claude_client import ClaudeClient
+from scheduler import ReminderScheduler
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -34,7 +34,7 @@ async def main():
     # Claude API client
     claude = ClaudeClient(
         api_key=settings.anthropic_api_key,
-        system_prompt_path="prompts/system_prompt.md",
+        system_prompt_path="system_prompt.md",
     )
     logger.info("✅ Claude API client hazır")
     

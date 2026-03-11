@@ -11,8 +11,8 @@ import json
 import logging
 from telegram import Update
 from telegram.ext import ContextTypes
-from src.database import Database
-from src.claude_client import ClaudeClient
+from database import Database
+from claude_client import ClaudeClient
 
 logger = logging.getLogger(__name__)
 

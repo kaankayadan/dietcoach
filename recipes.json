@@ -3,15 +3,29 @@
     "id": "menemen_klasik",
     "ad": "Menemen (2 yumurta)",
     "kategori": "kahvalti",
-    "malzemeler": ["yumurta", "domates", "yeşil biber", "soğan", "zeytinyağı", "tuz", "karabiber"],
+    "malzemeler": [
+      "yumurta",
+      "domates",
+      "yeşil biber",
+      "soğan",
+      "zeytinyağı",
+      "tuz",
+      "karabiber"
+    ],
     "porsiyon_gram": 280,
     "kalori": 290,
     "protein_g": 15,
     "karbonhidrat_g": 12,
     "yag_g": 20,
     "lif_g": 3,
-    "saglik_etiketler": ["glütensiz", "sebzeli", "düşük_karbonhidrat"],
-    "ogun_tipleri": ["kahvalti"],
+    "saglik_etiketler": [
+      "glütensiz",
+      "sebzeli",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
     "pismesi_dk": 15,
     "zorluk": "kolay",
     "aciklama": "Geleneksel Türk kahvaltısı. 2 yumurta, domates ve yeşil biberle hazırlanan lezzetli ve protein açısından zengin sabah yemeği."
@@ -20,15 +34,27 @@
     "id": "haslanmis_yumurta_peynir",
     "ad": "Haşlanmış Yumurta + Beyaz Peynir Tabağı",
     "kategori": "kahvalti",
-    "malzemeler": ["yumurta", "beyaz peynir", "domates", "salatalık", "zeytin", "tam buğday ekmek"],
+    "malzemeler": [
+      "yumurta",
+      "beyaz peynir",
+      "domates",
+      "salatalık",
+      "zeytin",
+      "tam buğday ekmek"
+    ],
     "porsiyon_gram": 350,
     "kalori": 380,
     "protein_g": 22,
     "karbonhidrat_g": 20,
     "yag_g": 23,
     "lif_g": 4,
-    "saglik_etiketler": ["yüksek_protein", "geleneksel_türk"],
-    "ogun_tipleri": ["kahvalti"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
     "pismesi_dk": 10,
     "zorluk": "kolay",
     "aciklama": "2 haşlanmış yumurta, 40g beyaz peynir, sebzeler ve 1 dilim tam buğday ekmekten oluşan dengeli kahvaltı tabağı."
@@ -37,15 +63,29 @@
     "id": "yulaf_ezmesi_meyve",
     "ad": "Sütlü Yulaf Ezmesi (Meyveli)",
     "kategori": "kahvalti",
-    "malzemeler": ["yulaf ezmesi", "süt", "muz", "çilek", "bal", "tarçın"],
+    "malzemeler": [
+      "yulaf ezmesi",
+      "süt",
+      "muz",
+      "çilek",
+      "bal",
+      "tarçın"
+    ],
     "porsiyon_gram": 300,
     "kalori": 340,
     "protein_g": 12,
     "karbonhidrat_g": 58,
     "yag_g": 7,
     "lif_g": 6,
-    "saglik_etiketler": ["yüksek_lif", "enerji_veren", "glütensiz_olabilir", "vejetaryen"],
-    "ogun_tipleri": ["kahvalti"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "enerji_veren",
+      "glütensiz_olabilir",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "50g yulaf, 200ml süt, muz ve çilekle hazırlanan besleyici ve doyurucu kahvaltı. Uzun süre tokluk sağlar."
@@ -54,15 +94,29 @@
     "id": "sebzeli_omlet",
     "ad": "Sebzeli Omlet (3 Yumurta)",
     "kategori": "kahvalti",
-    "malzemeler": ["yumurta", "ıspanak", "mantar", "biber", "domates", "zeytinyağı"],
+    "malzemeler": [
+      "yumurta",
+      "ıspanak",
+      "mantar",
+      "biber",
+      "domates",
+      "zeytinyağı"
+    ],
     "porsiyon_gram": 250,
     "kalori": 280,
     "protein_g": 20,
     "karbonhidrat_g": 6,
     "yag_g": 19,
     "lif_g": 2,
-    "saglik_etiketler": ["yüksek_protein", "düşük_karbonhidrat", "glütensiz", "tiroid_dostu"],
-    "ogun_tipleri": ["kahvalti"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "tiroid_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
     "pismesi_dk": 12,
     "zorluk": "kolay",
     "aciklama": "3 yumurtalı, ıspanak ve mantar dolgulu protein açısından zengin omlet. Düşük karbonhidrat isteyen ve tiroid hastaları için uygun."
@@ -71,15 +125,28 @@
     "id": "tam_bugday_tost_peynir",
     "ad": "Tam Buğday Tost + Lor Peyniri",
     "kategori": "kahvalti",
-    "malzemeler": ["tam buğday ekmek", "lor peyniri", "domates", "salatalık", "maydanoz"],
+    "malzemeler": [
+      "tam buğday ekmek",
+      "lor peyniri",
+      "domates",
+      "salatalık",
+      "maydanoz"
+    ],
     "porsiyon_gram": 200,
     "kalori": 260,
     "protein_g": 14,
     "karbonhidrat_g": 30,
     "yag_g": 8,
     "lif_g": 5,
-    "saglik_etiketler": ["yüksek_lif", "düşük_yağ", "vejetaryen"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "düşük_yağ",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "2 dilim tam buğday ekmek, bol lor peyniri ve taze sebzelerle hızlı hazırlanan sağlıklı kahvaltı."
@@ -88,15 +155,33 @@
     "id": "mercimek_corbasi",
     "ad": "Kırmızı Mercimek Çorbası",
     "kategori": "corba",
-    "malzemeler": ["kırmızı mercimek", "soğan", "havuç", "domates salçası", "zeytinyağı", "kimyon", "kırmızı biber"],
+    "malzemeler": [
+      "kırmızı mercimek",
+      "soğan",
+      "havuç",
+      "domates salçası",
+      "zeytinyağı",
+      "kimyon",
+      "kırmızı biber"
+    ],
     "porsiyon_gram": 300,
     "kalori": 200,
     "protein_g": 11,
     "karbonhidrat_g": 32,
     "yag_g": 4,
     "lif_g": 8,
-    "saglik_etiketler": ["yüksek_lif", "yüksek_protein_bitkisel", "diyabet_dostu", "vejetaryen", "düşük_yağ"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "yüksek_protein_bitkisel",
+      "diyabet_dostu",
+      "vejetaryen",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 30,
     "zorluk": "kolay",
     "aciklama": "Türk mutfağının klasiği kırmızı mercimek çorbası. Yüksek lif ve bitkisel protein içeriğiyle diyabet ve kalp sağlığı için ideal."
@@ -105,15 +190,30 @@
     "id": "ezogelin_corbasi",
     "ad": "Ezogelin Çorbası",
     "kategori": "corba",
-    "malzemeler": ["kırmızı mercimek", "bulgur", "domates", "soğan", "zeytinyağı", "nane", "kimyon"],
+    "malzemeler": [
+      "kırmızı mercimek",
+      "bulgur",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "nane",
+      "kimyon"
+    ],
     "porsiyon_gram": 300,
     "kalori": 210,
     "protein_g": 10,
     "karbonhidrat_g": 35,
     "yag_g": 4,
     "lif_g": 7,
-    "saglik_etiketler": ["yüksek_lif", "bitkisel_protein", "vejetaryen"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "bitkisel_protein",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 35,
     "zorluk": "kolay",
     "aciklama": "Mercimek ve bulgurdan yapılan besleyici Türk çorbası. Nane ile hafifçe baharatlı, tok ve doyurucudur."
@@ -122,15 +222,32 @@
     "id": "tavuk_suyu_corbasi",
     "ad": "Tavuk Suyu Şehriye Çorbası",
     "kategori": "corba",
-    "malzemeler": ["tavuk göğsü", "şehriye", "havuç", "kereviz", "soğan", "tuz", "karabiber"],
+    "malzemeler": [
+      "tavuk göğsü",
+      "şehriye",
+      "havuç",
+      "kereviz",
+      "soğan",
+      "tuz",
+      "karabiber"
+    ],
     "porsiyon_gram": 300,
     "kalori": 160,
     "protein_g": 14,
     "karbonhidrat_g": 18,
     "yag_g": 3,
     "lif_g": 2,
-    "saglik_etiketler": ["düşük_kalori", "sindirimi_kolay", "hafif", "glütensiz_olabilir"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "düşük_kalori",
+      "sindirimi_kolay",
+      "hafif",
+      "glütensiz_olabilir"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 40,
     "zorluk": "orta",
     "aciklama": "Ev yapımı tavuk suyuyla hazırlanan şehriyeli çorba. Sindirimi kolay, iyileştirici ve düşük kalorili."
@@ -139,15 +256,30 @@
     "id": "yayla_corbasi",
     "ad": "Yayla Çorbası (Yoğurtlu Pirinç)",
     "kategori": "corba",
-    "malzemeler": ["yoğurt", "pirinç", "un", "yumurta sarısı", "nane", "tereyağı", "tuz"],
+    "malzemeler": [
+      "yoğurt",
+      "pirinç",
+      "un",
+      "yumurta sarısı",
+      "nane",
+      "tereyağı",
+      "tuz"
+    ],
     "porsiyon_gram": 300,
     "kalori": 190,
     "protein_g": 8,
     "karbonhidrat_g": 28,
     "yag_g": 5,
     "lif_g": 1,
-    "saglik_etiketler": ["probiyotik", "kemik_dostu", "geleneksel_türk"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "probiyotik",
+      "kemik_dostu",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 25,
     "zorluk": "orta",
     "aciklama": "Yoğurt ve pirinçten yapılan geleneksel Türk çorbası. Probiyotik içeriğiyle bağırsak sağlığını destekler."
@@ -156,15 +288,30 @@
     "id": "tarhana_corbasi",
     "ad": "Tarhana Çorbası",
     "kategori": "corba",
-    "malzemeler": ["tarhana", "soğan", "domates salçası", "zeytinyağı", "tuz", "pul biber"],
+    "malzemeler": [
+      "tarhana",
+      "soğan",
+      "domates salçası",
+      "zeytinyağı",
+      "tuz",
+      "pul biber"
+    ],
     "porsiyon_gram": 300,
     "kalori": 170,
     "protein_g": 7,
     "karbonhidrat_g": 28,
     "yag_g": 4,
     "lif_g": 3,
-    "saglik_etiketler": ["fermente", "probiyotik", "geleneksel_türk", "bağışıklık_güçlendirici"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "fermente",
+      "probiyotik",
+      "geleneksel_türk",
+      "bağışıklık_güçlendirici"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "kolay",
     "aciklama": "Fermente tarhanadan yapılan geleneksel Türk çorbası. Probiyotik özellikleriyle bağışıklık sistemini destekler."
@@ -173,15 +320,33 @@
     "id": "izgara_tavuk_gogsu",
     "ad": "Izgara Tavuk Göğsü",
     "kategori": "ana_yemek_tavuk",
-    "malzemeler": ["tavuk göğsü", "zeytinyağı", "sarımsak", "kekik", "kırmızı biber", "limon"],
+    "malzemeler": [
+      "tavuk göğsü",
+      "zeytinyağı",
+      "sarımsak",
+      "kekik",
+      "kırmızı biber",
+      "limon"
+    ],
     "porsiyon_gram": 200,
     "kalori": 220,
     "protein_g": 42,
     "karbonhidrat_g": 0,
     "yag_g": 5,
     "lif_g": 0,
-    "saglik_etiketler": ["yüksek_protein", "düşük_yağ", "düşük_karbonhidrat", "glütensiz", "spor_sonrası", "tiroid_dostu", "diyabet_dostu"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "spor_sonrası",
+      "tiroid_dostu",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "kolay",
     "aciklama": "200g ızgara tavuk göğsü. En yüksek protein/kalori oranına sahip yemek. Spor sonrası, diyet ve kas kazanımı için mükemmel."
@@ -190,15 +355,31 @@
     "id": "firin_tavuk_but",
     "ad": "Fırın Tavuk But (Derisi Alınmış)",
     "kategori": "ana_yemek_tavuk",
-    "malzemeler": ["tavuk but", "zeytinyağı", "sarımsak", "soğan", "domates", "yeşil biber", "kekik", "pul biber"],
+    "malzemeler": [
+      "tavuk but",
+      "zeytinyağı",
+      "sarımsak",
+      "soğan",
+      "domates",
+      "yeşil biber",
+      "kekik",
+      "pul biber"
+    ],
     "porsiyon_gram": 250,
     "kalori": 280,
     "protein_g": 32,
     "karbonhidrat_g": 8,
     "yag_g": 13,
     "lif_g": 2,
-    "saglik_etiketler": ["yüksek_protein", "glütensiz", "geleneksel_türk"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glütensiz",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 60,
     "zorluk": "orta",
     "aciklama": "Sebzelerle fırında pişirilmiş, derisi alınmış tavuk but. Lezzetli ve protein açısından zengin akşam yemeği."
@@ -207,15 +388,30 @@
     "id": "izgara_kofte",
     "ad": "Izgara Köfte (4 adet)",
     "kategori": "ana_yemek_et",
-    "malzemeler": ["dana kıyma", "soğan", "sarımsak", "maydanoz", "kimyon", "pul biber", "tuz"],
+    "malzemeler": [
+      "dana kıyma",
+      "soğan",
+      "sarımsak",
+      "maydanoz",
+      "kimyon",
+      "pul biber",
+      "tuz"
+    ],
     "porsiyon_gram": 200,
     "kalori": 320,
     "protein_g": 28,
     "karbonhidrat_g": 5,
     "yag_g": 20,
     "lif_g": 1,
-    "saglik_etiketler": ["yüksek_protein", "glütensiz", "geleneksel_türk"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glütensiz",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "orta",
     "aciklama": "Geleneksel ızgara köfte. Dana kıyma, soğan ve baharatlarla hazırlanan, yüksek protein içerikli Türk klasiği."
@@ -224,15 +420,29 @@
     "id": "sis_kofte",
     "ad": "Şiş Köfte (Tavuk)",
     "kategori": "ana_yemek_tavuk",
-    "malzemeler": ["tavuk kıyma", "soğan", "sarımsak", "maydanoz", "kimyon", "zeytinyağı"],
+    "malzemeler": [
+      "tavuk kıyma",
+      "soğan",
+      "sarımsak",
+      "maydanoz",
+      "kimyon",
+      "zeytinyağı"
+    ],
     "porsiyon_gram": 200,
     "kalori": 260,
     "protein_g": 30,
     "karbonhidrat_g": 4,
     "yag_g": 14,
     "lif_g": 1,
-    "saglik_etiketler": ["yüksek_protein", "düşük_karbonhidrat", "glütensiz"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 25,
     "zorluk": "orta",
     "aciklama": "Tavuk kıymayla hazırlanan şiş köfte. Dana etine göre daha düşük yağ içeriğiyle daha hafif bir seçenek."
@@ -241,15 +451,32 @@
     "id": "izgara_levrek",
     "ad": "Izgara Levrek",
     "kategori": "ana_yemek_balik",
-    "malzemeler": ["levrek", "zeytinyağı", "limon", "sarımsak", "dereotu", "tuz"],
+    "malzemeler": [
+      "levrek",
+      "zeytinyağı",
+      "limon",
+      "sarımsak",
+      "dereotu",
+      "tuz"
+    ],
     "porsiyon_gram": 250,
     "kalori": 230,
     "protein_g": 36,
     "karbonhidrat_g": 0,
     "yag_g": 9,
     "lif_g": 0,
-    "saglik_etiketler": ["omega3", "yüksek_protein", "glütensiz", "kalp_dostu", "tiroid_dostu", "düşük_karbonhidrat"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_protein",
+      "glütensiz",
+      "kalp_dostu",
+      "tiroid_dostu",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "kolay",
     "aciklama": "Omega-3 açısından zengin ızgara levrek. Kalp ve tiroid sağlığı için son derece faydalı. Düşük kalori, yüksek protein."
@@ -258,15 +485,29 @@
     "id": "hamsi_tava",
     "ad": "Hamsi Tava (Mısır Unlu)",
     "kategori": "ana_yemek_balik",
-    "malzemeler": ["hamsi", "mısır unu", "limon", "tuz", "zeytinyağı"],
+    "malzemeler": [
+      "hamsi",
+      "mısır unu",
+      "limon",
+      "tuz",
+      "zeytinyağı"
+    ],
     "porsiyon_gram": 200,
     "kalori": 280,
     "protein_g": 30,
     "karbonhidrat_g": 14,
     "yag_g": 12,
     "lif_g": 1,
-    "saglik_etiketler": ["omega3", "yüksek_protein", "kalp_dostu", "karadeniz_mutfağı"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_protein",
+      "kalp_dostu",
+      "karadeniz_mutfağı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 15,
     "zorluk": "kolay",
     "aciklama": "Mısır unuyla kızartılan hamsi. Omega-3 ve protein açısından zengin, Karadeniz mutfağının vazgeçilmezi."
@@ -275,15 +516,32 @@
     "id": "somon_izgara",
     "ad": "Somon Izgara",
     "kategori": "ana_yemek_balik",
-    "malzemeler": ["somon fileto", "zeytinyağı", "limon", "dereotu", "sarımsak", "tuz"],
+    "malzemeler": [
+      "somon fileto",
+      "zeytinyağı",
+      "limon",
+      "dereotu",
+      "sarımsak",
+      "tuz"
+    ],
     "porsiyon_gram": 180,
     "kalori": 290,
     "protein_g": 34,
     "karbonhidrat_g": 0,
     "yag_g": 16,
     "lif_g": 0,
-    "saglik_etiketler": ["omega3", "yüksek_protein", "glütensiz", "kalp_dostu", "beyin_dostu", "anti_inflamatuar"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_protein",
+      "glütensiz",
+      "kalp_dostu",
+      "beyin_dostu",
+      "anti_inflamatuar"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 15,
     "zorluk": "kolay",
     "aciklama": "Omega-3 şampiyonu ızgara somon. Kalp, beyin ve eklem sağlığı için antiinflamatuar etkili, çok yüksek protein."
@@ -292,15 +550,32 @@
     "id": "ton_baligi_salatasi",
     "ad": "Ton Balığı Salatası",
     "kategori": "salata",
-    "malzemeler": ["ton balığı (konserve, suda)", "domates", "salatalık", "soğan", "zeytinyağı", "limon", "maydanoz"],
+    "malzemeler": [
+      "ton balığı (konserve, suda)",
+      "domates",
+      "salatalık",
+      "soğan",
+      "zeytinyağı",
+      "limon",
+      "maydanoz"
+    ],
     "porsiyon_gram": 250,
     "kalori": 210,
     "protein_g": 28,
     "karbonhidrat_g": 8,
     "yag_g": 8,
     "lif_g": 3,
-    "saglik_etiketler": ["omega3", "yüksek_protein", "düşük_kalori", "hızlı_hazırlık", "glütensiz"],
-    "ogun_tipleri": ["ogle", "ara_ogun"],
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_protein",
+      "düşük_kalori",
+      "hızlı_hazırlık",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "5 dakikada hazırlanan protein bombası. Ton balığı ve taze sebzelerle çok düşük kalorili ama doyurucu salata."
@@ -309,15 +584,33 @@
     "id": "kuru_fasulye_zeytinyagli",
     "ad": "Zeytinyağlı Kuru Fasulye",
     "kategori": "baklagil",
-    "malzemeler": ["kuru fasulye", "zeytinyağı", "soğan", "sarımsak", "domates", "biber", "tuz"],
+    "malzemeler": [
+      "kuru fasulye",
+      "zeytinyağı",
+      "soğan",
+      "sarımsak",
+      "domates",
+      "biber",
+      "tuz"
+    ],
     "porsiyon_gram": 300,
     "kalori": 250,
     "protein_g": 14,
     "karbonhidrat_g": 38,
     "yag_g": 5,
     "lif_g": 12,
-    "saglik_etiketler": ["yüksek_lif", "bitkisel_protein", "vejetaryen", "vegan", "kalp_dostu", "diyabet_dostu"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "bitkisel_protein",
+      "vejetaryen",
+      "vegan",
+      "kalp_dostu",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 90,
     "zorluk": "orta",
     "aciklama": "Türk mutfağının olmazsa olmazı zeytinyağlı kuru fasulye. Çok yüksek lif içeriğiyle kan şekerini dengeler, bağırsakları çalıştırır."
@@ -326,15 +619,31 @@
     "id": "nohut_yemegi",
     "ad": "Nohut Yemeği (Etli)",
     "kategori": "baklagil",
-    "malzemeler": ["nohut", "dana eti", "soğan", "domates salçası", "zeytinyağı", "tuz", "karabiber"],
+    "malzemeler": [
+      "nohut",
+      "dana eti",
+      "soğan",
+      "domates salçası",
+      "zeytinyağı",
+      "tuz",
+      "karabiber"
+    ],
     "porsiyon_gram": 300,
     "kalori": 290,
     "protein_g": 20,
     "karbonhidrat_g": 30,
     "yag_g": 9,
     "lif_g": 9,
-    "saglik_etiketler": ["yüksek_protein", "yüksek_lif", "geleneksel_türk", "doyurucu"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "geleneksel_türk",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 80,
     "zorluk": "orta",
     "aciklama": "Et ve nohutun muhteşem birlikteliği. Hem hayvansal hem bitkisel protein, yüksek lif. Uzun süre tok tutar."
@@ -343,15 +652,34 @@
     "id": "mercimek_kofte",
     "ad": "Mercimek Köftesi",
     "kategori": "baklagil",
-    "malzemeler": ["kırmızı mercimek", "bulgur", "soğan", "zeytinyağı", "domates salçası", "nane", "kimyon", "limon"],
+    "malzemeler": [
+      "kırmızı mercimek",
+      "bulgur",
+      "soğan",
+      "zeytinyağı",
+      "domates salçası",
+      "nane",
+      "kimyon",
+      "limon"
+    ],
     "porsiyon_gram": 200,
     "kalori": 240,
     "protein_g": 12,
     "karbonhidrat_g": 38,
     "yag_g": 5,
     "lif_g": 8,
-    "saglik_etiketler": ["vejetaryen", "vegan", "yüksek_lif", "bitkisel_protein", "düşük_yağ"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "yüksek_lif",
+      "bitkisel_protein",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 40,
     "zorluk": "orta",
     "aciklama": "Mercimek ve bulgurla hazırlanan bitkisel protein kaynağı. Soğuk yenebilir, ara öğün veya ana öğün olarak mükemmel."
@@ -360,15 +688,32 @@
     "id": "barbunya_pilaki",
     "ad": "Barbunya Pilaki",
     "kategori": "baklagil",
-    "malzemeler": ["barbunya", "havuç", "kereviz", "soğan", "zeytinyağı", "domates", "sarımsak"],
+    "malzemeler": [
+      "barbunya",
+      "havuç",
+      "kereviz",
+      "soğan",
+      "zeytinyağı",
+      "domates",
+      "sarımsak"
+    ],
     "porsiyon_gram": 300,
     "kalori": 220,
     "protein_g": 10,
     "karbonhidrat_g": 34,
     "yag_g": 6,
     "lif_g": 10,
-    "saglik_etiketler": ["vejetaryen", "vegan", "yüksek_lif", "kalp_dostu", "düşük_yağ"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "yüksek_lif",
+      "kalp_dostu",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 90,
     "zorluk": "orta",
     "aciklama": "Zeytinyağıyla pişirilmiş barbunya pilaki. Türk mutfağının en sağlıklı zeytinyağlı yemeklerinden biri."
@@ -377,15 +722,31 @@
     "id": "zeytinyagli_taze_fasulye",
     "ad": "Zeytinyağlı Taze Fasulye",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["taze fasulye", "domates", "soğan", "zeytinyağı", "sarımsak", "tuz"],
+    "malzemeler": [
+      "taze fasulye",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "sarımsak",
+      "tuz"
+    ],
     "porsiyon_gram": 300,
     "kalori": 160,
     "protein_g": 5,
     "karbonhidrat_g": 20,
     "yag_g": 7,
     "lif_g": 7,
-    "saglik_etiketler": ["vejetaryen", "vegan", "yüksek_lif", "düşük_kalori", "glütensiz"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "yüksek_lif",
+      "düşük_kalori",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 50,
     "zorluk": "kolay",
     "aciklama": "Zeytinyağıyla pişirilmiş taze fasulye. Düşük kalorili, yüksek lifli, bağırsak dostu mükemmel bir Türk yemeği."
@@ -394,15 +755,31 @@
     "id": "kabak_mücveri",
     "ad": "Kabak Mücveri",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["kabak", "yumurta", "un", "beyaz peynir", "dereotu", "maydanoz", "zeytinyağı"],
+    "malzemeler": [
+      "kabak",
+      "yumurta",
+      "un",
+      "beyaz peynir",
+      "dereotu",
+      "maydanoz",
+      "zeytinyağı"
+    ],
     "porsiyon_gram": 200,
     "kalori": 240,
     "protein_g": 12,
     "karbonhidrat_g": 20,
     "yag_g": 12,
     "lif_g": 3,
-    "saglik_etiketler": ["vejetaryen", "sebzeli", "protein_içerikli"],
-    "ogun_tipleri": ["kahvalti", "ogle", "ara_ogun"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "sebzeli",
+      "protein_içerikli"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ogle",
+      "ara_ogun"
+    ],
     "pismesi_dk": 30,
     "zorluk": "orta",
     "aciklama": "Rendelenmiş kabak ve peynirle yapılan geleneksel mücver. Hem kahvaltı hem öğle için uygun, dengeli besin değerleri."
@@ -411,15 +788,30 @@
     "id": "az_yaglu_musakka",
     "ad": "Az Yağlı Patlıcan Musakka",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["patlıcan", "dana kıyma", "soğan", "domates", "biber", "zeytinyağı", "sarımsak"],
+    "malzemeler": [
+      "patlıcan",
+      "dana kıyma",
+      "soğan",
+      "domates",
+      "biber",
+      "zeytinyağı",
+      "sarımsak"
+    ],
     "porsiyon_gram": 300,
     "kalori": 280,
     "protein_g": 18,
     "karbonhidrat_g": 18,
     "yag_g": 14,
     "lif_g": 5,
-    "saglik_etiketler": ["geleneksel_türk", "düşük_karbonhidrat", "sebzeli"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "geleneksel_türk",
+      "düşük_karbonhidrat",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 60,
     "zorluk": "orta",
     "aciklama": "Az yağla hazırlanan patlıcan musakka. Patlıcan fırınlanarak yağ kullanımı minimuma indirilmiş, dengeli bir Türk yemeği."
@@ -428,15 +820,31 @@
     "id": "ispanak_yemegi",
     "ad": "Ispanak Yemeği (Yoğurtlu)",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["ıspanak", "yoğurt", "soğan", "zeytinyağı", "sarımsak", "tuz"],
+    "malzemeler": [
+      "ıspanak",
+      "yoğurt",
+      "soğan",
+      "zeytinyağı",
+      "sarımsak",
+      "tuz"
+    ],
     "porsiyon_gram": 300,
     "kalori": 170,
     "protein_g": 9,
     "karbonhidrat_g": 15,
     "yag_g": 8,
     "lif_g": 6,
-    "saglik_etiketler": ["demir_kaynağı", "kalsiyum", "yüksek_lif", "vejetaryen", "düşük_kalori"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "demir_kaynağı",
+      "kalsiyum",
+      "yüksek_lif",
+      "vejetaryen",
+      "düşük_kalori"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 25,
     "zorluk": "kolay",
     "aciklama": "Yoğurtla servis edilen ıspanak yemeği. Demir ve kalsiyum açısından son derece zengin, kemik ve kan için faydalı."
@@ -445,15 +853,31 @@
     "id": "bulgur_pilavi",
     "ad": "Bulgur Pilavı",
     "kategori": "tahil_yan",
-    "malzemeler": ["iri bulgur", "domates salçası", "soğan", "zeytinyağı", "tavuk suyu", "tuz"],
+    "malzemeler": [
+      "iri bulgur",
+      "domates salçası",
+      "soğan",
+      "zeytinyağı",
+      "tavuk suyu",
+      "tuz"
+    ],
     "porsiyon_gram": 200,
     "kalori": 230,
     "protein_g": 8,
     "karbonhidrat_g": 44,
     "yag_g": 4,
     "lif_g": 6,
-    "saglik_etiketler": ["yüksek_lif", "düşük_gi", "enerji_veren", "vejetaryen", "diyabet_dostu"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "düşük_gi",
+      "enerji_veren",
+      "vejetaryen",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 25,
     "zorluk": "kolay",
     "aciklama": "Beyaz pirince göre çok daha yüksek lifli bulgur pilavı. Glisemik indeksi düşük, uzun süre enerji sağlar."
@@ -462,15 +886,29 @@
     "id": "esmer_pirinc_pilavi",
     "ad": "Esmer Pirinç Pilavı",
     "kategori": "tahil_yan",
-    "malzemeler": ["esmer pirinç", "zeytinyağı", "tuz", "su"],
+    "malzemeler": [
+      "esmer pirinç",
+      "zeytinyağı",
+      "tuz",
+      "su"
+    ],
     "porsiyon_gram": 180,
     "kalori": 220,
     "protein_g": 5,
     "karbonhidrat_g": 44,
     "yag_g": 2,
     "lif_g": 3,
-    "saglik_etiketler": ["tam_tahıl", "düşük_gi", "glütensiz", "vejetaryen", "vegan"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "tam_tahıl",
+      "düşük_gi",
+      "glütensiz",
+      "vejetaryen",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 40,
     "zorluk": "kolay",
     "aciklama": "Beyaz pirinçten daha sağlıklı esmer pirinç pilavı. B vitamini ve magnezyum açısından zengin, glisemik indeksi düşük."
@@ -479,15 +917,30 @@
     "id": "kepekli_makarna_domates",
     "ad": "Kepekli Makarna (Domates Soslu)",
     "kategori": "tahil_yan",
-    "malzemeler": ["kepekli makarna", "domates", "sarımsak", "zeytinyağı", "fesleğen", "tuz"],
+    "malzemeler": [
+      "kepekli makarna",
+      "domates",
+      "sarımsak",
+      "zeytinyağı",
+      "fesleğen",
+      "tuz"
+    ],
     "porsiyon_gram": 250,
     "kalori": 320,
     "protein_g": 12,
     "karbonhidrat_g": 58,
     "yag_g": 6,
     "lif_g": 8,
-    "saglik_etiketler": ["yüksek_lif", "düşük_gi", "vejetaryen", "vegan"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "düşük_gi",
+      "vejetaryen",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "kolay",
     "aciklama": "Normal makarnaya göre 3 kat daha fazla lif içeren kepekli makarna. Uzun süre tok tutar, kan şekerini daha yavaş yükseltir."
@@ -496,15 +949,33 @@
     "id": "coban_salatasi",
     "ad": "Çoban Salatası",
     "kategori": "salata",
-    "malzemeler": ["domates", "salatalık", "soğan", "yeşil biber", "zeytinyağı", "limon", "maydanoz", "tuz"],
+    "malzemeler": [
+      "domates",
+      "salatalık",
+      "soğan",
+      "yeşil biber",
+      "zeytinyağı",
+      "limon",
+      "maydanoz",
+      "tuz"
+    ],
     "porsiyon_gram": 250,
     "kalori": 100,
     "protein_g": 2,
     "karbonhidrat_g": 12,
     "yag_g": 5,
     "lif_g": 4,
-    "saglik_etiketler": ["düşük_kalori", "vejetaryen", "vegan", "glütensiz", "antioksidan"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "düşük_kalori",
+      "vejetaryen",
+      "vegan",
+      "glütensiz",
+      "antioksidan"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Türk mutfağının vazgeçilmez salatası. Çok düşük kalori, yüksek antioksidan. Her öğüne mükemmel eşlik."
@@ -513,15 +984,31 @@
     "id": "roka_salatasi_ceviz",
     "ad": "Roka Salatası (Cevizli, Parmesan)",
     "kategori": "salata",
-    "malzemeler": ["roka", "ceviz", "limon", "zeytinyağı", "kiraz domates", "parmesan"],
+    "malzemeler": [
+      "roka",
+      "ceviz",
+      "limon",
+      "zeytinyağı",
+      "kiraz domates",
+      "parmesan"
+    ],
     "porsiyon_gram": 200,
     "kalori": 220,
     "protein_g": 8,
     "karbonhidrat_g": 6,
     "yag_g": 18,
     "lif_g": 3,
-    "saglik_etiketler": ["omega3", "antioksidan", "düşük_karbonhidrat", "vejetaryen"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "omega3",
+      "antioksidan",
+      "düşük_karbonhidrat",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Roka, ceviz ve parmesan peynirli zengin salata. Omega-3 ve antioksidan açısından çok değerli, düşük karbonhidratlı."
@@ -530,15 +1017,33 @@
     "id": "nohut_salatasi",
     "ad": "Nohut Salatası",
     "kategori": "salata",
-    "malzemeler": ["haşlanmış nohut", "domates", "salatalık", "soğan", "maydanoz", "zeytinyağı", "limon", "kimyon"],
+    "malzemeler": [
+      "haşlanmış nohut",
+      "domates",
+      "salatalık",
+      "soğan",
+      "maydanoz",
+      "zeytinyağı",
+      "limon",
+      "kimyon"
+    ],
     "porsiyon_gram": 250,
     "kalori": 240,
     "protein_g": 12,
     "karbonhidrat_g": 30,
     "yag_g": 8,
     "lif_g": 9,
-    "saglik_etiketler": ["bitkisel_protein", "yüksek_lif", "vejetaryen", "vegan", "doyurucu"],
-    "ogun_tipleri": ["ogle", "ara_ogun"],
+    "saglik_etiketler": [
+      "bitkisel_protein",
+      "yüksek_lif",
+      "vejetaryen",
+      "vegan",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Bitkisel protein şampiyonu nohut salatası. Yüksek lif ve protein içeriğiyle ara öğün olarak mükemmel."
@@ -547,15 +1052,32 @@
     "id": "mercimek_salatasi",
     "ad": "Yeşil Mercimek Salatası",
     "kategori": "salata",
-    "malzemeler": ["yeşil mercimek", "soğan", "domates", "maydanoz", "zeytinyağı", "limon", "kimyon"],
+    "malzemeler": [
+      "yeşil mercimek",
+      "soğan",
+      "domates",
+      "maydanoz",
+      "zeytinyağı",
+      "limon",
+      "kimyon"
+    ],
     "porsiyon_gram": 250,
     "kalori": 220,
     "protein_g": 14,
     "karbonhidrat_g": 28,
     "yag_g": 6,
     "lif_g": 10,
-    "saglik_etiketler": ["bitkisel_protein", "yüksek_lif", "vejetaryen", "vegan", "demir_kaynağı"],
-    "ogun_tipleri": ["ogle", "ara_ogun"],
+    "saglik_etiketler": [
+      "bitkisel_protein",
+      "yüksek_lif",
+      "vejetaryen",
+      "vegan",
+      "demir_kaynağı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "ara_ogun"
+    ],
     "pismesi_dk": 30,
     "zorluk": "kolay",
     "aciklama": "Yeşil mercimekle yapılan besleyici salata. Demir, bitkisel protein ve çok yüksek lif. Soğuk büfe vazgeçilmezi."
@@ -564,15 +1086,33 @@
     "id": "cacik",
     "ad": "Cacık",
     "kategori": "yogurtlu",
-    "malzemeler": ["yoğurt", "salatalık", "sarımsak", "dereotu", "zeytinyağı", "tuz", "nane"],
+    "malzemeler": [
+      "yoğurt",
+      "salatalık",
+      "sarımsak",
+      "dereotu",
+      "zeytinyağı",
+      "tuz",
+      "nane"
+    ],
     "porsiyon_gram": 200,
     "kalori": 110,
     "protein_g": 7,
     "karbonhidrat_g": 10,
     "yag_g": 4,
     "lif_g": 1,
-    "saglik_etiketler": ["probiyotik", "düşük_kalori", "vejetaryen", "glütensiz", "sindirimi_destekler"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "probiyotik",
+      "düşük_kalori",
+      "vejetaryen",
+      "glütensiz",
+      "sindirimi_destekler"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Soğuk yoğurt ve salatalıkla hazırlanan cacık. Probiyotik içeriğiyle sindirim sistemini destekler, serinletici."
@@ -581,15 +1121,27 @@
     "id": "sade_yogurt",
     "ad": "Sade Yoğurt (%2 Yağlı)",
     "kategori": "yogurtlu",
-    "malzemeler": ["yoğurt"],
+    "malzemeler": [
+      "yoğurt"
+    ],
     "porsiyon_gram": 200,
     "kalori": 120,
     "protein_g": 10,
     "karbonhidrat_g": 10,
     "yag_g": 3,
     "lif_g": 0,
-    "saglik_etiketler": ["probiyotik", "kalsiyum", "düşük_kalori", "glütensiz", "vejetaryen", "kemik_dostu"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "probiyotik",
+      "kalsiyum",
+      "düşük_kalori",
+      "glütensiz",
+      "vejetaryen",
+      "kemik_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 0,
     "zorluk": "çok_kolay",
     "aciklama": "200g %2 yağlı sade yoğurt. Probiyotik, kalsiyum ve protein açısından zengin. Kemik sağlığı için günlük tüketilmeli."
@@ -598,15 +1150,29 @@
     "id": "yogurt_meyveli",
     "ad": "Yoğurt + Meyve + Granola",
     "kategori": "ara_ogun",
-    "malzemeler": ["yoğurt", "çilek", "muz", "tam tahıllı granola", "bal"],
+    "malzemeler": [
+      "yoğurt",
+      "çilek",
+      "muz",
+      "tam tahıllı granola",
+      "bal"
+    ],
     "porsiyon_gram": 280,
     "kalori": 310,
     "protein_g": 12,
     "karbonhidrat_g": 50,
     "yag_g": 7,
     "lif_g": 5,
-    "saglik_etiketler": ["probiyotik", "enerji_veren", "antioksidan", "vejetaryen"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "probiyotik",
+      "enerji_veren",
+      "antioksidan",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 3,
     "zorluk": "çok_kolay",
     "aciklama": "Yoğurt, taze meyveler ve granoladan oluşan besleyici ara öğün. Probiyotik, antioksidan ve enerji verici."
@@ -615,15 +1181,30 @@
     "id": "meyve_tabagi",
     "ad": "Mevsim Meyve Tabağı",
     "kategori": "ara_ogun",
-    "malzemeler": ["elma", "armut", "portakal", "kivi", "üzüm"],
+    "malzemeler": [
+      "elma",
+      "armut",
+      "portakal",
+      "kivi",
+      "üzüm"
+    ],
     "porsiyon_gram": 300,
     "kalori": 150,
     "protein_g": 2,
     "karbonhidrat_g": 37,
     "yag_g": 1,
     "lif_g": 7,
-    "saglik_etiketler": ["antioksidan", "yüksek_lif", "vejetaryen", "vegan", "doğal_şeker", "bağışıklık_güçlendirici"],
-    "ogun_tipleri": ["ara_ogun"],
+    "saglik_etiketler": [
+      "antioksidan",
+      "yüksek_lif",
+      "vejetaryen",
+      "vegan",
+      "doğal_şeker",
+      "bağışıklık_güçlendirici"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
     "pismesi_dk": 3,
     "zorluk": "çok_kolay",
     "aciklama": "Çeşitli mevsim meyvelerinden oluşan doğal ara öğün. Vitamin, mineral ve antioksidan deposu, yüksek lif."
@@ -632,15 +1213,28 @@
     "id": "ceviz_badem_karisim",
     "ad": "Ceviz + Badem Karışımı",
     "kategori": "ara_ogun",
-    "malzemeler": ["ceviz", "badem"],
+    "malzemeler": [
+      "ceviz",
+      "badem"
+    ],
     "porsiyon_gram": 40,
     "kalori": 240,
     "protein_g": 6,
     "karbonhidrat_g": 7,
     "yag_g": 22,
     "lif_g": 3,
-    "saglik_etiketler": ["omega3", "sağlıklı_yağ", "düşük_karbonhidrat", "vejetaryen", "vegan", "kalp_dostu", "beyin_dostu"],
-    "ogun_tipleri": ["ara_ogun"],
+    "saglik_etiketler": [
+      "omega3",
+      "sağlıklı_yağ",
+      "düşük_karbonhidrat",
+      "vejetaryen",
+      "vegan",
+      "kalp_dostu",
+      "beyin_dostu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
     "pismesi_dk": 0,
     "zorluk": "çok_kolay",
     "aciklama": "20g ceviz + 20g badem. Omega-3 ve sağlıklı yağlar açısından son derece değerli. Kalp ve beyin sağlığına katkı sağlar."
@@ -649,15 +1243,32 @@
     "id": "humus_sebze",
     "ad": "Humus + Sebze Çubukları",
     "kategori": "ara_ogun",
-    "malzemeler": ["nohut", "tahin", "zeytinyağı", "limon", "sarımsak", "havuç", "kereviz", "biber"],
+    "malzemeler": [
+      "nohut",
+      "tahin",
+      "zeytinyağı",
+      "limon",
+      "sarımsak",
+      "havuç",
+      "kereviz",
+      "biber"
+    ],
     "porsiyon_gram": 200,
     "kalori": 220,
     "protein_g": 9,
     "karbonhidrat_g": 22,
     "yag_g": 11,
     "lif_g": 7,
-    "saglik_etiketler": ["bitkisel_protein", "yüksek_lif", "vejetaryen", "vegan", "akdeniz_mutfağı"],
-    "ogun_tipleri": ["ara_ogun"],
+    "saglik_etiketler": [
+      "bitkisel_protein",
+      "yüksek_lif",
+      "vejetaryen",
+      "vegan",
+      "akdeniz_mutfağı"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
     "pismesi_dk": 10,
     "zorluk": "kolay",
     "aciklama": "Ev yapımı humus ve renkli sebze çubukları. Bitkisel protein ve lif açısından zengin, sağlıklı atıştırmalık."
@@ -666,15 +1277,27 @@
     "id": "peynir_tam_bugday_kraker",
     "ad": "Beyaz Peynir + Tam Buğday Kraker",
     "kategori": "ara_ogun",
-    "malzemeler": ["beyaz peynir", "tam buğday kraker", "salatalık", "domates"],
+    "malzemeler": [
+      "beyaz peynir",
+      "tam buğday kraker",
+      "salatalık",
+      "domates"
+    ],
     "porsiyon_gram": 120,
     "kalori": 200,
     "protein_g": 12,
     "karbonhidrat_g": 18,
     "yag_g": 8,
     "lif_g": 3,
-    "saglik_etiketler": ["kalsiyum", "protein_içerikli", "yüksek_lif", "vejetaryen"],
-    "ogun_tipleri": ["ara_ogun"],
+    "saglik_etiketler": [
+      "kalsiyum",
+      "protein_içerikli",
+      "yüksek_lif",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
     "pismesi_dk": 2,
     "zorluk": "çok_kolay",
     "aciklama": "30g beyaz peynir ve 6 adet tam buğday kraker. Hızlı protein ve karbonhidrat kaynağı, pratik ara öğün."
@@ -683,15 +1306,26 @@
     "id": "kefir",
     "ad": "Kefir (Sade)",
     "kategori": "icecek",
-    "malzemeler": ["kefir"],
+    "malzemeler": [
+      "kefir"
+    ],
     "porsiyon_gram": 250,
     "kalori": 130,
     "protein_g": 9,
     "karbonhidrat_g": 11,
     "yag_g": 4,
     "lif_g": 0,
-    "saglik_etiketler": ["probiyotik", "kalsiyum", "bağırsak_sağlığı", "glütensiz", "bağışıklık_güçlendirici"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "probiyotik",
+      "kalsiyum",
+      "bağırsak_sağlığı",
+      "glütensiz",
+      "bağışıklık_güçlendirici"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 0,
     "zorluk": "çok_kolay",
     "aciklama": "Yoğurttan daha fazla probiyotik içeren kefir. Bağırsak mikrobiyomunu güçlendirir, bağışıklık sistemini destekler."
@@ -700,15 +1334,29 @@
     "id": "ayran",
     "ad": "Ayran",
     "kategori": "icecek",
-    "malzemeler": ["yoğurt", "su", "tuz"],
+    "malzemeler": [
+      "yoğurt",
+      "su",
+      "tuz"
+    ],
     "porsiyon_gram": 300,
     "kalori": 90,
     "protein_g": 5,
     "karbonhidrat_g": 7,
     "yag_g": 3,
     "lif_g": 0,
-    "saglik_etiketler": ["probiyotik", "hidratasyon", "düşük_kalori", "vejetaryen", "glütensiz"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "probiyotik",
+      "hidratasyon",
+      "düşük_kalori",
+      "vejetaryen",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 2,
     "zorluk": "çok_kolay",
     "aciklama": "Geleneksel Türk içeceği ayran. Düşük kalorili, probiyotik içerikli, hidrasyona katkı sağlar."
@@ -717,15 +1365,31 @@
     "id": "haslanmis_tavuk_bulgur",
     "ad": "Haşlanmış Tavuk + Bulgur (Spor Sonrası)",
     "kategori": "spor_ogun",
-    "malzemeler": ["tavuk göğsü", "bulgur", "zeytinyağı", "limon", "tuz", "karabiber"],
+    "malzemeler": [
+      "tavuk göğsü",
+      "bulgur",
+      "zeytinyağı",
+      "limon",
+      "tuz",
+      "karabiber"
+    ],
     "porsiyon_gram": 350,
     "kalori": 380,
     "protein_g": 40,
     "karbonhidrat_g": 38,
     "yag_g": 7,
     "lif_g": 5,
-    "saglik_etiketler": ["yüksek_protein", "spor_sonrası", "kas_yapma", "iyileşme", "dengeli_makro"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "spor_sonrası",
+      "kas_yapma",
+      "iyileşme",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 40,
     "zorluk": "kolay",
     "aciklama": "Haşlanmış tavuk göğsü ve bulgur pilavı kombinasyonu. Spor sonrası kas onarımı için ideal protein ve karbonhidrat dengesi."
@@ -734,15 +1398,34 @@
     "id": "kinoa_salatasi",
     "ad": "Kinoa Salatası (Sebzeli)",
     "kategori": "tahil_yan",
-    "malzemeler": ["kinoa", "domates", "salatalık", "biber", "zeytinyağı", "limon", "nane", "maydanoz"],
+    "malzemeler": [
+      "kinoa",
+      "domates",
+      "salatalık",
+      "biber",
+      "zeytinyağı",
+      "limon",
+      "nane",
+      "maydanoz"
+    ],
     "porsiyon_gram": 250,
     "kalori": 260,
     "protein_g": 10,
     "karbonhidrat_g": 40,
     "yag_g": 8,
     "lif_g": 5,
-    "saglik_etiketler": ["tam_protein", "glütensiz", "yüksek_lif", "vejetaryen", "vegan", "tüm_amino_asitler"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "tam_protein",
+      "glütensiz",
+      "yüksek_lif",
+      "vejetaryen",
+      "vegan",
+      "tüm_amino_asitler"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "kolay",
     "aciklama": "Tüm esansiyel amino asitleri içeren kinoa salatası. Bitkisel tam protein kaynağı, glütensiz ve yüksek lifli."
@@ -751,15 +1434,28 @@
     "id": "sutlac_az_sekerli",
     "ad": "Sütlaç (Az Şekerli)",
     "kategori": "tatli",
-    "malzemeler": ["pirinç", "süt", "şeker (az)", "vanilya", "tarçın"],
+    "malzemeler": [
+      "pirinç",
+      "süt",
+      "şeker (az)",
+      "vanilya",
+      "tarçın"
+    ],
     "porsiyon_gram": 200,
     "kalori": 220,
     "protein_g": 7,
     "karbonhidrat_g": 40,
     "yag_g": 4,
     "lif_g": 0,
-    "saglik_etiketler": ["kalsiyum", "sindirimi_kolay", "geleneksel_türk", "şeker_azaltılmış"],
-    "ogun_tipleri": ["ara_ogun"],
+    "saglik_etiketler": [
+      "kalsiyum",
+      "sindirimi_kolay",
+      "geleneksel_türk",
+      "şeker_azaltılmış"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
     "pismesi_dk": 40,
     "zorluk": "orta",
     "aciklama": "Şeker miktarı yarıya düşürülmüş sütlaç. Kalsiyum ve protein içeriğiyle tatlı isteğini karşılar."
@@ -768,15 +1464,32 @@
     "id": "chia_pudding",
     "ad": "Chia Pudding (Süt + Meyve)",
     "kategori": "ara_ogun",
-    "malzemeler": ["chia tohumu", "badem sütü", "muz", "çilek", "bal", "vanilya"],
+    "malzemeler": [
+      "chia tohumu",
+      "badem sütü",
+      "muz",
+      "çilek",
+      "bal",
+      "vanilya"
+    ],
     "porsiyon_gram": 250,
     "kalori": 250,
     "protein_g": 8,
     "karbonhidrat_g": 35,
     "yag_g": 9,
     "lif_g": 12,
-    "saglik_etiketler": ["omega3", "yüksek_lif", "antioksidan", "vejetaryen", "vegan", "düşük_gi"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_lif",
+      "antioksidan",
+      "vejetaryen",
+      "vegan",
+      "düşük_gi"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Chia tohumundan yapılan pudding. Çok yüksek lif ve omega-3 içeriği. Gece hazırlanıp sabah tüketilir."
@@ -785,15 +1498,30 @@
     "id": "protein_shake_ev",
     "ad": "Ev Yapımı Protein Shake",
     "kategori": "spor_ogun",
-    "malzemeler": ["yoğurt", "süt", "muz", "yulaf", "fıstık ezmesi", "bal"],
+    "malzemeler": [
+      "yoğurt",
+      "süt",
+      "muz",
+      "yulaf",
+      "fıstık ezmesi",
+      "bal"
+    ],
     "porsiyon_gram": 400,
     "kalori": 380,
     "protein_g": 22,
     "karbonhidrat_g": 55,
     "yag_g": 9,
     "lif_g": 4,
-    "saglik_etiketler": ["yüksek_protein", "spor_öncesi", "enerji_veren", "kas_yapma"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "spor_öncesi",
+      "enerji_veren",
+      "kas_yapma"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Yoğurt, süt, muz ve yulaftan ev yapımı protein shake. Spor öncesi ideal enerji ve protein kaynağı."
@@ -802,15 +1530,32 @@
     "id": "imam_bayildi",
     "ad": "İmam Bayıldı",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["patlıcan", "soğan", "domates", "sarımsak", "zeytinyağı", "maydanoz", "biber"],
+    "malzemeler": [
+      "patlıcan",
+      "soğan",
+      "domates",
+      "sarımsak",
+      "zeytinyağı",
+      "maydanoz",
+      "biber"
+    ],
     "porsiyon_gram": 300,
     "kalori": 200,
     "protein_g": 4,
     "karbonhidrat_g": 22,
     "yag_g": 11,
     "lif_g": 7,
-    "saglik_etiketler": ["vejetaryen", "vegan", "antioksidan", "akdeniz_mutfağı", "zeytinyağlı"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "antioksidan",
+      "akdeniz_mutfağı",
+      "zeytinyağlı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 60,
     "zorluk": "orta",
     "aciklama": "Zeytinyağıyla pişirilmiş patlıcan dolması. Türk ve Akdeniz mutfağının klasiği, antioksidan açısından zengin."
@@ -819,15 +1564,33 @@
     "id": "zeytinyagli_biber_dolmasi",
     "ad": "Zeytinyağlı Biber Dolması",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["sivri biber", "pirinç", "soğan", "zeytinyağı", "domates", "nane", "dereotu", "fıstık", "kuş üzümü"],
+    "malzemeler": [
+      "sivri biber",
+      "pirinç",
+      "soğan",
+      "zeytinyağı",
+      "domates",
+      "nane",
+      "dereotu",
+      "fıstık",
+      "kuş üzümü"
+    ],
     "porsiyon_gram": 300,
     "kalori": 260,
     "protein_g": 5,
     "karbonhidrat_g": 40,
     "yag_g": 10,
     "lif_g": 5,
-    "saglik_etiketler": ["vejetaryen", "vegan", "geleneksel_türk", "zeytinyağlı"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "geleneksel_türk",
+      "zeytinyağlı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 70,
     "zorluk": "zor",
     "aciklama": "Pirinçli iç harcıyla doldurulan zeytinyağlı biber dolması. Soğuk servis edilen geleneksel Türk yemeği."
@@ -836,15 +1599,30 @@
     "id": "firin_kofte_sebze",
     "ad": "Fırın Köfte + Sebze (Tek Tava)",
     "kategori": "ana_yemek_et",
-    "malzemeler": ["dana kıyma", "soğan", "sarımsak", "patates", "domates", "biber", "patlıcan", "zeytinyağı"],
+    "malzemeler": [
+      "dana kıyma",
+      "soğan",
+      "sarımsak",
+      "patates",
+      "domates",
+      "biber",
+      "patlıcan",
+      "zeytinyağı"
+    ],
     "porsiyon_gram": 350,
     "kalori": 400,
     "protein_g": 26,
     "karbonhidrat_g": 28,
     "yag_g": 20,
     "lif_g": 5,
-    "saglik_etiketler": ["yüksek_protein", "dengeli_makro", "geleneksel_türk"],
-    "ogun_tipleri": ["aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "dengeli_makro",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
     "pismesi_dk": 60,
     "zorluk": "orta",
     "aciklama": "Tek tavada sebzelerle birlikte fırınlanan köfte. Dengeli protein-karbonhidrat-yağ oranı, doyurucu akşam yemeği."
@@ -853,15 +1631,32 @@
     "id": "yogurtlu_havuc_salatasi",
     "ad": "Yoğurtlu Havuç Salatası",
     "kategori": "salata",
-    "malzemeler": ["havuç", "yoğurt", "sarımsak", "zeytinyağı", "tuz", "dereotu"],
+    "malzemeler": [
+      "havuç",
+      "yoğurt",
+      "sarımsak",
+      "zeytinyağı",
+      "tuz",
+      "dereotu"
+    ],
     "porsiyon_gram": 200,
     "kalori": 130,
     "protein_g": 5,
     "karbonhidrat_g": 17,
     "yag_g": 5,
     "lif_g": 4,
-    "saglik_etiketler": ["beta_karoten", "probiyotik", "vejetaryen", "glütensiz", "göz_sağlığı"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "beta_karoten",
+      "probiyotik",
+      "vejetaryen",
+      "glütensiz",
+      "göz_sağlığı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Yoğurt ve rendelenmiş havuçtan yapılan meze. Beta-karoten ve probiyotik açısından zengin, göz ve bağırsak sağlığı için."
@@ -870,15 +1665,31 @@
     "id": "bezelye_yemegi",
     "ad": "Zeytinyağlı Bezelye Yemeği",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["taze bezelye", "soğan", "havuç", "zeytinyağı", "domates", "tuz"],
+    "malzemeler": [
+      "taze bezelye",
+      "soğan",
+      "havuç",
+      "zeytinyağı",
+      "domates",
+      "tuz"
+    ],
     "porsiyon_gram": 300,
     "kalori": 190,
     "protein_g": 8,
     "karbonhidrat_g": 28,
     "yag_g": 6,
     "lif_g": 7,
-    "saglik_etiketler": ["vejetaryen", "vegan", "yüksek_lif", "bitkisel_protein", "düşük_kalori"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "yüksek_lif",
+      "bitkisel_protein",
+      "düşük_kalori"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 35,
     "zorluk": "kolay",
     "aciklama": "Taze bezelyeyle hazırlanan zeytinyağlı yemek. Bitkisel protein ve lif içeriğiyle dengeli, düşük kalorili."
@@ -887,15 +1698,31 @@
     "id": "firin_somon_sebze",
     "ad": "Fırın Somon + Sebze",
     "kategori": "ana_yemek_balik",
-    "malzemeler": ["somon fileto", "brokoli", "havuç", "zeytinyağı", "sarımsak", "limon", "tuz"],
+    "malzemeler": [
+      "somon fileto",
+      "brokoli",
+      "havuç",
+      "zeytinyağı",
+      "sarımsak",
+      "limon",
+      "tuz"
+    ],
     "porsiyon_gram": 350,
     "kalori": 380,
     "protein_g": 38,
     "karbonhidrat_g": 12,
     "yag_g": 20,
     "lif_g": 5,
-    "saglik_etiketler": ["omega3", "yüksek_protein", "anti_inflamatuar", "kalp_dostu", "glütensiz"],
-    "ogun_tipleri": ["aksam"],
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_protein",
+      "anti_inflamatuar",
+      "kalp_dostu",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
     "pismesi_dk": 25,
     "zorluk": "kolay",
     "aciklama": "Fırında sebzelerle pişirilmiş somon. Omega-3, yüksek protein ve anti-inflamatuar bileşikler açısından en değerli yemeklerden."
@@ -904,15 +1731,33 @@
     "id": "tavuk_sote_sebze",
     "ad": "Tavuk Sote + Sebze",
     "kategori": "ana_yemek_tavuk",
-    "malzemeler": ["tavuk göğsü", "kabak", "biber", "mantar", "soğan", "zeytinyağı", "sarımsak", "kekik"],
+    "malzemeler": [
+      "tavuk göğsü",
+      "kabak",
+      "biber",
+      "mantar",
+      "soğan",
+      "zeytinyağı",
+      "sarımsak",
+      "kekik"
+    ],
     "porsiyon_gram": 300,
     "kalori": 290,
     "protein_g": 36,
     "karbonhidrat_g": 12,
     "yag_g": 10,
     "lif_g": 4,
-    "saglik_etiketler": ["yüksek_protein", "düşük_karbonhidrat", "glütensiz", "tiroid_dostu", "diyabet_dostu"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "tiroid_dostu",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 25,
     "zorluk": "kolay",
     "aciklama": "Sebzelerle sote edilen tavuk göğsü. Yüksek protein, düşük karbonhidrat. Tiroid ve diyabet hastalarına uygun."
@@ -921,15 +1766,32 @@
     "id": "mercimek_yemegi_kirmizi",
     "ad": "Kırmızı Mercimek Yemeği",
     "kategori": "baklagil",
-    "malzemeler": ["kırmızı mercimek", "soğan", "zeytinyağı", "sarımsak", "kimyon", "tuz"],
+    "malzemeler": [
+      "kırmızı mercimek",
+      "soğan",
+      "zeytinyağı",
+      "sarımsak",
+      "kimyon",
+      "tuz"
+    ],
     "porsiyon_gram": 280,
     "kalori": 230,
     "protein_g": 14,
     "karbonhidrat_g": 36,
     "yag_g": 4,
     "lif_g": 9,
-    "saglik_etiketler": ["vejetaryen", "vegan", "yüksek_lif", "bitkisel_protein", "demir_kaynağı", "diyabet_dostu"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "yüksek_lif",
+      "bitkisel_protein",
+      "demir_kaynağı",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 35,
     "zorluk": "kolay",
     "aciklama": "Sade kırmızı mercimek yemeği. Demir, bitkisel protein ve lif açısından zengin. Diyabet için düşük glisemik indeksli."
@@ -938,15 +1800,33 @@
     "id": "domates_corbasi",
     "ad": "Domates Çorbası",
     "kategori": "corba",
-    "malzemeler": ["domates", "soğan", "sarımsak", "zeytinyağı", "krema (az)", "fesleğen", "tuz"],
+    "malzemeler": [
+      "domates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "krema (az)",
+      "fesleğen",
+      "tuz"
+    ],
     "porsiyon_gram": 300,
     "kalori": 140,
     "protein_g": 4,
     "karbonhidrat_g": 18,
     "yag_g": 6,
     "lif_g": 3,
-    "saglik_etiketler": ["likopen", "antioksidan", "düşük_kalori", "vejetaryen", "kalp_dostu"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "likopen",
+      "antioksidan",
+      "düşük_kalori",
+      "vejetaryen",
+      "kalp_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 25,
     "zorluk": "kolay",
     "aciklama": "Likopen açısından zengin domates çorbası. Kalp sağlığı için koruyucu antioksidanlar, düşük kalorili."
@@ -955,15 +1835,32 @@
     "id": "firin_tavuk_gogsu_fitrit",
     "ad": "Fırın Tavuk Göğsü (Baharatlı)",
     "kategori": "ana_yemek_tavuk",
-    "malzemeler": ["tavuk göğsü", "zeytinyağı", "sarımsak", "pul biber", "kimyon", "zerdeçal", "kekik"],
+    "malzemeler": [
+      "tavuk göğsü",
+      "zeytinyağı",
+      "sarımsak",
+      "pul biber",
+      "kimyon",
+      "zerdeçal",
+      "kekik"
+    ],
     "porsiyon_gram": 200,
     "kalori": 240,
     "protein_g": 44,
     "karbonhidrat_g": 2,
     "yag_g": 6,
     "lif_g": 0,
-    "saglik_etiketler": ["yüksek_protein", "düşük_karbonhidrat", "anti_inflamatuar", "glütensiz", "spor_sonrası"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "anti_inflamatuar",
+      "glütensiz",
+      "spor_sonrası"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 30,
     "zorluk": "kolay",
     "aciklama": "Zerdeçal ve baharatlarla marine edilmiş fırın tavuk. Anti-inflamatuar zerdeçal eklenmesiyle iyileşmeyi destekler."
@@ -972,15 +1869,29 @@
     "id": "yer_elmasi_cipsi",
     "ad": "Fırın Sebze Cipsi (Havuç, Pancar)",
     "kategori": "ara_ogun",
-    "malzemeler": ["havuç", "pancar", "zeytinyağı", "tuz", "kekik"],
+    "malzemeler": [
+      "havuç",
+      "pancar",
+      "zeytinyağı",
+      "tuz",
+      "kekik"
+    ],
     "porsiyon_gram": 100,
     "kalori": 130,
     "protein_g": 2,
     "karbonhidrat_g": 22,
     "yag_g": 4,
     "lif_g": 5,
-    "saglik_etiketler": ["vejetaryen", "vegan", "antioksidan", "düşük_kalori", "yüksek_lif"],
-    "ogun_tipleri": ["ara_ogun"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "antioksidan",
+      "düşük_kalori",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
     "pismesi_dk": 30,
     "zorluk": "kolay",
     "aciklama": "Fırınlanmış havuç ve pancar cipsi. Cips isteğini sağlıklıca karşılar, antioksidan ve lif açısından zengin."
@@ -989,15 +1900,31 @@
     "id": "tavuk_sezar_salatasi",
     "ad": "Izgara Tavuklu Sezar Salatası",
     "kategori": "salata",
-    "malzemeler": ["tavuk göğsü", "marul", "parmesan", "zeytinyağı", "limon", "sarımsak", "hardal"],
+    "malzemeler": [
+      "tavuk göğsü",
+      "marul",
+      "parmesan",
+      "zeytinyağı",
+      "limon",
+      "sarımsak",
+      "hardal"
+    ],
     "porsiyon_gram": 300,
     "kalori": 320,
     "protein_g": 35,
     "karbonhidrat_g": 8,
     "yag_g": 16,
     "lif_g": 3,
-    "saglik_etiketler": ["yüksek_protein", "düşük_karbonhidrat", "glütensiz", "doyurucu"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "orta",
     "aciklama": "Izgara tavuk ve maruldan yapılan sezar salatası. Yüksek protein ve düşük karbonhidratlı, hafif ve doyurucu öğle yemeği."
@@ -1006,15 +1933,31 @@
     "id": "yogurtlu_semizotu",
     "ad": "Yoğurtlu Semizotu",
     "kategori": "salata",
-    "malzemeler": ["semizotu", "yoğurt", "sarımsak", "zeytinyağı", "tuz"],
+    "malzemeler": [
+      "semizotu",
+      "yoğurt",
+      "sarımsak",
+      "zeytinyağı",
+      "tuz"
+    ],
     "porsiyon_gram": 200,
     "kalori": 120,
     "protein_g": 6,
     "karbonhidrat_g": 10,
     "yag_g": 6,
     "lif_g": 4,
-    "saglik_etiketler": ["omega3_bitkisel", "probiyotik", "demir_kaynağı", "vejetaryen", "düşük_kalori"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "omega3_bitkisel",
+      "probiyotik",
+      "demir_kaynağı",
+      "vejetaryen",
+      "düşük_kalori"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Omega-3 açısından en zengin bitkisel kaynaklardan biri olan semizotu ve yoğurt salatası. Kan yapıcı demir içerir."
@@ -1023,15 +1966,30 @@
     "id": "pilic_guvec",
     "ad": "Piliç Güveç (Sebzeli)",
     "kategori": "ana_yemek_tavuk",
-    "malzemeler": ["tavuk but", "patates", "soğan", "domates", "biber", "patlıcan", "zeytinyağı", "sarımsak"],
+    "malzemeler": [
+      "tavuk but",
+      "patates",
+      "soğan",
+      "domates",
+      "biber",
+      "patlıcan",
+      "zeytinyağı",
+      "sarımsak"
+    ],
     "porsiyon_gram": 400,
     "kalori": 380,
     "protein_g": 28,
     "karbonhidrat_g": 32,
     "yag_g": 14,
     "lif_g": 6,
-    "saglik_etiketler": ["dengeli_makro", "geleneksel_türk", "sebzeli"],
-    "ogun_tipleri": ["aksam"],
+    "saglik_etiketler": [
+      "dengeli_makro",
+      "geleneksel_türk",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
     "pismesi_dk": 90,
     "zorluk": "orta",
     "aciklama": "Güveçte pişirilmiş sebzeli piliç. Protein, karbonhidrat ve yağ dengesi mükemmel, geleneksel Türk akşam yemeği."
@@ -1040,15 +1998,31 @@
     "id": "sehriye_corbasi_sade",
     "ad": "Şehriye Çorbası (Sebze Suyuyla)",
     "kategori": "corba",
-    "malzemeler": ["şehriye", "soğan", "havuç", "zeytinyağı", "tuz", "karabiber"],
+    "malzemeler": [
+      "şehriye",
+      "soğan",
+      "havuç",
+      "zeytinyağı",
+      "tuz",
+      "karabiber"
+    ],
     "porsiyon_gram": 300,
     "kalori": 150,
     "protein_g": 5,
     "karbonhidrat_g": 25,
     "yag_g": 3,
     "lif_g": 2,
-    "saglik_etiketler": ["sindirimi_kolay", "hafif", "düşük_kalori", "vejetaryen"],
-    "ogun_tipleri": ["ogle", "aksam", "ara_ogun"],
+    "saglik_etiketler": [
+      "sindirimi_kolay",
+      "hafif",
+      "düşük_kalori",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
     "pismesi_dk": 20,
     "zorluk": "çok_kolay",
     "aciklama": "Sebze suyuyla yapılan sade şehriye çorbası. Hafif sindirimi kolay, mide dostu, düşük kalorili."
@@ -1057,15 +2031,31 @@
     "id": "kepekli_ekmek_avokado",
     "ad": "Kepekli Ekmek + Avokado Ezmesi",
     "kategori": "kahvalti",
-    "malzemeler": ["kepekli ekmek", "avokado", "limon", "tuz", "pul biber", "kekik"],
+    "malzemeler": [
+      "kepekli ekmek",
+      "avokado",
+      "limon",
+      "tuz",
+      "pul biber",
+      "kekik"
+    ],
     "porsiyon_gram": 180,
     "kalori": 280,
     "protein_g": 7,
     "karbonhidrat_g": 28,
     "yag_g": 16,
     "lif_g": 8,
-    "saglik_etiketler": ["sağlıklı_yağ", "yüksek_lif", "kalp_dostu", "vejetaryen", "vegan"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "sağlıklı_yağ",
+      "yüksek_lif",
+      "kalp_dostu",
+      "vejetaryen",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "1 dilim kepekli ekmek ve yarım avokado ezmesi. Sağlıklı yağlar ve yüksek lif, kalp dostu modern kahvaltı."
@@ -1074,15 +2064,30 @@
     "id": "nohut_haslanmis_limon",
     "ad": "Haşlanmış Nohut (Limonlu)",
     "kategori": "ara_ogun",
-    "malzemeler": ["nohut", "limon", "zeytinyağı", "kimyon", "tuz", "pul biber"],
+    "malzemeler": [
+      "nohut",
+      "limon",
+      "zeytinyağı",
+      "kimyon",
+      "tuz",
+      "pul biber"
+    ],
     "porsiyon_gram": 150,
     "kalori": 220,
     "protein_g": 11,
     "karbonhidrat_g": 30,
     "yag_g": 5,
     "lif_g": 8,
-    "saglik_etiketler": ["bitkisel_protein", "yüksek_lif", "vejetaryen", "vegan", "doyurucu"],
-    "ogun_tipleri": ["ara_ogun"],
+    "saglik_etiketler": [
+      "bitkisel_protein",
+      "yüksek_lif",
+      "vejetaryen",
+      "vegan",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "Limon ve baharatlarla tatlandırılmış haşlanmış nohut. Bitkisel protein ve lif açısından zengin pratik ara öğün."
@@ -1091,15 +2096,33 @@
     "id": "brokoli_firin",
     "ad": "Fırın Brokoli (Sarımsaklı)",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["brokoli", "zeytinyağı", "sarımsak", "limon", "tuz", "karabiber"],
+    "malzemeler": [
+      "brokoli",
+      "zeytinyağı",
+      "sarımsak",
+      "limon",
+      "tuz",
+      "karabiber"
+    ],
     "porsiyon_gram": 250,
     "kalori": 120,
     "protein_g": 6,
     "karbonhidrat_g": 12,
     "yag_g": 6,
     "lif_g": 7,
-    "saglik_etiketler": ["antioksidan", "kanser_önleyici", "yüksek_lif", "vejetaryen", "vegan", "düşük_kalori", "C_vitamini"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "antioksidan",
+      "kanser_önleyici",
+      "yüksek_lif",
+      "vejetaryen",
+      "vegan",
+      "düşük_kalori",
+      "C_vitamini"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "çok_kolay",
     "aciklama": "Fırında sarımsaklı brokoli. Sülforan içeriğiyle kanser önleyici özelliklere sahip, C vitamini deposu, düşük kalorili."
@@ -1108,15 +2131,29 @@
     "id": "tavuk_wrap_tam_bugday",
     "ad": "Tavuk Wrap (Tam Buğday Lavaş)",
     "kategori": "ana_yemek_tavuk",
-    "malzemeler": ["tavuk göğsü", "tam buğday lavaş", "marul", "domates", "yoğurt sosu", "zeytinyağı"],
+    "malzemeler": [
+      "tavuk göğsü",
+      "tam buğday lavaş",
+      "marul",
+      "domates",
+      "yoğurt sosu",
+      "zeytinyağı"
+    ],
     "porsiyon_gram": 300,
     "kalori": 350,
     "protein_g": 32,
     "karbonhidrat_g": 32,
     "yag_g": 10,
     "lif_g": 5,
-    "saglik_etiketler": ["dengeli_makro", "pratik", "yüksek_protein", "dışarıda_yeme_alternatifi"],
-    "ogun_tipleri": ["ogle"],
+    "saglik_etiketler": [
+      "dengeli_makro",
+      "pratik",
+      "yüksek_protein",
+      "dışarıda_yeme_alternatifi"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
     "pismesi_dk": 15,
     "zorluk": "kolay",
     "aciklama": "Tam buğday lavaşa sarılmış ızgara tavuk. Dengeli makro profili, pratik ve lezzetli öğle yemeği alternatifi."
@@ -1125,15 +2162,26 @@
     "id": "pekmez_tahin",
     "ad": "Pekmez + Tahin",
     "kategori": "kahvalti",
-    "malzemeler": ["üzüm pekmezi", "susam tahin", "tam buğday ekmek"],
+    "malzemeler": [
+      "üzüm pekmezi",
+      "susam tahin",
+      "tam buğday ekmek"
+    ],
     "porsiyon_gram": 60,
     "kalori": 220,
     "protein_g": 5,
     "karbonhidrat_g": 32,
     "yag_g": 9,
     "lif_g": 2,
-    "saglik_etiketler": ["demir_kaynağı", "kalsiyum", "geleneksel_türk", "enerji_veren"],
-    "ogun_tipleri": ["kahvalti"],
+    "saglik_etiketler": [
+      "demir_kaynağı",
+      "kalsiyum",
+      "geleneksel_türk",
+      "enerji_veren"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
     "pismesi_dk": 2,
     "zorluk": "çok_kolay",
     "aciklama": "20g pekmez + 15g tahin. Geleneksel Türk kahvaltısı. Demir ve kalsiyum açısından zengin, özellikle anemi için faydalı."
@@ -1142,17 +2190,1617 @@
     "id": "firin_sebze_karisim",
     "ad": "Fırın Sebze Karışımı",
     "kategori": "sebze_yemegi",
-    "malzemeler": ["kabak", "biber", "patlıcan", "soğan", "havuç", "zeytinyağı", "kekik", "biberiye"],
+    "malzemeler": [
+      "kabak",
+      "biber",
+      "patlıcan",
+      "soğan",
+      "havuç",
+      "zeytinyağı",
+      "kekik",
+      "biberiye"
+    ],
     "porsiyon_gram": 350,
     "kalori": 180,
     "protein_g": 4,
     "karbonhidrat_g": 24,
     "yag_g": 8,
     "lif_g": 8,
-    "saglik_etiketler": ["vejetaryen", "vegan", "düşük_kalori", "yüksek_lif", "antioksidan", "glütensiz"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "vejetaryen",
+      "vegan",
+      "düşük_kalori",
+      "yüksek_lif",
+      "antioksidan",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 35,
     "zorluk": "çok_kolay",
     "aciklama": "Fırında kızarmış renkli sebzeler. Antioksidan ve lif açısından zengin, en düşük kalorili ana yemek seçeneği."
+  },
+  {
+    "id": "chia_pudding_sutlu",
+    "ad": "Sütlü Chia Puding",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "chia tohumu",
+      "tam yağlı süt",
+      "bal",
+      "çilek"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 317,
+    "protein_g": 12,
+    "karbonhidrat_g": 35,
+    "yag_g": 16,
+    "lif_g": 12,
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "vejetaryen",
+      "glütensiz",
+      "diyabet_dostu",
+      "kalp_sağlıklı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Chia tohumu (30g) bir gece sütte (200g) bekletilir, üzerine çilek (60g) ve bal (10g) eklenir. Omega-3 ve lif açısından zengin, doyurucu bir kahvaltı."
+  },
+  {
+    "id": "avokadolu_tost",
+    "ad": "Avokadolu Tam Buğday Tost",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday ekmeği",
+      "avokado",
+      "yumurta",
+      "limon suyu",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 220,
+    "kalori": 389,
+    "protein_g": 16,
+    "karbonhidrat_g": 34,
+    "yag_g": 23,
+    "lif_g": 11,
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "vejetaryen",
+      "kalp_sağlıklı",
+      "enerji_veren",
+      "yüksek_protein"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "Tam buğday ekmeği (60g) kızartılır, üzerine ezilmiş avokado (100g) ve haşlanmış yumurta (50g) yerleştirilir. Sağlıklı yağlar ve protein açısından zengindir."
+  },
+  {
+    "id": "protein_pancake_yulaf",
+    "ad": "Yulaf Unlu Protein Pankek",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf unu",
+      "yumurta",
+      "muz",
+      "süt",
+      "kabartma tozu"
+    ],
+    "porsiyon_gram": 260,
+    "kalori": 421,
+    "protein_g": 23,
+    "karbonhidrat_g": 50,
+    "yag_g": 15,
+    "lif_g": 7,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "vejetaryen",
+      "enerji_veren",
+      "yüksek_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Yulaf unu (50g), 2 yumurta (100g), muz (60g) ve süt (50g) karıştırılarak kısık ateşte pişirilir. Spor yapanlara uygun yüksek proteinli ve karbonhidratlı bir kahvaltı seçeneğidir."
+  },
+  {
+    "id": "sigara_boregi_firinda",
+    "ad": "Fırında Sigara Böreği",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yufka",
+      "beyaz peynir",
+      "ıspanak",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 488,
+    "protein_g": 17,
+    "karbonhidrat_g": 57,
+    "yag_g": 24,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "geleneksel_türk",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "Yufka (80g) içine beyaz peynir (60g) ve ıspanak (40g) doldurulur, minimal zeytinyağı (5g) ile fırında kızartılır. Kızartma yerine fırın kullanımı yağ içeriğini azaltır."
+  },
+  {
+    "id": "ispanakli_gozleme",
+    "ad": "Ispanaklı Gözleme",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday unu",
+      "ıspanak",
+      "beyaz peynir",
+      "zeytinyağı",
+      "tuz"
+    ],
+    "porsiyon_gram": 230,
+    "kalori": 537,
+    "protein_g": 21,
+    "karbonhidrat_g": 64,
+    "yag_g": 25,
+    "lif_g": 10,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "geleneksel_türk",
+      "sebzeli",
+      "yüksek_lif",
+      "yüksek_protein"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Tam buğday unu (80g) ile hazırlanan hamur ıspanak (80g) ve beyaz peynir (60g) ile doldurularak sacda pişirilir. Geleneksel Türk lezzetidir, lif ve protein açısından zengindir."
+  },
+  {
+    "id": "kasarli_omlet",
+    "ad": "Kaşarlı Omlet",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "kaşar peyniri",
+      "domates",
+      "biber",
+      "zeytinyağı",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 265,
+    "kalori": 388,
+    "protein_g": 27,
+    "karbonhidrat_g": 6,
+    "yag_g": 28,
+    "lif_g": 1,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "vejetaryen",
+      "glütensiz",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "3 yumurta (150g) çırpılıp zeytinyağında (5g) pişirilir, üzerine rendelenmiş kaşar (30g), domates (50g) ve biber (30g) eklenir. Düşük karbonhidratlı, yüksek proteinli klasik Türk kahvaltısı."
+  },
+  {
+    "id": "smoothie_bowl",
+    "ad": "Meyveli Smoothie Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "Yunan yoğurdu",
+      "muz",
+      "yaban mersini",
+      "çilek",
+      "granola",
+      "chia tohumu"
+    ],
+    "porsiyon_gram": 370,
+    "kalori": 394,
+    "protein_g": 22,
+    "karbonhidrat_g": 58,
+    "yag_g": 10,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "vejetaryen",
+      "glütensiz",
+      "yüksek_lif",
+      "enerji_veren",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Yunan yoğurdu (150g) tabanına muz (80g) ve yaban mersini (50g) ile çilek (50g) dizilir, granola (30g) ve chia tohumu (10g) serpilir. Protein ve antioksidan açısından zengindir."
+  },
+  {
+    "id": "yulaf_lapasi_mevsim_meyveli",
+    "ad": "Mevsim Meyveli Yulaf Lapası",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf ezmesi",
+      "tam yağlı süt",
+      "muz",
+      "çilek",
+      "bal"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 455,
+    "protein_g": 17,
+    "karbonhidrat_g": 75,
+    "yag_g": 11,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "yüksek_lif",
+      "enerji_veren",
+      "kalp_sağlıklı",
+      "yüksek_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "Yulaf ezmesi (60g) sütte (200g) pişirilir, üzerine muz (60g), çilek (50g) ve bal (10g) eklenir. Beta-glukan lifi kalp sağlığını destekler, uzun süre tokluk hissi verir."
+  },
+  {
+    "id": "lor_peynirli_gozleme",
+    "ad": "Lor Peynirli Gözleme",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday unu",
+      "lor peyniri",
+      "dereotu",
+      "zeytinyağı",
+      "tuz"
+    ],
+    "porsiyon_gram": 180,
+    "kalori": 504,
+    "protein_g": 20,
+    "karbonhidrat_g": 61,
+    "yag_g": 23,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "geleneksel_türk",
+      "yüksek_protein",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Tam buğday unu (80g) hamuru lor peyniri (80g) ve dereotu (10g) ile doldurulur, az zeytinyağı (10g) ile sacda pişirilir. Hafif ve besleyici geleneksel Türk gözlemesi."
+  },
+  {
+    "id": "kefir_granola_tabagi",
+    "ad": "Kefir ve Granola Tabağı",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "kefir",
+      "granola",
+      "çilek",
+      "bal"
+    ],
+    "porsiyon_gram": 330,
+    "kalori": 454,
+    "protein_g": 14,
+    "karbonhidrat_g": 61,
+    "yag_g": 19,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "probiyotik",
+      "enerji_veren",
+      "glütensiz",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 3,
+    "zorluk": "çok_kolay",
+    "aciklama": "Kefir (200g) üzerine granola (60g), taze çilek (60g) ve bal (10g) eklenir. Probiyotik açısından zengin kefir bağırsak sağlığını desteklerken granola enerji sağlar."
+  },
+  {
+    "id": "tavuklu_kinoa_salatasi",
+    "ad": "Tavuklu Kinoa Salatası",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "kinoa",
+      "cherry domates",
+      "salatalık",
+      "maydanoz",
+      "zeytinyağı",
+      "limon suyu",
+      "kırmızı soğan"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 417,
+    "protein_g": 38,
+    "karbonhidrat_g": 30,
+    "yag_g": 16,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glütensiz",
+      "düşük_kalori",
+      "spor_dostu",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "150g tavuk göğsü ve 100g pişmiş kinoa ile hazırlanan protein zengini salata. 420g porsiyonda 417 kcal ve 38g protein."
+  },
+  {
+    "id": "cerkez_tavugu",
+    "ad": "Çerkez Tavuğu",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "ceviz",
+      "soğan",
+      "yoğurt",
+      "sarımsak",
+      "beyaz pirinç"
+    ],
+    "porsiyon_gram": 355,
+    "kalori": 588,
+    "protein_g": 43,
+    "karbonhidrat_g": 36,
+    "yag_g": 31,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "kalp_sağlıklı",
+      "enerji_veren"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "orta",
+    "aciklama": "150g haşlanmış tavuk, 40g ceviz sosu ve pirince hazırlanan geleneksel Osmanlı yemeği. 355g porsiyonda 588 kcal ve 43g protein."
+  },
+  {
+    "id": "tavuklu_dolma",
+    "ad": "Tavuklu Yaprak Dolma",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "asma yaprağı",
+      "pirinç",
+      "soğan",
+      "domates",
+      "zeytinyağı",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 355,
+    "kalori": 402,
+    "protein_g": 33,
+    "karbonhidrat_g": 36,
+    "yag_g": 15,
+    "lif_g": 11,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "geleneksel_türk",
+      "sebzeli",
+      "kalp_sağlıklı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 60,
+    "zorluk": "zor",
+    "aciklama": "120g tavuk kıyması ve asma yapraklarıyla hazırlanan yaprak dolma. 355g porsiyonda 402 kcal, 33g protein ve 11g lif."
+  },
+  {
+    "id": "tavuklu_mercimek_corbasi",
+    "ad": "Tavuklu Kırmızı Mercimek Çorbası",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "kırmızı mercimek",
+      "soğan",
+      "domates",
+      "havuç",
+      "zeytinyağı",
+      "sarımsak",
+      "kırmızı biber salçası"
+    ],
+    "porsiyon_gram": 405,
+    "kalori": 419,
+    "protein_g": 38,
+    "karbonhidrat_g": 36,
+    "yag_g": 14,
+    "lif_g": 12,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "diyabet_dostu",
+      "geleneksel_türk",
+      "tiroid_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "120g tavuk ve 120g kırmızı mercimekle hazırlanan doyurucu güveç. 405g porsiyonda 419 kcal, 38g protein ve 12g lif."
+  },
+  {
+    "id": "baharatli_tavuk_wrap",
+    "ad": "Baharatlı Tavuk Wrap",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "tam buğday tortilla",
+      "yoğurt",
+      "domates",
+      "roka",
+      "kırmızı biber",
+      "soğan",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 365,
+    "kalori": 437,
+    "protein_g": 35,
+    "karbonhidrat_g": 38,
+    "yag_g": 15,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "sebzeli",
+      "enerji_veren",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "çok_kolay",
+    "aciklama": "120g baharatlı ızgara tavuk ve tam buğday tortilla ile hazırlanan wrap. 365g porsiyonda 437 kcal ve 35g protein."
+  },
+  {
+    "id": "pilis_topkapi",
+    "ad": "Piliç Topkapı (Osmanlı Tavuğu)",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "beyaz pirinç",
+      "çam fıstığı",
+      "kuş üzümü",
+      "soğan",
+      "zeytinyağı",
+      "domates salçası"
+    ],
+    "porsiyon_gram": 285,
+    "kalori": 487,
+    "protein_g": 36,
+    "karbonhidrat_g": 31,
+    "yag_g": 24,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "enerji_veren"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "zor",
+    "aciklama": "150g tavuk, pirinç ve çam fıstığıyla hazırlanan Osmanlı tarifi. 285g porsiyonda 487 kcal ve 36g protein."
+  },
+  {
+    "id": "tavuklu_nohutlu_guvec",
+    "ad": "Tavuklu Nohutlu Güveç",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "nohut",
+      "domates",
+      "soğan",
+      "kırmızı biber",
+      "zeytinyağı",
+      "sarımsak",
+      "domates salçası"
+    ],
+    "porsiyon_gram": 405,
+    "kalori": 467,
+    "protein_g": 41,
+    "karbonhidrat_g": 39,
+    "yag_g": 17,
+    "lif_g": 10,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "diyabet_dostu",
+      "geleneksel_türk",
+      "sebzeli",
+      "kalp_sağlıklı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "orta",
+    "aciklama": "140g tavuk ve 100g nohutla hazırlanan geleneksel güveç. 405g porsiyonda 467 kcal, 41g protein ve 10g lif."
+  },
+  {
+    "id": "firin_sebzeli_tavuk",
+    "ad": "Fırında Sebzeli Tavuk",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "kabak",
+      "patlıcan",
+      "kırmızı biber",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 374,
+    "protein_g": 35,
+    "karbonhidrat_g": 15,
+    "yag_g": 20,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "sebzeli",
+      "düşük_kalori",
+      "kalp_sağlıklı",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "kolay",
+    "aciklama": "150g tavuk ve karışık sebzelerle fırında pişirilmiş düşük karbonhidratlı tarif. 430g porsiyonda 374 kcal ve 35g protein."
+  },
+  {
+    "id": "tavuklu_ispanakli_sote",
+    "ad": "Tavuklu Ispanaklı Sote",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "ıspanak",
+      "soğan",
+      "sarımsak",
+      "domates",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 365,
+    "kalori": 317,
+    "protein_g": 36,
+    "karbonhidrat_g": 11,
+    "yag_g": 14,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "düşük_kalori",
+      "glütensiz",
+      "sebzeli",
+      "tiroid_dostu",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "çok_kolay",
+    "aciklama": "150g tavuk ve 100g ıspanakla hazırlanan hafif sote. 365g porsiyonda 317 kcal ve 36g protein."
+  },
+  {
+    "id": "tavuk_bulgur_feta",
+    "ad": "Tavuklu Bulgur Pilakisi ve Feta",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "bulgur",
+      "beyaz peynir",
+      "domates",
+      "kırmızı biber",
+      "soğan",
+      "maydanoz",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 405,
+    "kalori": 438,
+    "protein_g": 37,
+    "karbonhidrat_g": 28,
+    "yag_g": 20,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "geleneksel_türk",
+      "sebzeli",
+      "enerji_veren"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "130g tavuk, 100g bulgur ve beyaz peynirle hazırlanan tek tava yemeği. 405g porsiyonda 438 kcal ve 37g protein."
+  },
+  {
+    "id": "firinda_dana_bonfile",
+    "ad": "Fırında Dana Bonfile",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "200g dana bonfile (yağsız)",
+      "30g soğan",
+      "30g domates",
+      "8g zeytinyağı",
+      "sarımsak, tuz, karabiber, kekik"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 424,
+    "protein_g": 44.6,
+    "karbonhidrat_g": 4.0,
+    "yag_g": 24.7,
+    "lif_g": 0.9,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "orta",
+    "aciklama": "Fırında pişirilen dana bonfile; 300g porsiyon başına 424 kcal ve 44.6g yüksek kaliteli protein içerir."
+  },
+  {
+    "id": "kuzu_sis",
+    "ad": "Kuzu Şiş",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "180g yağsız kuzu but",
+      "50g yeşil biber",
+      "40g domates",
+      "20g soğan",
+      "8g zeytinyağı",
+      "tuz, karabiber, kekik, sumak"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 382,
+    "protein_g": 40.1,
+    "karbonhidrat_g": 5.7,
+    "yag_g": 21.7,
+    "lif_g": 1.7,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "geleneksel_türk",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Yağsız kuzu butu ile hazırlanan şiş kebap; 300g porsiyon başına 382 kcal ve 40g protein sunar."
+  },
+  {
+    "id": "kiymali_biber_dolmasi",
+    "ad": "Kıymalı Biber Dolması",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "100g az yağlı dana kıyma",
+      "80g yeşil biber (dolmalık)",
+      "50g pirinç",
+      "40g domates",
+      "20g soğan",
+      "5g zeytinyağı",
+      "tuz, karabiber, nane, maydanoz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 316,
+    "protein_g": 22.6,
+    "karbonhidrat_g": 21.4,
+    "yag_g": 15.4,
+    "lif_g": 2.4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "orta",
+    "aciklama": "Kıymalı biber dolması; 300g porsiyon başına 316 kcal ve 22.6g protein sağlar."
+  },
+  {
+    "id": "firinda_dana_kaburga",
+    "ad": "Fırında Dana Kaburga",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "200g dana kaburga (yağı alınmış)",
+      "40g soğan",
+      "40g domates",
+      "10g zeytinyağı",
+      "sarımsak, tuz, karabiber, defne yaprağı"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 548,
+    "protein_g": 40.8,
+    "karbonhidrat_g": 5.3,
+    "yag_g": 39.3,
+    "lif_g": 1.2,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 120,
+    "zorluk": "zor",
+    "aciklama": "Fırında yavaş pişirilen dana kaburga; 300g porsiyon başına 548 kcal ve 40.8g protein içerir."
+  },
+  {
+    "id": "izgara_somon",
+    "ad": "Izgara Somon",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "200g somon fileto",
+      "30g limon",
+      "8g zeytinyağı",
+      "dereotu, tuz, karabiber"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 495,
+    "protein_g": 41.1,
+    "karbonhidrat_g": 2.8,
+    "yag_g": 34.9,
+    "lif_g": 0.8,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "omega3_zengin",
+      "glütensiz",
+      "kalp_sağlıklı",
+      "düşük_karbonhidrat",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Izgara somon; 300g porsiyon başına 495 kcal, 41.1g protein ve bol omega-3 yağ asidi sağlar."
+  },
+  {
+    "id": "firinda_levrek",
+    "ad": "Fırında Levrek",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "200g levrek fileto",
+      "40g domates",
+      "30g soğan",
+      "10g zeytinyağı",
+      "20g limon",
+      "sarımsak, tuz, karabiber, maydanoz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 307,
+    "protein_g": 37.7,
+    "karbonhidrat_g": 6.2,
+    "yag_g": 14.2,
+    "lif_g": 1.6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_kalori",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "kalp_sağlıklı",
+      "diyabet_dostu",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Fırında levrek; 300g porsiyon başına 307 kcal ve 37.7g protein sunar."
+  },
+  {
+    "id": "palamut_izgara",
+    "ad": "Palamut Izgara",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "220g palamut",
+      "30g limon",
+      "8g zeytinyağı",
+      "tuz, karabiber, kekik"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 396,
+    "protein_g": 53.1,
+    "karbonhidrat_g": 2.8,
+    "yag_g": 18.9,
+    "lif_g": 0.8,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "omega3_zengin",
+      "glütensiz",
+      "kalp_sağlıklı",
+      "düşük_karbonhidrat",
+      "geleneksel_türk",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "çok_kolay",
+    "aciklama": "Palamut ızgara; 300g porsiyon başına 396 kcal ve 53.1g protein içerir."
+  },
+  {
+    "id": "hamsi_bugulama",
+    "ad": "Hamsi Buğulama",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "230g hamsi (temizlenmiş)",
+      "30g soğan",
+      "25g domates",
+      "8g zeytinyağı",
+      "10g limon",
+      "tuz, karabiber, maydanoz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 391,
+    "protein_g": 47.6,
+    "karbonhidrat_g": 4.7,
+    "yag_g": 19.1,
+    "lif_g": 1.1,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "omega3_zengin",
+      "glütensiz",
+      "kalp_sağlıklı",
+      "geleneksel_türk",
+      "tiroid_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Hamsi buğulama; 300g porsiyon başına 391 kcal ve 47.6g protein sağlar."
+  },
+  {
+    "id": "ton_balikli_salata",
+    "ad": "Ton Balıklı Salata",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "120g konserve ton balığı (suda)",
+      "60g marul",
+      "60g salatalık",
+      "30g domates",
+      "8g zeytinyağı",
+      "20g limon",
+      "tuz, karabiber"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 239,
+    "protein_g": 32.4,
+    "karbonhidrat_g": 6.9,
+    "yag_g": 9.3,
+    "lif_g": 2.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_kalori",
+      "düşük_yağ",
+      "glütensiz",
+      "diyabet_dostu",
+      "sebzeli",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "Ton balıklı salata; 300g porsiyon başına 239 kcal ve 32.4g protein içerir."
+  },
+  {
+    "id": "domates_corbasi_kremasiz",
+    "ad": "Kremasız Domates Çorbası",
+    "kategori": "corba",
+    "malzemeler": [
+      "olgun domates",
+      "soğan",
+      "havuç",
+      "sarımsak",
+      "zeytinyağı",
+      "sebze suyu",
+      "fesleğen"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 145,
+    "protein_g": 2.4,
+    "karbonhidrat_g": 12.1,
+    "yag_g": 10.5,
+    "lif_g": 3.1,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "düşük_kalori",
+      "glütensiz",
+      "kalp_sağlıklı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "200g taze domates ve zeytinyağıyla hazırlanan kremasız çorba. 300g porsiyonda 145 kcal."
+  },
+  {
+    "id": "ispanak_corbasi",
+    "ad": "Ispanak Çorbası",
+    "kategori": "corba",
+    "malzemeler": [
+      "taze ıspanak",
+      "patates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "sebze suyu"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 117,
+    "protein_g": 5.5,
+    "karbonhidrat_g": 13.6,
+    "yag_g": 5.7,
+    "lif_g": 4.2,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "düşük_kalori",
+      "glütensiz",
+      "yüksek_lif",
+      "tiroid_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "150g ıspanak ve patatesle hazırlanan hafif çorba. 300g porsiyonda 117 kcal ve 4.2g lif."
+  },
+  {
+    "id": "bezelye_corbasi",
+    "ad": "Bezelye Çorbası",
+    "kategori": "corba",
+    "malzemeler": [
+      "taze bezelye",
+      "soğan",
+      "havuç",
+      "sarımsak",
+      "zeytinyağı",
+      "sebze suyu",
+      "nane"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 215,
+    "protein_g": 7.5,
+    "karbonhidrat_g": 23.3,
+    "yag_g": 10.7,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "yüksek_lif",
+      "glütensiz",
+      "diyabet_dostu",
+      "kalp_sağlıklı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "120g bezelye ile hazırlanan protein ve lif zengini çorba. 300g porsiyonda 215 kcal ve 7g lif."
+  },
+  {
+    "id": "brokoli_corbasi_kremasiz",
+    "ad": "Kremasız Brokoli Çorbası",
+    "kategori": "corba",
+    "malzemeler": [
+      "brokoli",
+      "sarımsak",
+      "soğan",
+      "zeytinyağı",
+      "sebze suyu",
+      "limon suyu"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 166,
+    "protein_g": 5.7,
+    "karbonhidrat_g": 15.1,
+    "yag_g": 10.8,
+    "lif_g": 4.9,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "düşük_kalori",
+      "glütensiz",
+      "yüksek_lif",
+      "kalp_sağlıklı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "180g brokoli ile hazırlanan kremasız çorba. 300g porsiyonda 166 kcal ve 4.9g lif."
+  },
+  {
+    "id": "akdeniz_salatasi",
+    "ad": "Akdeniz Salatası",
+    "kategori": "salata",
+    "malzemeler": [
+      "domates",
+      "salatalık",
+      "siyah zeytin",
+      "beyaz peynir",
+      "dolmalık biber",
+      "zeytinyağı",
+      "limon suyu",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 286,
+    "protein_g": 6.4,
+    "karbonhidrat_g": 12.3,
+    "yag_g": 25.0,
+    "lif_g": 3.3,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "glütensiz",
+      "kalp_sağlıklı",
+      "geleneksel_türk",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "Domates, salatalık, zeytin ve beyaz peynirle hazırlanan Akdeniz salatası. 300g porsiyonda 286 kcal."
+  },
+  {
+    "id": "bulgur_salatasi_kisir",
+    "ad": "Bulgur Salatası (Kısır)",
+    "kategori": "salata",
+    "malzemeler": [
+      "pişmiş bulgur",
+      "domates",
+      "maydanoz",
+      "taze soğan",
+      "dolmalık biber",
+      "zeytinyağı",
+      "limon suyu",
+      "nane"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 275,
+    "protein_g": 6.1,
+    "karbonhidrat_g": 31.4,
+    "yag_g": 15.8,
+    "lif_g": 8.8,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "yüksek_lif",
+      "geleneksel_türk",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "çok_kolay",
+    "aciklama": "120g bulgur ve maydanozla hazırlanan geleneksel kısır. 300g porsiyonda 275 kcal ve 8.8g lif."
+  },
+  {
+    "id": "semizotu_yogurtlu_salata",
+    "ad": "Yoğurtlu Semizotu Salatası",
+    "kategori": "salata",
+    "malzemeler": [
+      "semizotu",
+      "yoğurt",
+      "salatalık",
+      "zeytinyağı",
+      "limon suyu",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 236,
+    "protein_g": 7.0,
+    "karbonhidrat_g": 12.8,
+    "yag_g": 18.9,
+    "lif_g": 1.0,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "glütensiz",
+      "geleneksel_türk",
+      "omega3_zengin",
+      "kalp_sağlıklı"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "150g semizotu ve yoğurtla hazırlanan geleneksel Türk salatası. 300g porsiyonda 236 kcal, omega-3 zengini."
+  },
+  {
+    "id": "roka_parmesan_salatasi",
+    "ad": "Roka-Parmesan Salatası",
+    "kategori": "salata",
+    "malzemeler": [
+      "roka",
+      "domates",
+      "parmesan peyniri",
+      "salatalık",
+      "zeytinyağı",
+      "limon suyu",
+      "ceviz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 349,
+    "protein_g": 16.9,
+    "karbonhidrat_g": 11.5,
+    "yag_g": 28.2,
+    "lif_g": 3.6,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "glütensiz",
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "kalp_sağlıklı",
+      "omega3_zengin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "150g roka, 30g parmesan ve cevizle hazırlanan protein zengini salata. 300g porsiyonda 349 kcal ve 16.9g protein."
+  },
+  {
+    "id": "taze_fasulye_zeytinyagli",
+    "ad": "Zeytinyağlı Taze Fasulye",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "taze fasulye",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 180,
+    "protein_g": 6,
+    "karbonhidrat_g": 18,
+    "yag_g": 11,
+    "lif_g": 8,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "yüksek_lif",
+      "glütensiz",
+      "kalp_sağlıklı",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "200g taze fasulye, 60g domates, 30g soğan ve 10g zeytinyağıyla pişirilmiş geleneksel Türk yemeği. 300g porsiyonda 180 kcal, 6g protein ve 8g lif içerir."
+  },
+  {
+    "id": "kabak_mucver_firinda",
+    "ad": "Kabak Mücveri (Fırında)",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "kabak",
+      "yumurta",
+      "az yağlı peynir",
+      "soğan",
+      "dereotu",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 250,
+    "kalori": 245,
+    "protein_g": 23,
+    "karbonhidrat_g": 11,
+    "yag_g": 13,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "düşük_karbonhidrat",
+      "yüksek_protein",
+      "glütensiz",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "200g rendelenmiş kabak, 2 yumurta ve 20g az yağlı peynirle fırında pişirilmiş mücver. 250g porsiyonda 245 kcal ve 23g protein."
+  },
+  {
+    "id": "patlican_musakka_az_yagli",
+    "ad": "Patlıcan Musakka (Az Yağlı)",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "patlıcan",
+      "az yağlı kıyma",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "biber"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 320,
+    "protein_g": 22,
+    "karbonhidrat_g": 13,
+    "yag_g": 20,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "düşük_karbonhidrat",
+      "yüksek_protein",
+      "glütensiz",
+      "geleneksel_türk",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "orta",
+    "aciklama": "200g patlıcan, 100g az yağlı kıyma ve 10g zeytinyağıyla fırında pişirilmiş musakka. 350g porsiyonda 320 kcal, 22g protein ve 6g lif."
+  },
+  {
+    "id": "brokoli_karnabahar_graten",
+    "ad": "Brokoli-Karnabahar Graten (Az Yağlı)",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "brokoli",
+      "karnabahar",
+      "az yağlı peynir",
+      "az yağlı süt",
+      "zeytinyağı",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 320,
+    "kalori": 210,
+    "protein_g": 12,
+    "karbonhidrat_g": 18,
+    "yag_g": 12,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "yüksek_lif",
+      "düşük_kalori",
+      "sebzeli",
+      "kalp_sağlıklı",
+      "tiroid_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "150g brokoli, 150g karnabahar, az yağlı peynir ve sütle hazırlanmış graten. 320g porsiyonda 210 kcal, 12g protein ve 6g lif."
+  },
+  {
+    "id": "kuru_fasulye_az_yagli",
+    "ad": "Kuru Fasulye (Az Yağlı)",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "kuru fasulye",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "biber salçası",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 320,
+    "protein_g": 18,
+    "karbonhidrat_g": 52,
+    "yag_g": 6,
+    "lif_g": 11,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "yüksek_protein",
+      "yüksek_lif",
+      "glütensiz",
+      "geleneksel_türk",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 90,
+    "zorluk": "orta",
+    "aciklama": "180g pişmiş beyaz fasulye, domates ve zeytinyağıyla hazırlanmış az yağlı kuru fasulye. 300g porsiyonda 320 kcal, 18g protein ve 11g lif."
+  },
+  {
+    "id": "mercimek_koftesi_bulgurlu",
+    "ad": "Mercimek Köftesi (Bulgurlu)",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "kırmızı mercimek",
+      "ince bulgur",
+      "soğan",
+      "zeytinyağı",
+      "maydanoz",
+      "pul biber"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 231,
+    "protein_g": 13,
+    "karbonhidrat_g": 35,
+    "yag_g": 5,
+    "lif_g": 12,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "yüksek_lif",
+      "yüksek_protein",
+      "geleneksel_türk",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam",
+      "ara_ogun"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "150g pişmiş kırmızı mercimek ve 50g ince bulgurdan yapılan köfte. 200g porsiyonda 231 kcal, 13g protein ve 12g lif."
+  },
+  {
+    "id": "zeytinyagli_nohut",
+    "ad": "Nohut Yemeği (Zeytinyağlı)",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "nohut",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "sarımsak",
+      "kimyon"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 360,
+    "protein_g": 14,
+    "karbonhidrat_g": 44,
+    "yag_g": 15,
+    "lif_g": 12,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "yüksek_lif",
+      "glütensiz",
+      "kalp_sağlıklı",
+      "geleneksel_türk",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "kolay",
+    "aciklama": "150g pişmiş nohut, domates ve zeytinyağıyla hazırlanmış zeytinyağlı nohut. 300g porsiyonda 360 kcal, 14g protein ve 12g lif."
+  },
+  {
+    "id": "protein_bar_yulaf",
+    "ad": "Protein Bar (Yulaf + Fıstık Ezmesi + Bal)",
+    "kategori": "spor_ogun",
+    "malzemeler": [
+      "yulaf ezmesi",
+      "fıstık ezmesi",
+      "bal"
+    ],
+    "porsiyon_gram": 60,
+    "kalori": 265,
+    "protein_g": 10,
+    "karbonhidrat_g": 32,
+    "yag_g": 12,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "enerji_veren",
+      "spor_dostu",
+      "yüksek_protein"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "30g yulaf, 20g fıstık ezmesi ve 10g bal ile hazırlanan ev yapımı protein bar. 60g porsiyonda 265 kcal ve 10g protein."
+  },
+  {
+    "id": "humus_havuc",
+    "ad": "Humus + Havuç",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "humus",
+      "havuç",
+      "zeytinyağı",
+      "pul biber"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 218,
+    "protein_g": 9,
+    "karbonhidrat_g": 24,
+    "yag_g": 10,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "yüksek_lif",
+      "glütensiz",
+      "düşük_kalori",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "100g humus ve 100g havuç dilimlerinden oluşan besleyici ara öğün. 200g porsiyonda 218 kcal, 9g protein ve 9g lif."
+  },
+  {
+    "id": "yogurt_chia_meyve",
+    "ad": "Yoğurt + Chia + Meyve",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "az yağlı Yunan yoğurdu",
+      "chia tohumu",
+      "karışık meyveler",
+      "bal"
+    ],
+    "porsiyon_gram": 250,
+    "kalori": 206,
+    "protein_g": 18,
+    "karbonhidrat_g": 22,
+    "yag_g": 6,
+    "lif_g": 7,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "yüksek_protein",
+      "yüksek_lif",
+      "glütensiz",
+      "spor_dostu",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun",
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "150g Yunan yoğurdu, 15g chia ve 85g karışık meyve. 250g porsiyonda 206 kcal, 18g protein ve 7g lif."
+  },
+  {
+    "id": "fistik_ezmeli_elma",
+    "ad": "Fıstık Ezmeli Elma Dilimleri",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "elma",
+      "doğal fıstık ezmesi"
+    ],
+    "porsiyon_gram": 180,
+    "kalori": 254,
+    "protein_g": 8,
+    "karbonhidrat_g": 27,
+    "yag_g": 15,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "vegan",
+      "vejetaryen",
+      "glütensiz",
+      "enerji_veren",
+      "spor_dostu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "150g elma ve 30g fıstık ezmesinden oluşan pratik ara öğün. 180g porsiyonda 254 kcal, 8g protein ve 5g lif."
   }
 ]

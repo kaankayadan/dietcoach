@@ -150,10 +150,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             "## BUGÜNKÜ PLAN — ALGORİTMANIN SEÇTİĞİ TARİFLER",
             "**KESİNLİKLE UYULMASI GEREKEN KURALLAR:**\n"
             "1. Aşağıdaki tarifler Python tarafında algoritmik seçilmiştir — adları değiştirme, yeni tarif ekleme.\n"
-            f"2. Tariflerin varsayılan porsiyonları toplamda **{toplam_kalori:.0f} kcal**, "
-            f"kullanıcının hedefi **{hedef_kalori:.0f} kcal**.\n"
-            f"3. Tüm porsiyonları **{faktor:.2f} katına** çıkar (gramajları {faktor:.2f} ile çarp) "
-            f"ve makroları buna göre yeniden hesapla.\n"
+            "2. Her öğün için **AYARLANMIŞ** kalori ve makro değerleri aşağıda verilmiştir — bu değerleri birebir kullan.\n"
+            "3. **KESİNLİKLE kendi makro hesabı yapma.** Malzeme listesine bakarak hesaplama yapma. "
+            "Veritabanındaki değerler doğrudur, direkt kullan.\n"
             f"4. Hedef: {hedef_kalori:.0f} kcal | P:{hedef_protein:.0f}g | K:{hedef_karb:.0f}g | Y:{hedef_yag:.0f}g\n",
         ]
 
@@ -178,10 +177,19 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                 f"- {r.get('aciklama', '')}\n"
             )
 
+        toplam_karb = sum(float(r.get('karbonhidrat_g') or 0) for r in selected_meals.values())
+        toplam_yag = sum(float(r.get('yag_g') or 0) for r in selected_meals.values())
+        toplam_lif = sum(float(r.get('lif_g') or 0) for r in selected_meals.values())
+
         lines.append(
-            f"**Ayarlanmış toplam:** {toplam_kalori * faktor:.0f} kcal | "
-            f"{toplam_protein * faktor:.0f}g protein\n"
-            f"*(Planı yazarken ayarlanmış değerleri kullan, varsayılan değerleri gösterme.)*"
+            f"## GÜNLÜK ÖZET — BU DEĞERLERİ AYNEN KULLAN\n"
+            f"Toplam: **{toplam_kalori * faktor:.0f} kcal** | "
+            f"P: **{toplam_protein * faktor:.0f}g** | "
+            f"K: **{toplam_karb * faktor:.0f}g** | "
+            f"Y: **{toplam_yag * faktor:.0f}g** | "
+            f"L: **{toplam_lif * faktor:.0f}g**\n"
+            f"⚠️ Planı yazarken yukarıdaki AYARLANMIŞ değerleri birebir kullan. "
+            f"Malzemelere bakarak kendi hesabını yapma — veritabanı değerleri standarttır."
         )
 
         return "\n".join(lines)

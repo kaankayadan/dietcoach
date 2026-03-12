@@ -113,12 +113,13 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         return "\n\n".join(ctx_parts)
 
-    def _build_forced_plan_context(self, selected_meals: dict) -> str:
+    def _build_forced_plan_context(self, selected_meals: dict, user: dict = None) -> str:
         """
         Python tarafından her öğün için SEÇİLMİŞ tek tarifi Claude'a iletir.
-        Claude seçim yapmaz — sadece planı formatlar ve kısa açıklama ekler.
+        Hedef kaloriye göre porsiyon ölçekleme faktörü hesaplanır ve Claude'a bildirilir.
 
         selected_meals: {'kahvalti': recipe_dict, 'ogle': recipe_dict, ...}
+        user: Hedef kalori ve makroları için kullanıcı profili
         """
         if not selected_meals:
             return ""
@@ -130,40 +131,57 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             'ara_ogun': 'Ara Öğün',
         }
 
+        # Toplam kaloriyi hesapla
+        toplam_kalori = sum(float(r.get('kalori') or 0) for r in selected_meals.values())
+        toplam_protein = sum(float(r.get('protein_g') or 0) for r in selected_meals.values())
+
+        # Hedef kalori ve ölçekleme faktörü
+        hedef_kalori = float((user or {}).get('hedef_kalori') or 0)
+        hedef_protein = float((user or {}).get('protein_g') or 0)
+        hedef_karb = float((user or {}).get('karbonhidrat_g') or 0)
+        hedef_yag = float((user or {}).get('yag_g') or 0)
+
+        if hedef_kalori > 0 and toplam_kalori > 0:
+            faktor = hedef_kalori / toplam_kalori
+        else:
+            faktor = 1.0
+
         lines = [
             "## BUGÜNKÜ PLAN — ALGORİTMANIN SEÇTİĞİ TARİFLER",
-            "**KESİNLİKLE UYULMASI GEREKEN KURAL:** Aşağıdaki tarifler Python tarafında "
-            "kullanıcının profili, sağlık koşulları ve çeşitlilik kurallarına göre "
-            "algoritmik olarak seçilmiştir. Bu tarifleri AYNEN kullan: "
-            "adları değiştirme, yeni tarif ekleme, kendi tarif üretme. "
-            "Sadece planı güzel biçimde yaz ve her öğün için kısa açıklama ekle.**\n",
+            "**KESİNLİKLE UYULMASI GEREKEN KURALLAR:**\n"
+            "1. Aşağıdaki tarifler Python tarafında algoritmik seçilmiştir — adları değiştirme, yeni tarif ekleme.\n"
+            f"2. Tariflerin varsayılan porsiyonları toplamda **{toplam_kalori:.0f} kcal**, "
+            f"kullanıcının hedefi **{hedef_kalori:.0f} kcal**.\n"
+            f"3. Tüm porsiyonları **{faktor:.2f} katına** çıkar (gramajları {faktor:.2f} ile çarp) "
+            f"ve makroları buna göre yeniden hesapla.\n"
+            f"4. Hedef: {hedef_kalori:.0f} kcal | P:{hedef_protein:.0f}g | K:{hedef_karb:.0f}g | Y:{hedef_yag:.0f}g\n",
         ]
-
-        toplam_kalori = 0.0
-        toplam_protein = 0.0
 
         for ogun_tipi, r in selected_meals.items():
             ogun_adi = ogun_isimleri.get(ogun_tipi, ogun_tipi)
             kalori = float(r.get('kalori') or 0)
             protein = float(r.get('protein_g') or 0)
-            toplam_kalori += kalori
-            toplam_protein += protein
+            karb = float(r.get('karbonhidrat_g') or 0)
+            yag = float(r.get('yag_g') or 0)
+            lif = float(r.get('lif_g') or 0)
+            porsiyon = float(r.get('porsiyon_gram') or 0)
+
             lines.append(
                 f"### {ogun_adi}: {r['ad']}\n"
-                f"- Porsiyon: {r.get('porsiyon_gram')}g\n"
-                f"- Kalori: {kalori:.0f} kcal | "
-                f"Protein: {protein:.0f}g | "
-                f"Karb: {r.get('karbonhidrat_g')}g | "
-                f"Yağ: {r.get('yag_g')}g | "
-                f"Lif: {r.get('lif_g')}g\n"
+                f"- Varsayılan porsiyon: {porsiyon:.0f}g → **Ayarlanmış: {porsiyon * faktor:.0f}g**\n"
+                f"- Kalori: {kalori:.0f} → **{kalori * faktor:.0f} kcal** | "
+                f"P: {protein:.0f} → **{protein * faktor:.0f}g** | "
+                f"K: {karb:.0f} → **{karb * faktor:.0f}g** | "
+                f"Y: {yag:.0f} → **{yag * faktor:.0f}g** | "
+                f"L: {lif:.0f} → **{lif * faktor:.0f}g**\n"
                 f"- Malzemeler: {', '.join(r.get('malzemeler', []))}\n"
                 f"- {r.get('aciklama', '')}\n"
             )
 
         lines.append(
-            f"**Günlük toplam:** {toplam_kalori:.0f} kcal | {toplam_protein:.0f}g protein\n"
-            f"*(Makro hedeflerle karşılaştır; gerekirse porsiyon gramajını ayarla "
-            f"ama tarif adlarını değiştirme.)*"
+            f"**Ayarlanmış toplam:** {toplam_kalori * faktor:.0f} kcal | "
+            f"{toplam_protein * faktor:.0f}g protein\n"
+            f"*(Planı yazarken ayarlanmış değerleri kullan, varsayılan değerleri gösterme.)*"
         )
 
         return "\n".join(lines)
@@ -364,7 +382,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                             session_excluded.append(chosen['tarif_id'])  # Plan içi tekrar önle
 
                     if selected_meals:
-                        recipe_context = "\n\n" + self._build_forced_plan_context(selected_meals)
+                        recipe_context = "\n\n" + self._build_forced_plan_context(selected_meals, user)
                         logger.info(f"Plan RAG: {len(selected_meals)} öğün için Python tarif seçti (deterministik)")
                 else:
                     # /alternatif, "ne yesem" vb. — Claude listeden önerir

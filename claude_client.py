@@ -139,8 +139,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             )
 
         lines.append(
-            "\n*Not: Listede olmayan yemekler de önerilebilir, ancak yukarıdaki tarifler "
-            "kullanıcıya özel filtrelenmiş ve çeşitlilik için seçilmiştir.*"
+            "\n*ÖNEMLİ: Yemek planı oluştururken ÖNCE bu listeden seç. "
+            "Listede uygun tarif yoksa yeni tarif ekleyebilirsin, ancak listedeki "
+            "tarifler önceliklidir. Listeden seçtiğin tarifin porsiyon, kalori ve makro "
+            "değerlerini değiştirme — veritabanındaki değerleri kullan.*"
         )
 
         return "\n".join(lines)

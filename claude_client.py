@@ -113,10 +113,66 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         return "\n\n".join(ctx_parts)
 
+    def _build_forced_plan_context(self, selected_meals: dict) -> str:
+        """
+        Python tarafından her öğün için SEÇİLMİŞ tek tarifi Claude'a iletir.
+        Claude seçim yapmaz — sadece planı formatlar ve kısa açıklama ekler.
+
+        selected_meals: {'kahvalti': recipe_dict, 'ogle': recipe_dict, ...}
+        """
+        if not selected_meals:
+            return ""
+
+        ogun_isimleri = {
+            'kahvalti': 'Kahvaltı',
+            'ogle': 'Öğle Yemeği',
+            'aksam': 'Akşam Yemeği',
+            'ara_ogun': 'Ara Öğün',
+        }
+
+        lines = [
+            "## BUGÜNKÜ PLAN — ALGORİTMANIN SEÇTİĞİ TARİFLER",
+            "**KESİNLİKLE UYULMASI GEREKEN KURAL:** Aşağıdaki tarifler Python tarafında "
+            "kullanıcının profili, sağlık koşulları ve çeşitlilik kurallarına göre "
+            "algoritmik olarak seçilmiştir. Bu tarifleri AYNEN kullan: "
+            "adları değiştirme, yeni tarif ekleme, kendi tarif üretme. "
+            "Sadece planı güzel biçimde yaz ve her öğün için kısa açıklama ekle.**\n",
+        ]
+
+        toplam_kalori = 0.0
+        toplam_protein = 0.0
+
+        for ogun_tipi, r in selected_meals.items():
+            ogun_adi = ogun_isimleri.get(ogun_tipi, ogun_tipi)
+            kalori = float(r.get('kalori') or 0)
+            protein = float(r.get('protein_g') or 0)
+            toplam_kalori += kalori
+            toplam_protein += protein
+            lines.append(
+                f"### {ogun_adi}: {r['ad']}\n"
+                f"- Porsiyon: {r.get('porsiyon_gram')}g\n"
+                f"- Kalori: {kalori:.0f} kcal | "
+                f"Protein: {protein:.0f}g | "
+                f"Karb: {r.get('karbonhidrat_g')}g | "
+                f"Yağ: {r.get('yag_g')}g | "
+                f"Lif: {r.get('lif_g')}g\n"
+                f"- Malzemeler: {', '.join(r.get('malzemeler', []))}\n"
+                f"- {r.get('aciklama', '')}\n"
+            )
+
+        lines.append(
+            f"**Günlük toplam:** {toplam_kalori:.0f} kcal | {toplam_protein:.0f}g protein\n"
+            f"*(Makro hedeflerle karşılaştır; gerekirse porsiyon gramajını ayarla "
+            f"ama tarif adlarını değiştirme.)*"
+        )
+
+        return "\n".join(lines)
+
     def _build_recipe_context(self, recipes_by_meal: dict) -> str:
         """
-        Öğün tipine göre gruplandırılmış tarifleri Claude'a sunar.
-        recipes_by_meal: {'kahvalti': [...], 'ogle': [...], 'aksam': [...], 'ara_ogun': [...]}
+        /alternatif isteklerinde öğün bazlı seçenekleri sunar.
+        Claude bu listeden önerir — plan akışında kullanılmaz.
+        recipes_by_meal: {'kahvalti': [...], 'ogle': [...], ...}
         """
         if not any(recipes_by_meal.values()):
             return ""
@@ -129,18 +185,15 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         }
 
         lines = [
-            "## DOĞRULANMIŞ TARİF VERİTABANI",
-            "**ZORUNLU KURAL:** Plan oluştururken her öğün için aşağıdaki ilgili listeden",
-            "bir tarif seç. Seçtiğin tarifin ADI, KALORİ ve MAKRO değerlerini birebir",
-            "kullan — kendi hesaplama yapma, değerleri değiştirme. Listede uygun tarif",
-            "yoksa yeni tarif üretebilirsin.\n",
+            "## TARİF ALTERNATİFLERİ (Semantik Arama Sonucu)",
+            "**Bu listeden birini veya birkaçını öner — listede olmayan tarif üretme.**\n",
         ]
 
         for meal_key, label in meal_labels.items():
             recipes = recipes_by_meal.get(meal_key, [])
             if not recipes:
                 continue
-            lines.append(f"### {label} SEÇENEKLERİ")
+            lines.append(f"### {label} ALTERNATİFLERİ")
             for r in recipes:
                 lines.append(
                     f"- **{r['ad']}** → "
@@ -248,21 +301,25 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         recipe_context = ""
         is_onboarding = user.get('onboarding_step', 0) > 0 and user.get('onboarding_step', 0) < 99
 
+        # Plan isteği: Python her öğün için 1 tarif seçer → Claude sadece formatlar
+        # Alternatif/öneri: Claude listeden seçer
+        plan_triggers = [
+            '/plan', 'plan oluştur', 'plan yap', 'haftalık plan', 'diyet listesi',
+            'günlük plan', 'beslenme planı', 'plan hazırla', 'plan istiyorum',
+            'plan ver', 'yeni plan', 'farklı plan', 'başka plan',
+        ]
+        is_plan_request = any(t in user_message.lower() for t in plan_triggers)
+
         if db and self._needs_recipe_search(user_message, is_onboarding):
             try:
-                # Arama sorgusunu oluştur
                 query_text = self._build_recipe_query(user_message, user)
-
-                # Sorguyu vektörleştir (async, event loop'u bloklamaz)
                 query_vector = await embedder.async_embed(query_text)
 
-                # Son 7 günde kullanılan tarifleri hariç tut (çeşitlilik)
                 user_id = user.get('id')
                 recent_recipe_ids = []
                 if user_id:
                     recent_recipe_ids = await db.get_recently_used_recipe_ids(user_id, days=7)
 
-                # Kullanıcıya özel filtreler
                 saglik_filtre = []
                 hastaliklar = user.get('kronik_hastaliklar') or []
                 if any('tiroid' in h.lower() for h in hastaliklar):
@@ -270,31 +327,57 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                 if any('diyabet' in h.lower() for h in hastaliklar):
                     saglik_filtre.append('diyabet_dostu')
 
-                # Kalori filtresi — kayıp hedefinde öğün başına max ~%40
                 max_kalori = None
                 hedef_kalori = user.get('hedef_kalori')
                 if hedef_kalori and user.get('hedef_tip') == 'kayip':
                     max_kalori = float(hedef_kalori) * 0.45
 
-                # Her öğün tipi için ayrı semantik arama
                 common_kwargs = dict(
                     embedding=query_vector,
-                    limit=3,
                     saglik_etiketleri=saglik_filtre if saglik_filtre else None,
                     exclude_recent_ids=recent_recipe_ids if recent_recipe_ids else None,
                     max_kalori=max_kalori,
                 )
-                recipes_by_meal = {
-                    'kahvalti': await db.search_recipes(ogun_tipi='kahvalti', **common_kwargs),
-                    'ogle':     await db.search_recipes(ogun_tipi='ogle',     **common_kwargs),
-                    'aksam':    await db.search_recipes(ogun_tipi='aksam',    **common_kwargs),
-                    'ara_ogun': await db.search_recipes(ogun_tipi='ara_ogun', **common_kwargs),
-                }
 
-                total = sum(len(v) for v in recipes_by_meal.values())
-                if total > 0:
-                    recipe_context = "\n\n" + self._build_recipe_context(recipes_by_meal)
-                    logger.info(f"RAG: {total} tarif bulundu (öğün başına ayrı), context'e eklendi")
+                if is_plan_request:
+                    # Python her öğün için EN İYİ 1 tarifi seçer — Claude seçim yapmaz
+                    ogun_duzeni = user.get('ogun_duzeni', '') or ''
+                    ogun_tipleri = ['kahvalti', 'ogle', 'aksam']
+                    if any(k in ogun_duzeni.lower() for k in ['ara', '4', '5', 'snack']):
+                        ogun_tipleri.append('ara_ogun')
+
+                    selected_meals = {}
+                    session_excluded = list(recent_recipe_ids)
+
+                    for ogun_tipi in ogun_tipleri:
+                        results = await db.search_recipes(
+                            ogun_tipi=ogun_tipi,
+                            limit=5,
+                            embedding=query_vector,
+                            saglik_etiketleri=saglik_filtre if saglik_filtre else None,
+                            exclude_recent_ids=session_excluded if session_excluded else None,
+                            max_kalori=max_kalori,
+                        )
+                        if results:
+                            chosen = results[0]  # En yüksek benzerlik skoru
+                            selected_meals[ogun_tipi] = chosen
+                            session_excluded.append(chosen['tarif_id'])  # Plan içi tekrar önle
+
+                    if selected_meals:
+                        recipe_context = "\n\n" + self._build_forced_plan_context(selected_meals)
+                        logger.info(f"Plan RAG: {len(selected_meals)} öğün için Python tarif seçti (deterministik)")
+                else:
+                    # /alternatif, "ne yesem" vb. — Claude listeden önerir
+                    recipes_by_meal = {
+                        'kahvalti': await db.search_recipes(ogun_tipi='kahvalti', limit=3, **common_kwargs),
+                        'ogle':     await db.search_recipes(ogun_tipi='ogle',     limit=3, **common_kwargs),
+                        'aksam':    await db.search_recipes(ogun_tipi='aksam',    limit=3, **common_kwargs),
+                        'ara_ogun': await db.search_recipes(ogun_tipi='ara_ogun', limit=3, **common_kwargs),
+                    }
+                    total = sum(len(v) for v in recipes_by_meal.values())
+                    if total > 0:
+                        recipe_context = "\n\n" + self._build_recipe_context(recipes_by_meal)
+                        logger.info(f"Öneri RAG: {total} tarif bulundu")
 
             except Exception as e:
                 logger.warning(f"Tarif araması başarısız (devam ediliyor): {e}")

@@ -355,7 +355,7 @@ class Database:
                 OR t.ad ILIKE '%' || split_part(ok.aciklama, ' ', 1) || '%'
             )
             WHERE ok.user_id = $1
-              AND ok.tarih >= CURRENT_DATE - $2
+              AND ok.tarih >= (CURRENT_DATE - ($2 * INTERVAL '1 day'))::date
             """,
             user_id, days,
         )

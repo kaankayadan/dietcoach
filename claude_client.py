@@ -346,11 +346,14 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         # 0.80 eşiğine kadar tam kredi, altında orantılı düşüş
         capacity_factor = min(1.0, kapsama / 0.80)
 
-        # -- Makro uyumu (hipotetik tam ölçekleme) --
-        f = hedef_kal / r_kal
-        r_p = float(recipe.get('protein_g') or 0) * f
-        r_k = float(recipe.get('karbonhidrat_g') or 0) * f
-        r_y = float(recipe.get('yag_g') or 0) * f
+        # -- Makro uyumu (gerçek capped ölçekleme) --
+        # Hipotetik değil, gerçekte uygulanacak faktörle karşılaştır.
+        # Fırın Sebze: 180 kcal, hedef 480 → hipo f=2.67 K:64 "iyi görünür"
+        # ama gerçekte 1.5× cap → K:36 — bu farkı yakalamak için actual_f kullan.
+        actual_f = min(self._FAKTOR_MAX, hedef_kal / r_kal)
+        r_p = float(recipe.get('protein_g') or 0) * actual_f
+        r_k = float(recipe.get('karbonhidrat_g') or 0) * actual_f
+        r_y = float(recipe.get('yag_g') or 0) * actual_f
 
         p_err = abs(r_p - hedef_p) / max(hedef_p, 1)
         k_err = abs(r_k - hedef_k) / max(hedef_k, 1)
@@ -360,8 +363,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         weighted_err = 0.35 * p_err + 0.35 * k_err + 0.30 * y_err
         macro_score = max(0.0, 1.0 - weighted_err)
 
-        # Kapasite × makro uyumu: düşük kapasiteli TARİF aynı zamanda
-        # kötü makrolarla geliyorsa (K:0 gibi) çok düşük skor alır
+        # Kapasite × makro uyumu: düşük kapasiteli + kötü makrolu tarifler çok düşük skor alır
         return macro_score * capacity_factor
 
     def _select_model(self, message: str, is_onboarding: bool) -> str:

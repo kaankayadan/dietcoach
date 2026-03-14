@@ -16,6 +16,15 @@ from embeddings import embedder
 
 logger = logging.getLogger(__name__)
 
+# Her öğünün günlük kalori hedefinden alacağı pay (toplam 1.0)
+# Normalizasyon, aktif öğün sayısına göre chat() içinde yapılır.
+_RAW_OGUN_PAYLARI = {
+    'kahvalti': 0.30,
+    'ogle':     0.35,
+    'aksam':    0.25,
+    'ara_ogun': 0.10,
+}
+
 
 class ClaudeClient:
     def __init__(self, api_key: str, system_prompt_path: str):
@@ -113,13 +122,16 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         return "\n\n".join(ctx_parts)
 
-    def _build_forced_plan_context(self, selected_meals: dict, user: dict = None) -> str:
+    def _build_forced_plan_context(self, selected_meals: dict, user: dict = None,
+                                    meal_factors: dict = None) -> str:
         """
         Python tarafından her öğün için SEÇİLMİŞ tek tarifi Claude'a iletir.
-        Hedef kaloriye göre porsiyon ölçekleme faktörü hesaplanır ve Claude'a bildirilir.
+        Tüm makro hesapları Python'da yapılır; Claude sadece formatlar.
 
-        selected_meals: {'kahvalti': recipe_dict, 'ogle': recipe_dict, ...}
-        user: Hedef kalori ve makroları için kullanıcı profili
+        selected_meals : {'kahvalti': recipe_dict, 'ogle': recipe_dict, ...}
+        user           : Kullanıcı profili (hedef kalori/makrolar)
+        meal_factors   : Öğün bazlı ölçekleme faktörleri {'kahvalti': 1.08, ...}
+                         Verilmezse global faktör kullanılır.
         """
         if not selected_meals:
             return ""
@@ -131,20 +143,17 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             'ara_ogun': 'Ara Öğün',
         }
 
-        # Toplam kaloriyi hesapla
-        toplam_kalori = sum(float(r.get('kalori') or 0) for r in selected_meals.values())
-        toplam_protein = sum(float(r.get('protein_g') or 0) for r in selected_meals.values())
-
-        # Hedef kalori ve ölçekleme faktörü
         hedef_kalori = float((user or {}).get('hedef_kalori') or 0)
         hedef_protein = float((user or {}).get('protein_g') or 0)
         hedef_karb = float((user or {}).get('karbonhidrat_g') or 0)
         hedef_yag = float((user or {}).get('yag_g') or 0)
 
-        if hedef_kalori > 0 and toplam_kalori > 0:
-            faktor = hedef_kalori / toplam_kalori
+        # Global fallback faktörü (meal_factors verilmediyse)
+        toplam_kalori_ham = sum(float(r.get('kalori') or 0) for r in selected_meals.values())
+        if hedef_kalori > 0 and toplam_kalori_ham > 0 and not meal_factors:
+            global_faktor = hedef_kalori / toplam_kalori_ham
         else:
-            faktor = 1.0
+            global_faktor = 1.0
 
         lines = [
             "## BUGÜNKÜ PLAN — ALGORİTMANIN SEÇTİĞİ TARİFLER",
@@ -153,43 +162,50 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             "2. Her öğün için **AYARLANMIŞ** kalori ve makro değerleri aşağıda verilmiştir — bu değerleri birebir kullan.\n"
             "3. **KESİNLİKLE kendi makro hesabı yapma.** Malzeme listesine bakarak hesaplama yapma. "
             "Veritabanındaki değerler doğrudur, direkt kullan.\n"
-            f"4. Hedef: {hedef_kalori:.0f} kcal | P:{hedef_protein:.0f}g | K:{hedef_karb:.0f}g | Y:{hedef_yag:.0f}g\n",
+            f"4. Günlük hedef: {hedef_kalori:.0f} kcal | P:{hedef_protein:.0f}g | K:{hedef_karb:.0f}g | Y:{hedef_yag:.0f}g\n",
         ]
+
+        # Ayarlanmış günlük toplamları birikimli hesapla
+        gun_kalori = gun_protein = gun_karb = gun_yag = gun_lif = 0.0
 
         for ogun_tipi, r in selected_meals.items():
             ogun_adi = ogun_isimleri.get(ogun_tipi, ogun_tipi)
-            kalori = float(r.get('kalori') or 0)
+            faktor = (meal_factors or {}).get(ogun_tipi, global_faktor)
+
+            kalori  = float(r.get('kalori') or 0)
             protein = float(r.get('protein_g') or 0)
-            karb = float(r.get('karbonhidrat_g') or 0)
-            yag = float(r.get('yag_g') or 0)
-            lif = float(r.get('lif_g') or 0)
+            karb    = float(r.get('karbonhidrat_g') or 0)
+            yag     = float(r.get('yag_g') or 0)
+            lif     = float(r.get('lif_g') or 0)
             porsiyon = float(r.get('porsiyon_gram') or 0)
+
+            adj_kal  = round(kalori  * faktor)
+            adj_p    = round(protein * faktor, 1)
+            adj_k    = round(karb    * faktor, 1)
+            adj_y    = round(yag     * faktor, 1)
+            adj_l    = round(lif     * faktor, 1)
+            adj_por  = round(porsiyon * faktor)
+
+            gun_kalori  += adj_kal
+            gun_protein += adj_p
+            gun_karb    += adj_k
+            gun_yag     += adj_y
+            gun_lif     += adj_l
 
             lines.append(
                 f"### {ogun_adi}: {r['ad']}\n"
-                f"- Varsayılan porsiyon: {porsiyon:.0f}g → **Ayarlanmış: {porsiyon * faktor:.0f}g**\n"
-                f"- Kalori: {kalori:.0f} → **{kalori * faktor:.0f} kcal** | "
-                f"P: {protein:.0f} → **{protein * faktor:.0f}g** | "
-                f"K: {karb:.0f} → **{karb * faktor:.0f}g** | "
-                f"Y: {yag:.0f} → **{yag * faktor:.0f}g** | "
-                f"L: {lif:.0f} → **{lif * faktor:.0f}g**\n"
+                f"- Porsiyon: **{adj_por}g**\n"
+                f"- **{adj_kal} kcal** | P:{adj_p}g | K:{adj_k}g | Y:{adj_y}g | L:{adj_l}g\n"
                 f"- Malzemeler: {', '.join(r.get('malzemeler', []))}\n"
                 f"- {r.get('aciklama', '')}\n"
             )
 
-        toplam_karb = sum(float(r.get('karbonhidrat_g') or 0) for r in selected_meals.values())
-        toplam_yag = sum(float(r.get('yag_g') or 0) for r in selected_meals.values())
-        toplam_lif = sum(float(r.get('lif_g') or 0) for r in selected_meals.values())
-
         lines.append(
-            f"## GÜNLÜK ÖZET — BU DEĞERLERİ AYNEN KULLAN\n"
-            f"Toplam: **{toplam_kalori * faktor:.0f} kcal** | "
-            f"P: **{toplam_protein * faktor:.0f}g** | "
-            f"K: **{toplam_karb * faktor:.0f}g** | "
-            f"Y: **{toplam_yag * faktor:.0f}g** | "
-            f"L: **{toplam_lif * faktor:.0f}g**\n"
-            f"⚠️ Planı yazarken yukarıdaki AYARLANMIŞ değerleri birebir kullan. "
-            f"Malzemelere bakarak kendi hesabını yapma — veritabanı değerleri standarttır."
+            f"## GÜNLÜK TOPLAM — BU DEĞERLERİ AYNEN KULLAN\n"
+            f"**{round(gun_kalori)} kcal** | P:{round(gun_protein, 1)}g | "
+            f"K:{round(gun_karb, 1)}g | Y:{round(gun_yag, 1)}g | L:{round(gun_lif, 1)}g\n"
+            f"*(Hedef: {hedef_kalori:.0f} kcal | P:{hedef_protein:.0f}g | K:{hedef_karb:.0f}g | Y:{hedef_yag:.0f}g)*\n"
+            f"⚠️ Yukarıdaki değerleri birebir kullan. Malzemelere bakarak kendi hesabını yapma."
         )
 
         return "\n".join(lines)
@@ -235,6 +251,34 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
     def _gun_adi(self) -> str:
         gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
         return gunler[date.today().weekday()]
+
+    def _macro_fit_score(self, recipe: dict,
+                         hedef_kal: float, hedef_p: float,
+                         hedef_k: float, hedef_y: float) -> float:
+        """
+        Tarifin bu öğüne düşen makro bütçeyle uyumunu 0–1 arası puanlar.
+        Tarif, hedef kaloriye varsayımsal olarak ölçeklendikten sonra
+        protein/karb/yağ sapması hesaplanır — böylece farklı kalorili
+        tarifler adil şekilde kıyaslanır.
+        """
+        r_kal = float(recipe.get('kalori') or 0)
+        if r_kal == 0 or hedef_kal == 0:
+            return 0.0
+
+        # Tarifi hedef kaloriye ölçekle (hipotetik — sadece karşılaştırma için)
+        f = hedef_kal / r_kal
+        r_p = float(recipe.get('protein_g') or 0) * f
+        r_k = float(recipe.get('karbonhidrat_g') or 0) * f
+        r_y = float(recipe.get('yag_g') or 0) * f
+
+        # Normalize hata: sapma / hedef  (0 = mükemmel, >1 = çok kötü)
+        p_err = abs(r_p - hedef_p) / max(hedef_p, 1)
+        k_err = abs(r_k - hedef_k) / max(hedef_k, 1)
+        y_err = abs(r_y - hedef_y) / max(hedef_y, 1)
+
+        # Protein ve karb daha kritik (P:0.35, K:0.35, Y:0.30)
+        weighted_err = 0.35 * p_err + 0.35 * k_err + 0.30 * y_err
+        return max(0.0, 1.0 - weighted_err)
 
     def _select_model(self, message: str, is_onboarding: bool) -> str:
         """Mesaj karmaşıklığına göre model seç — maliyet optimizasyonu."""
@@ -372,26 +416,64 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                     if any(k in ogun_duzeni.lower() for k in ['ara', '4', '5', 'snack']):
                         ogun_tipleri.append('ara_ogun')
 
+                    # Aktif öğünlere göre normalize edilmiş kalori payları
+                    raw_toplam = sum(_RAW_OGUN_PAYLARI.get(t, 0.1) for t in ogun_tipleri)
+                    ogun_paylari = {
+                        t: _RAW_OGUN_PAYLARI.get(t, 0.1) / raw_toplam
+                        for t in ogun_tipleri
+                    }
+
+                    hedef_kalori_f = float(user.get('hedef_kalori') or 0)
+                    hedef_protein_f = float(user.get('protein_g') or 0)
+                    hedef_karb_f = float(user.get('karbonhidrat_g') or 0)
+                    hedef_yag_f = float(user.get('yag_g') or 0)
+
                     selected_meals = {}
+                    meal_factors = {}
                     session_excluded = list(recent_recipe_ids)
 
                     for ogun_tipi in ogun_tipleri:
+                        pay = ogun_paylari[ogun_tipi]
+                        ogun_hedef_kal = hedef_kalori_f * pay
+                        ogun_hedef_p   = hedef_protein_f * pay
+                        ogun_hedef_k   = hedef_karb_f * pay
+                        ogun_hedef_y   = hedef_yag_f * pay
+
                         results = await db.search_recipes(
                             ogun_tipi=ogun_tipi,
-                            limit=5,
+                            limit=8,  # Daha geniş havuz → daha iyi makro seçimi
                             embedding=query_vector,
                             saglik_etiketleri=saglik_filtre if saglik_filtre else None,
                             exclude_recent_ids=session_excluded if session_excluded else None,
                             max_kalori=max_kalori,
                         )
                         if results:
-                            chosen = results[0]  # En yüksek benzerlik skoru
+                            # Bileşik skor: semantik benzerlik (0.5) + makro uyumu (0.5)
+                            chosen = max(results, key=lambda r: (
+                                0.5 * float(r.get('benzerlik', 0)) +
+                                0.5 * self._macro_fit_score(
+                                    r, ogun_hedef_kal, ogun_hedef_p, ogun_hedef_k, ogun_hedef_y
+                                )
+                            ))
                             selected_meals[ogun_tipi] = chosen
-                            session_excluded.append(chosen['tarif_id'])  # Plan içi tekrar önle
+                            session_excluded.append(chosen['tarif_id'])
+
+                            # Öğün bazlı ölçekleme faktörü ([0.7, 1.5] aralığında kısıtlı)
+                            r_kal = float(chosen.get('kalori') or 0)
+                            if r_kal > 0 and ogun_hedef_kal > 0:
+                                f = ogun_hedef_kal / r_kal
+                                meal_factors[ogun_tipi] = max(0.7, min(1.5, f))
+                            else:
+                                meal_factors[ogun_tipi] = 1.0
 
                     if selected_meals:
-                        recipe_context = "\n\n" + self._build_forced_plan_context(selected_meals, user)
-                        logger.info(f"Plan RAG: {len(selected_meals)} öğün için Python tarif seçti (deterministik)")
+                        recipe_context = "\n\n" + self._build_forced_plan_context(
+                            selected_meals, user, meal_factors
+                        )
+                        logger.info(
+                            f"Plan RAG: {len(selected_meals)} öğün seçildi "
+                            f"(composite scoring + per-meal scaling)"
+                        )
                 else:
                     # /alternatif, "ne yesem" vb. — Claude listeden önerir
                     recipes_by_meal = {

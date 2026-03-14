@@ -3802,5 +3802,1396 @@
     "pismesi_dk": 5,
     "zorluk": "çok_kolay",
     "aciklama": "150g elma ve 30g fıstık ezmesinden oluşan pratik ara öğün. 180g porsiyonda 254 kcal, 8g protein ve 5g lif."
+  },
+  {
+    "id": "kofte_bulgur_tabagi",
+    "ad": "Izgara Köfte + Bulgur Pilavı Tabağı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kıyma",
+      "soğan",
+      "maydanoz",
+      "bulgur",
+      "tereyağı",
+      "tuz",
+      "karabiber",
+      "kimyon"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 485,
+    "protein_g": 33,
+    "karbonhidrat_g": 44,
+    "yag_g": 18,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "4 adet ızgara dana köfte (150g kıyma) yanında 100g pişmiş bulgur pilavı. Dengeli protein ve kompleks karbonhidrat kombinasyonu."
+  },
+  {
+    "id": "kiymali_patates",
+    "ad": "Kıymalı Patates Yemeği",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kıyma",
+      "patates",
+      "soğan",
+      "domates",
+      "domates salçası",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "pul biber",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 420,
+    "protein_g": 26,
+    "karbonhidrat_g": 38,
+    "yag_g": 17,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "100g dana kıyma ile 200g patatesin birlikte pişirildiği geleneksel Türk yemeği. Protein ve karbonhidrat dengesi yüksek, doyurucu bir ana öğün."
+  },
+  {
+    "id": "musakka_az_yagli",
+    "ad": "Musakka (Patatesli, Az Yağlı)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kıyma",
+      "patlıcan",
+      "patates",
+      "soğan",
+      "domates",
+      "domates salçası",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "tarçın",
+      "kimyon"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 440,
+    "protein_g": 28,
+    "karbonhidrat_g": 36,
+    "yag_g": 18,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "orta",
+    "aciklama": "Klasik Türk musakkası; patlıcan ve patates tabakalarının arasına kıyma döşenerek az yağla fırınlanır. Beşamel sos yerine domates sosu kullanılarak yağ azaltılmıştır."
+  },
+  {
+    "id": "izmir_kofte",
+    "ad": "İzmir Köfte (Domates Soslu, Fırında)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kıyma",
+      "soğan",
+      "maydanoz",
+      "sarımsak",
+      "patates",
+      "domates",
+      "yeşil biber",
+      "domates salçası",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "kimyon",
+      "kekik"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 430,
+    "protein_g": 29,
+    "karbonhidrat_g": 34,
+    "yag_g": 17,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli",
+      "fırında"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "kolay",
+    "aciklama": "Şekillendirilmiş dana köfteler, patates dilimleri, domates ve biberle birlikte fırında domates sosunda pişirilir. Hem karbonhidrat hem protein içeren tam bir tek tabak yemek."
+  },
+  {
+    "id": "kiymali_patlican_pilav",
+    "ad": "Kıymalı Patlıcan + Pirinç Pilavı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kıyma",
+      "patlıcan",
+      "soğan",
+      "domates",
+      "domates salçası",
+      "zeytinyağı",
+      "pirinç",
+      "tereyağı",
+      "tuz",
+      "karabiber",
+      "pul biber"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 480,
+    "protein_g": 28,
+    "karbonhidrat_g": 48,
+    "yag_g": 19,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "orta",
+    "aciklama": "Kıymalı patlıcan yemeği (100g kıyma + 150g patlıcan) yanında 100g pişmiş pirinç pilavı. Geleneksel Türk sofralarının vazgeçilmez kombinasyonu."
+  },
+  {
+    "id": "kuzu_haslama_sebze",
+    "ad": "Kuzu Haşlama + Sebze Tabağı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kuzu but",
+      "havuç",
+      "patates",
+      "soğan",
+      "sarımsak",
+      "defne yaprağı",
+      "karabiber",
+      "tuz",
+      "maydanoz",
+      "limon"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 395,
+    "protein_g": 30,
+    "karbonhidrat_g": 30,
+    "yag_g": 14,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 90,
+    "zorluk": "orta",
+    "aciklama": "Kuzu but etinin havuç, patates ve soğanla birlikte yavaş haşlanmasıyla hazırlanır. Patates doğal karbonhidrat kaynağı olarak bulunur; hafif ve sindirimi kolay bir et yemeği."
+  },
+  {
+    "id": "sis_kofte_pirinc_pilav",
+    "ad": "Şiş Köfte + Pirinç Pilavı Tabağı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kıyma",
+      "kuzu kıyma",
+      "soğan",
+      "maydanoz",
+      "sarımsak",
+      "kimyon",
+      "pul biber",
+      "pirinç",
+      "tereyağı",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 510,
+    "protein_g": 35,
+    "karbonhidrat_g": 46,
+    "yag_g": 20,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "ızgara",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "Şişe geçirilerek ızgarada pişirilen karışık kıyma köfteler (160g) yanında 110g pişmiş pirinç pilavı. Restoran kalitesinde protein ve karbonhidrat dengesi."
+  },
+  {
+    "id": "et_sote_bulgur",
+    "ad": "Et Sote + Bulgur Pilavı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kuşbaşı",
+      "soğan",
+      "sarımsak",
+      "domates",
+      "yeşil biber",
+      "zeytinyağı",
+      "bulgur",
+      "tereyağı",
+      "tuz",
+      "karabiber",
+      "kekik",
+      "pul biber"
+    ],
+    "porsiyon_gram": 440,
+    "kalori": 460,
+    "protein_g": 32,
+    "karbonhidrat_g": 42,
+    "yag_g": 16,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Dana kuşbaşı etinin soğan, domates ve biberle sotede pişirilmesiyle hazırlanır; yanında 100g pişmiş bulgur pilavıyla servis edilir. Lif açısından zengin, dengeli bir öğün."
+  },
+  {
+    "id": "dana_guvec",
+    "ad": "Dana Güveç",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kuşbaşı",
+      "patates",
+      "havuç",
+      "soğan",
+      "sarımsak",
+      "domates",
+      "domates salçası",
+      "zeytinyağı",
+      "defne yaprağı",
+      "tuz",
+      "karabiber",
+      "kekik",
+      "biberiye"
+    ],
+    "porsiyon_gram": 460,
+    "kalori": 455,
+    "protein_g": 30,
+    "karbonhidrat_g": 38,
+    "yag_g": 17,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli",
+      "fırında"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 75,
+    "zorluk": "kolay",
+    "aciklama": "Dana kuşbaşı, patates ve havuçun güveç kabında yavaşça fırınlanmasıyla hazırlanır. Patates doğal karbonhidrat kaynağını sağlar; etler ise uzun pişirme sayesinde yumuşak ve lezzetli olur."
+  },
+  {
+    "id": "kiymali_kabak_bulgur",
+    "ad": "Kıymalı Kabak Yemeği + Bulgur Pilavı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "dana kıyma",
+      "kabak",
+      "soğan",
+      "domates",
+      "domates salçası",
+      "zeytinyağı",
+      "bulgur",
+      "tereyağı",
+      "tuz",
+      "karabiber",
+      "nane",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 410,
+    "protein_g": 26,
+    "karbonhidrat_g": 40,
+    "yag_g": 15,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "sebzeli",
+      "düşük_yağ",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Kabağın kıymayla birlikte pişirildiği hafif bir Türk yemeği; yanında 90g pişmiş bulgur pilavıyla servis edilir. Lif oranı yüksek, düşük yağlı ve sindirimi kolay dengeli bir öğün."
+  },
+  {
+    "id": "yogurtlu_ispanakli_makarna",
+    "ad": "Yoğurtlu Ispanaklı Makarna",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tam buğday makarna",
+      "ıspanak",
+      "yoğurt",
+      "sarımsak",
+      "zeytinyağı",
+      "kırmızı pul biber",
+      "tuz"
+    ],
+    "porsiyon_gram": 340,
+    "kalori": 365,
+    "protein_g": 16,
+    "karbonhidrat_g": 54,
+    "yag_g": 10,
+    "lif_g": 7,
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "probiyotik",
+      "bitkisel"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Tam buğday makarnayı haşlanmış ıspanak ve sarımsaklı yoğurtla harmanlayan hafif öğle seçeneği. Probiyotik açısından zengin, lif dengesi yüksek."
+  },
+  {
+    "id": "kiymali_firin_makarna",
+    "ad": "Kıymalı Fırın Makarna",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tam buğday makarna",
+      "yağsız dana kıyma",
+      "domates sosu",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "kaşar peyniri",
+      "kekik",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 465,
+    "protein_g": 28,
+    "karbonhidrat_g": 52,
+    "yag_g": 16,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "orta",
+    "aciklama": "Yağsız dana kıyma ve domates soslu, üzeri az kaşarlı fırın makarnanın protein açısından güçlü versiyonu. Aktif bireylere uygun öğle yemeği."
+  },
+  {
+    "id": "tavuklu_pesto_makarna",
+    "ad": "Tavuklu Pesto Makarna (Az Yağlı)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tam buğday makarna",
+      "tavuk göğsü",
+      "fesleğen",
+      "sarımsak",
+      "zeytinyağı",
+      "az yağlı parmesan",
+      "limon suyu",
+      "çam fıstığı"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 400,
+    "protein_g": 27,
+    "karbonhidrat_g": 46,
+    "yag_g": 14,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "dengeli"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "Izgara tavuk göğsü ve az yağlı ev yapımı pesto soslu hafif makarna. Yüksek protein, orta karbonhidrat dengesiyle öğleden sonra enerji sağlar."
+  },
+  {
+    "id": "su_boregi_peynirli_az_yagli",
+    "ad": "Peynirli Su Böreği (Az Yağlı)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "yufka",
+      "beyaz peynir",
+      "lor peyniri",
+      "yumurta",
+      "az yağlı süt",
+      "zeytinyağı",
+      "maydanoz",
+      "tuz"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 395,
+    "protein_g": 20,
+    "karbonhidrat_g": 43,
+    "yag_g": 16,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "geleneksel_türk",
+      "yüksek_protein"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "zor",
+    "aciklama": "Geleneksel su böreği tarifinin az yağlı versiyonu. Lor ve beyaz peynir karışımıyla hazırlanır, yağ miktarı minimumda tutulur."
+  },
+  {
+    "id": "patlicanli_makarna",
+    "ad": "Patlıcanlı Makarna (Fırında)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tam buğday makarna",
+      "patlıcan",
+      "domates",
+      "sarımsak",
+      "soğan",
+      "zeytinyağı",
+      "kekik",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 330,
+    "kalori": 345,
+    "protein_g": 12,
+    "karbonhidrat_g": 58,
+    "yag_g": 9,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "bitkisel",
+      "yüksek_lif",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Fırında közlenmiş patlıcan ve taze domatesten hazırlanan Akdeniz usulü hafif makarna. Tamamen bitkisel, lif açısından zengin."
+  },
+  {
+    "id": "sebzeli_lazanya_az_yagli",
+    "ad": "Sebzeli Lazanya (Az Yağlı)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "lazanya yaprağı",
+      "kabak",
+      "ıspanak",
+      "havuç",
+      "mantar",
+      "az yağlı süt",
+      "un",
+      "zeytinyağı",
+      "az yağlı kaşar peyniri",
+      "domates sosu",
+      "tuz",
+      "muskat"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 430,
+    "protein_g": 18,
+    "karbonhidrat_g": 58,
+    "yag_g": 14,
+    "lif_g": 8,
+    "saglik_etiketler": [
+      "bitkisel",
+      "yüksek_lif",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "zor",
+    "aciklama": "Beşamel sosu az yağlı sütle hazırlanan, dört farklı sebzeli fırın lazanyası. Tatmin edici, lif ve vitamin açısından zengin öğle yemeği."
+  },
+  {
+    "id": "manti_yogurtlu_kucuk_porsiyon",
+    "ad": "Mantı (Yoğurtlu) — Küçük Porsiyon",
+    "kategori": "ogle",
+    "malzemeler": [
+      "un",
+      "yumurta",
+      "yağsız dana kıyma",
+      "soğan",
+      "yoğurt",
+      "sarımsak",
+      "tereyağı",
+      "kırmızı pul biber",
+      "tuz",
+      "karabiber",
+      "nane"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 390,
+    "protein_g": 22,
+    "karbonhidrat_g": 48,
+    "yag_g": 12,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "geleneksel_türk",
+      "yüksek_protein",
+      "probiyotik"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 60,
+    "zorluk": "zor",
+    "aciklama": "Türk mutfağının klasiği mantı, küçük porsiyon ve az yağ kullanılarak hazırlandı. Üzerine sarımsaklı yoğurt ve minimal tereyağlı sos."
+  },
+  {
+    "id": "kabak_peynir_boregi_firinda",
+    "ad": "Kabak + Peynir Böreği (Fırında)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "yufka",
+      "kabak",
+      "beyaz peynir",
+      "yumurta",
+      "zeytinyağı",
+      "dereotu",
+      "tuz"
+    ],
+    "porsiyon_gram": 185,
+    "kalori": 375,
+    "protein_g": 16,
+    "karbonhidrat_g": 41,
+    "yag_g": 17,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "geleneksel_türk",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "Rendelenmiş kabak ve beyaz peynirle hazırlanan fırın böreği. Yağlanma minimumda tutulmuş, dereotu ile lezzetlendirilmiş hafif öğle seçeneği."
+  },
+  {
+    "id": "kiymali_ispanakli_borek_sac",
+    "ad": "Kıymalı Ispanaklı Börek (Sac)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "yufka",
+      "yağsız dana kıyma",
+      "ıspanak",
+      "soğan",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "kırmızı pul biber"
+    ],
+    "porsiyon_gram": 195,
+    "kalori": 415,
+    "protein_g": 24,
+    "karbonhidrat_g": 42,
+    "yag_g": 16,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Sac üzerinde pişirilen kıymalı ıspanaklı börek. Yağsız kıyma ve ıspanak kombinasyonu yüksek protein ve demir sağlar. Geleneksel lezzet, dengeli makrolar."
+  },
+  {
+    "id": "peynirli_makarna_az_yagli_firin",
+    "ad": "Peynirli Makarna (Az Yağlı, Fırında)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tam buğday makarna",
+      "az yağlı kaşar peyniri",
+      "az yağlı süt",
+      "un",
+      "zeytinyağı",
+      "tuz",
+      "muskat",
+      "kekik"
+    ],
+    "porsiyon_gram": 310,
+    "kalori": 385,
+    "protein_g": 18,
+    "karbonhidrat_g": 55,
+    "yag_g": 11,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "dengeli"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Tam buğday makarna ve az yağlı kaşar peyniriyle hazırlanan beşamel soslu fırın makarnanın hafif versiyonu. Çocuk dostu, dengeli makrolu konforlu yemek."
+  },
+  {
+    "id": "kuru_fasulye_etli",
+    "ad": "Etli Kuru Fasulye",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kuru fasulye",
+      "dana but",
+      "domates",
+      "sogan",
+      "biber",
+      "zeytinyagi",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 420,
+    "protein_g": 28,
+    "karbonhidrat_g": 44,
+    "yag_g": 13,
+    "lif_g": 11,
+    "saglik_etiketler": [
+      "yuksek_protein",
+      "yuksek_lif",
+      "geleneksel_turk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 90,
+    "zorluk": "orta",
+    "aciklama": "Kusbasi dana etiyle pisirilmis klasik Turk kuru fasulyesi. 220g pisirmis fasulye + 80g et porsiyonu. Yaninda pirinc pilaviyla servis edilir."
+  },
+  {
+    "id": "piyazli_fasulye_salatasi",
+    "ad": "Piyazli Fasulye Salatasi",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kuru fasulye",
+      "yumurta",
+      "sogan",
+      "maydanoz",
+      "domates",
+      "zeytinyagi",
+      "sirke",
+      "tuz",
+      "karabiber",
+      "sumak"
+    ],
+    "porsiyon_gram": 320,
+    "kalori": 310,
+    "protein_g": 17,
+    "karbonhidrat_g": 36,
+    "yag_g": 11,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "geleneksel_turk",
+      "hafif"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Haslanmis kuru fasulyeyle hazirlanan geleneksel Ege piyazi. 200g pisirmis fasulye, 1 haslanmis yumurta, sumak ve sirke soslu. Serin servis edilir."
+  },
+  {
+    "id": "nohut_ispanak_yemegi",
+    "ad": "Nohutlu Ispanak Yemegi",
+    "kategori": "ogle",
+    "malzemeler": [
+      "nohut",
+      "ispanak",
+      "domates",
+      "sogan",
+      "sarimsak",
+      "zeytinyagi",
+      "kirmizi biber",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 360,
+    "kalori": 340,
+    "protein_g": 16,
+    "karbonhidrat_g": 42,
+    "yag_g": 11,
+    "lif_g": 12,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "demir_zengini",
+      "vejetaryen",
+      "geleneksel_turk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Haslanmis nohutla taze ispanagin domatesli sosta bir araya geldigi besleyici Anadolu yemegi. 200g nohut + 120g ispanak porsiyonu."
+  },
+  {
+    "id": "nohutlu_ezogelin_corbasi",
+    "ad": "Nohutlu Ezogelin Corbasi",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kirmizi mercimek",
+      "nohut",
+      "bulgur",
+      "sogan",
+      "domates salcasi",
+      "nane",
+      "kirmizi biber",
+      "zeytinyagi",
+      "tuz"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 300,
+    "protein_g": 16,
+    "karbonhidrat_g": 48,
+    "yag_g": 7,
+    "lif_g": 10,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "vejetaryen",
+      "geleneksel_turk",
+      "dusuk_yag"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Klasik ezogelin corbasinin tombul nohutlu versiyonu. Kirmizi mercimek + iri nohut + bulgur uclusuyle daha tok tutucu. Nane ve kirmizi biberle tatlandirilir."
+  },
+  {
+    "id": "kirmizi_mercimek_koftesi_islak",
+    "ad": "Islak Kirmizi Mercimek Koftesi",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kirmizi mercimek",
+      "ince bulgur",
+      "sogan",
+      "zeytinyagi",
+      "domates salcasi",
+      "biber salcasi",
+      "kimyon",
+      "kirmizi biber",
+      "maydanoz",
+      "limon",
+      "tuz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 350,
+    "protein_g": 17,
+    "karbonhidrat_g": 52,
+    "yag_g": 9,
+    "lif_g": 11,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "vejetaryen",
+      "yuksek_protein_bitki",
+      "geleneksel_turk"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "Biber salcasi ve domates sosla zenginlestirilmis, klasikten daha yumusak ve nemli dokuda mercimek koftesi. Limon ve maydanozla servis edilir. 6-8 adet porsiyon."
+  },
+  {
+    "id": "yesil_mercimek_corbasi",
+    "ad": "Yesil Mercimek Corbasi",
+    "kategori": "ogle",
+    "malzemeler": [
+      "yesil mercimek",
+      "sogan",
+      "havuc",
+      "kereviz",
+      "sarimsak",
+      "zeytinyagi",
+      "kimyon",
+      "defne yaprak",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 285,
+    "protein_g": 17,
+    "karbonhidrat_g": 42,
+    "yag_g": 6,
+    "lif_g": 11,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "dusuk_kalori",
+      "vejetaryen",
+      "dusuk_yag"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "kolay",
+    "aciklama": "Havuc ve kerevizle pisirilmis hafif yesil mercimek corbasi. Kremasi ya da una gerek kalmadan dogal koyulugunda servis edilir. Kimyon ve zeytinyagiyla tamamlanir. Bol porsiyonlu."
+  },
+  {
+    "id": "barbunya_sebze_guvec",
+    "ad": "Barbunya Sebze Guvec",
+    "kategori": "ogle",
+    "malzemeler": [
+      "barbunya fasulye",
+      "kabak",
+      "patlican",
+      "domates",
+      "sogan",
+      "biber",
+      "sarimsak",
+      "zeytinyagi",
+      "kekik",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 390,
+    "kalori": 345,
+    "protein_g": 16,
+    "karbonhidrat_g": 47,
+    "yag_g": 10,
+    "lif_g": 13,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "vejetaryen",
+      "sebzeli",
+      "geleneksel_turk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "kolay",
+    "aciklama": "Kabak, patlican ve domatesle hazirlanan zeytinyagli barbunya guveci. 200g pisirmis barbunya + mevsim sebzelerinden olusan besleyici ve lifli bir Akdeniz yemegi."
+  },
+  {
+    "id": "fasulye_pilaki_hardallu",
+    "ad": "Fasulye Pilaki (Hardallu Modern)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kuru fasulye",
+      "havuc",
+      "patates",
+      "sogan",
+      "sarimsak",
+      "domates",
+      "zeytinyagi",
+      "djon hardal",
+      "limon",
+      "maydanoz",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 320,
+    "protein_g": 15,
+    "karbonhidrat_g": 46,
+    "yag_g": 9,
+    "lif_g": 10,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "geleneksel_turk",
+      "yuksek_lif",
+      "soguk_servis"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "kolay",
+    "aciklama": "Klasik fasulye pilakinin djon hardal ve limonla modernlestirilmis versiyonu. 210g fasulye, havuc ve patatesle doyurucu. Soguk ya da oda sicakliginda servis edilir."
+  },
+  {
+    "id": "nohut_domates_guvec",
+    "ad": "Nohut Domates Soslu Guvec",
+    "kategori": "ogle",
+    "malzemeler": [
+      "nohut",
+      "domates",
+      "domates salcasi",
+      "sogan",
+      "sarimsak",
+      "biber",
+      "zeytinyagi",
+      "kekik",
+      "kimyon",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 370,
+    "kalori": 370,
+    "protein_g": 17,
+    "karbonhidrat_g": 52,
+    "yag_g": 11,
+    "lif_g": 12,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "vejetaryen",
+      "geleneksel_turk",
+      "yuksek_protein_bitki"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Bol domatesli sos icinde pisirilmis nohut guveci. 220g nohut, baharat ve domates salcasiyla zengin aromali. Firinda ya da tencerede hazirlanabilir, ekmekle servis edilir."
+  },
+  {
+    "id": "mercimek_dolmasi",
+    "ad": "Mercimek ve Pirinc Dolmasi (Yaprak)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "asma yapragi",
+      "yesil mercimek",
+      "pirinc",
+      "sogan",
+      "zeytinyagi",
+      "domates salcasi",
+      "nane",
+      "maydanoz",
+      "limon",
+      "kimyon",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 310,
+    "kalori": 330,
+    "protein_g": 15,
+    "karbonhidrat_g": 50,
+    "yag_g": 8,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "geleneksel_turk",
+      "yuksek_lif",
+      "dusuk_yag"
+    ],
+    "ogun_tipleri": [
+      "ogle"
+    ],
+    "pismesi_dk": 70,
+    "zorluk": "zor",
+    "aciklama": "Asma yapragina sarilan yesil mercimek ve pirinc icli dolma. 8-10 adet porsiyon. Nane ve kimyon aromatik icini yumusatiyor, limonlu servis edilir."
+  },
+  {
+    "id": "etli_kabak_yemegi",
+    "ad": "Etli Kabak Yemeği",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "kabak",
+      "dana kiyma",
+      "domates",
+      "sogan",
+      "zeytinyagi",
+      "tuz",
+      "karabiber",
+      "dereotu"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 310,
+    "protein_g": 22,
+    "karbonhidrat_g": 18,
+    "yag_g": 16,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "geleneksel_turk",
+      "sebzeli",
+      "dusuk_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Dana kiymayla pisirilen geleneksel kabak yemegi. Bol sebzeli, hafif yagli, doyurucu aksam yemegi."
+  },
+  {
+    "id": "kiymali_patlican_firinda",
+    "ad": "Kiymalı Patlıcan Fırında",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "patlican",
+      "dana kiyma",
+      "domates",
+      "sogan",
+      "sarimsak",
+      "zeytinyagi",
+      "biber salcasi",
+      "tuz",
+      "karabiber",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 345,
+    "protein_g": 24,
+    "karbonhidrat_g": 22,
+    "yag_g": 18,
+    "lif_g": 7,
+    "saglik_etiketler": [
+      "geleneksel_turk",
+      "firinda",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "orta",
+    "aciklama": "Firinda kizartilmis patlicanlarin arasina kiymali ic harcin dolduruldugu klasik Turk yemegi. Hafif yaglidir ve lif acisidan zengindir."
+  },
+  {
+    "id": "etli_bamya_yemegi",
+    "ad": "Etli Bamya Yemeği",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "bamya",
+      "dana kusbasi et",
+      "domates",
+      "sogan",
+      "sarimsak",
+      "zeytinyagi",
+      "domates salcasi",
+      "limon suyu",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 360,
+    "kalori": 320,
+    "protein_g": 26,
+    "karbonhidrat_g": 20,
+    "yag_g": 14,
+    "lif_g": 8,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "geleneksel_turk",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "orta",
+    "aciklama": "Dana kusbasi etle pisirilen, lif ve protein acisidan zengin bamya yemegi. Limon suyu ile tatlandirilan hafif eksi tadli bir ana yemek."
+  },
+  {
+    "id": "kiymali_biber_firinda",
+    "ad": "Kiymalı Biber Fırında",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "yesil biber",
+      "dana kiyma",
+      "pirinc",
+      "sogan",
+      "domates",
+      "zeytinyagi",
+      "domates salcasi",
+      "tuz",
+      "karabiber",
+      "nane",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 370,
+    "kalori": 355,
+    "protein_g": 23,
+    "karbonhidrat_g": 32,
+    "yag_g": 15,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "geleneksel_turk",
+      "firinda",
+      "dengeli"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "orta",
+    "aciklama": "Kiyma ve pirinc karisimiyla doldurulup firinda pisirilen geleneksel biber dolmasi. Domates sosuyla servis edilir."
+  },
+  {
+    "id": "etli_enginar",
+    "ad": "Etli Enginar",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "enginar",
+      "dana kusbasi et",
+      "havuc",
+      "sogan",
+      "bezelye",
+      "zeytinyagi",
+      "limon suyu",
+      "tuz",
+      "karabiber",
+      "dereotu"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 295,
+    "protein_g": 22,
+    "karbonhidrat_g": 24,
+    "yag_g": 12,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "yuksek_lif",
+      "geleneksel_turk",
+      "glutensiz",
+      "anti_enflamatuar"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 60,
+    "zorluk": "zor",
+    "aciklama": "Dana etiyle ve taze sebzelerle pisirilen lif deposu enginar yemegi. Dusuk kalori, yuksek besin degeriyle diyete uygun tercih."
+  },
+  {
+    "id": "sebzeli_et_sote",
+    "ad": "Sebzeli Et Sote",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "dana bonfile",
+      "kirmizi biber",
+      "sari biber",
+      "kabak",
+      "patlican",
+      "sogan",
+      "sarimsak",
+      "zeytinyagi",
+      "domates salcasi",
+      "tuz",
+      "karabiber",
+      "kekik"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 390,
+    "protein_g": 31,
+    "karbonhidrat_g": 22,
+    "yag_g": 20,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yuksek_protein",
+      "sebzeli",
+      "glutensiz",
+      "dusuk_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Dana bonfile dilimleri ve renk renk sebzelerin tavada sotesiyle hazirlanan hizli, protein zengini aksam yemegi."
+  },
+  {
+    "id": "patates_oturtma_etli",
+    "ad": "Patates Oturtma (Etli)",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "patates",
+      "dana kiyma",
+      "domates",
+      "kirmizi biber",
+      "sogan",
+      "sarimsak",
+      "zeytinyagi",
+      "domates salcasi",
+      "tuz",
+      "karabiber",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 375,
+    "protein_g": 24,
+    "karbonhidrat_g": 38,
+    "yag_g": 15,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "geleneksel_turk",
+      "firinda",
+      "dengeli"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "kolay",
+    "aciklama": "Firinda dilimlenmis patateslerin uzerine kiyma ve domates sosuyla hazirlanan geleneksel Turk oturtma yemegi."
+  },
+  {
+    "id": "firin_patlican_yogurtlu",
+    "ad": "Fırın Patlıcan + Yoğurt",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "patlican",
+      "sarimsak",
+      "zeytinyagi",
+      "sut yogurdu",
+      "tuz",
+      "kirmizi pul biber",
+      "kuru nane"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 285,
+    "protein_g": 14,
+    "karbonhidrat_g": 22,
+    "yag_g": 16,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "vejeteryan",
+      "geleneksel_turk",
+      "probiyotik",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Firinda közlenip sotulen patlicanlarin sarmisak yogurduyla servis edildigi, hafif ve sindirimi kolay aksam yemegi."
+  },
+  {
+    "id": "yesil_biber_kiymali",
+    "ad": "Yeşil Biber Yemeği (Kiymalı)",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "yesil biber",
+      "dana kiyma",
+      "domates",
+      "sogan",
+      "sarimsak",
+      "zeytinyagi",
+      "domates salcasi",
+      "tuz",
+      "karabiber",
+      "nane"
+    ],
+    "porsiyon_gram": 340,
+    "kalori": 300,
+    "protein_g": 22,
+    "karbonhidrat_g": 20,
+    "yag_g": 15,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "geleneksel_turk",
+      "sebzeli",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Kiymayla hazirlanan geleneksel yesil biber yemegi. Domates sosu ile yumusak kivamda pisirilen, pratik ve lezzetli aksam yemegi."
+  },
+  {
+    "id": "karnabahar_graten_etli",
+    "ad": "Karnabahar Graten (Etli)",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "karnabahar",
+      "dana kiyma",
+      "sogan",
+      "sarimsak",
+      "az yaglu sut",
+      "kasar peyniri",
+      "zeytinyagi",
+      "tuz",
+      "karabiber",
+      "muskat",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 350,
+    "protein_g": 28,
+    "karbonhidrat_g": 20,
+    "yag_g": 18,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yuksek_protein",
+      "firinda",
+      "sebzeli"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "orta",
+    "aciklama": "Haslanan karnabahar ve kiymanin uzerine az yaglu besamel sos ve kasar peyniri dokulup firinda pisirilen protein zengini graten."
   }
 ]

@@ -252,26 +252,40 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
         return gunler[date.today().weekday()]
 
+    # Scaling sınırları — _macro_fit_score ile seçim döngüsü senkronize olmalı
+    _FAKTOR_MIN = 0.7
+    _FAKTOR_MAX = 1.5
+
     def _macro_fit_score(self, recipe: dict,
                          hedef_kal: float, hedef_p: float,
                          hedef_k: float, hedef_y: float) -> float:
         """
         Tarifin bu öğüne düşen makro bütçeyle uyumunu 0–1 arası puanlar.
-        Tarif, hedef kaloriye varsayımsal olarak ölçeklendikten sonra
-        protein/karb/yağ sapması hesaplanır — böylece farklı kalorili
-        tarifler adil şekilde kıyaslanır.
+
+        İki katmanlı değerlendirme:
+        1. Kapasite kontrolü — tarif maksimum ölçeklemeyle (1.5×) öğünün
+           kalori bütçesinin en az %80'ine ulaşabilmeli. Ulaşamazsa skor
+           sıfıra yaklaşır (ayran gibi içeceklerin ana öğün slotunu işgal
+           etmesi önlenir).
+        2. Makro uyumu — hipotetik ölçekleme sonrası P/K/Y sapması.
         """
         r_kal = float(recipe.get('kalori') or 0)
         if r_kal == 0 or hedef_kal == 0:
             return 0.0
 
-        # Tarifi hedef kaloriye ölçekle (hipotetik — sadece karşılaştırma için)
+        # -- Kapasite kontrolü --
+        actual_kal = r_kal * min(self._FAKTOR_MAX, hedef_kal / r_kal)
+        kapsama = actual_kal / hedef_kal  # 0–1+ (1.0 = tam bütçe)
+        if kapsama < 0.80:
+            # Lineer ceza: %79 kapsama → 0.49, %39 kapsama → 0.09
+            return max(0.0, kapsama - 0.30)
+
+        # -- Makro uyumu (hipotetik tam ölçekleme) --
         f = hedef_kal / r_kal
         r_p = float(recipe.get('protein_g') or 0) * f
         r_k = float(recipe.get('karbonhidrat_g') or 0) * f
         r_y = float(recipe.get('yag_g') or 0) * f
 
-        # Normalize hata: sapma / hedef  (0 = mükemmel, >1 = çok kötü)
         p_err = abs(r_p - hedef_p) / max(hedef_p, 1)
         k_err = abs(r_k - hedef_k) / max(hedef_k, 1)
         y_err = abs(r_y - hedef_y) / max(hedef_y, 1)

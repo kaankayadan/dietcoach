@@ -319,8 +319,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         return gunler[date.today().weekday()]
 
     # Scaling sınırları — _macro_fit_score ile seçim döngüsü senkronize olmalı
+    # 1.8× = standart porsiyonun %80 fazlası; DB tarifleri ~250 kcal olduğundan
+    # öğle (480 kcal hedef) gibi büyük slotları doldurmak için gerekli.
     _FAKTOR_MIN = 0.7
-    _FAKTOR_MAX = 1.5
+    _FAKTOR_MAX = 1.8
 
     def _macro_fit_score(self, recipe: dict,
                          hedef_kal: float, hedef_p: float,

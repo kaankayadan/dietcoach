@@ -363,8 +363,16 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         weighted_err = 0.35 * p_err + 0.35 * k_err + 0.30 * y_err
         macro_score = max(0.0, 1.0 - weighted_err)
 
-        # Kapasite × makro uyumu: düşük kapasiteli + kötü makrolu tarifler çok düşük skor alır
-        return macro_score * capacity_factor
+        # Karbonhidrat yeterliliği penaltısı:
+        # Tarif hedef K'nın %25'inden azını sağlıyorsa (örn. Şiş Köfte K:6 vs hedef K:45),
+        # semantik benzerlik ne kadar yüksek olursa olsun ana öğün slotunu alamasın.
+        if hedef_k > 0 and r_k < hedef_k * 0.25:
+            carb_penalty = 0.5
+        else:
+            carb_penalty = 1.0
+
+        # Kapasite × makro uyumu × karbonhidrat yeterliliği
+        return macro_score * capacity_factor * carb_penalty
 
     def _select_model(self, message: str, is_onboarding: bool) -> str:
         """Mesaj karmaşıklığına göre model seç — maliyet optimizasyonu."""
@@ -535,10 +543,12 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                             max_kalori=max_kalori,
                         )
                         if results:
-                            # Bileşik skor: semantik benzerlik (0.5) + makro uyumu (0.5)
+                            # Bileşik skor: semantik benzerlik (0.35) + makro uyumu (0.65)
+                            # Makro uyumu daha ağır tutulur — yüksek semantik benzerlik
+                            # kötü makrolu tariflerin seçilmesini engellemez.
                             chosen = max(results, key=lambda r: (
-                                0.5 * float(r.get('benzerlik', 0)) +
-                                0.5 * self._macro_fit_score(
+                                0.35 * float(r.get('benzerlik', 0)) +
+                                0.65 * self._macro_fit_score(
                                     r, ogun_hedef_kal, ogun_hedef_p, ogun_hedef_k, ogun_hedef_y
                                 )
                             ))

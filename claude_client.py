@@ -449,6 +449,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         # RAG: Tarif araması gerekiyor mu?
         recipe_context = ""
+        plan_response = None  # Plan akışında Python tarafından set edilir → erken dönüş
         is_onboarding = user.get('onboarding_step', 0) > 0 and user.get('onboarding_step', 0) < 99
 
         # Plan isteği: Python her öğün için 1 tarif seçer → Claude sadece formatlar
@@ -550,22 +551,39 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         plan_skeleton = self._format_plan_skeleton(
                             selected_meals, user, meal_factors
                         )
-                        # Mimari değişikliği: Python planı formatlar,
-                        # Claude sadece giriş + pratik notlar ekler.
-                        # user_message override edilir → Claude tarif verisine dokunmaz.
-                        user_message = (
-                            f"Aşağıdaki günlük beslenme planını kullanıcıya Türkçe olarak sun.\n"
-                            f"Yapman gerekenler:\n"
-                            f"1. Planın BAŞINA kısa, samimi bir giriş cümlesi yaz (1 satır).\n"
-                            f"2. Her öğünün ALTINA tek satır kısa hazırlık ipucu ekle.\n"
-                            f"3. Planın SONUNA günlük su miktarı ve 2-3 pratik not yaz.\n"
-                            f"⚠️ KESİNLİKLE YASAK: Tarif adları, malzeme listeleri, "
-                            f"kalori ve makro değerleri değiştirme/ekleme/çıkarma.\n\n"
-                            f"PLAN:\n{plan_skeleton}"
+
+                        # --- İki-parçalı mimari ---
+                        # Parça 1: Python plan verisini oluşturdu (plan_skeleton)
+                        # Parça 2: Claude'a SADECE tarif adları verilir, makro/kalori YOK
+                        #          Claude: giriş cümlesi + her öğün için 1 ipucu + günlük notlar
+                        isim = user.get('isim', 'arkadaş')
+                        ogun_tr = {
+                            'kahvalti': 'Kahvaltı', 'ara_ogun': 'Ara Öğün',
+                            'ogle': 'Öğle', 'aksam': 'Akşam',
+                        }
+                        ogun_listesi = "\n".join(
+                            f"- {ogun_tr.get(t, t)}: {r['ad']}"
+                            for t, r in selected_meals.items()
                         )
+                        personality_prompt = (
+                            f"{isim} için {self._gun_adi()} planı seçildi:\n"
+                            f"{ogun_listesi}\n\n"
+                            f"Yaz (BAŞKA HİÇBİR ŞEY YAZMA — kalori/makro/malzeme listesi YAZMA):\n"
+                            f"1. Kısa samimi giriş cümlesi (1 satır)\n"
+                            f"2. Her öğün için birer satır hazırlık ipucu\n"
+                            f"3. Günlük su + 2-3 madde pratik not"
+                        )
+                        pers_resp = self.client.messages.create(
+                            model=self.model_light,
+                            max_tokens=400,
+                            system=self.system_prompt,
+                            messages=[{"role": "user", "content": personality_prompt}],
+                        ).content[0].text
+
+                        plan_response = plan_skeleton + "\n\n" + pers_resp
                         logger.info(
                             f"Plan RAG: {len(selected_meals)} öğün seçildi "
-                            f"(composite scoring + per-meal scaling)"
+                            f"(Python formatladı, Claude kişiselleştirdi)"
                         )
                 else:
                     # /alternatif, "ne yesem" vb. — Claude listeden önerir
@@ -582,6 +600,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
             except Exception as e:
                 logger.warning(f"Tarif araması başarısız (devam ediliyor): {e}")
+
+        # Plan akışı: Python + kişiselleştirme hazır → ana Claude çağrısını atla
+        if plan_response is not None:
+            return plan_response
 
         # System prompt + kullanıcı context'i + tarif context'i
         full_system = f"{self.system_prompt}\n\n---\n\n{user_context}{recipe_context}"

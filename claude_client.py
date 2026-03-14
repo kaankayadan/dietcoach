@@ -339,12 +339,12 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         if r_kal == 0 or hedef_kal == 0:
             return 0.0
 
-        # -- Kapasite kontrolü --
+        # -- Kapasite faktörü (sürekli, 0–1 arası çarpan) --
+        # Tarif maksimum ölçeklemeyle hedef kalorinin ne kadarına ulaşabiliyor?
         actual_kal = r_kal * min(self._FAKTOR_MAX, hedef_kal / r_kal)
-        kapsama = actual_kal / hedef_kal  # 0–1+ (1.0 = tam bütçe)
-        if kapsama < 0.80:
-            # Lineer ceza: %79 kapsama → 0.49, %39 kapsama → 0.09
-            return max(0.0, kapsama - 0.30)
+        kapsama = actual_kal / hedef_kal  # 1.0 = tam bütçe, <1 = eksik
+        # 0.80 eşiğine kadar tam kredi, altında orantılı düşüş
+        capacity_factor = min(1.0, kapsama / 0.80)
 
         # -- Makro uyumu (hipotetik tam ölçekleme) --
         f = hedef_kal / r_kal
@@ -358,7 +358,11 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         # Protein ve karb daha kritik (P:0.35, K:0.35, Y:0.30)
         weighted_err = 0.35 * p_err + 0.35 * k_err + 0.30 * y_err
-        return max(0.0, 1.0 - weighted_err)
+        macro_score = max(0.0, 1.0 - weighted_err)
+
+        # Kapasite × makro uyumu: düşük kapasiteli TARİF aynı zamanda
+        # kötü makrolarla geliyorsa (K:0 gibi) çok düşük skor alır
+        return macro_score * capacity_factor
 
     def _select_model(self, message: str, is_onboarding: bool) -> str:
         """Mesaj karmaşıklığına göre model seç — maliyet optimizasyonu."""

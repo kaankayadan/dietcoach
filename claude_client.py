@@ -122,6 +122,72 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         return "\n\n".join(ctx_parts)
 
+    def _format_plan_skeleton(self, selected_meals: dict, user: dict,
+                              meal_factors: dict) -> str:
+        """
+        Plan verisini Python'da tam olarak formatlar.
+        Claude bu metne sadece giriş cümlesi ve pratik notlar ekler —
+        tarif adı, malzeme veya makro değerlerine DOKUNMAZ.
+        """
+        ogun_sira = ['kahvalti', 'ara_ogun', 'ogle', 'aksam']
+        ogun_meta = {
+            'kahvalti': ('Kahvaltı',      '08:00'),
+            'ara_ogun': ('Ara Öğün',      '11:00'),
+            'ogle':     ('Öğle Yemeği',   '13:00'),
+            'aksam':    ('Akşam Yemeği',  '19:00'),
+        }
+
+        hedef_kal  = float((user or {}).get('hedef_kalori') or 0)
+        hedef_p    = float((user or {}).get('protein_g') or 0)
+        hedef_k    = float((user or {}).get('karbonhidrat_g') or 0)
+        hedef_y    = float((user or {}).get('yag_g') or 0)
+        hedef_l    = float((user or {}).get('lif_g') or 0)
+
+        gun_kal = gun_p = gun_k = gun_y = gun_l = 0.0
+        sections = []
+
+        for ogun_tipi in ogun_sira:
+            r = selected_meals.get(ogun_tipi)
+            if not r:
+                continue
+            ogun_adi, saat = ogun_meta[ogun_tipi]
+            f = (meal_factors or {}).get(ogun_tipi, 1.0)
+
+            kal = round(float(r.get('kalori') or 0) * f)
+            p   = round(float(r.get('protein_g') or 0) * f, 1)
+            k   = round(float(r.get('karbonhidrat_g') or 0) * f, 1)
+            y   = round(float(r.get('yag_g') or 0) * f, 1)
+            l   = round(float(r.get('lif_g') or 0) * f, 1)
+            por = round(float(r.get('porsiyon_gram') or 0) * f)
+
+            gun_kal += kal; gun_p += p; gun_k += k; gun_y += y; gun_l += l
+
+            malzemeler = ', '.join(r.get('malzemeler') or [])
+            aciklama   = r.get('aciklama') or ''
+
+            sections.append(
+                f"### {ogun_adi} ({saat}) — {r['ad']}\n"
+                f"**Malzemeler:** {malzemeler}\n"
+                f"{aciklama}\n"
+                f"**{kal} kcal** | P: {p}g | K: {k}g | Y: {y}g | L: {l}g"
+            )
+
+        gun_adi = self._gun_adi()
+        header = (
+            f"## PLAN — {gun_adi}, {date.today().strftime('%d %B')}\n"
+            f"**Hedefler:** {hedef_kal:.0f} kcal | "
+            f"P: {hedef_p:.0f}g | Y: {hedef_y:.0f}g | "
+            f"K: {hedef_k:.0f}g | L: {hedef_l:.0f}g"
+        )
+        summary = (
+            f"## GÜNLÜK ÖZET\n"
+            f"**Toplam:** {round(gun_kal)} kcal | "
+            f"P: {round(gun_p, 1)}g | Y: {round(gun_y, 1)}g | "
+            f"K: {round(gun_k, 1)}g | L: {round(gun_l, 1)}g"
+        )
+
+        return "\n\n---\n\n".join([header] + sections + [summary])
+
     def _build_forced_plan_context(self, selected_meals: dict, user: dict = None,
                                     meal_factors: dict = None) -> str:
         """
@@ -481,8 +547,21 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                                 meal_factors[ogun_tipi] = 1.0
 
                     if selected_meals:
-                        recipe_context = "\n\n" + self._build_forced_plan_context(
+                        plan_skeleton = self._format_plan_skeleton(
                             selected_meals, user, meal_factors
+                        )
+                        # Mimari değişikliği: Python planı formatlar,
+                        # Claude sadece giriş + pratik notlar ekler.
+                        # user_message override edilir → Claude tarif verisine dokunmaz.
+                        user_message = (
+                            f"Aşağıdaki günlük beslenme planını kullanıcıya Türkçe olarak sun.\n"
+                            f"Yapman gerekenler:\n"
+                            f"1. Planın BAŞINA kısa, samimi bir giriş cümlesi yaz (1 satır).\n"
+                            f"2. Her öğünün ALTINA tek satır kısa hazırlık ipucu ekle.\n"
+                            f"3. Planın SONUNA günlük su miktarı ve 2-3 pratik not yaz.\n"
+                            f"⚠️ KESİNLİKLE YASAK: Tarif adları, malzeme listeleri, "
+                            f"kalori ve makro değerleri değiştirme/ekleme/çıkarma.\n\n"
+                            f"PLAN:\n{plan_skeleton}"
                         )
                         logger.info(
                             f"Plan RAG: {len(selected_meals)} öğün seçildi "

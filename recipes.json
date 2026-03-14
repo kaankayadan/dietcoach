@@ -6213,5 +6213,653 @@
     "pismesi_dk": 45,
     "zorluk": "kolay",
     "aciklama": "Zerdeçal ve baharatlarla marine edilmiş tavuk göğsü, tatlı patates dilimleriyle fırında pişirilir. Antioksidan açısından zengin, dengeli bir öğün."
+  },
+  {
+    "id": "sebze_corbasi_karisik",
+    "ad": "Karışık Sebze Çorbası",
+    "kategori": "ogle",
+    "malzemeler": [
+      "patates",
+      "havuç",
+      "soğan",
+      "kereviz",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 165,
+    "protein_g": 4,
+    "karbonhidrat_g": 28,
+    "yag_g": 5,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "bitkisel",
+      "düşük_kalori",
+      "yüksek_lif",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "Patates, havuç ve kerevizle hazırlanan hafif Türk sebze çorbası. Düşük kalorili, bol sebzeli ve besleyici."
+  },
+  {
+    "id": "mantar_corbasi",
+    "ad": "Mantar Çorbası",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kültür mantarı",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "un",
+      "süt",
+      "tuz",
+      "karabiber",
+      "kekik",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 330,
+    "kalori": 195,
+    "protein_g": 8,
+    "karbonhidrat_g": 20,
+    "yag_g": 9,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "düşük_kalori",
+      "vejetaryen",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Kültür mantarı, soğan ve sarımsakla hazırlanan kremamsı ama hafif çorba. Umami açısından zengin, doyurucu ve düşük kalorili."
+  },
+  {
+    "id": "balkabagi_corbasi",
+    "ad": "Balkabağı Çorbası",
+    "kategori": "ogle",
+    "malzemeler": [
+      "balkabağı",
+      "soğan",
+      "sarımsak",
+      "havuç",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "zencefil",
+      "kimyon",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 185,
+    "protein_g": 4,
+    "karbonhidrat_g": 30,
+    "yag_g": 6,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "bitkisel",
+      "düşük_kalori",
+      "yüksek_lif",
+      "vegan",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Balkabağı ve havuçla hazırlanan kadifemsi, hafif baharatlı çorba. Beta-karoten açısından zengin, düşük kalorili ve doyurucu."
+  },
+  {
+    "id": "tavuklu_sebze_corbasi",
+    "ad": "Tavuklu Sebze Çorbası",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tavuk göğsü",
+      "havuç",
+      "patates",
+      "soğan",
+      "kereviz",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "defne yaprağı",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 245,
+    "protein_g": 18,
+    "karbonhidrat_g": 22,
+    "yag_g": 8,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "dengeli"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "orta",
+    "aciklama": "Tavuk göğsü ve bol sebzeyle hazırlanan doyurucu, protein açısından zengin çorba. Bağışıklık destekleyici, hafif ve besleyici."
+  },
+  {
+    "id": "patates_corbasi",
+    "ad": "Patates Çorbası",
+    "kategori": "ogle",
+    "malzemeler": [
+      "patates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "süt",
+      "tuz",
+      "karabiber",
+      "kekik",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 215,
+    "protein_g": 6,
+    "karbonhidrat_g": 35,
+    "yag_g": 6,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "düşük_yağ",
+      "ekonomik"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "Patates ve sütle püreleştirilen, sarımsak ve kekikle tatlandırılan kremamsı ama hafif çorba. Doyurucu, ekonomik ve kolay hazırlanan ev çorbası."
+  },
+  {
+    "id": "zeytinyagli_pirasa",
+    "ad": "Zeytinyağlı Pırasa",
+    "kategori": "ogle",
+    "malzemeler": [
+      "pırasa",
+      "havuç",
+      "pirinç",
+      "zeytinyağı",
+      "soğan",
+      "tuz",
+      "karabiber",
+      "limon suyu",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 255,
+    "protein_g": 5,
+    "karbonhidrat_g": 32,
+    "yag_g": 12,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "bitkisel",
+      "vegan",
+      "zeytinyağlı",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Pırasa ve havuçla hazırlanan geleneksel Türk zeytinyağlı yemeği. Az pirinç, bol sebze ve zeytinyağıyla sağlıklı, hafif ve lif açısından zengin."
+  },
+  {
+    "id": "zeytinyagli_kereviz",
+    "ad": "Zeytinyağlı Kereviz",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kereviz",
+      "havuç",
+      "patates",
+      "soğan",
+      "zeytinyağı",
+      "limon suyu",
+      "tuz",
+      "karabiber",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 230,
+    "protein_g": 4,
+    "karbonhidrat_g": 26,
+    "yag_g": 12,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "bitkisel",
+      "vegan",
+      "zeytinyağlı",
+      "glütensiz",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "kolay",
+    "aciklama": "Kereviz kökü, havuç ve patatesle hazırlanan geleneksel Türk zeytinyağlı yemeği. Sindirim dostu, antioksidan açısından zengin ve düşük kalorili."
+  },
+  {
+    "id": "enginar_zeytinyagli",
+    "ad": "Zeytinyağlı Enginar",
+    "kategori": "ogle",
+    "malzemeler": [
+      "enginar",
+      "bezelye",
+      "havuç",
+      "patates",
+      "soğan",
+      "zeytinyağı",
+      "limon suyu",
+      "tuz",
+      "dereotu"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 265,
+    "protein_g": 7,
+    "karbonhidrat_g": 28,
+    "yag_g": 14,
+    "lif_g": 8,
+    "saglik_etiketler": [
+      "bitkisel",
+      "vegan",
+      "yüksek_lif",
+      "zeytinyağlı",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "orta",
+    "aciklama": "Taze enginar, bezelye ve havuçla hazırlanan geleneksel Türk zeytinyağlı yemeği. Yüksek lif içeriğiyle sindirim sağlığını destekler, antioksidan açısından zengindir."
+  },
+  {
+    "id": "semizotu_sarimsakli",
+    "ad": "Sarımsaklı Semizotu Yemeği",
+    "kategori": "ogle",
+    "malzemeler": [
+      "semizotu",
+      "sarımsak",
+      "soğan",
+      "zeytinyağı",
+      "yoğurt",
+      "tuz",
+      "karabiber",
+      "kırmızı pul biber"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 210,
+    "protein_g": 7,
+    "karbonhidrat_g": 14,
+    "yag_g": 14,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "düşük_kalori",
+      "vejetaryen",
+      "yüksek_omega3",
+      "probiyotik"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Taze semizotu, sarımsak ve yoğurtla hazırlanan hafif Türk yemeği. Omega-3 yağ asitleri ve probiyotik açısından zengin, düşük kalorili ve sindirim dostu."
+  },
+  {
+    "id": "kabak_cicegi_dolmasi_zeytinyagli",
+    "ad": "Zeytinyağlı Kabak Çiçeği Dolması",
+    "kategori": "ogle",
+    "malzemeler": [
+      "kabak çiçeği",
+      "pirinç",
+      "soğan",
+      "zeytinyağı",
+      "domates",
+      "maydanoz",
+      "nane",
+      "dereotu",
+      "limon suyu",
+      "tuz",
+      "karabiber",
+      "fıstık"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 285,
+    "protein_g": 6,
+    "karbonhidrat_g": 38,
+    "yag_g": 12,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "bitkisel",
+      "vegan",
+      "zeytinyağlı",
+      "geleneksel_türk",
+      "mevsimlik"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "zor",
+    "aciklama": "Taze kabak çiçeklerine pirinç, soğan, fıstık ve aromatik otlarla hazırlanan iç harç doldurularak zeytinyağında pişirilen geleneksel Türk yemeği. Mevsimlik ve özel."
+  },
+  {
+    "id": "sutlu_muz_smoothie",
+    "ad": "Muzlu Süt Smoothie",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "muz",
+      "süt",
+      "yoğurt",
+      "bal"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 225,
+    "protein_g": 9,
+    "karbonhidrat_g": 38,
+    "yag_g": 4,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "probiyotik",
+      "enerji_veren",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "1 adet muz, 150ml süt ve 80g yoğurtla blenderda hazırlanan hızlı ve besleyici smoothie. Öğünler arası enerji için ideal, protein ve kalsiyum açısından zengin."
+  },
+  {
+    "id": "tam_bugday_kraker_avokado",
+    "ad": "Tam Buğday Kraker + Avokado",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "tam buğday kraker",
+      "avokado",
+      "limon suyu",
+      "tuz",
+      "karabiber",
+      "kırmızı pul biber"
+    ],
+    "porsiyon_gram": 160,
+    "kalori": 215,
+    "protein_g": 5,
+    "karbonhidrat_g": 22,
+    "yag_g": 12,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "sağlıklı_yağ",
+      "vejetaryen",
+      "kalp_dostu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "5 adet tam buğday kraker üzerine yarım avokado püresinin limon ve baharatla yayılmasıyla hazırlanan sağlıklı atıştırmalık. Doyurucu lif ve tekli doymamış yağ içerir."
+  },
+  {
+    "id": "lor_peyniri_meyve",
+    "ad": "Lor Peyniri + Taze Meyve",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "lor peyniri",
+      "çilek",
+      "muz",
+      "bal"
+    ],
+    "porsiyon_gram": 220,
+    "kalori": 175,
+    "protein_g": 12,
+    "karbonhidrat_g": 22,
+    "yag_g": 4,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "kalsiyum_zengin",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 3,
+    "zorluk": "çok_kolay",
+    "aciklama": "100g lor peyniri üzerine dilimlenmiş çilek ve muz ile hazırlanan hafif ve protein açısından zengin atıştırmalık. Kalsiyum ve antioksidan içeriği yüksektir."
+  },
+  {
+    "id": "haslanmis_yumurta_tam_bugday_ekmek",
+    "ad": "Haşlanmış Yumurta + Tam Buğday Ekmek",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "yumurta",
+      "tam buğday ekmek",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 175,
+    "kalori": 235,
+    "protein_g": 14,
+    "karbonhidrat_g": 24,
+    "yag_g": 8,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "dengeli_makro",
+      "tok_tutucu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "2 haşlanmış yumurta ve 1 dilim tam buğday ekmekten oluşan dengeli ara öğün. Uzun süre tokluk sağlayan protein ve kompleks karbonhidrat kombinasyonu."
+  },
+  {
+    "id": "meyve_yogurt_parfait",
+    "ad": "Meyve + Yoğurt Parfait",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "Türk yoğurdu",
+      "çilek",
+      "muz",
+      "yaban mersini",
+      "granola",
+      "bal"
+    ],
+    "porsiyon_gram": 250,
+    "kalori": 210,
+    "protein_g": 9,
+    "karbonhidrat_g": 33,
+    "yag_g": 5,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "probiyotik",
+      "antioksidan",
+      "vejetaryen",
+      "enerji_veren"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun",
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "150g Türk yoğurdu üzerine taze meyveler ve az miktarda granola ile hazırlanan renkli parfait. Probiyotik ve antioksidan açısından zengin, görsel ve lezzetli ara öğün."
+  },
+  {
+    "id": "taze_portakal_suyu",
+    "ad": "Taze Sıkılmış Portakal Suyu",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "portakal"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 130,
+    "protein_g": 2,
+    "karbonhidrat_g": 30,
+    "yag_g": 1,
+    "lif_g": 1,
+    "saglik_etiketler": [
+      "c_vitamini_zengin",
+      "antioksidan",
+      "vegan",
+      "glütensiz",
+      "doğal"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun",
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "3 adet taze portakaldan sıkılan ev yapımı meyve suyu. C vitamini açısından son derece zengin, bağışıklık sistemini destekler. Katkısız ve doğal."
+  },
+  {
+    "id": "cevizli_uzum",
+    "ad": "Ceviz + Üzüm",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "ceviz",
+      "kuru üzüm"
+    ],
+    "porsiyon_gram": 60,
+    "kalori": 180,
+    "protein_g": 4,
+    "karbonhidrat_g": 20,
+    "yag_g": 10,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "omega3",
+      "antioksidan",
+      "vegan",
+      "glütensiz",
+      "enerji_veren"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 1,
+    "zorluk": "çok_kolay",
+    "aciklama": "30g ceviz ve 30g kuru üzümden oluşan klasik Türk atıştırmalığı. Omega-3 yağ asitleri ve doğal şekerlerle hızlı enerji sağlar. Pratik ve taşınabilir."
+  },
+  {
+    "id": "suzme_peynir_salatalik",
+    "ad": "Süzme Peynir + Salatalık",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "süzme peynir",
+      "salatalık",
+      "taze nane",
+      "zeytinyağı",
+      "tuz"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 145,
+    "protein_g": 14,
+    "karbonhidrat_g": 6,
+    "yag_g": 7,
+    "lif_g": 1,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "probiyotik",
+      "düşük_kalori"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 3,
+    "zorluk": "çok_kolay",
+    "aciklama": "100g süzme peynir ve dilimlenmiş salatalık ile hazırlanan hafif ve protein açısından zengin atıştırmalık. Düşük karbonhidrat arayanlar ve diyabet hastaları için uygundur."
+  },
+  {
+    "id": "protein_tozu_sut_shake",
+    "ad": "Protein Tozu + Süt Shake",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "whey protein tozu",
+      "süt",
+      "muz",
+      "kakao tozu"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 265,
+    "protein_g": 28,
+    "karbonhidrat_g": 27,
+    "yag_g": 5,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "kas_gelistirici",
+      "spor_sonrasi",
+      "enerji_veren"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 3,
+    "zorluk": "çok_kolay",
+    "aciklama": "1 ölçek whey protein, 250ml süt, yarım muz ve kakao tozu ile hazırlanan spor sonrası shake. Kas onarımı ve toparlanma için ideal yüksek protein içerikli atıştırmalık."
+  },
+  {
+    "id": "taze_misir_haslanmis",
+    "ad": "Haşlanmış Taze Mısır",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "taze mısır",
+      "tuz",
+      "tereyağı"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 175,
+    "protein_g": 5,
+    "karbonhidrat_g": 32,
+    "yag_g": 4,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "glütensiz",
+      "vejetaryen",
+      "doğal",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "1 adet haşlanmış taze mısır, az tuz ve tereyağıyla lezzetlendirilmiş geleneksel Türk sokak atıştırmalığı. Lif açısından zengin, uzun süre tokluk sağlar."
   }
 ]

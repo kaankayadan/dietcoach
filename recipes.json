@@ -5193,5 +5193,1025 @@
     "pismesi_dk": 45,
     "zorluk": "orta",
     "aciklama": "Haslanan karnabahar ve kiymanin uzerine az yaglu besamel sos ve kasar peyniri dokulup firinda pisirilen protein zengini graten."
+  },
+  {
+    "id": "cipura_firin_sebze",
+    "ad": "Fırın Çipura + Sebze",
+    "kategori": "aksam",
+    "malzemeler": [
+      "çipura",
+      "domates",
+      "soğan",
+      "kırmızı biber",
+      "zeytinyağı",
+      "limon",
+      "kekik",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 390,
+    "kalori": 330,
+    "protein_g": 38,
+    "karbonhidrat_g": 11,
+    "yag_g": 14,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "glütensiz",
+      "omega3",
+      "yüksek_protein",
+      "akdeniz_mutfagi"
+    ],
+    "ogun_tipleri": [
+      "aksam",
+      "ogle"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "200g çipura filetosu, domates, biber ve soğanla fırında pişirilir. Zeytinyağı ve kekikle aromalanan bu hafif akşam yemeği omega-3 açısından zengindir."
+  },
+  {
+    "id": "ton_balikli_bulgur_tabagi",
+    "ad": "Ton Balıklı Bulgur Tabağı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "ton balığı (konserve, su içinde)",
+      "bulgur",
+      "domates",
+      "salatalık",
+      "maydanoz",
+      "limon suyu",
+      "zeytinyağı",
+      "kırmızı soğan"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 385,
+    "protein_g": 34,
+    "karbonhidrat_g": 38,
+    "yag_g": 10,
+    "lif_g": 7,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "dengeli_makro",
+      "omega3"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "120g ton balığı (su içinde) ve 80g haşlanmış bulgur üzerine taze sebzeler ve limonlu zeytinyağı sosuyla hazırlanan doyurucu tabak. Dengeli makro profiliyle ideal öğle yemeği."
+  },
+  {
+    "id": "karides_guvec",
+    "ad": "Karides Güveç",
+    "kategori": "aksam",
+    "malzemeler": [
+      "karides",
+      "domates",
+      "soğan",
+      "sarımsak",
+      "kırmızı biber",
+      "yeşil biber",
+      "zeytinyağı",
+      "maydanoz",
+      "kekik",
+      "pul biber"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 310,
+    "protein_g": 35,
+    "karbonhidrat_g": 14,
+    "yag_g": 12,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "glütensiz",
+      "yüksek_protein",
+      "düşük_kalori",
+      "deniz_ürünleri"
+    ],
+    "ogun_tipleri": [
+      "aksam",
+      "ogle"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "200g karides, domates-biber sosunda güveçte pişirilir. Sarımsak ve baharat aromalı bu Karadeniz usulü yemek, yüksek protein ve düşük kalorisiyle öne çıkar."
+  },
+  {
+    "id": "levrek_sebze_sote",
+    "ad": "Levrek Sebze Sote",
+    "kategori": "aksam",
+    "malzemeler": [
+      "levrek fileto",
+      "kabak",
+      "domates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "limon",
+      "dereotu",
+      "karabiber"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 340,
+    "protein_g": 40,
+    "karbonhidrat_g": 12,
+    "yag_g": 13,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "glütensiz",
+      "omega3",
+      "yüksek_protein",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "aksam",
+      "ogle"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "200g levrek fileto, kabak ve domates ile tavada sote edilir. Dereotu ve limonla tamamlanan bu hafif yemek, omega-3 bakımından zengin ve düşük karbonhidratlıdır."
+  },
+  {
+    "id": "hamsi_bugulama_pirinc",
+    "ad": "Hamsi Buğulama + Pirinç Pilavı",
+    "kategori": "aksam",
+    "malzemeler": [
+      "hamsi",
+      "pirinç",
+      "soğan",
+      "limon",
+      "maydanoz",
+      "zeytinyağı",
+      "defne yaprağı",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 480,
+    "kalori": 440,
+    "protein_g": 36,
+    "karbonhidrat_g": 38,
+    "yag_g": 14,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_protein",
+      "geleneksel_türk",
+      "karadeniz_mutfagi"
+    ],
+    "ogun_tipleri": [
+      "aksam",
+      "ogle"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "180g hamsi, buğulama yöntemiyle buharda pişirilir ve yanında 80g pirinç pilavı ile servis edilir. Karadeniz mutfağının klasiği, omega-3 ve protein açısından son derece zengin."
+  },
+  {
+    "id": "sardalya_firinda",
+    "ad": "Fırın Sardalya",
+    "kategori": "ogle",
+    "malzemeler": [
+      "sardalya (taze)",
+      "limon",
+      "zeytinyağı",
+      "sarımsak",
+      "kekik",
+      "maydanoz",
+      "domates",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 320,
+    "kalori": 315,
+    "protein_g": 32,
+    "karbonhidrat_g": 6,
+    "yag_g": 18,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "glütensiz",
+      "omega3",
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "kemik_sagligi"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "180g taze sardalya, sarımsak ve zeytinyağıyla fırında kızartılır. Kemik sağlığı için kalsiyum, kalp sağlığı için omega-3 kaynağı olan ekonomik ve besin değeri yüksek bir yemek."
+  },
+  {
+    "id": "balik_corbasi",
+    "ad": "Balık Çorbası",
+    "kategori": "ogle",
+    "malzemeler": [
+      "beyaz balık fileto (levrek veya çipura)",
+      "havuç",
+      "soğan",
+      "kereviz",
+      "patates",
+      "zeytinyağı",
+      "limon",
+      "maydanoz",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 225,
+    "protein_g": 28,
+    "karbonhidrat_g": 18,
+    "yag_g": 6,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "glütensiz",
+      "düşük_kalori",
+      "düşük_yag",
+      "sindirimi_kolay",
+      "omega3"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "orta",
+    "aciklama": "120g beyaz balık fileto, havuç, patates ve kerevizle pişirilir. Hafif ve sindirimi kolay bu çorba, 380g büyük porsiyonda yalnızca 225 kcal ile diyet dostu bir seçenektir."
+  },
+  {
+    "id": "midye_dolmasi",
+    "ad": "Midye Dolması (Büyük Porsiyon)",
+    "kategori": "ogle",
+    "malzemeler": [
+      "midye",
+      "pirinç",
+      "soğan",
+      "zeytinyağı",
+      "dolmalık fıstık",
+      "kuş üzümü",
+      "baharat (karanfil, tarçın, yenibahar)",
+      "maydanoz",
+      "limon"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 350,
+    "protein_g": 22,
+    "karbonhidrat_g": 40,
+    "yag_g": 11,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "omega3",
+      "geleneksel_türk",
+      "deniz_ürünleri",
+      "çinko_kaynagi"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "zor",
+    "aciklama": "12 adet büyük midye, baharatlı pirinç harcıyla doldurulur. İçli pilav gibi hazırlanan bu geleneksel İstanbul lezzeti, midyenin mineral zenginliğiyle besleyici bir öğün sunar."
+  },
+  {
+    "id": "kalkan_firinda",
+    "ad": "Fırın Kalkan Balığı",
+    "kategori": "aksam",
+    "malzemeler": [
+      "kalkan balığı",
+      "zeytinyağı",
+      "limon",
+      "sarımsak",
+      "kekik",
+      "biberiye",
+      "domates",
+      "soğan",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 345,
+    "protein_g": 42,
+    "karbonhidrat_g": 8,
+    "yag_g": 15,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "glütensiz",
+      "omega3",
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "premium_balik"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "orta",
+    "aciklama": "200g kalkan balığı, zeytinyağı, sarımsak ve aromatik baharatlarla fırında pişirilir. Karadeniz'in değerli balığı olan kalkan, yüksek protein içeriği ve et kalitesiyle öne çıkar."
+  },
+  {
+    "id": "uskumru_firin_sebze",
+    "ad": "Fırın Uskumru + Sebze",
+    "kategori": "aksam",
+    "malzemeler": [
+      "uskumru",
+      "domates",
+      "kırmızı soğan",
+      "kırmızı biber",
+      "zeytinyağı",
+      "limon",
+      "kekik",
+      "maydanoz",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 370,
+    "protein_g": 36,
+    "karbonhidrat_g": 13,
+    "yag_g": 20,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "glütensiz",
+      "omega3",
+      "yüksek_protein",
+      "kalp_sagligi",
+      "D_vitamini"
+    ],
+    "ogun_tipleri": [
+      "aksam",
+      "ogle"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "190g uskumru, domates ve biberlerle fırın tepsisinde pişirilir. Yağlı balıkların en zengin omega-3 kaynaklarından olan uskumru, D vitamini ve kalp sağlığı için ideal bir akşam yemeği."
+  },
+  {
+    "id": "sucuklu_yumurta_tava",
+    "ad": "Sucuklu Yumurta (2 Yumurta + Ekmek)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "sucuk",
+      "domates",
+      "yeşil biber",
+      "zeytinyağı",
+      "tam buğday ekmek",
+      "tuz"
+    ],
+    "porsiyon_gram": 290,
+    "kalori": 430,
+    "protein_g": 24,
+    "karbonhidrat_g": 28,
+    "yag_g": 28,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "50g dilimlenmiş sucukla birlikte tavada pişirilen 2 yumurta ve yanında 1 dilim tam buğday ekmek. Geleneksel Türk kahvaltısının vazgeçilmezi, protein açısından zengin doyurucu bir seçenek."
+  },
+  {
+    "id": "pastirma_yumurta_tava",
+    "ad": "Pastırmalı Yumurta (2 Yumurta + Ekmek)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "pastırma",
+      "domates",
+      "zeytinyağı",
+      "tam buğday ekmek",
+      "tuz"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 395,
+    "protein_g": 25,
+    "karbonhidrat_g": 24,
+    "yag_g": 24,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "45g dilimlenmiş pastırmayla birlikte tavada pişirilen 2 yumurta ve yanında 1 dilim tam buğday ekmek. Baharatlı aromasıyla öne çıkan, protein açısından zengin geleneksel Türk kahvaltısı."
+  },
+  {
+    "id": "peynirli_borek_ev",
+    "ad": "Peynirli Börek (1 Dilim, Ev Yapımı)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yufka",
+      "beyaz peynir",
+      "yumurta",
+      "süt",
+      "maydanoz",
+      "zeytinyağı",
+      "susam"
+    ],
+    "porsiyon_gram": 180,
+    "kalori": 370,
+    "protein_g": 16,
+    "karbonhidrat_g": 38,
+    "yag_g": 17,
+    "lif_g": 2,
+    "saglik_etiketler": [
+      "geleneksel_türk",
+      "fırında"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "orta",
+    "aciklama": "Yufka arası beyaz peynir ve maydanoz harcıyla hazırlanan fırında pişirilmiş ev yapımı börek. 1 dilim porsiyon."
+  },
+  {
+    "id": "az_yagili_peynirli_pogaca",
+    "ad": "Az Yağlı Peynirli Poğaça (1 Adet)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday un",
+      "beyaz peynir",
+      "yumurta",
+      "yoğurt",
+      "zeytinyağı",
+      "kuru maya",
+      "tuz",
+      "çörek otu"
+    ],
+    "porsiyon_gram": 120,
+    "kalori": 320,
+    "protein_g": 13,
+    "karbonhidrat_g": 40,
+    "yag_g": 11,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "geleneksel_türk",
+      "fırında",
+      "tam_tahıl"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "Tam buğday un ve az zeytinyağıyla yapılan, içine beyaz peynir konulan fırın poğaçası. Klasiğin daha sağlıklı versiyonu."
+  },
+  {
+    "id": "simit_kasar_domates_kahvaltisi",
+    "ad": "Simit + Kaşar + Domates Kahvaltısı",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "simit",
+      "kaşar peyniri",
+      "domates",
+      "salatalık",
+      "zeytin",
+      "çay"
+    ],
+    "porsiyon_gram": 320,
+    "kalori": 420,
+    "protein_g": 17,
+    "karbonhidrat_g": 55,
+    "yag_g": 14,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "geleneksel_türk",
+      "sokak_lezzeti"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "1 adet simit, 40g kaşar peyniri, dilimlenmiş domates, salatalık ve zeytin. İstanbul sokaklarından esinlenen klasik Türk kahvaltısı."
+  },
+  {
+    "id": "tam_bugday_fistik_ezmesi_muz",
+    "ad": "Tam Buğday Ekmek + Fıstık Ezmesi + Muz",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday ekmek",
+      "fıstık ezmesi",
+      "muz",
+      "bal"
+    ],
+    "porsiyon_gram": 220,
+    "kalori": 430,
+    "protein_g": 14,
+    "karbonhidrat_g": 58,
+    "yag_g": 16,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "tam_tahıl",
+      "sağlıklı_yağ",
+      "enerji_verici",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "2 dilim tam buğday ekmeğe sürülen 2 yemek kaşığı fıstık ezmesi ve üzerine dilimlenmiş yarım muz. Spor öncesi için ideal enerji kaynağı."
+  },
+  {
+    "id": "yumurta_beyazli_omlet",
+    "ad": "Yumurta Beyazlı Omlet + Tam Buğday Ekmek",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta beyazı",
+      "yumurta",
+      "ıspanak",
+      "domates",
+      "mantar",
+      "zeytinyağı",
+      "tam buğday ekmek",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 320,
+    "kalori": 335,
+    "protein_g": 25,
+    "karbonhidrat_g": 25,
+    "yag_g": 15,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_kalori",
+      "düşük_karbonhidrat",
+      "diyet_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "4 yumurta beyazı + 1 tam yumurta ile hazırlanan ıspanak, domates ve mantarlı yüksek protein omlet, yanında 1 dilim tam buğday ekmek."
+  },
+  {
+    "id": "kasarli_tost_domates_corbasi",
+    "ad": "Kaşarlı Tost + Domates Çorbası",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday ekmek",
+      "kaşar peyniri",
+      "domates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "tuz",
+      "kekik"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 395,
+    "protein_g": 18,
+    "karbonhidrat_g": 48,
+    "yag_g": 15,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "tam_tahıl",
+      "geleneksel_türk",
+      "ısıtıcı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "2 dilim tam buğday ekmek arası kaşar peyniriyle yapılan tost ve 1 kase ev yapımı domates çorbası. Kış sabahları için doyurucu kombinasyon."
+  },
+  {
+    "id": "tam_tahilli_musli_sutlu",
+    "ad": "Tam Tahıllı Müsli + Süt",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam tahıllı müsli",
+      "süt",
+      "badem",
+      "kuru üzüm",
+      "bal",
+      "tarçın"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 365,
+    "protein_g": 13,
+    "karbonhidrat_g": 58,
+    "yag_g": 10,
+    "lif_g": 7,
+    "saglik_etiketler": [
+      "tam_tahıl",
+      "lif_açısından_zengin",
+      "kemik_sağlığı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "60g tam tahıllı müsli, 150ml süt, 10g badem, kuru üzüm ve az bal. Lif ve kompleks karbonhidrat açısından zengin, hazırlaması pratik kahvaltı."
+  },
+  {
+    "id": "keci_peyniri_ceviz_bal_tabagi",
+    "ad": "Keçi Peyniri + Ceviz + Bal Tabağı",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "keçi peyniri",
+      "ceviz",
+      "bal",
+      "dilimlenmiş elma",
+      "tam buğday kraker"
+    ],
+    "porsiyon_gram": 190,
+    "kalori": 330,
+    "protein_g": 12,
+    "karbonhidrat_g": 28,
+    "yag_g": 20,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "sağlıklı_yağ",
+      "probiyotik",
+      "omega_3",
+      "antioksidan"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "60g keçi peyniri, 15g ceviz, 1 tatlı kaşığı bal, dilimlenmiş elma ve 3 adet tam buğday kraker. Probiyotik ve sağlıklı yağ açısından zengin özel kahvaltı tabağı."
+  },
+  {
+    "id": "firin_tavuk_patates",
+    "ad": "Fırın Tavuk + Patates",
+    "kategori": "aksam",
+    "malzemeler": [
+      "tavuk but",
+      "patates",
+      "zeytinyağı",
+      "sarımsak",
+      "kekik",
+      "pul biber",
+      "tuz",
+      "karabiber",
+      "limon"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 450,
+    "protein_g": 36,
+    "karbonhidrat_g": 38,
+    "yag_g": 16,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "kolay",
+    "aciklama": "Fırında pişirilmiş tavuk but ve patates dilimleri. Zeytinyağı, sarımsak ve kekikle lezzetlendirilmiş, doyurucu ve dengeli bir öğle/akşam yemeği."
+  },
+  {
+    "id": "tavuk_mercimek_guvec",
+    "ad": "Tavuk + Kırmızı Mercimek Güveç",
+    "kategori": "aksam",
+    "malzemeler": [
+      "tavuk göğsü",
+      "kırmızı mercimek",
+      "domates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "kimyon",
+      "pul biber",
+      "tuz",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 420,
+    "protein_g": 40,
+    "karbonhidrat_g": 36,
+    "yag_g": 11,
+    "lif_g": 8,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "dengeli_makro",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "orta",
+    "aciklama": "Tavuk göğsü ve kırmızı mercimekle hazırlanan geleneksel Türk güveci. Protein ve lif açısından zengin, tok tutan dengeli bir öğün."
+  },
+  {
+    "id": "tavuk_sis_bulgur",
+    "ad": "Tavuk Şiş + Bulgur Pilavı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tavuk göğsü",
+      "bulgur",
+      "yeşil biber",
+      "domates",
+      "soğan",
+      "zeytinyağı",
+      "yoğurt",
+      "kimyon",
+      "pul biber",
+      "kekik",
+      "tuz"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 440,
+    "protein_g": 38,
+    "karbonhidrat_g": 42,
+    "yag_g": 12,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "Marine edilmiş tavuk şiş ızgarada pişirilir, yanında şehriyeli bulgur pilavı ile servis edilir. Protein ve kompleks karbonhidrat dengesi mükemmel."
+  },
+  {
+    "id": "tavuklu_zeytinyagli_pilav",
+    "ad": "Tavuklu Zeytinyağlı Pirinç Pilavı",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tavuk göğsü",
+      "pirinç",
+      "zeytinyağı",
+      "soğan",
+      "sarımsak",
+      "havuç",
+      "bezelye",
+      "tuz",
+      "karabiber",
+      "defne yaprağı"
+    ],
+    "porsiyon_gram": 390,
+    "kalori": 420,
+    "protein_g": 32,
+    "karbonhidrat_g": 48,
+    "yag_g": 13,
+    "lif_g": 3,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Küp küp doğranmış tavuk göğsü ile pişirilen zeytinyağlı pirinç pilavı. Havuç ve bezelyeli hafif bir Türk klasiği."
+  },
+  {
+    "id": "tavuk_haslama_sebze_corbasi",
+    "ad": "Tavuk Haşlama + Sebze Çorbası",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tavuk göğsü",
+      "havuç",
+      "kereviz",
+      "patates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "maydanoz",
+      "tuz",
+      "karabiber",
+      "defne yaprağı"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 340,
+    "protein_g": 34,
+    "karbonhidrat_g": 28,
+    "yag_g": 10,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "diyet_dostu",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "kolay",
+    "aciklama": "Suda haşlanmış tavuk göğsü ile bol sebzeli çorba. Düşük kalorili, protein açısından zengin ve sindirim dostu hafif bir öğün."
+  },
+  {
+    "id": "tavuklu_biber_dolmasi",
+    "ad": "Tavuklu Biber Dolması",
+    "kategori": "aksam",
+    "malzemeler": [
+      "tavuk kıyma",
+      "dolmalık biber",
+      "pirinç",
+      "soğan",
+      "domates",
+      "zeytinyağı",
+      "maydanoz",
+      "nane",
+      "pul biber",
+      "tuz",
+      "yoğurt"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 350,
+    "protein_g": 30,
+    "karbonhidrat_g": 35,
+    "yag_g": 10,
+    "lif_g": 4,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "geleneksel_türk",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 60,
+    "zorluk": "orta",
+    "aciklama": "Tavuk kıyma ve pirinçle hazırlanan dolmalık biberler. Geleneksel Türk dolma tarifi, yanında yoğurt ile servis edilir."
+  },
+  {
+    "id": "firin_tavuk_kanat_sebze",
+    "ad": "Fırın Tavuk Kanat + Renkli Sebze",
+    "kategori": "aksam",
+    "malzemeler": [
+      "tavuk kanat",
+      "kabak",
+      "patlıcan",
+      "dolmalık biber",
+      "patates",
+      "zeytinyağı",
+      "sarımsak",
+      "kekik",
+      "pul biber",
+      "tuz"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 400,
+    "protein_g": 32,
+    "karbonhidrat_g": 30,
+    "yag_g": 18,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "sebzeli",
+      "fırında_pişmiş",
+      "geleneksel_türk"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "kolay",
+    "aciklama": "Yağda kızartılmadan fırında pişirilen tavuk kanatları, renkli sebzelerle birlikte. Daha az yağlı, bol sebzeli sağlıklı bir fırın yemeği."
+  },
+  {
+    "id": "tavuk_nohut_domates_guvec",
+    "ad": "Tavuk + Nohut + Domates Güveç",
+    "kategori": "aksam",
+    "malzemeler": [
+      "tavuk but",
+      "haşlanmış nohut",
+      "domates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "kimyon",
+      "pul biber",
+      "kekik",
+      "tuz",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 430,
+    "protein_g": 38,
+    "karbonhidrat_g": 40,
+    "yag_g": 13,
+    "lif_g": 9,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "geleneksel_türk",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 55,
+    "zorluk": "orta",
+    "aciklama": "Tavuk but, nohut ve domatesle pişirilen zengin güveç. Nohut hem protein hem de lif katkısı sağlar, uzun süre tok tutar."
+  },
+  {
+    "id": "tavuklu_mantarli_sote_bulgur",
+    "ad": "Tavuklu Mantarlı Sote + Bulgur",
+    "kategori": "ogle",
+    "malzemeler": [
+      "tavuk göğsü",
+      "mantar",
+      "bulgur",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "soya sosu",
+      "kekik",
+      "maydanoz",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 390,
+    "kalori": 400,
+    "protein_g": 36,
+    "karbonhidrat_g": 38,
+    "yag_g": 12,
+    "lif_g": 6,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "Tavuk göğsü ve mantar sotesi yanında bulgur pilavı. Mantar umami lezzetini artırırken bulgur kompleks karbonhidrat sağlar."
+  },
+  {
+    "id": "baharatli_firin_tavuk_tatli_patates",
+    "ad": "Baharatlı Fırın Tavuk + Tatlı Patates",
+    "kategori": "aksam",
+    "malzemeler": [
+      "tavuk göğsü",
+      "tatlı patates",
+      "zeytinyağı",
+      "sarımsak",
+      "kimyon",
+      "pul biber",
+      "zerdeçal",
+      "kekik",
+      "tuz",
+      "limon"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 430,
+    "protein_g": 38,
+    "karbonhidrat_g": 43,
+    "yag_g": 12,
+    "lif_g": 5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "antioksidan",
+      "dengeli_makro",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "kolay",
+    "aciklama": "Zerdeçal ve baharatlarla marine edilmiş tavuk göğsü, tatlı patates dilimleriyle fırında pişirilir. Antioksidan açısından zengin, dengeli bir öğün."
   }
 ]

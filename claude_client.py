@@ -125,7 +125,8 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
     def _format_plan_skeleton(self, selected_meals: dict, user: dict,
                               meal_factors: dict,
                               tamamlayicilar: dict = None,
-                              plan_date=None) -> str:
+                              plan_date=None,
+                              is_alternatif: bool = False) -> str:
         """
         Plan verisini Python'da tam olarak formatlar.
         Claude bu metne sadece giriş cümlesi ve pratik notlar ekler —
@@ -200,8 +201,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         hedef_tarih = plan_date or date.today()
         gun_adi = self._gun_adi(hedef_tarih)
+        plan_baslik = "ALTERNATİF PLAN" if is_alternatif else "PLAN"
         header = (
-            f"## PLAN — {gun_adi}, {hedef_tarih.strftime('%d %B')}\n"
+            f"## {plan_baslik} — {gun_adi}, {hedef_tarih.strftime('%d %B')}\n"
             f"**Hedefler:** {hedef_kal:.0f} kcal | "
             f"P: {hedef_p:.0f}g | Y: {hedef_y:.0f}g | "
             f"K: {hedef_k:.0f}g | L: {hedef_l:.0f}g"
@@ -536,22 +538,23 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         return any(t in msg_lower for t in triggers)
 
     # Haftanın gününe göre dönen kategori vurgusu (0=Pzt … 6=Paz)
+    # Çeşitlilik için Türk + uluslararası mutfak rotasyonu
     _GUNLUK_ROTASYON = [
-        "tavuk balık yüksek protein et",          # Pazartesi
-        "baklagil mercimek nohut sebze",           # Salı
-        "yumurta peynir süt ürünleri kahvaltılık", # Çarşamba
-        "kırmızı et köfte ızgara protein",         # Perşembe
-        "deniz ürünleri balık omega hafif",        # Cuma
-        "tahıl pilav bulgur tam buğday lif",       # Cumartesi
-        "zeytinyağlı sebze çorba geleneksel Türk", # Pazar
+        "yüksek protein tavuk balık ızgara",                   # Pazartesi
+        "baklagil mercimek nohut sebze Akdeniz",               # Salı
+        "yumurta peynir smoothie bowl avokado kahvaltı",       # Çarşamba
+        "kırmızı et köfte Asya teriyaki stir-fry protein",    # Perşembe
+        "deniz ürünleri balık sushi poke omega hafif",         # Cuma
+        "tahıl bulgur quinoa Buddha bowl grain tam buğday",    # Cumartesi
+        "zeytinyağlı sebze çorba geleneksel hafif",            # Pazar
     ]
 
-    # Öğün tipine göre spesifik arama terimleri
+    # Öğün tipine göre spesifik arama terimleri — Türk + uluslararası
     _OGUN_QUERY_EK = {
-        'kahvalti': "Türk kahvaltısı sabah peynir yumurta",
-        'ara_ogun': "hafif ara öğün atıştırmalık porsiyon küçük",
-        'ogle':     "öğle yemeği doyurucu ana yemek protein",
-        'aksam':    "akşam yemeği hafif sindirimi kolay protein",
+        'kahvalti': "kahvaltı sabah yumurta peynir smoothie bowl overnight oats",
+        'ara_ogun': "ara öğün snack protein bar energy ball hafif atıştırmalık",
+        'ogle':     "öğle yemeği lunch Buddha bowl wrap ana yemek protein",
+        'aksam':    "akşam yemeği dinner hafif protein sindirimi kolay",
     }
 
     def _build_recipe_query(self, message: str, user: dict,
@@ -626,13 +629,24 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         is_onboarding = user.get('onboarding_step', 0) > 0 and user.get('onboarding_step', 0) < 99
 
         # Plan isteği: Python her öğün için 1 tarif seçer → Claude sadece formatlar
-        # Alternatif/öneri: Claude listeden seçer
+        # Alternatif tam plan isteği: bugünkü tarifleri exclude ederek yeni plan oluştur
         plan_triggers = [
             '/plan', 'plan oluştur', 'plan yap', 'haftalık plan', 'diyet listesi',
             'günlük plan', 'beslenme planı', 'plan hazırla', 'plan istiyorum',
             'plan ver', 'yeni plan', 'farklı plan', 'başka plan',
+            'plan oluşturur musun', 'plan yapabilir misin', 'plan alabilir miyim',
+            'beslenme listesi', 'öğün planı', 'diyet planı', 'menü oluştur',
+        ]
+        # Alternatif TAM plan: mevcut planı exclude ederek yeni gün planı üret
+        alternatif_plan_triggers = [
+            '/alternatif plan', 'alternatif plan', 'farklı bir plan', 'başka bir plan',
+            'yeni bir plan', 'plan alternatif', 'alternatif menü', 'farklı menü',
         ]
         is_plan_request = any(t in user_message.lower() for t in plan_triggers)
+        is_alternatif_plan = (
+            not is_plan_request and
+            any(t in user_message.lower() for t in alternatif_plan_triggers)
+        )
 
         if db and self._needs_recipe_search(user_message, is_onboarding):
             try:
@@ -665,7 +679,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                     max_kalori=max_kalori,
                 )
 
-                if is_plan_request:
+                if is_plan_request or is_alternatif_plan:
                     # Mesajdan hedef tarihi belirle ("yarın", "pazartesi için" vb.)
                     plan_date = self._parse_plan_date(user_message)
 
@@ -690,7 +704,17 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                     selected_meals = {}
                     meal_factors = {}
                     # Kara listeli ID'ler recent listesine eklenir — hiç gösterilmez
-                    session_excluded = list(set(recent_recipe_ids) | set(blacklisted_ids))
+                    # Alternatif plan için: bugünkü plan tariflerini de dışarıda bırak
+                    today_plan_ids = []
+                    if is_alternatif_plan and user_id:
+                        try:
+                            today_plan = todays_plan or {}
+                            today_plan_ids = today_plan.get('tarif_idler') or []
+                        except Exception:
+                            today_plan_ids = []
+                    session_excluded = list(
+                        set(recent_recipe_ids) | set(blacklisted_ids) | set(today_plan_ids)
+                    )
                     # Seçilen protein kategorileri — tekrar önlemek için
                     # (ana_yemek_tavuk, ana_yemek_et, ana_yemek_balik)
                     _PROTEIN_KATS = {'ana_yemek_tavuk', 'ana_yemek_et', 'ana_yemek_balik'}
@@ -824,6 +848,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         plan_skeleton = self._format_plan_skeleton(
                             selected_meals, user, meal_factors, tamamlayicilar,
                             plan_date=plan_date,
+                            is_alternatif=is_alternatif_plan,
                         )
 
                         # --- İki-parçalı mimari ---
@@ -839,8 +864,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                             f"- {ogun_tr.get(t, t)}: {r['ad']}"
                             for t, r in selected_meals.items()
                         )
+                        plan_tipi = "alternatif plan" if is_alternatif_plan else "plan"
                         personality_prompt = (
-                            f"{isim} için {self._gun_adi(plan_date)} planı seçildi:\n"
+                            f"{isim} için {self._gun_adi(plan_date)} {plan_tipi}ı seçildi:\n"
                             f"{ogun_listesi}\n\n"
                             f"Yaz (BAŞKA HİÇBİR ŞEY YAZMA — kalori/makro/malzeme listesi YAZMA):\n"
                             f"1. Kısa samimi giriş cümlesi (1 satır)\n"

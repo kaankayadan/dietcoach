@@ -156,8 +156,14 @@ class BotHandlers:
         await self._send_to_claude(update, "/hafta — Haftalık özet raporumu göster")
     
     async def cmd_alternatif(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        text = " ".join(context.args) if context.args else "bir sonraki öğün"
-        await self._send_to_claude(update, f"/alternatif — {text} için alternatif öner")
+        args = " ".join(context.args).strip().lower() if context.args else ""
+        # Belirli öğün belirtilmişse (kahvalti/ogle/aksam/ara) → tek öğün önerisi
+        tek_ogun_keywords = ['kahvalti', 'kahvaltı', 'ogle', 'öğle', 'aksam', 'akşam', 'ara']
+        if args and any(k in args for k in tek_ogun_keywords):
+            await self._send_to_claude(update, f"/alternatif — {args} için alternatif tarif öner")
+        else:
+            # Argüman yok veya "plan" içeriyor → tam alternatif günlük plan üret
+            await self._send_to_claude(update, "alternatif plan — bugünkü plan yerine farklı bir günlük plan üret")
     
     async def cmd_besin(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = " ".join(context.args) if context.args else ""

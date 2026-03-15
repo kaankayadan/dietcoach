@@ -1340,7 +1340,7 @@
       "tuz"
     ],
     "porsiyon_gram": 300,
-    "kalori": 90,
+    "kalori": 75,
     "protein_g": 5,
     "karbonhidrat_g": 7,
     "yag_g": 3,
@@ -3457,7 +3457,7 @@
       "sarımsak"
     ],
     "porsiyon_gram": 300,
-    "kalori": 180,
+    "kalori": 195,
     "protein_g": 6,
     "karbonhidrat_g": 18,
     "yag_g": 11,
@@ -3558,7 +3558,7 @@
       "sarımsak"
     ],
     "porsiyon_gram": 320,
-    "kalori": 210,
+    "kalori": 228,
     "protein_g": 12,
     "karbonhidrat_g": 18,
     "yag_g": 12,
@@ -6217,7 +6217,7 @@
   {
     "id": "sebze_corbasi_karisik",
     "ad": "Karışık Sebze Çorbası",
-    "kategori": "ogle",
+    "kategori": "corba",
     "malzemeler": [
       "patates",
       "havuç",
@@ -6866,15 +6866,26 @@
     "id": "tam_bugday_ekmek_1_dilim",
     "ad": "Tam Buğday Ekmek (1 Dilim)",
     "kategori": "tamamlayici",
-    "malzemeler": ["tam buğday unu", "maya", "tuz"],
+    "malzemeler": [
+      "tam buğday unu",
+      "maya",
+      "tuz"
+    ],
     "porsiyon_gram": 30,
     "kalori": 75,
     "protein_g": 2.5,
     "karbonhidrat_g": 14.0,
     "yag_g": 1.0,
     "lif_g": 2.0,
-    "saglik_etiketler": ["tam_tahilli", "yüksek_lif"],
-    "ogun_tipleri": ["kahvalti", "ogle", "aksam"],
+    "saglik_etiketler": [
+      "tam_tahilli",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 0,
     "zorluk": "kolay",
     "aciklama": "Tam buğday unuyla pişirilmiş ekmek. Lif açısından zengin, kan şekerini yavaş yükseltir. Ana öğünün yanında karbonhidrat dengesini tamamlar."
@@ -6883,7 +6894,11 @@
     "id": "ekmek_1_dilim",
     "ad": "Ekmek (1 Dilim)",
     "kategori": "tamamlayici",
-    "malzemeler": ["un", "maya", "tuz"],
+    "malzemeler": [
+      "un",
+      "maya",
+      "tuz"
+    ],
     "porsiyon_gram": 25,
     "kalori": 65,
     "protein_g": 2.0,
@@ -6891,7 +6906,11 @@
     "yag_g": 0.5,
     "lif_g": 0.5,
     "saglik_etiketler": [],
-    "ogun_tipleri": ["kahvalti", "ogle", "aksam"],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 0,
     "zorluk": "kolay",
     "aciklama": "Geleneksel Türk ekmeği. Hemen hemen her Türk yemeğiyle uyumlu, sofranın vazgeçilmezi."
@@ -6900,15 +6919,25 @@
     "id": "elma_orta",
     "ad": "Elma (1 Adet, Orta)",
     "kategori": "tamamlayici",
-    "malzemeler": ["elma"],
+    "malzemeler": [
+      "elma"
+    ],
     "porsiyon_gram": 150,
     "kalori": 78,
     "protein_g": 0.4,
     "karbonhidrat_g": 21.0,
     "yag_g": 0.2,
     "lif_g": 3.6,
-    "saglik_etiketler": ["glütensiz", "vegan", "diyabet_dostu"],
-    "ogun_tipleri": ["ara_ogun", "kahvalti", "ogle"],
+    "saglik_etiketler": [
+      "glütensiz",
+      "vegan",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun",
+      "kahvalti",
+      "ogle"
+    ],
     "pismesi_dk": 0,
     "zorluk": "kolay",
     "aciklama": "Düşük GI, yüksek lif içerikli taze meyve. Kan şekerini dengeler, sindirime yardımcı olur."
@@ -6917,15 +6946,23 @@
     "id": "muz_kucuk",
     "ad": "Muz (1 Adet, Küçük)",
     "kategori": "tamamlayici",
-    "malzemeler": ["muz"],
+    "malzemeler": [
+      "muz"
+    ],
     "porsiyon_gram": 100,
     "kalori": 89,
     "protein_g": 1.1,
     "karbonhidrat_g": 23.0,
     "yag_g": 0.3,
     "lif_g": 2.6,
-    "saglik_etiketler": ["glütensiz", "vegan"],
-    "ogun_tipleri": ["ara_ogun", "kahvalti"],
+    "saglik_etiketler": [
+      "glütensiz",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun",
+      "kahvalti"
+    ],
     "pismesi_dk": 0,
     "zorluk": "kolay",
     "aciklama": "Hızlı enerji kaynağı. Potasyum açısından zengin, egzersiz sonrası kas yorgunluğunu azaltır."
@@ -6934,15 +6971,24 @@
     "id": "portakal_orta",
     "ad": "Portakal (1 Adet, Orta)",
     "kategori": "tamamlayici",
-    "malzemeler": ["portakal"],
+    "malzemeler": [
+      "portakal"
+    ],
     "porsiyon_gram": 130,
     "kalori": 62,
     "protein_g": 1.2,
     "karbonhidrat_g": 15.5,
     "yag_g": 0.2,
     "lif_g": 3.1,
-    "saglik_etiketler": ["glütensiz", "vegan", "diyabet_dostu"],
-    "ogun_tipleri": ["ara_ogun", "kahvalti"],
+    "saglik_etiketler": [
+      "glütensiz",
+      "vegan",
+      "diyabet_dostu"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun",
+      "kahvalti"
+    ],
     "pismesi_dk": 0,
     "zorluk": "kolay",
     "aciklama": "C vitamini deposu. Bağışıklık sistemini destekler, demir emilimini artırır."
@@ -6951,15 +6997,25 @@
     "id": "pirinc_pilavi_yan",
     "ad": "Beyaz Pirinç Pilavı (Yan Porsiyon)",
     "kategori": "tamamlayici",
-    "malzemeler": ["pirinç", "su", "tuz", "tereyağı"],
+    "malzemeler": [
+      "pirinç",
+      "su",
+      "tuz",
+      "tereyağı"
+    ],
     "porsiyon_gram": 100,
     "kalori": 130,
     "protein_g": 2.7,
     "karbonhidrat_g": 28.0,
     "yag_g": 1.0,
     "lif_g": 0.4,
-    "saglik_etiketler": ["glütensiz"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "kolay",
     "aciklama": "Klasik Türk sofrası tamamlayıcısı. Yüksek karbonhidrat içeriğiyle enerji dengesi sağlar."
@@ -6968,15 +7024,28 @@
     "id": "bulgur_pilavi_yan",
     "ad": "Bulgur Pilavı (Yan Porsiyon)",
     "kategori": "tamamlayici",
-    "malzemeler": ["bulgur", "soğan", "domates salçası", "su", "tuz", "zeytinyağı"],
+    "malzemeler": [
+      "bulgur",
+      "soğan",
+      "domates salçası",
+      "su",
+      "tuz",
+      "zeytinyağı"
+    ],
     "porsiyon_gram": 100,
     "kalori": 115,
     "protein_g": 4.0,
     "karbonhidrat_g": 22.0,
     "yag_g": 2.0,
     "lif_g": 4.5,
-    "saglik_etiketler": ["yüksek_lif", "vegan"],
-    "ogun_tipleri": ["ogle", "aksam"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
     "pismesi_dk": 20,
     "zorluk": "kolay",
     "aciklama": "Tam tahıl, yüksek lif. Sindirime yardımcı, uzun süre tok tutar. Çoğu et ve sebze yemeğiyle mükemmel uyum."
@@ -6985,15 +7054,25 @@
     "id": "yulaf_ezmesi_yan",
     "ad": "Yulaf Ezmesi (Küçük Kase)",
     "kategori": "tamamlayici",
-    "malzemeler": ["yulaf ezmesi", "süt", "bal"],
+    "malzemeler": [
+      "yulaf ezmesi",
+      "süt",
+      "bal"
+    ],
     "porsiyon_gram": 150,
     "kalori": 135,
     "protein_g": 4.5,
     "karbonhidrat_g": 25.0,
     "yag_g": 2.5,
     "lif_g": 3.5,
-    "saglik_etiketler": ["yüksek_lif", "vejetaryen"],
-    "ogun_tipleri": ["kahvalti", "ara_ogun"],
+    "saglik_etiketler": [
+      "yüksek_lif",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "kahvalti",
+      "ara_ogun"
+    ],
     "pismesi_dk": 5,
     "zorluk": "kolay",
     "aciklama": "Yavaş sindirilen kompleks karbonhidrat. Sabah enerjisi için ideal, uzun süre tok tutar."

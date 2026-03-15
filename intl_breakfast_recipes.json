@@ -1,0 +1,814 @@
+[
+  {
+    "id": "acai_bowl",
+    "ad": "Açaí Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "açaí püresi",
+      "dondurulmuş muz",
+      "yaban mersini",
+      "granola",
+      "bal",
+      "hindistan cevizi rendesi"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 380,
+    "protein_g": 8.5,
+    "karbonhidrat_g": 65.0,
+    "yag_g": 9.0,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "antioksidan_zengin",
+      "vegan",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Brezilyalı açaí meyvesiyle yapılan, antioksidan açısından zengin smoothie kasesi."
+  },
+  {
+    "id": "mango_smoothie_bowl",
+    "ad": "Mango Smoothie Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "dondurulmuş mango",
+      "muz",
+      "hindistan cevizi sütü",
+      "chia tohumu",
+      "granola",
+      "taze mango",
+      "nane"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 355,
+    "protein_g": 6.0,
+    "karbonhidrat_g": 68.0,
+    "yag_g": 7.5,
+    "lif_g": 7.5,
+    "saglik_etiketler": [
+      "vegan",
+      "glütensiz",
+      "C_vitamini_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 8,
+    "zorluk": "kolay",
+    "aciklama": "Tropikal mango ve muz bazlı, chia tohumlarıyla zenginleştirilmiş ferahlatıcı smoothie kasesi."
+  },
+  {
+    "id": "avocado_toast",
+    "ad": "Avocado Toast (Tam Tahıllı)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam tahıllı ekmek",
+      "avokado",
+      "limon suyu",
+      "kırmızı pul biber",
+      "tuz",
+      "karabiber",
+      "çeri domates",
+      "mikro yeşillik"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 340,
+    "protein_g": 9.0,
+    "karbonhidrat_g": 35.0,
+    "yag_g": 18.0,
+    "lif_g": 9.5,
+    "saglik_etiketler": [
+      "vegan",
+      "sağlıklı_yağ",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Ekmeğin üzerine ezilmiş avokado, limon suyu ve baharatlarla hazırlanan trend kahvaltı tostu."
+  },
+  {
+    "id": "overnight_oats",
+    "ad": "Overnight Oats",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf ezmesi",
+      "yağsız süt",
+      "chia tohumu",
+      "bal",
+      "yaban mersini",
+      "tarçın",
+      "vanilya özü"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 420,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 65.0,
+    "yag_g": 7.5,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "prebiyotik",
+      "lif_zengin",
+      "düşük_GI"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Gece önceden hazırlanan, sabah hazır olan yulaf bazlı besleyici kahvaltı."
+  },
+  {
+    "id": "chia_pudding",
+    "ad": "Chia Pudding",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "chia tohumu",
+      "hindistan cevizi sütü",
+      "bal",
+      "vanilya özü",
+      "çilek",
+      "ahududu",
+      "nane"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 310,
+    "protein_g": 8.0,
+    "karbonhidrat_g": 32.0,
+    "yag_g": 16.0,
+    "lif_g": 14.0,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "vegan",
+      "glütensiz",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 240,
+    "zorluk": "kolay",
+    "aciklama": "Chia tohumlarının hindistan cevizi sütüyle şişirilmesiyle hazırlanan, omega-3 açısından zengin puding."
+  },
+  {
+    "id": "shakshuka",
+    "ad": "Shakshuka (Orta Doğu Usulü)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "domates konservesi",
+      "kırmızı biber",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "kimyon",
+      "kırmızı biber",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 520,
+    "kalori": 320,
+    "protein_g": 22.0,
+    "karbonhidrat_g": 18.0,
+    "yag_g": 17.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glütensiz",
+      "düşük_karbonhidrat",
+      "antioksidan_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "Baharatlı domates sosu içinde pişirilmiş yumurtalardan oluşan geleneksel Orta Doğu kahvaltısı."
+  },
+  {
+    "id": "greek_yogurt_parfait",
+    "ad": "Greek Yogurt Parfait",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "Yunan yoğurdu",
+      "granola",
+      "çilek",
+      "yaban mersini",
+      "bal",
+      "badem"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 375,
+    "protein_g": 22.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 8.5,
+    "lif_g": 5.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "probiyotik",
+      "kalsiyum_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Yunan yoğurdu, granola ve taze meyvelerle katman katman dizilen besleyici parfait."
+  },
+  {
+    "id": "egg_white_omelette",
+    "ad": "Egg White Omelette",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta akı",
+      "ıspanak",
+      "domates",
+      "mantar",
+      "kırmızı biber",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "taze kekik"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 195,
+    "protein_g": 26.0,
+    "karbonhidrat_g": 9.0,
+    "yag_g": 6.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_kalori",
+      "düşük_yağ",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Yalnızca yumurta akıyla yapılan, sebzeli, düşük kalorili ve protein dolu omlet."
+  },
+  {
+    "id": "protein_pancakes",
+    "ad": "Protein Pancakes",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf unu",
+      "protein tozu vanilyalı",
+      "yumurta",
+      "yağsız süt",
+      "kabartma tozu",
+      "tarçın",
+      "muz",
+      "mevsim meyveleri"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 455,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 8.5,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "kas_yapıcı",
+      "sporcu_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Yulaf unu ve protein tozu ile yapılan, makro değerleri yüksek sporcu pankeki."
+  },
+  {
+    "id": "bircher_muesli",
+    "ad": "Bircher Muesli",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf ezmesi",
+      "elma rendesi",
+      "Yunan yoğurdu",
+      "elma suyu",
+      "badem",
+      "kuru üzüm",
+      "bal",
+      "tarçın"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 430,
+    "protein_g": 16.0,
+    "karbonhidrat_g": 65.0,
+    "yag_g": 11.5,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "probiyotik",
+      "lif_zengin",
+      "geleneksel_İsviçre"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 480,
+    "zorluk": "kolay",
+    "aciklama": "İsviçreli doktor Bircher-Benner'in geliştirdiği, gece bekletilen sağlıklı yulaf ve meyve karışımı."
+  },
+  {
+    "id": "veggie_breakfast_burrito",
+    "ad": "Veggie Breakfast Burrito",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday tortilla",
+      "yumurta",
+      "siyah fasulye",
+      "avokado",
+      "domates",
+      "kırmızı biber",
+      "ıspanak",
+      "salsa sos"
+    ],
+    "porsiyon_gram": 490,
+    "kalori": 470,
+    "protein_g": 24.0,
+    "karbonhidrat_g": 55.0,
+    "yag_g": 16.0,
+    "lif_g": 10.0,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "lif_zengin",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Sebzeler, yumurta ve fasulye ile dolu besleyici Meksika usulü kahvaltı burritosu."
+  },
+  {
+    "id": "smoked_salmon_bagel",
+    "ad": "Smoked Salmon Bagel",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam tahıllı bagel",
+      "füme somon",
+      "krem peynir light",
+      "kırmızı soğan",
+      "kapari",
+      "limon",
+      "dereotu",
+      "roka"
+    ],
+    "porsiyon_gram": 360,
+    "kalori": 420,
+    "protein_g": 28.0,
+    "karbonhidrat_g": 45.0,
+    "yag_g": 12.0,
+    "lif_g": 4.0,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "New_York_klasiği"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "New York'un ikonik kahvaltısı: füme somon, krem peynir ve kapari ile tam tahıllı bagel."
+  },
+  {
+    "id": "breakfast_quinoa_bowl",
+    "ad": "Breakfast Quinoa Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "kinoa",
+      "badem sütü",
+      "bal",
+      "tarçın",
+      "muz",
+      "çilek",
+      "badem",
+      "hindistan cevizi rendesi"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 445,
+    "protein_g": 14.0,
+    "karbonhidrat_g": 74.0,
+    "yag_g": 10.5,
+    "lif_g": 6.5,
+    "saglik_etiketler": [
+      "glütensiz",
+      "tam_protein",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Tüm esansiyel amino asitleri içeren kinoa ile hazırlanan besleyici ve doyurucu kahvaltı kasesi."
+  },
+  {
+    "id": "french_toast_protein",
+    "ad": "Proteinli French Toast",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam tahıllı ekmek",
+      "yumurta",
+      "protein tozu",
+      "badem sütü",
+      "tarçın",
+      "vanilya özü",
+      "akçaağaç şurubu",
+      "taze çilek"
+    ],
+    "porsiyon_gram": 410,
+    "kalori": 470,
+    "protein_g": 35.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 11.0,
+    "lif_g": 5.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "sporcu_dostu",
+      "kas_yapıcı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Klasik Fransız tostunun protein tozu eklenerek sporcular için optimize edilmiş versiyonu."
+  },
+  {
+    "id": "frittata_sebzeli",
+    "ad": "Sebzeli Frittata",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "ıspanak",
+      "kiraz domates",
+      "kırmızı biber",
+      "mantar",
+      "soğan",
+      "zeytinyağı",
+      "parmesan",
+      "taze fesleğen"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 380,
+    "protein_g": 28.0,
+    "karbonhidrat_g": 12.0,
+    "yag_g": 24.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "İtalyan_mutfağı",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "Sebzelerle zenginleştirilmiş İtalyan usulü fırında pişirilmiş omlet."
+  },
+  {
+    "id": "granola_bowl",
+    "ad": "Granola Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "ev yapımı granola",
+      "Yunan yoğurdu",
+      "bal",
+      "muz dilimi",
+      "yaban mersini",
+      "badem",
+      "kaju",
+      "hindistan cevizi"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 480,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 66.0,
+    "yag_g": 15.0,
+    "lif_g": 6.0,
+    "saglik_etiketler": [
+      "probiyotik",
+      "lif_zengin",
+      "enerji_artırıcı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Fırınlanmış granola, Yunan yoğurdu ve taze meyvelerle hazırlanan çıtır çıtır enerji kasesi."
+  },
+  {
+    "id": "japanese_tamago_gohan",
+    "ad": "Japanese Tamago Gohan",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "Japon pirinci",
+      "çiğ yumurta",
+      "soya sosu",
+      "susam yağı",
+      "tuz",
+      "taze soğan",
+      "nori yaprak",
+      "susam"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 310,
+    "protein_g": 13.0,
+    "karbonhidrat_g": 48.0,
+    "yag_g": 7.5,
+    "lif_g": 1.5,
+    "saglik_etiketler": [
+      "Japon_mutfağı",
+      "hızlı_hazırlık",
+      "umami_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Japonya'nın en sevilen sabah yemeği: sıcak pirincin üzerine kırılmış çiğ yumurta ve soya sosu."
+  },
+  {
+    "id": "turkish_menemen_intl",
+    "ad": "Turkish Menemen (Uluslararası Versiyon)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "domates",
+      "yeşil biber",
+      "soğan",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "kırmızı pul biber",
+      "maydanoz",
+      "tam tahıllı ekmek"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 345,
+    "protein_g": 22.0,
+    "karbonhidrat_g": 22.0,
+    "yag_g": 19.0,
+    "lif_g": 4.5,
+    "saglik_etiketler": [
+      "Türk_mutfağı",
+      "yüksek_protein",
+      "antioksidan_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Geleneksel Türk menemeninin dünyaya açılan versiyonu: domates, biber ve yumurta ile enfes kavurma."
+  },
+  {
+    "id": "cottage_cheese_bowl",
+    "ad": "Cottage Cheese Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "lor peyniri cottage cheese",
+      "ananas",
+      "şeftali",
+      "bal",
+      "chia tohumu",
+      "ceviz",
+      "tarçın"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 370,
+    "protein_g": 26.0,
+    "karbonhidrat_g": 38.0,
+    "yag_g": 11.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "kalsiyum_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Yüksek proteinli lor peyniri üzerine taze meyveler ve cevizle hazırlanan besleyici kahvaltı kasesi."
+  },
+  {
+    "id": "belgian_waffle_protein",
+    "ad": "Proteinli Belçika Waffle",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf unu",
+      "protein tozu",
+      "yumurta",
+      "yağsız süt",
+      "kabartma tozu",
+      "vanilya özü",
+      "taze çilek",
+      "Yunan yoğurdu",
+      "bal"
+    ],
+    "porsiyon_gram": 520,
+    "kalori": 490,
+    "protein_g": 42.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 11.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "Belçika_mutfağı",
+      "sporcu_dostu",
+      "kas_yapıcı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Belçika wafflesinin protein açısından zenginleştirilmiş versiyonu, sporcu kahvaltısı için ideal."
+  },
+  {
+    "id": "spinach_mushroom_omelette",
+    "ad": "Ispanak Mantarlı Omlet",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "ıspanak",
+      "mantar",
+      "sarımsak",
+      "soğan",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "taze kekik",
+      "az yağlı peynir"
+    ],
+    "porsiyon_gram": 480,
+    "kalori": 300,
+    "protein_g": 24.0,
+    "karbonhidrat_g": 8.0,
+    "yag_g": 19.0,
+    "lif_g": 3.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "demir_zengin",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 12,
+    "zorluk": "kolay",
+    "aciklama": "Demir açısından zengin ıspanak ve lezzetli mantarlarla hazırlanan klasik proteinli omlet."
+  },
+  {
+    "id": "banana_oat_pancakes",
+    "ad": "Banana Oat Pancakes",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "olgun muz",
+      "yulaf ezmesi",
+      "yumurta",
+      "tarçın",
+      "vanilya özü",
+      "kabartma tozu",
+      "taze meyve",
+      "akçaağaç şurubu"
+    ],
+    "porsiyon_gram": 470,
+    "kalori": 430,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 70.0,
+    "yag_g": 9.5,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "glütensiz",
+      "doğal_şeker",
+      "vejetaryen",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Yalnızca muz, yulaf ve yumurtayla yapılan, un ve şeker eklenmemiş doğal pankek."
+  },
+  {
+    "id": "energy_smoothie_bowl",
+    "ad": "Energy Smoothie Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "dondurulmuş çilek",
+      "muz",
+      "Yunan yoğurdu",
+      "protein tozu",
+      "badem sütü",
+      "granola",
+      "kivi",
+      "chia tohumu",
+      "bal"
+    ],
+    "porsiyon_gram": 520,
+    "kalori": 440,
+    "protein_g": 26.0,
+    "karbonhidrat_g": 62.0,
+    "yag_g": 10.0,
+    "lif_g": 8.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "enerji_artırıcı",
+      "antioksidan_zengin",
+      "sporcu_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Antrenman öncesi enerji için çilek, muz ve protein tozu ile hazırlanan güçlü smoothie kasesi."
+  },
+  {
+    "id": "mediterranean_breakfast_plate",
+    "ad": "Mediterranean Breakfast Plate",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "haşlanmış yumurta",
+      "humus",
+      "zeytin",
+      "feta peyniri",
+      "domates",
+      "salatalık",
+      "tam tahıllı pita",
+      "zeytinyağı",
+      "kekik"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 475,
+    "protein_g": 24.0,
+    "karbonhidrat_g": 40.0,
+    "yag_g": 25.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "Akdeniz_diyeti",
+      "kalp_sağlığı",
+      "antioksidan_zengin",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Akdeniz diyetinin kahvaltıya yansıması: yumurta, humus, zeytin ve taze sebzelerle dolu tabak."
+  },
+  {
+    "id": "strawberry_smoothie_bowl",
+    "ad": "Çilek Smoothie Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "dondurulmuş çilek",
+      "muz",
+      "Yunan yoğurdu",
+      "badem sütü",
+      "granola",
+      "taze çilek",
+      "hindistan cevizi rendesi",
+      "bal"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 390,
+    "protein_g": 13.0,
+    "karbonhidrat_g": 67.0,
+    "yag_g": 8.5,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "antioksidan_zengin",
+      "C_vitamini_zengin",
+      "probiyotik",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 8,
+    "zorluk": "kolay",
+    "aciklama": "Taze ve dondurulmuş çileklerle yapılan, Yunan yoğurdu bazlı C vitamini deposu smoothie kasesi."
+  }
+]

@@ -341,12 +341,29 @@ class Database:
 
     async def get_recently_used_recipe_ids(self, user_id: int, days: int = 7) -> list:
         """
-        Son N günde kullanıcının yediği yemekleri, tarifler tablosundaki ID'lerle eşleştir.
-        Çeşitlilik için bu ID'ler exclude listesine eklenir.
+        Son N günde kullanıcıya önerilen ve/veya yediği tarif ID'lerini döner.
+        Çeşitlilik için bu ID'ler plan seçiminde exclude listesine eklenir.
 
-        Öğün açıklamalarından tarif adlarını fuzzy match yerine basit substring ile buluruz.
+        İki kaynaktan beslenilir:
+        1. gunluk_plan.tarif_idler — plan oluşturulduğunda direkt kaydedilen ID'ler
+        2. ogun_kayitlari — kullanıcının /yedim ile kaydettiği öğünler (fuzzy match)
         """
-        rows = await self.pool.fetch(
+        # 1. Planlarda kullanılan tarif ID'leri (kesin eşleşme)
+        plan_rows = await self.pool.fetch(
+            """
+            SELECT COALESCE(tarif_idler, '{}') AS ids
+            FROM gunluk_plan
+            WHERE user_id = $1
+              AND tarih >= (CURRENT_DATE - ($2 * INTERVAL '1 day'))::date
+            """,
+            user_id, days,
+        )
+        plan_ids = set()
+        for row in plan_rows:
+            plan_ids.update(row["ids"] or [])
+
+        # 2. Yenilen öğünlerden fuzzy eşleşme (yedim kaydı varsa)
+        meal_rows = await self.pool.fetch(
             """
             SELECT DISTINCT t.tarif_id
             FROM ogun_kayitlari ok
@@ -359,7 +376,37 @@ class Database:
             """,
             user_id, days,
         )
+        meal_ids = {r["tarif_id"] for r in meal_rows}
+
+        return list(plan_ids | meal_ids)
+
+    # ==========================================
+    # TARİF KARA LİSTESİ
+    # ==========================================
+
+    async def add_to_blacklist(self, user_id: int, tarif_id: str):
+        """Tarifi kara listeye ekle — bir daha önerilmez."""
+        await self.pool.execute(
+            """INSERT INTO tarif_kara_liste (user_id, tarif_id)
+               VALUES ($1, $2) ON CONFLICT DO NOTHING""",
+            user_id, tarif_id,
+        )
+
+    async def get_blacklisted_recipe_ids(self, user_id: int) -> list:
+        """Kullanıcının kara listedeki tüm tarif ID'lerini döner."""
+        rows = await self.pool.fetch(
+            "SELECT tarif_id FROM tarif_kara_liste WHERE user_id = $1",
+            user_id,
+        )
         return [r["tarif_id"] for r in rows]
+
+    async def save_plan_recipe_ids(self, user_id: int, plan_date, tarif_ids: list):
+        """Plan seçiminde kullanılan tarif ID'lerini günlük plana kaydet."""
+        await self.pool.execute(
+            """UPDATE gunluk_plan SET tarif_idler = $3
+               WHERE user_id = $1 AND tarih = $2""",
+            user_id, plan_date, tarif_ids,
+        )
 
     async def get_tamamlayici_recipes(self) -> list:
         """

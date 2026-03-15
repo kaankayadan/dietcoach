@@ -614,8 +614,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
                 user_id = user.get('id')
                 recent_recipe_ids = []
+                blacklisted_ids = []
                 if user_id:
                     recent_recipe_ids = await db.get_recently_used_recipe_ids(user_id, days=7)
+                    blacklisted_ids = await db.get_blacklisted_recipe_ids(user_id)
 
                 saglik_filtre = []
                 hastaliklar = user.get('kronik_hastaliklar') or []
@@ -657,7 +659,8 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
                     selected_meals = {}
                     meal_factors = {}
-                    session_excluded = list(recent_recipe_ids)
+                    # Kara listeli ID'ler recent listesine eklenir — hiç gösterilmez
+                    session_excluded = list(set(recent_recipe_ids) | set(blacklisted_ids))
                     # Seçilen protein kategorileri — tekrar önlemek için
                     # (ana_yemek_tavuk, ana_yemek_et, ana_yemek_balik)
                     _PROTEIN_KATS = {'ana_yemek_tavuk', 'ana_yemek_et', 'ana_yemek_balik'}
@@ -754,6 +757,21 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                                 )
 
                     if selected_meals:
+                        # Seçilen tarif ID'lerini DB'ye kaydet (haftalık çeşitlilik için)
+                        if user_id:
+                            try:
+                                from datetime import date as _date
+                                plan_ids = [
+                                    r.get('tarif_id') or r.get('id', '')
+                                    for r in selected_meals.values()
+                                ]
+                                await db.save_plan_recipe_ids(
+                                    user_id, _date.today(),
+                                    [pid for pid in plan_ids if pid],
+                                )
+                            except Exception as e:
+                                logger.warning(f"Plan tarif ID'leri kaydedilemedi: {e}")
+
                         # Tamamlayıcı seçimi: karbonhidrat açığını kapat
                         tamamlayicilar = {}
                         if hedef_karb_f > 0:

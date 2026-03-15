@@ -2343,37 +2343,6 @@
     "aciklama": "Yufka (80g) içine beyaz peynir (60g) ve ıspanak (40g) doldurulur, minimal zeytinyağı (5g) ile fırında kızartılır. Kızartma yerine fırın kullanımı yağ içeriğini azaltır."
   },
   {
-    "id": "ispanakli_gozleme",
-    "ad": "Ispanaklı Gözleme",
-    "kategori": "kahvalti",
-    "malzemeler": [
-      "tam buğday unu",
-      "ıspanak",
-      "beyaz peynir",
-      "zeytinyağı",
-      "tuz"
-    ],
-    "porsiyon_gram": 230,
-    "kalori": 537,
-    "protein_g": 21,
-    "karbonhidrat_g": 64,
-    "yag_g": 25,
-    "lif_g": 10,
-    "saglik_etiketler": [
-      "vejetaryen",
-      "geleneksel_türk",
-      "sebzeli",
-      "yüksek_lif",
-      "yüksek_protein"
-    ],
-    "ogun_tipleri": [
-      "kahvalti"
-    ],
-    "pismesi_dk": 20,
-    "zorluk": "orta",
-    "aciklama": "Tam buğday unu (80g) ile hazırlanan hamur ıspanak (80g) ve beyaz peynir (60g) ile doldurularak sacda pişirilir. Geleneksel Türk lezzetidir, lif ve protein açısından zengindir."
-  },
-  {
     "id": "kasarli_omlet",
     "ad": "Kaşarlı Omlet",
     "kategori": "kahvalti",
@@ -2469,36 +2438,6 @@
     "pismesi_dk": 10,
     "zorluk": "çok_kolay",
     "aciklama": "Yulaf ezmesi (60g) sütte (200g) pişirilir, üzerine muz (60g), çilek (50g) ve bal (10g) eklenir. Beta-glukan lifi kalp sağlığını destekler, uzun süre tokluk hissi verir."
-  },
-  {
-    "id": "lor_peynirli_gozleme",
-    "ad": "Lor Peynirli Gözleme",
-    "kategori": "kahvalti",
-    "malzemeler": [
-      "tam buğday unu",
-      "lor peyniri",
-      "dereotu",
-      "zeytinyağı",
-      "tuz"
-    ],
-    "porsiyon_gram": 180,
-    "kalori": 504,
-    "protein_g": 20,
-    "karbonhidrat_g": 61,
-    "yag_g": 23,
-    "lif_g": 9,
-    "saglik_etiketler": [
-      "vejetaryen",
-      "geleneksel_türk",
-      "yüksek_protein",
-      "yüksek_lif"
-    ],
-    "ogun_tipleri": [
-      "kahvalti"
-    ],
-    "pismesi_dk": 20,
-    "zorluk": "orta",
-    "aciklama": "Tam buğday unu (80g) hamuru lor peyniri (80g) ve dereotu (10g) ile doldurulur, az zeytinyağı (10g) ile sacda pişirilir. Hafif ve besleyici geleneksel Türk gözlemesi."
   },
   {
     "id": "kefir_granola_tabagi",
@@ -4433,37 +4372,6 @@
     "aciklama": "Rendelenmiş kabak ve beyaz peynirle hazırlanan fırın böreği. Yağlanma minimumda tutulmuş, dereotu ile lezzetlendirilmiş hafif öğle seçeneği."
   },
   {
-    "id": "kiymali_ispanakli_borek_sac",
-    "ad": "Kıymalı Ispanaklı Börek (Sac)",
-    "kategori": "ogle",
-    "malzemeler": [
-      "yufka",
-      "yağsız dana kıyma",
-      "ıspanak",
-      "soğan",
-      "zeytinyağı",
-      "tuz",
-      "karabiber",
-      "kırmızı pul biber"
-    ],
-    "porsiyon_gram": 195,
-    "kalori": 415,
-    "protein_g": 24,
-    "karbonhidrat_g": 42,
-    "yag_g": 16,
-    "lif_g": 4,
-    "saglik_etiketler": [
-      "yüksek_protein",
-      "geleneksel_türk"
-    ],
-    "ogun_tipleri": [
-      "ogle"
-    ],
-    "pismesi_dk": 30,
-    "zorluk": "orta",
-    "aciklama": "Sac üzerinde pişirilen kıymalı ıspanaklı börek. Yağsız kıyma ve ıspanak kombinasyonu yüksek protein ve demir sağlar. Geleneksel lezzet, dengeli makrolar."
-  },
-  {
     "id": "peynirli_makarna_az_yagli_firin",
     "ad": "Peynirli Makarna (Az Yağlı, Fırında)",
     "kategori": "ogle",
@@ -5608,97 +5516,6 @@
     "pismesi_dk": 10,
     "zorluk": "kolay",
     "aciklama": "45g dilimlenmiş pastırmayla birlikte tavada pişirilen 2 yumurta ve yanında 1 dilim tam buğday ekmek. Baharatlı aromasıyla öne çıkan, protein açısından zengin geleneksel Türk kahvaltısı."
-  },
-  {
-    "id": "peynirli_borek_ev",
-    "ad": "Peynirli Börek (1 Dilim, Ev Yapımı)",
-    "kategori": "kahvalti",
-    "malzemeler": [
-      "yufka",
-      "beyaz peynir",
-      "yumurta",
-      "süt",
-      "maydanoz",
-      "zeytinyağı",
-      "susam"
-    ],
-    "porsiyon_gram": 180,
-    "kalori": 370,
-    "protein_g": 16,
-    "karbonhidrat_g": 38,
-    "yag_g": 17,
-    "lif_g": 2,
-    "saglik_etiketler": [
-      "geleneksel_türk",
-      "fırında"
-    ],
-    "ogun_tipleri": [
-      "kahvalti"
-    ],
-    "pismesi_dk": 40,
-    "zorluk": "orta",
-    "aciklama": "Yufka arası beyaz peynir ve maydanoz harcıyla hazırlanan fırında pişirilmiş ev yapımı börek. 1 dilim porsiyon."
-  },
-  {
-    "id": "az_yagili_peynirli_pogaca",
-    "ad": "Az Yağlı Peynirli Poğaça (1 Adet)",
-    "kategori": "kahvalti",
-    "malzemeler": [
-      "tam buğday un",
-      "beyaz peynir",
-      "yumurta",
-      "yoğurt",
-      "zeytinyağı",
-      "kuru maya",
-      "tuz",
-      "çörek otu"
-    ],
-    "porsiyon_gram": 120,
-    "kalori": 320,
-    "protein_g": 13,
-    "karbonhidrat_g": 40,
-    "yag_g": 11,
-    "lif_g": 3,
-    "saglik_etiketler": [
-      "geleneksel_türk",
-      "fırında",
-      "tam_tahıl"
-    ],
-    "ogun_tipleri": [
-      "kahvalti"
-    ],
-    "pismesi_dk": 35,
-    "zorluk": "orta",
-    "aciklama": "Tam buğday un ve az zeytinyağıyla yapılan, içine beyaz peynir konulan fırın poğaçası. Klasiğin daha sağlıklı versiyonu."
-  },
-  {
-    "id": "simit_kasar_domates_kahvaltisi",
-    "ad": "Simit + Kaşar + Domates Kahvaltısı",
-    "kategori": "kahvalti",
-    "malzemeler": [
-      "simit",
-      "kaşar peyniri",
-      "domates",
-      "salatalık",
-      "zeytin",
-      "çay"
-    ],
-    "porsiyon_gram": 320,
-    "kalori": 420,
-    "protein_g": 17,
-    "karbonhidrat_g": 55,
-    "yag_g": 14,
-    "lif_g": 4,
-    "saglik_etiketler": [
-      "geleneksel_türk",
-      "sokak_lezzeti"
-    ],
-    "ogun_tipleri": [
-      "kahvalti"
-    ],
-    "pismesi_dk": 5,
-    "zorluk": "kolay",
-    "aciklama": "1 adet simit, 40g kaşar peyniri, dilimlenmiş domates, salatalık ve zeytin. İstanbul sokaklarından esinlenen klasik Türk kahvaltısı."
   },
   {
     "id": "tam_bugday_fistik_ezmesi_muz",

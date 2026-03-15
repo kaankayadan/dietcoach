@@ -176,6 +176,83 @@ class BotHandlers:
     async def cmd_hedef(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         await self._send_to_claude(update, "/hedef — İlerleme raporumu göster")
     
+    async def cmd_begenmiyorum(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """
+        /begenmiyorum [kahvalti|ogle|aksam|hepsi]
+        Bugünkü plandaki belirtilen öğünün tarifini kara listeye ekler.
+        Bir daha bu tarif önerilmez.
+        """
+        telegram_id = update.effective_user.id
+        user = await self.db.get_user(telegram_id)
+        if not user:
+            await update.message.reply_text("Önce /baslat ile kayıt ol.")
+            return
+
+        user_id = user['id']
+        arg = " ".join(context.args).strip().lower() if context.args else ""
+
+        # Bugünkü planı çek
+        plan = await self.db.get_todays_plan(user_id)
+        if not plan:
+            await update.message.reply_text(
+                "Bugün henüz bir plan oluşturulmadı. Önce /plan yaz."
+            )
+            return
+
+        # Plan'dan tarif ID'lerini al
+        tarif_idler = plan.get('tarif_idler') or []
+        if not tarif_idler:
+            await update.message.reply_text(
+                "Bugünkü planın tarif bilgisi bulunamadı. "
+                "Lütfen /plan komutuyla yeni bir plan oluştur."
+            )
+            return
+
+        # Hangi öğün kara listeye alınacak?
+        ogun_map = {
+            'kahvalti': 0, 'kahvaltı': 0,
+            'ogle': 1, 'öğle': 1,
+            'aksam': 2, 'akşam': 2,
+            'ara': 3, 'ara_ogun': 3,
+        }
+
+        if not arg or arg == 'hepsi':
+            # Tüm plan tariflerini kara listeye ekle
+            eklenenler = []
+            for tid in tarif_idler:
+                await self.db.add_to_blacklist(user_id, tid)
+                # Tarif adını bul
+                rows = await self.db.pool.fetch(
+                    "SELECT ad FROM tarifler WHERE tarif_id = $1", tid
+                )
+                if rows:
+                    eklenenler.append(rows[0]['ad'])
+            if eklenenler:
+                liste = "\n".join(f"• {a}" for a in eklenenler)
+                await update.message.reply_text(
+                    f"Tamam, şu tarifler bir daha önerilmeyecek:\n{liste}\n\n"
+                    f"Yeni plan için /plan yaz."
+                )
+            else:
+                await update.message.reply_text("Kara listeye eklenecek tarif bulunamadı.")
+        else:
+            idx = ogun_map.get(arg)
+            if idx is None or idx >= len(tarif_idler):
+                await update.message.reply_text(
+                    "Kullanım: /begenmiyorum kahvalti | ogle | aksam | hepsi"
+                )
+                return
+            tid = tarif_idler[idx]
+            await self.db.add_to_blacklist(user_id, tid)
+            rows = await self.db.pool.fetch(
+                "SELECT ad FROM tarifler WHERE tarif_id = $1", tid
+            )
+            ad = rows[0]['ad'] if rows else tid
+            await update.message.reply_text(
+                f"Tamam, '{ad}' bir daha önerilmeyecek.\n"
+                f"Alternatif için /alternatif {arg} yaz."
+            )
+
     async def cmd_yardim(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         help_text = """🥗 *Beslenme Koçu Komutları*
 
@@ -190,6 +267,7 @@ class BotHandlers:
 /su [bardak] — Su kaydı
 /guncelle — Profil güncelle
 /hedef — İlerleme raporu
+/begenmiyorum [öğün] — Bu tarifi bir daha önerme
 
 💬 Komut kullanmadan da yazabilirsin!
 "Öğlen ne yesem?" veya "100g pirinçte ne kadar kalori var?" gibi."""

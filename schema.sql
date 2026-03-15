@@ -268,3 +268,16 @@ CREATE INDEX idx_ozet_user_tarih ON gunluk_ozet(user_id, tarih);
 CREATE INDEX idx_kilo_user_tarih ON kilo_gecmisi(user_id, tarih);
 CREATE INDEX idx_konusma_user ON konusma_gecmisi(user_id, created_at DESC);
 CREATE INDEX idx_haftalik_user ON haftalik_ozet(user_id, hafta_baslangic);
+
+-- =============================================
+-- 10. TARİF KARA LİSTESİ
+-- Kullanıcının "bir daha önerme" dediği tarifler
+-- =============================================
+CREATE TABLE IF NOT EXISTS tarif_kara_liste (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    tarif_id VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(user_id, tarif_id)
+);
+CREATE INDEX IF NOT EXISTS idx_kara_liste_user ON tarif_kara_liste(user_id);

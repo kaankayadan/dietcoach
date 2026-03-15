@@ -124,7 +124,8 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
     def _format_plan_skeleton(self, selected_meals: dict, user: dict,
                               meal_factors: dict,
-                              tamamlayicilar: dict = None) -> str:
+                              tamamlayicilar: dict = None,
+                              plan_date=None) -> str:
         """
         Plan verisini Python'da tam olarak formatlar.
         Claude bu metne sadece giriş cümlesi ve pratik notlar ekler —
@@ -197,9 +198,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             )
             sections.append("\n".join(section_lines))
 
-        gun_adi = self._gun_adi()
+        hedef_tarih = plan_date or date.today()
+        gun_adi = self._gun_adi(hedef_tarih)
         header = (
-            f"## PLAN — {gun_adi}, {date.today().strftime('%d %B')}\n"
+            f"## PLAN — {gun_adi}, {hedef_tarih.strftime('%d %B')}\n"
             f"**Hedefler:** {hedef_kal:.0f} kcal | "
             f"P: {hedef_p:.0f}g | Y: {hedef_y:.0f}g | "
             f"K: {hedef_k:.0f}g | L: {hedef_l:.0f}g"
@@ -339,9 +341,34 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         return "\n".join(lines)
 
-    def _gun_adi(self) -> str:
+    def _gun_adi(self, hedef_tarih=None) -> str:
         gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
-        return gunler[date.today().weekday()]
+        t = hedef_tarih or date.today()
+        return gunler[t.weekday()]
+
+    @staticmethod
+    def _parse_plan_date(message: str):
+        """Mesajdan plan tarihini çıkar. Varsayılan: bugün."""
+        from datetime import timedelta
+        msg = message.lower()
+        if 'yarın' in msg or 'yarinki' in msg or 'yarin' in msg:
+            return date.today() + timedelta(days=1)
+        if 'öbür gün' in msg or 'obur gun' in msg:
+            return date.today() + timedelta(days=2)
+        # "pazartesi için", "salı için" gibi ifadeler
+        gun_map = {
+            'pazartesi': 0, 'salı': 1, 'sali': 1,
+            'çarşamba': 2, 'carsamba': 2, 'perşembe': 3, 'persembe': 3,
+            'cuma': 4, 'cumartesi': 5, 'pazar': 6,
+        }
+        bugun = date.today().weekday()
+        for gun_adi, gun_idx in gun_map.items():
+            if gun_adi in msg:
+                fark = (gun_idx - bugun) % 7
+                if fark == 0:
+                    fark = 7  # bugün değil gelecek haftaki
+                return date.today() + timedelta(days=fark)
+        return date.today()
 
     def _select_tamamlayici(
         self,
@@ -639,6 +666,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                 )
 
                 if is_plan_request:
+                    # Mesajdan hedef tarihi belirle ("yarın", "pazartesi için" vb.)
+                    plan_date = self._parse_plan_date(user_message)
+
                     # Python her öğün için EN İYİ 1 tarifi seçer — Claude seçim yapmaz
                     ogun_duzeni = user.get('ogun_duzeni', '') or ''
                     ogun_tipleri = ['kahvalti', 'ogle', 'aksam']
@@ -762,15 +792,12 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         # Bu sayede get_recently_used_recipe_ids() tarif_idler'den beslenebilir.
                         if user_id:
                             try:
-                                from datetime import date as _date
                                 plan_ids = [
                                     r.get('tarif_id') or r.get('id', '')
                                     for r in selected_meals.values()
                                 ]
-                                # plan_skeleton henüz oluşturulmadı, boş geçiyoruz;
-                                # tamamlayıcı sonrası güncellenecek
                                 await db.save_plan_recipe_ids(
-                                    user_id, _date.today(),
+                                    user_id, plan_date,
                                     [pid for pid in plan_ids if pid],
                                 )
                             except Exception as e:
@@ -795,7 +822,8 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                                 logger.warning(f"Tamamlayıcı seçimi başarısız: {e}")
 
                         plan_skeleton = self._format_plan_skeleton(
-                            selected_meals, user, meal_factors, tamamlayicilar
+                            selected_meals, user, meal_factors, tamamlayicilar,
+                            plan_date=plan_date,
                         )
 
                         # --- İki-parçalı mimari ---
@@ -812,7 +840,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                             for t, r in selected_meals.items()
                         )
                         personality_prompt = (
-                            f"{isim} için {self._gun_adi()} planı seçildi:\n"
+                            f"{isim} için {self._gun_adi(plan_date)} planı seçildi:\n"
                             f"{ogun_listesi}\n\n"
                             f"Yaz (BAŞKA HİÇBİR ŞEY YAZMA — kalori/makro/malzeme listesi YAZMA):\n"
                             f"1. Kısa samimi giriş cümlesi (1 satır)\n"
@@ -831,9 +859,8 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         # Plan metnini de DB'ye kaydet (plan_detay güncelle)
                         if user_id:
                             try:
-                                from datetime import date as _date
                                 await db.save_plan_recipe_ids(
-                                    user_id, _date.today(),
+                                    user_id, plan_date,
                                     [r.get('tarif_id') or r.get('id', '')
                                      for r in selected_meals.values()],
                                     plan_text=plan_response,

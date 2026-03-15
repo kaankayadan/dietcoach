@@ -412,27 +412,55 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         msg_lower = message.lower()
         return any(t in msg_lower for t in triggers)
 
-    def _build_recipe_query(self, message: str, user: dict) -> str:
+    # Haftanın gününe göre dönen kategori vurgusu (0=Pzt … 6=Paz)
+    _GUNLUK_ROTASYON = [
+        "tavuk balık yüksek protein et",          # Pazartesi
+        "baklagil mercimek nohut sebze",           # Salı
+        "yumurta peynir süt ürünleri kahvaltılık", # Çarşamba
+        "kırmızı et köfte ızgara protein",         # Perşembe
+        "deniz ürünleri balık omega hafif",        # Cuma
+        "tahıl pilav bulgur tam buğday lif",       # Cumartesi
+        "zeytinyağlı sebze çorba geleneksel Türk", # Pazar
+    ]
+
+    # Öğün tipine göre spesifik arama terimleri
+    _OGUN_QUERY_EK = {
+        'kahvalti': "Türk kahvaltısı sabah peynir yumurta",
+        'ara_ogun': "hafif ara öğün atıştırmalık porsiyon küçük",
+        'ogle':     "öğle yemeği doyurucu ana yemek protein",
+        'aksam':    "akşam yemeği hafif sindirimi kolay protein",
+    }
+
+    def _build_recipe_query(self, message: str, user: dict,
+                             ogun_tipi: str = None) -> str:
         """
         Semantik arama için zenginleştirilmiş sorgu metni oluşturur.
-        Kullanıcının sağlık durumu, hedefi ve mesajı birleştirilir.
+        Her öğün tipi ve haftanın günü için farklı sorgu → çeşitlilik.
         """
         parts = [message]
+
+        # Öğün tipine özgü terimler
+        if ogun_tipi and ogun_tipi in self._OGUN_QUERY_EK:
+            parts.append(self._OGUN_QUERY_EK[ogun_tipi])
+
+        # Haftanın gününe göre kategori rotasyonu (çeşitlilik için)
+        gun_index = date.today().weekday()
+        parts.append(self._GUNLUK_ROTASYON[gun_index])
 
         # Kullanıcı hedefi
         hedef = user.get('hedef_tip', '')
         if hedef == 'kayip':
-            parts.append("düşük kalorili diyet yemek zayıflama")
+            parts.append("düşük kalorili diyet zayıflama")
         elif hedef == 'kazanim':
-            parts.append("yüksek proteinli kas yapma öğün")
+            parts.append("yüksek proteinli kas yapma")
 
         # Sağlık durumu
         hastaliklar = user.get('kronik_hastaliklar') or []
         for h in hastaliklar:
             if 'tiroid' in h.lower():
-                parts.append("tiroid dostu yemek")
+                parts.append("tiroid dostu")
             if 'diyabet' in h.lower():
-                parts.append("diyabet düşük glisemik indeks")
+                parts.append("düşük glisemik indeks")
 
         # Sevilen yiyecekler
         sevilen = user.get('sevilen_yiyecekler') or []
@@ -550,10 +578,17 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                             if ogun_hedef_kal > 0 else max_kalori
                         )
 
+                        # Her öğün için öğüne özel + günün rotasyonuna göre
+                        # farklı sorgu vektörü → çeşitlilik
+                        ogun_query = self._build_recipe_query(
+                            user_message, user, ogun_tipi=ogun_tipi
+                        )
+                        ogun_vector = await embedder.async_embed(ogun_query)
+
                         results = await db.search_recipes(
                             ogun_tipi=ogun_tipi,
                             limit=12,  # Daha geniş havuz → daha iyi makro seçimi
-                            embedding=query_vector,
+                            embedding=ogun_vector,
                             saglik_etiketleri=saglik_filtre if saglik_filtre else None,
                             exclude_recent_ids=session_excluded if session_excluded else None,
                             max_kalori=max_kalori_ogun,

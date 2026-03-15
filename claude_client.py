@@ -379,25 +379,22 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         kalan_acik = karb_acigi
 
         for ogun in ['ogle', 'aksam']:
-            if ogun not in selected_meals or kalan_acik <= 5:
+            if ogun not in selected_meals or kalan_acik <= 3:
                 continue
 
-            # Bu öğüne uygun tamamlayıcılar (öğün tipi eşleşmesi)
+            # Bu öğüne uygun tamamlayıcılar
             uygun = [
                 t for t in tamamlayici_recipes
                 if ogun in (t.get('ogun_tipleri') or [])
-                and float(t.get('karbonhidrat_g', 0)) <= kalan_acik + 8
             ]
-            if not uygun:
-                uygun = [t for t in tamamlayici_recipes
-                         if ogun in (t.get('ogun_tipleri') or [])]
             if not uygun:
                 continue
 
-            # Kalan açığın yarısına en yakın tamamlayıcıyı seç
-            hedef_yan_karb = kalan_acik / 2
+            # Kalan açığı tek seferde kapatacak en yakın tamamlayıcıyı seç.
+            # "acik/2" hedefi yerine doğrudan kalan_acik'a en yakın olanı al —
+            # bu sayede ikinci öğüne çok küçük bir açık bırakılmaz.
             best = min(uygun, key=lambda t: abs(
-                float(t.get('karbonhidrat_g', 0)) - hedef_yan_karb
+                float(t.get('karbonhidrat_g', 0)) - kalan_acik
             ))
 
             yan_kal = float(best.get('kalori', 0))
@@ -424,59 +421,61 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
     def _macro_fit_score(self, recipe: dict,
                          hedef_kal: float, hedef_p: float,
-                         hedef_k: float, hedef_y: float) -> float:
+                         hedef_k: float, hedef_y: float,
+                         hedef_l: float = 0.0) -> float:
         """
         Tarifin bu öğüne düşen makro bütçeyle uyumunu 0–1 arası puanlar.
 
         İki katmanlı değerlendirme:
-        1. Kapasite kontrolü — tarif maksimum ölçeklemeyle (1.5×) öğünün
-           kalori bütçesinin en az %80'ine ulaşabilmeli. Ulaşamazsa skor
-           sıfıra yaklaşır (ayran gibi içeceklerin ana öğün slotunu işgal
-           etmesi önlenir).
-        2. Makro uyumu — hipotetik ölçekleme sonrası P/K/Y sapması.
+        1. Kapasite kontrolü — tarif maksimum ölçeklemeyle öğünün kalori
+           bütçesinin en az %80'ine ulaşabilmeli.
+        2. Makro uyumu — P/K/Y/L sapması (ağırlıklı).
+
+        Ağırlıklar: P:0.35  K:0.30  Y:0.20  L:0.15
+        Asimetrik:  protein overshoot → ×0.50 ceza (eskiden ×0.25)
+                    lif overshoot     → ceza yok (fazla lif her zaman iyi)
         """
         r_kal = float(recipe.get('kalori') or 0)
         if r_kal == 0 or hedef_kal == 0:
             return 0.0
 
         # -- Kapasite faktörü (sürekli, 0–1 arası çarpan) --
-        # Tarif maksimum ölçeklemeyle hedef kalorinin ne kadarına ulaşabiliyor?
         actual_kal = r_kal * min(self._FAKTOR_MAX, hedef_kal / r_kal)
-        kapsama = actual_kal / hedef_kal  # 1.0 = tam bütçe, <1 = eksik
-        # 0.80 eşiğine kadar tam kredi, altında orantılı düşüş
+        kapsama = actual_kal / hedef_kal
         capacity_factor = min(1.0, kapsama / 0.80)
 
         # -- Makro uyumu (gerçek capped ölçekleme) --
-        # Hipotetik değil, gerçekte uygulanacak faktörle karşılaştır.
         actual_f = min(self._FAKTOR_MAX, hedef_kal / r_kal)
         r_p = float(recipe.get('protein_g') or 0) * actual_f
         r_k = float(recipe.get('karbonhidrat_g') or 0) * actual_f
         r_y = float(recipe.get('yag_g') or 0) * actual_f
+        r_l = float(recipe.get('lif_g') or 0) * actual_f
 
-        # Asimetrik protein skoru:
-        #   Undershoot → tam ceza (kas kaybı riski)
-        #   Overshoot  → hafif ceza (ekstra protein diyet hedefleri için OK)
+        # Protein: undershoot → tam ceza, overshoot → %50 ceza
         if r_p < hedef_p:
             p_err = (hedef_p - r_p) / max(hedef_p, 1)
         else:
-            p_err = (r_p - hedef_p) / max(hedef_p, 1) * 0.25
+            p_err = (r_p - hedef_p) / max(hedef_p, 1) * 0.50
 
         k_err = abs(r_k - hedef_k) / max(hedef_k, 1)
         y_err = abs(r_y - hedef_y) / max(hedef_y, 1)
 
-        # Protein ve karb daha kritik (P:0.40, K:0.35, Y:0.25)
-        weighted_err = 0.40 * p_err + 0.35 * k_err + 0.25 * y_err
+        # Lif: undershoot → tam ceza, overshoot → ceza yok
+        if hedef_l > 0:
+            l_err = max(0.0, (hedef_l - r_l) / hedef_l)
+        else:
+            l_err = 0.0
+
+        # Ağırlıklı hata: P:0.35  K:0.30  Y:0.20  L:0.15
+        weighted_err = 0.35 * p_err + 0.30 * k_err + 0.20 * y_err + 0.15 * l_err
         macro_score = max(0.0, 1.0 - weighted_err)
 
-        # Karbonhidrat yeterliliği penaltısı:
-        # Tarif hedef K'nın %25'inden azını sağlıyorsa (örn. Şiş Köfte K:6 vs hedef K:45),
-        # semantik benzerlik ne kadar yüksek olursa olsun ana öğün slotunu alamasın.
+        # Karbonhidrat yeterliliği penaltısı
         if hedef_k > 0 and r_k < hedef_k * 0.25:
             carb_penalty = 0.5
         else:
             carb_penalty = 1.0
 
-        # Kapasite × makro uyumu × karbonhidrat yeterliliği
         return macro_score * capacity_factor * carb_penalty
 
     def _select_model(self, message: str, is_onboarding: bool) -> str:
@@ -659,6 +658,10 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                     selected_meals = {}
                     meal_factors = {}
                     session_excluded = list(recent_recipe_ids)
+                    # Seçilen protein kategorileri — tekrar önlemek için
+                    # (ana_yemek_tavuk, ana_yemek_et, ana_yemek_balik)
+                    _PROTEIN_KATS = {'ana_yemek_tavuk', 'ana_yemek_et', 'ana_yemek_balik'}
+                    secilen_protein_kats: set = set()
 
                     for ogun_tipi in ogun_tipleri:
                         pay = ogun_paylari[ogun_tipi]
@@ -666,17 +669,14 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         ogun_hedef_p   = hedef_protein_f * pay
                         ogun_hedef_k   = hedef_karb_f * pay
                         ogun_hedef_y   = hedef_yag_f * pay
+                        ogun_hedef_l   = float(user.get('lif_g') or 0) * pay
 
                         # Per-slot max_kalori: bu slotta makul üst sınır
-                        # (hedef / FAKTOR_MIN) → 480/0.7 = 685 kcal öğle için
-                        # Bu sayede ara öğün slotuna büyük tarifler gelmez
                         max_kalori_ogun = (
                             ogun_hedef_kal / self._FAKTOR_MIN
                             if ogun_hedef_kal > 0 else max_kalori
                         )
 
-                        # Her öğün için öğüne özel + günün rotasyonuna göre
-                        # farklı sorgu vektörü → çeşitlilik
                         ogun_query = self._build_recipe_query(
                             user_message, user, ogun_tipi=ogun_tipi
                         )
@@ -684,24 +684,35 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
                         results = await db.search_recipes(
                             ogun_tipi=ogun_tipi,
-                            limit=12,  # Daha geniş havuz → daha iyi makro seçimi
+                            limit=12,
                             embedding=ogun_vector,
                             saglik_etiketleri=saglik_filtre if saglik_filtre else None,
                             exclude_recent_ids=session_excluded if session_excluded else None,
                             max_kalori=max_kalori_ogun,
                         )
                         if results:
-                            # Bileşik skor: semantik benzerlik (0.35) + makro uyumu (0.65)
-                            # Makro uyumu daha ağır tutulur — yüksek semantik benzerlik
-                            # kötü makrolu tariflerin seçilmesini engellemez.
+                            # Protein kategorisi tekrarını önle: öğle/akşam arasında
+                            # aynı protein kaynağı (tavuk/et/balık) seçilmesin.
+                            # Filtrelenmiş havuz boşalırsa kısıtı kaldır.
+                            if ogun_tipi in ('ogle', 'aksam') and secilen_protein_kats:
+                                filtered = [
+                                    r for r in results
+                                    if r.get('kategori') not in secilen_protein_kats
+                                ]
+                                if filtered:
+                                    results = filtered
+
                             chosen = max(results, key=lambda r: (
                                 0.35 * float(r.get('benzerlik', 0)) +
                                 0.65 * self._macro_fit_score(
-                                    r, ogun_hedef_kal, ogun_hedef_p, ogun_hedef_k, ogun_hedef_y
+                                    r, ogun_hedef_kal, ogun_hedef_p,
+                                    ogun_hedef_k, ogun_hedef_y, ogun_hedef_l
                                 )
                             ))
                             selected_meals[ogun_tipi] = chosen
                             session_excluded.append(chosen['tarif_id'])
+                            if chosen.get('kategori') in _PROTEIN_KATS:
+                                secilen_protein_kats.add(chosen['kategori'])
 
                             # Öğün bazlı ölçekleme faktörü [FAKTOR_MIN, FAKTOR_MAX]
                             r_kal = float(chosen.get('kalori') or 0)
@@ -724,7 +735,19 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         )
                         if plan_kal_toplam > 0 and plan_kal_toplam < hedef_kalori_f * 0.95:
                             boost = hedef_kalori_f / plan_kal_toplam
+                            # Proteini zaten fazla olan öğünleri boostlama —
+                            # bu sayede protein hedefin çok üstüne çıkmaz.
+                            plan_p_toplam = sum(
+                                float(selected_meals[t].get('protein_g', 0)) * meal_factors.get(t, 1.0)
+                                for t in selected_meals
+                            )
                             for t in list(meal_factors.keys()):
+                                r = selected_meals[t]
+                                ogune_dusen_p = float(r.get('protein_g', 0)) * meal_factors.get(t, 1.0)
+                                ogune_dusen_p_hedef = hedef_protein_f * ogun_paylari.get(t, 0.25)
+                                # Bu öğün protein hedefinin %115'ini aşıyorsa boost uygulama
+                                if ogune_dusen_p > ogune_dusen_p_hedef * 1.15:
+                                    continue
                                 meal_factors[t] = min(
                                     self._FAKTOR_MAX,
                                     meal_factors[t] * boost

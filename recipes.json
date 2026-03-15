@@ -9705,5 +9705,3126 @@
     "pismesi_dk": 0,
     "zorluk": "kolay",
     "aciklama": "Labneh taze otlarla yoğrularak top şekline getirilir; zeytinyağı ve pul biberle süslenen şık ve protein dolu bir yoğurtlu meze."
+  },
+  {
+    "id": "teriyaki_somon",
+    "ad": "Teriyaki Salmon",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "somon fileto",
+      "soya sosu",
+      "bal",
+      "sarımsak",
+      "zencefil",
+      "susam",
+      "yeşil soğan",
+      "pirinç"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 480,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 28.0,
+    "yag_g": 22.0,
+    "lif_g": 1.2,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Japon teriyaki sosuyla marine edilmiş somon fileto, pişmiş pirinç ve yeşilliklerle servis edilir."
+  },
+  {
+    "id": "salmon_poke_bowl",
+    "ad": "Salmon Poke Bowl",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "çiğ somon",
+      "sushi pirinci",
+      "avokado",
+      "salatalık",
+      "edamame",
+      "soya sosu",
+      "susam yağı",
+      "yeşil soğan",
+      "nori",
+      "susam"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 520,
+    "protein_g": 36.0,
+    "karbonhidrat_g": 42.0,
+    "yag_g": 20.0,
+    "lif_g": 6.5,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "tam_gida"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "orta",
+    "aciklama": "Hawaii kökenli, çiğ somon küpleri, pirinç, avokado ve taze sebzelerle hazırlanan besleyici kase yemeği."
+  },
+  {
+    "id": "grilled_sea_bass_mediterranean",
+    "ad": "Grilled Sea Bass Mediterranean",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "levrek fileto",
+      "zeytinyağı",
+      "limon",
+      "sarımsak",
+      "domates",
+      "zeytin",
+      "kapari",
+      "kekik",
+      "biberiye",
+      "taze fesleğen"
+    ],
+    "porsiyon_gram": 360,
+    "kalori": 310,
+    "protein_g": 34.0,
+    "karbonhidrat_g": 8.0,
+    "yag_g": 16.0,
+    "lif_g": 2.8,
+    "saglik_etiketler": [
+      "düşük_kalori",
+      "yüksek_protein",
+      "akdeniz_diyeti",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Akdeniz baharatları ve zeytinyağıyla marine edilmiş levrek, domates ve zeytin garnitürüyle ızgarada pişirilir."
+  },
+  {
+    "id": "tuna_nicoise_salad",
+    "ad": "Tuna Nicoise Salad",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "ton balığı konserve",
+      "haşlanmış yumurta",
+      "yeşil fasulye",
+      "domates",
+      "zeytin",
+      "kapari",
+      "patates",
+      "marul",
+      "dijon hardal",
+      "kırmızı şarap sirkesi",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 390,
+    "protein_g": 34.0,
+    "karbonhidrat_g": 22.0,
+    "yag_g": 18.0,
+    "lif_g": 5.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "omega3_zengin",
+      "akdeniz_diyeti",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Fransız mutfağının klasiği; ton balığı, haşlanmış yumurta, yeşil fasulye ve zeytin ile hazırlanan doyurucu salata."
+  },
+  {
+    "id": "miso_glazed_cod",
+    "ad": "Miso Glazed Cod",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "morina fileto",
+      "beyaz miso ezmesi",
+      "mirin",
+      "sake",
+      "şeker",
+      "susam",
+      "yeşil soğan",
+      "zencefil"
+    ],
+    "porsiyon_gram": 320,
+    "kalori": 310,
+    "protein_g": 30.0,
+    "karbonhidrat_g": 22.0,
+    "yag_g": 10.0,
+    "lif_g": 0.8,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "probiyotik_kaynak"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Miso ve mirin karışımıyla marine edilmiş morina fırında altın rengi alana kadar pişirilir."
+  },
+  {
+    "id": "shrimp_stir_fry",
+    "ad": "Shrimp Stir Fry",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "karides",
+      "brokoli",
+      "kırmızı biber",
+      "havuç",
+      "sarımsak",
+      "zencefil",
+      "soya sosu",
+      "susam yağı",
+      "istiridye sosu",
+      "yeşil soğan",
+      "pirinç"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 390,
+    "protein_g": 32.0,
+    "karbonhidrat_g": 38.0,
+    "yag_g": 10.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "sebze_zengin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Asya usulü yüksek ısıda hızlı pişirme tekniğiyle hazırlanan karides ve sebze kavurması."
+  },
+  {
+    "id": "tuna_avocado_stack",
+    "ad": "Tuna Avocado Stack",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "taze ton balığı",
+      "avokado",
+      "salatalık",
+      "soya sosu",
+      "susam yağı",
+      "limon suyu",
+      "kırmızı soğan",
+      "susam",
+      "wasabi",
+      "yeşil soğan"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 350,
+    "protein_g": 32.0,
+    "karbonhidrat_g": 8.0,
+    "yag_g": 21.0,
+    "lif_g": 6.0,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "orta",
+    "aciklama": "Taze ton balığı tartarı ve kremalı avokado katmanlarından oluşan şık restoran kalitesinde yemek."
+  },
+  {
+    "id": "baked_lemon_herb_salmon",
+    "ad": "Baked Lemon Herb Salmon",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "somon fileto",
+      "limon",
+      "sarımsak",
+      "taze dereotu",
+      "taze maydanoz",
+      "zeytinyağı",
+      "kekik",
+      "tuz",
+      "karabiber",
+      "kapari"
+    ],
+    "porsiyon_gram": 330,
+    "kalori": 410,
+    "protein_g": 36.0,
+    "karbonhidrat_g": 4.0,
+    "yag_g": 27.0,
+    "lif_g": 0.8,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "glütensiz",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Limon dilimleri ve taze otlar eşliğinde fırında pişirilen somon; hafif, lezzetli ve besleyici."
+  },
+  {
+    "id": "shrimp_tacos",
+    "ad": "Shrimp Tacos",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "karides",
+      "mısır tortilla",
+      "lahana",
+      "avokado",
+      "domates salsa",
+      "kişniş",
+      "limon suyu",
+      "smetana",
+      "kimyon",
+      "kırmızı biber tozu",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 420,
+    "protein_g": 28.0,
+    "karbonhidrat_g": 38.0,
+    "yag_g": 16.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Meksika usulü baharatlı karides ve avokado kremesiyle doldurulmuş tortilla."
+  },
+  {
+    "id": "seared_tuna_sesame_noodles",
+    "ad": "Seared Tuna with Sesame Noodles",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "taze ton balığı",
+      "soba erişte",
+      "susam yağı",
+      "soya sosu",
+      "zencefil",
+      "sarımsak",
+      "salatalık",
+      "yeşil soğan",
+      "susam",
+      "kırmızı biber",
+      "pirinç sirkesi"
+    ],
+    "porsiyon_gram": 390,
+    "kalori": 470,
+    "protein_g": 40.0,
+    "karbonhidrat_g": 36.0,
+    "yag_g": 16.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "omega3_zengin",
+      "enerji_verici"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Dışı mühürlü ton balığı, susam soslu soba erişte ve taze sebzelerle Asya füzyon sunumu."
+  },
+  {
+    "id": "thai_fish_curry",
+    "ad": "Thai Fish Curry",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "beyaz balık fileto",
+      "hindistan cevizi sütü",
+      "kırmızı köri ezmesi",
+      "limon otu",
+      "balık sosu",
+      "şeker",
+      "biber",
+      "sarımsak",
+      "zencefil",
+      "kişniş",
+      "pirinç"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 490,
+    "protein_g": 30.0,
+    "karbonhidrat_g": 42.0,
+    "yag_g": 20.0,
+    "lif_g": 4.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glütensiz",
+      "antioksidan_zengin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Tayland'ın aromatik kırmızı köri sosuyla pişirilmiş balık; hindistan cevizi sütünün kremsi lezzetiyle pirinç üzerinde servis edilir."
+  },
+  {
+    "id": "grilled_tilapia_mango_salsa",
+    "ad": "Grilled Tilapia with Mango Salsa",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "tilapia fileto",
+      "mango",
+      "kırmızı soğan",
+      "kişniş",
+      "jalapeño",
+      "limon suyu",
+      "zeytinyağı",
+      "kimyon",
+      "kırmızı biber tozu",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 340,
+    "kalori": 300,
+    "protein_g": 34.0,
+    "karbonhidrat_g": 18.0,
+    "yag_g": 10.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "düşük_kalori",
+      "yüksek_protein",
+      "glütensiz",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Baharatlı ızgara tilapia ve taze mango salsa kombinasyonu; tropikal tatlar ve hafif yapısıyla yaz sofralarının favorisi."
+  },
+  {
+    "id": "shrimp_quinoa_bowl",
+    "ad": "Shrimp and Quinoa Bowl",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "karides",
+      "quinoa",
+      "avokado",
+      "domates",
+      "salatalık",
+      "kırmızı soğan",
+      "limon suyu",
+      "zeytinyağı",
+      "kişniş",
+      "sarımsak",
+      "ıspanak"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 440,
+    "protein_g": 35.0,
+    "karbonhidrat_g": 36.0,
+    "yag_g": 16.0,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "lif_zengin",
+      "tam_gida",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Protein zengini quinoa üzerine sarımsaklı karides, taze sebzeler ve avokado ile doyurucu kase."
+  },
+  {
+    "id": "mediterranean_baked_fish",
+    "ad": "Mediterranean Baked Fish",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "levrek veya çipura",
+      "domates",
+      "zeytin",
+      "kapari",
+      "kırmızı soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "kekik",
+      "biberiye",
+      "limon",
+      "beyaz şarap"
+    ],
+    "porsiyon_gram": 370,
+    "kalori": 320,
+    "protein_g": 32.0,
+    "karbonhidrat_g": 10.0,
+    "yag_g": 16.0,
+    "lif_g": 3.0,
+    "saglik_etiketler": [
+      "akdeniz_diyeti",
+      "yüksek_protein",
+      "glütensiz",
+      "antioksidan_zengin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Domates, zeytin ve otlar eşliğinde fırında pişen bütün balık, Akdeniz mutfağının sağlıklı klasiği."
+  },
+  {
+    "id": "salmon_teriyaki_rice_bowl",
+    "ad": "Salmon Teriyaki Rice Bowl",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "somon fileto",
+      "pirinç",
+      "soya sosu",
+      "bal",
+      "mirin",
+      "sarımsak",
+      "zencefil",
+      "susam",
+      "edamame",
+      "avokado",
+      "salatalık",
+      "yeşil soğan"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 570,
+    "protein_g": 40.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 20.0,
+    "lif_g": 5.5,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "dengeli_makro"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "Teriyaki soslu somon, pirinç, edamame ve avokadoyla doyurucu bir kase yemeği."
+  },
+  {
+    "id": "garlic_butter_shrimp",
+    "ad": "Garlic Butter Shrimp",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "karides",
+      "tereyağı",
+      "sarımsak",
+      "limon suyu",
+      "taze maydanoz",
+      "kırmızı biber pulları",
+      "beyaz şarap",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 310,
+    "protein_g": 30.0,
+    "karbonhidrat_g": 4.0,
+    "yag_g": 19.0,
+    "lif_g": 0.3,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glütensiz",
+      "hızlı_tarif"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Tereyağı ve sarımsakla hızlıca pişirilen karides; limon ve maydanozla tamamlanan klasik lezzet."
+  },
+  {
+    "id": "tuna_stuffed_avocado",
+    "ad": "Tuna Stuffed Avocado",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "ton balığı konserve",
+      "avokado",
+      "kırmızı soğan",
+      "kereviz",
+      "limon suyu",
+      "dijon hardal",
+      "taze maydanoz",
+      "tuz",
+      "karabiber"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 340,
+    "protein_g": 28.0,
+    "karbonhidrat_g": 10.0,
+    "yag_g": 22.0,
+    "lif_g": 7.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "omega3_zengin",
+      "düşük_karbonhidrat",
+      "lif_zengin",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "çok_kolay",
+    "aciklama": "Kremalı avokadoya ton balığı salatası doldurulan pratik ve besleyici tarif; pişirme gerektirmeyen hızlı öğün."
+  },
+  {
+    "id": "lemon_dill_salmon",
+    "ad": "Lemon Dill Salmon",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "somon fileto",
+      "taze dereotu",
+      "limon",
+      "sarımsak",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "kapari",
+      "smetana sosu"
+    ],
+    "porsiyon_gram": 330,
+    "kalori": 420,
+    "protein_g": 36.0,
+    "karbonhidrat_g": 4.0,
+    "yag_g": 28.0,
+    "lif_g": 0.5,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "glütensiz",
+      "düşük_karbonhidrat"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Taze dereotu ve limonun ferahlatıcı aromasıyla hazırlanan somon; İskandinav mutfağından ilham alan tarif."
+  },
+  {
+    "id": "greek_baked_fish_plaki",
+    "ad": "Greek Baked Fish Plaki",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "beyaz balık fileto",
+      "domates",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "limon",
+      "maydanoz",
+      "kekik",
+      "tuz",
+      "karabiber",
+      "kapari"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 310,
+    "protein_g": 30.0,
+    "karbonhidrat_g": 12.0,
+    "yag_g": 16.0,
+    "lif_g": 3.2,
+    "saglik_etiketler": [
+      "akdeniz_diyeti",
+      "yüksek_protein",
+      "glütensiz",
+      "antioksidan_zengin",
+      "düşük_kalori"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "kolay",
+    "aciklama": "Yunan mutfağının geleneksel balık tarifi; domates, soğan ve zeytinyağıyla fırında yavaş pişirilen Plaki."
+  },
+  {
+    "id": "asian_glazed_salmon",
+    "ad": "Asian Glazed Salmon",
+    "kategori": "ana_yemek_balik",
+    "malzemeler": [
+      "somon fileto",
+      "soya sosu",
+      "bal",
+      "pirinç sirkesi",
+      "susam yağı",
+      "zencefil",
+      "sarımsak",
+      "kırmızı biber pulları",
+      "susam",
+      "yeşil soğan"
+    ],
+    "porsiyon_gram": 340,
+    "kalori": 450,
+    "protein_g": 37.0,
+    "karbonhidrat_g": 22.0,
+    "yag_g": 23.0,
+    "lif_g": 0.8,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Tatlı-tuzlu Asya glazesiyle marine edilmiş somon; karamelize olan sosuyla nefis lezzet profili sunar."
+  },
+  {
+    "id": "energy_balls",
+    "ad": "Energy Balls",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "yulaf",
+      "fıstık ezmesi",
+      "bal",
+      "çikolata damlaları",
+      "chia tohumu"
+    ],
+    "porsiyon_gram": 60,
+    "kalori": 278,
+    "protein_g": 8.0,
+    "karbonhidrat_g": 28.0,
+    "yag_g": 15.0,
+    "lif_g": 3.0,
+    "saglik_etiketler": [
+      "yüksek_enerji",
+      "doğal",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Yulaf ve fıstık ezmesiyle hazırlanan enerji topları, spor öncesi ideal atıştırmalık."
+  },
+  {
+    "id": "protein_bites",
+    "ad": "Protein Bites",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "protein tozu",
+      "badem ezmesi",
+      "yulaf",
+      "bal",
+      "vanilya özü"
+    ],
+    "porsiyon_gram": 55,
+    "kalori": 224,
+    "protein_g": 14.0,
+    "karbonhidrat_g": 18.0,
+    "yag_g": 10.0,
+    "lif_g": 2.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "spor_sonrası",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Protein tozu ve badem ezmesiyle yapılan bu lokmalık atıştırmalıklar kas gelişimini destekler."
+  },
+  {
+    "id": "edamame",
+    "ad": "Edamame",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "edamame (soya fasulyesi)",
+      "deniz tuzu",
+      "susam yağı",
+      "pul biber"
+    ],
+    "porsiyon_gram": 150,
+    "kalori": 185,
+    "protein_g": 16.0,
+    "karbonhidrat_g": 15.0,
+    "yag_g": 8.0,
+    "lif_g": 6.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "vegan",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 8,
+    "zorluk": "çok_kolay",
+    "aciklama": "Japon mutfağından gelen edamame, protein ve lif açısından zengin hafif bir atıştırmalıktır."
+  },
+  {
+    "id": "rice_cakes_almond_butter",
+    "ad": "Rice Cakes with Almond Butter",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "pirinç keki",
+      "badem ezmesi",
+      "muz dilimleri",
+      "tarçın"
+    ],
+    "porsiyon_gram": 70,
+    "kalori": 232,
+    "protein_g": 6.0,
+    "karbonhidrat_g": 26.0,
+    "yag_g": 12.0,
+    "lif_g": 2.5,
+    "saglik_etiketler": [
+      "glutensiz",
+      "düşük_kalorili",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Hafif pirinç keklerinin üzerine sürülen badem ezmesi, tok tutturan enerjik bir atıştırmalık sunar."
+  },
+  {
+    "id": "hummus_veggie_sticks",
+    "ad": "Hummus with Veggie Sticks",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "nohut",
+      "tahin",
+      "sarımsak",
+      "limon suyu",
+      "havuç",
+      "salatalık",
+      "kırmızı biber"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 220,
+    "protein_g": 8.0,
+    "karbonhidrat_g": 25.0,
+    "yag_g": 9.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "vegan",
+      "yüksek_lif",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Ev yapımı humus ve taze sebze çubukları, lif ve bitkisel protein açısından zengin doyurucu atıştırmalık."
+  },
+  {
+    "id": "greek_yogurt_berries",
+    "ad": "Greek Yogurt with Berries",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "Yunan yoğurdu",
+      "çilek",
+      "yaban mersini",
+      "ahududu",
+      "bal",
+      "chia tohumu"
+    ],
+    "porsiyon_gram": 220,
+    "kalori": 178,
+    "protein_g": 16.0,
+    "karbonhidrat_g": 22.0,
+    "yag_g": 2.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "probiyotik",
+      "antioksidan",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Kremalı Yunan yoğurdu ve antioksidan açısından zengin meyveler, bağışıklık sistemini güçlendiren mükemmel ikili."
+  },
+  {
+    "id": "trail_mix",
+    "ad": "Trail Mix",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "badem",
+      "ceviz",
+      "kaju",
+      "kuru yaban mersini",
+      "kabak çekirdeği",
+      "bitter çikolata parçaları"
+    ],
+    "porsiyon_gram": 50,
+    "kalori": 267,
+    "protein_g": 7.0,
+    "karbonhidrat_g": 18.0,
+    "yag_g": 19.0,
+    "lif_g": 3.0,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "yüksek_enerji",
+      "omega3"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 0,
+    "zorluk": "çok_kolay",
+    "aciklama": "Çeşitli kuruyemişler ve kuru meyvelerden oluşan trail mix, aktif günler için ideal enerji kaynağı."
+  },
+  {
+    "id": "apple_peanut_butter",
+    "ad": "Apple with Peanut Butter",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "elma",
+      "fıstık ezmesi",
+      "tarçın"
+    ],
+    "porsiyon_gram": 212,
+    "kalori": 283,
+    "protein_g": 8.5,
+    "karbonhidrat_g": 31.0,
+    "yag_g": 16.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "doğal",
+      "vegan",
+      "glutensiz",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 3,
+    "zorluk": "çok_kolay",
+    "aciklama": "Elmanın doğal şekeri ile fıstık ezmesinin sağlıklı yağları bir araya gelince besleyici atıştırmalık."
+  },
+  {
+    "id": "cottage_cheese_fruit",
+    "ad": "Cottage Cheese with Fruit",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "süzme peynir (cottage cheese)",
+      "ananas",
+      "çilek",
+      "bal",
+      "nane yaprakları"
+    ],
+    "porsiyon_gram": 200,
+    "kalori": 176,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 18.0,
+    "yag_g": 3.0,
+    "lif_g": 1.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "kalsiyum_zengin"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Yüksek proteinli cottage cheese ve taze meyveler, kas koruma ve kilo yönetimi için ideal hafif öğün."
+  },
+  {
+    "id": "homemade_protein_bar",
+    "ad": "Protein Bar (Ev Yapımı)",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "yulaf",
+      "protein tozu",
+      "badem ezmesi",
+      "bal",
+      "bitter çikolata",
+      "chia tohumu",
+      "kaju"
+    ],
+    "porsiyon_gram": 70,
+    "kalori": 298,
+    "protein_g": 16.0,
+    "karbonhidrat_g": 26.0,
+    "yag_g": 13.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "ev_yapımı",
+      "doğal",
+      "spor_sonrası"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Katkı maddesi içermeyen ev yapımı protein bar, antrenman sonrası kas onarımı için mükemmel seçenek."
+  },
+  {
+    "id": "roasted_chickpeas",
+    "ad": "Roasted Chickpeas",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "nohut",
+      "zeytinyağı",
+      "kimyon",
+      "paprika",
+      "sarımsak tozu",
+      "tuz"
+    ],
+    "porsiyon_gram": 80,
+    "kalori": 197,
+    "protein_g": 9.0,
+    "karbonhidrat_g": 26.0,
+    "yag_g": 6.0,
+    "lif_g": 6.5,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "yüksek_lif",
+      "yüksek_protein"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Fırında çıtır çıtır kavrulmuş nohutlar, cips gibi lezzetli ama çok daha besleyici atıştırmalık."
+  },
+  {
+    "id": "guacamole_veggies",
+    "ad": "Guacamole with Veggies",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "avokado",
+      "limon suyu",
+      "domates",
+      "kırmızı soğan",
+      "kişniş",
+      "sarımsak",
+      "havuç",
+      "salatalık"
+    ],
+    "porsiyon_gram": 180,
+    "kalori": 195,
+    "protein_g": 3.5,
+    "karbonhidrat_g": 14.0,
+    "yag_g": 15.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "sağlıklı_yağ"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Meksika mutfağının simgesi guacamole, avokadонun tekli doymamış yağları sayesinde kalp dostu atıştırmalık."
+  },
+  {
+    "id": "hard_boiled_eggs",
+    "ad": "Hard-Boiled Eggs",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "yumurta",
+      "tuz",
+      "karabiber",
+      "pul biber",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 100,
+    "kalori": 155,
+    "protein_g": 13.0,
+    "karbonhidrat_g": 1.0,
+    "yag_g": 11.0,
+    "lif_g": 0.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 12,
+    "zorluk": "çok_kolay",
+    "aciklama": "Haşlanmış yumurta, taşınabilir ve pratik protein kaynağı; tüm esansiyel amino asitleri içerir."
+  },
+  {
+    "id": "banana_almond_butter",
+    "ad": "Banana with Almond Butter",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "muz",
+      "badem ezmesi",
+      "tarçın",
+      "chia tohumu"
+    ],
+    "porsiyon_gram": 180,
+    "kalori": 274,
+    "protein_g": 7.0,
+    "karbonhidrat_g": 34.0,
+    "yag_g": 13.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "potasyum_zengin",
+      "spor_öncesi"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 3,
+    "zorluk": "çok_kolay",
+    "aciklama": "Muzun doğal şekeri ve badem ezmesinin sağlıklı yağları, egzersiz öncesi hızlı enerji sağlar."
+  },
+  {
+    "id": "veggie_sticks_tzatziki",
+    "ad": "Veggie Sticks with Tzatziki",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "Yunan yoğurdu",
+      "salatalık",
+      "sarımsak",
+      "dereotu",
+      "limon suyu",
+      "zeytinyağı",
+      "havuç",
+      "kırmızı biber"
+    ],
+    "porsiyon_gram": 230,
+    "kalori": 148,
+    "protein_g": 10.0,
+    "karbonhidrat_g": 14.0,
+    "yag_g": 5.5,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "düşük_kalorili",
+      "probiyotik",
+      "glutensiz"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Yunan mutfağının vazgeçilmezi tzatziki sosu, taze sebze çubuklarıyla ferahlatıcı ve düşük kalorili atıştırmalık."
+  },
+  {
+    "id": "dates_almond_butter",
+    "ad": "Dates with Almond Butter",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "hurma",
+      "badem ezmesi",
+      "deniz tuzu",
+      "kakao nibs"
+    ],
+    "porsiyon_gram": 80,
+    "kalori": 296,
+    "protein_g": 5.0,
+    "karbonhidrat_g": 42.0,
+    "yag_g": 13.0,
+    "lif_g": 4.5,
+    "saglik_etiketler": [
+      "vegan",
+      "doğal_şeker",
+      "demir_zengin"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Hurma ve badem ezmesi kombinasyonu, doğal şekerli ve mineraller açısından zengin atıştırmalık."
+  },
+  {
+    "id": "mango_lassi",
+    "ad": "Mango Lassi (Sağlıklı)",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "mango",
+      "Yunan yoğurdu",
+      "süt",
+      "zerdeçal",
+      "zencefil",
+      "bal",
+      "kakule"
+    ],
+    "porsiyon_gram": 300,
+    "kalori": 210,
+    "protein_g": 11.0,
+    "karbonhidrat_g": 35.0,
+    "yag_g": 3.0,
+    "lif_g": 2.0,
+    "saglik_etiketler": [
+      "probiyotik",
+      "antiinflamatuar",
+      "C_vitamini"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Hint mutfağının klasik içeceği lassi, yoğurt ve taze mangoyla hem serinletici hem besleyici."
+  },
+  {
+    "id": "nut_butter_rice_cakes",
+    "ad": "Nut Butter Rice Cakes",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "pirinç keki",
+      "karışık kuruyemiş ezmesi",
+      "bal",
+      "kabak çekirdeği",
+      "keten tohumu"
+    ],
+    "porsiyon_gram": 75,
+    "kalori": 258,
+    "protein_g": 7.0,
+    "karbonhidrat_g": 27.0,
+    "yag_g": 14.0,
+    "lif_g": 3.0,
+    "saglik_etiketler": [
+      "glutensiz",
+      "vegan",
+      "omega3",
+      "düşük_glisemik"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Hafif pirinç kekleri üzerine karışık kuruyemiş ezmesi ve tohumlar, dengeli atıştırmalık sunar."
+  },
+  {
+    "id": "kale_chips",
+    "ad": "Kale Chips",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "kale (lahana)",
+      "zeytinyağı",
+      "deniz tuzu",
+      "besin mayası",
+      "sarımsak tozu",
+      "limon suyu"
+    ],
+    "porsiyon_gram": 40,
+    "kalori": 98,
+    "protein_g": 4.0,
+    "karbonhidrat_g": 8.0,
+    "yag_g": 6.0,
+    "lif_g": 2.0,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "K_vitamini",
+      "antioksidan",
+      "düşük_kalorili"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Fırında çıtırlatılmış kale yaprakları, klasik cipslerin süper sağlıklı alternatifi."
+  },
+  {
+    "id": "coconut_yogurt_granola",
+    "ad": "Coconut Yogurt with Granola",
+    "kategori": "ara_ogun",
+    "malzemeler": [
+      "hindistan cevizi yoğurdu",
+      "ev yapımı granola",
+      "yaban mersini",
+      "hindistan cevizi cipsi",
+      "akçaağaç şurubu"
+    ],
+    "porsiyon_gram": 220,
+    "kalori": 318,
+    "protein_g": 5.0,
+    "karbonhidrat_g": 40.0,
+    "yag_g": 16.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "vegan",
+      "laktoz_free",
+      "probiyotik",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "ara_ogun"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "çok_kolay",
+    "aciklama": "Hindistan cevizi yoğurdu ve granoladan oluşan vegan atıştırmalık, laktoz intoleransı olanlar için probiyotik kaynak."
+  },
+  {
+    "id": "acai_bowl",
+    "ad": "Açaí Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "açaí püresi",
+      "dondurulmuş muz",
+      "yaban mersini",
+      "granola",
+      "bal",
+      "hindistan cevizi rendesi"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 380,
+    "protein_g": 8.5,
+    "karbonhidrat_g": 65.0,
+    "yag_g": 9.0,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "antioksidan_zengin",
+      "vegan",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Brezilyalı açaí meyvesiyle yapılan, antioksidan açısından zengin smoothie kasesi."
+  },
+  {
+    "id": "mango_smoothie_bowl",
+    "ad": "Mango Smoothie Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "dondurulmuş mango",
+      "muz",
+      "hindistan cevizi sütü",
+      "chia tohumu",
+      "granola",
+      "taze mango",
+      "nane"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 355,
+    "protein_g": 6.0,
+    "karbonhidrat_g": 68.0,
+    "yag_g": 7.5,
+    "lif_g": 7.5,
+    "saglik_etiketler": [
+      "vegan",
+      "glütensiz",
+      "C_vitamini_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 8,
+    "zorluk": "kolay",
+    "aciklama": "Tropikal mango ve muz bazlı, chia tohumlarıyla zenginleştirilmiş ferahlatıcı smoothie kasesi."
+  },
+  {
+    "id": "avocado_toast",
+    "ad": "Avocado Toast (Tam Tahıllı)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam tahıllı ekmek",
+      "avokado",
+      "limon suyu",
+      "kırmızı pul biber",
+      "tuz",
+      "karabiber",
+      "çeri domates",
+      "mikro yeşillik"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 340,
+    "protein_g": 9.0,
+    "karbonhidrat_g": 35.0,
+    "yag_g": 18.0,
+    "lif_g": 9.5,
+    "saglik_etiketler": [
+      "vegan",
+      "sağlıklı_yağ",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Ekmeğin üzerine ezilmiş avokado, limon suyu ve baharatlarla hazırlanan trend kahvaltı tostu."
+  },
+  {
+    "id": "overnight_oats",
+    "ad": "Overnight Oats",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf ezmesi",
+      "yağsız süt",
+      "chia tohumu",
+      "bal",
+      "yaban mersini",
+      "tarçın",
+      "vanilya özü"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 420,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 65.0,
+    "yag_g": 7.5,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "prebiyotik",
+      "lif_zengin",
+      "düşük_GI"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Gece önceden hazırlanan, sabah hazır olan yulaf bazlı besleyici kahvaltı."
+  },
+  {
+    "id": "shakshuka",
+    "ad": "Shakshuka (Orta Doğu Usulü)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "domates konservesi",
+      "kırmızı biber",
+      "soğan",
+      "sarımsak",
+      "zeytinyağı",
+      "kimyon",
+      "kırmızı biber",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 520,
+    "kalori": 320,
+    "protein_g": 22.0,
+    "karbonhidrat_g": 18.0,
+    "yag_g": 17.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glütensiz",
+      "düşük_karbonhidrat",
+      "antioksidan_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "Baharatlı domates sosu içinde pişirilmiş yumurtalardan oluşan geleneksel Orta Doğu kahvaltısı."
+  },
+  {
+    "id": "greek_yogurt_parfait",
+    "ad": "Greek Yogurt Parfait",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "Yunan yoğurdu",
+      "granola",
+      "çilek",
+      "yaban mersini",
+      "bal",
+      "badem"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 375,
+    "protein_g": 22.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 8.5,
+    "lif_g": 5.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "probiyotik",
+      "kalsiyum_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Yunan yoğurdu, granola ve taze meyvelerle katman katman dizilen besleyici parfait."
+  },
+  {
+    "id": "egg_white_omelette",
+    "ad": "Egg White Omelette",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta akı",
+      "ıspanak",
+      "domates",
+      "mantar",
+      "kırmızı biber",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "taze kekik"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 195,
+    "protein_g": 26.0,
+    "karbonhidrat_g": 9.0,
+    "yag_g": 6.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_kalori",
+      "düşük_yağ",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Yalnızca yumurta akıyla yapılan, sebzeli, düşük kalorili ve protein dolu omlet."
+  },
+  {
+    "id": "protein_pancakes",
+    "ad": "Protein Pancakes",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf unu",
+      "protein tozu vanilyalı",
+      "yumurta",
+      "yağsız süt",
+      "kabartma tozu",
+      "tarçın",
+      "muz",
+      "mevsim meyveleri"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 455,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 8.5,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "kas_yapıcı",
+      "sporcu_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Yulaf unu ve protein tozu ile yapılan, makro değerleri yüksek sporcu pankeki."
+  },
+  {
+    "id": "bircher_muesli",
+    "ad": "Bircher Muesli",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf ezmesi",
+      "elma rendesi",
+      "Yunan yoğurdu",
+      "elma suyu",
+      "badem",
+      "kuru üzüm",
+      "bal",
+      "tarçın"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 430,
+    "protein_g": 16.0,
+    "karbonhidrat_g": 65.0,
+    "yag_g": 11.5,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "probiyotik",
+      "lif_zengin",
+      "geleneksel_İsviçre"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 480,
+    "zorluk": "kolay",
+    "aciklama": "İsviçreli doktor Bircher-Benner'in geliştirdiği, gece bekletilen sağlıklı yulaf ve meyve karışımı."
+  },
+  {
+    "id": "veggie_breakfast_burrito",
+    "ad": "Veggie Breakfast Burrito",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam buğday tortilla",
+      "yumurta",
+      "siyah fasulye",
+      "avokado",
+      "domates",
+      "kırmızı biber",
+      "ıspanak",
+      "salsa sos"
+    ],
+    "porsiyon_gram": 490,
+    "kalori": 470,
+    "protein_g": 24.0,
+    "karbonhidrat_g": 55.0,
+    "yag_g": 16.0,
+    "lif_g": 10.0,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "lif_zengin",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Sebzeler, yumurta ve fasulye ile dolu besleyici Meksika usulü kahvaltı burritosu."
+  },
+  {
+    "id": "smoked_salmon_bagel",
+    "ad": "Smoked Salmon Bagel",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam tahıllı bagel",
+      "füme somon",
+      "krem peynir light",
+      "kırmızı soğan",
+      "kapari",
+      "limon",
+      "dereotu",
+      "roka"
+    ],
+    "porsiyon_gram": 360,
+    "kalori": 420,
+    "protein_g": 28.0,
+    "karbonhidrat_g": 45.0,
+    "yag_g": 12.0,
+    "lif_g": 4.0,
+    "saglik_etiketler": [
+      "omega3_zengin",
+      "yüksek_protein",
+      "New_York_klasiği"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "New York'un ikonik kahvaltısı: füme somon, krem peynir ve kapari ile tam tahıllı bagel."
+  },
+  {
+    "id": "breakfast_quinoa_bowl",
+    "ad": "Breakfast Quinoa Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "kinoa",
+      "badem sütü",
+      "bal",
+      "tarçın",
+      "muz",
+      "çilek",
+      "badem",
+      "hindistan cevizi rendesi"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 445,
+    "protein_g": 14.0,
+    "karbonhidrat_g": 74.0,
+    "yag_g": 10.5,
+    "lif_g": 6.5,
+    "saglik_etiketler": [
+      "glütensiz",
+      "tam_protein",
+      "vegan"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Tüm esansiyel amino asitleri içeren kinoa ile hazırlanan besleyici ve doyurucu kahvaltı kasesi."
+  },
+  {
+    "id": "french_toast_protein",
+    "ad": "Proteinli French Toast",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "tam tahıllı ekmek",
+      "yumurta",
+      "protein tozu",
+      "badem sütü",
+      "tarçın",
+      "vanilya özü",
+      "akçaağaç şurubu",
+      "taze çilek"
+    ],
+    "porsiyon_gram": 410,
+    "kalori": 470,
+    "protein_g": 35.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 11.0,
+    "lif_g": 5.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "sporcu_dostu",
+      "kas_yapıcı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Klasik Fransız tostunun protein tozu eklenerek sporcular için optimize edilmiş versiyonu."
+  },
+  {
+    "id": "frittata_sebzeli",
+    "ad": "Sebzeli Frittata",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "ıspanak",
+      "kiraz domates",
+      "kırmızı biber",
+      "mantar",
+      "soğan",
+      "zeytinyağı",
+      "parmesan",
+      "taze fesleğen"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 380,
+    "protein_g": 28.0,
+    "karbonhidrat_g": 12.0,
+    "yag_g": 24.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "İtalyan_mutfağı",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "Sebzelerle zenginleştirilmiş İtalyan usulü fırında pişirilmiş omlet."
+  },
+  {
+    "id": "granola_bowl",
+    "ad": "Granola Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "ev yapımı granola",
+      "Yunan yoğurdu",
+      "bal",
+      "muz dilimi",
+      "yaban mersini",
+      "badem",
+      "kaju",
+      "hindistan cevizi"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 480,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 66.0,
+    "yag_g": 15.0,
+    "lif_g": 6.0,
+    "saglik_etiketler": [
+      "probiyotik",
+      "lif_zengin",
+      "enerji_artırıcı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Fırınlanmış granola, Yunan yoğurdu ve taze meyvelerle hazırlanan çıtır çıtır enerji kasesi."
+  },
+  {
+    "id": "japanese_tamago_gohan",
+    "ad": "Japanese Tamago Gohan",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "Japon pirinci",
+      "çiğ yumurta",
+      "soya sosu",
+      "susam yağı",
+      "tuz",
+      "taze soğan",
+      "nori yaprak",
+      "susam"
+    ],
+    "porsiyon_gram": 280,
+    "kalori": 310,
+    "protein_g": 13.0,
+    "karbonhidrat_g": 48.0,
+    "yag_g": 7.5,
+    "lif_g": 1.5,
+    "saglik_etiketler": [
+      "Japon_mutfağı",
+      "hızlı_hazırlık",
+      "umami_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Japonya'nın en sevilen sabah yemeği: sıcak pirincin üzerine kırılmış çiğ yumurta ve soya sosu."
+  },
+  {
+    "id": "turkish_menemen_intl",
+    "ad": "Turkish Menemen (Uluslararası Versiyon)",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "domates",
+      "yeşil biber",
+      "soğan",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "kırmızı pul biber",
+      "maydanoz",
+      "tam tahıllı ekmek"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 345,
+    "protein_g": 22.0,
+    "karbonhidrat_g": 22.0,
+    "yag_g": 19.0,
+    "lif_g": 4.5,
+    "saglik_etiketler": [
+      "Türk_mutfağı",
+      "yüksek_protein",
+      "antioksidan_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Geleneksel Türk menemeninin dünyaya açılan versiyonu: domates, biber ve yumurta ile enfes kavurma."
+  },
+  {
+    "id": "cottage_cheese_bowl",
+    "ad": "Cottage Cheese Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "lor peyniri cottage cheese",
+      "ananas",
+      "şeftali",
+      "bal",
+      "chia tohumu",
+      "ceviz",
+      "tarçın"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 370,
+    "protein_g": 26.0,
+    "karbonhidrat_g": 38.0,
+    "yag_g": 11.0,
+    "lif_g": 3.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "kalsiyum_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 5,
+    "zorluk": "kolay",
+    "aciklama": "Yüksek proteinli lor peyniri üzerine taze meyveler ve cevizle hazırlanan besleyici kahvaltı kasesi."
+  },
+  {
+    "id": "belgian_waffle_protein",
+    "ad": "Proteinli Belçika Waffle",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yulaf unu",
+      "protein tozu",
+      "yumurta",
+      "yağsız süt",
+      "kabartma tozu",
+      "vanilya özü",
+      "taze çilek",
+      "Yunan yoğurdu",
+      "bal"
+    ],
+    "porsiyon_gram": 520,
+    "kalori": 490,
+    "protein_g": 42.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 11.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "Belçika_mutfağı",
+      "sporcu_dostu",
+      "kas_yapıcı"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Belçika wafflesinin protein açısından zenginleştirilmiş versiyonu, sporcu kahvaltısı için ideal."
+  },
+  {
+    "id": "spinach_mushroom_omelette",
+    "ad": "Ispanak Mantarlı Omlet",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "yumurta",
+      "ıspanak",
+      "mantar",
+      "sarımsak",
+      "soğan",
+      "zeytinyağı",
+      "tuz",
+      "karabiber",
+      "taze kekik",
+      "az yağlı peynir"
+    ],
+    "porsiyon_gram": 480,
+    "kalori": 300,
+    "protein_g": 24.0,
+    "karbonhidrat_g": 8.0,
+    "yag_g": 19.0,
+    "lif_g": 3.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_karbonhidrat",
+      "demir_zengin",
+      "glütensiz"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 12,
+    "zorluk": "kolay",
+    "aciklama": "Demir açısından zengin ıspanak ve lezzetli mantarlarla hazırlanan klasik proteinli omlet."
+  },
+  {
+    "id": "banana_oat_pancakes",
+    "ad": "Banana Oat Pancakes",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "olgun muz",
+      "yulaf ezmesi",
+      "yumurta",
+      "tarçın",
+      "vanilya özü",
+      "kabartma tozu",
+      "taze meyve",
+      "akçaağaç şurubu"
+    ],
+    "porsiyon_gram": 470,
+    "kalori": 430,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 70.0,
+    "yag_g": 9.5,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "glütensiz",
+      "doğal_şeker",
+      "vejetaryen",
+      "lif_zengin"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Yalnızca muz, yulaf ve yumurtayla yapılan, un ve şeker eklenmemiş doğal pankek."
+  },
+  {
+    "id": "energy_smoothie_bowl",
+    "ad": "Energy Smoothie Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "dondurulmuş çilek",
+      "muz",
+      "Yunan yoğurdu",
+      "protein tozu",
+      "badem sütü",
+      "granola",
+      "kivi",
+      "chia tohumu",
+      "bal"
+    ],
+    "porsiyon_gram": 520,
+    "kalori": 440,
+    "protein_g": 26.0,
+    "karbonhidrat_g": 62.0,
+    "yag_g": 10.0,
+    "lif_g": 8.5,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "enerji_artırıcı",
+      "antioksidan_zengin",
+      "sporcu_dostu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Antrenman öncesi enerji için çilek, muz ve protein tozu ile hazırlanan güçlü smoothie kasesi."
+  },
+  {
+    "id": "mediterranean_breakfast_plate",
+    "ad": "Mediterranean Breakfast Plate",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "haşlanmış yumurta",
+      "humus",
+      "zeytin",
+      "feta peyniri",
+      "domates",
+      "salatalık",
+      "tam tahıllı pita",
+      "zeytinyağı",
+      "kekik"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 475,
+    "protein_g": 24.0,
+    "karbonhidrat_g": 40.0,
+    "yag_g": 25.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "Akdeniz_diyeti",
+      "kalp_sağlığı",
+      "antioksidan_zengin",
+      "doyurucu"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 10,
+    "zorluk": "kolay",
+    "aciklama": "Akdeniz diyetinin kahvaltıya yansıması: yumurta, humus, zeytin ve taze sebzelerle dolu tabak."
+  },
+  {
+    "id": "strawberry_smoothie_bowl",
+    "ad": "Çilek Smoothie Bowl",
+    "kategori": "kahvalti",
+    "malzemeler": [
+      "dondurulmuş çilek",
+      "muz",
+      "Yunan yoğurdu",
+      "badem sütü",
+      "granola",
+      "taze çilek",
+      "hindistan cevizi rendesi",
+      "bal"
+    ],
+    "porsiyon_gram": 560,
+    "kalori": 390,
+    "protein_g": 13.0,
+    "karbonhidrat_g": 67.0,
+    "yag_g": 8.5,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "antioksidan_zengin",
+      "C_vitamini_zengin",
+      "probiyotik",
+      "vejetaryen"
+    ],
+    "ogun_tipleri": [
+      "kahvalti"
+    ],
+    "pismesi_dk": 8,
+    "zorluk": "kolay",
+    "aciklama": "Taze ve dondurulmuş çileklerle yapılan, Yunan yoğurdu bazlı C vitamini deposu smoothie kasesi."
+  },
+  {
+    "id": "buddha_bowl",
+    "ad": "Buddha Bowl",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "quinoa",
+      "nohut",
+      "avokado",
+      "ıspanak",
+      "domates",
+      "salatalık",
+      "tahin sos",
+      "limon"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 461,
+    "protein_g": 21.0,
+    "karbonhidrat_g": 56.0,
+    "yag_g": 17.0,
+    "lif_g": 12.0,
+    "saglik_etiketler": [
+      "vegan",
+      "yüksek_lif",
+      "Akdeniz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Quinoa, nohut ve taze sebzelerle hazırlanan besleyici ve doyurucu kase yemeği."
+  },
+  {
+    "id": "poke_bowl",
+    "ad": "Poke Bowl",
+    "kategori": "salata",
+    "malzemeler": [
+      "somon",
+      "pirinç",
+      "avokado",
+      "salatalık",
+      "edamame",
+      "soya sosu",
+      "susam",
+      "zencefil",
+      "yeşil soğan"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 434,
+    "protein_g": 32.0,
+    "karbonhidrat_g": 45.0,
+    "yag_g": 14.0,
+    "lif_g": 6.0,
+    "saglik_etiketler": [
+      "omega3",
+      "yüksek_protein",
+      "Asya"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "orta",
+    "aciklama": "Hawaii kökenli, taze somon ve avokadolu pirinç kasesi."
+  },
+  {
+    "id": "mediterranean_chicken_wrap",
+    "ad": "Mediterranean Chicken Wrap",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "tam buğday lavaş",
+      "humus",
+      "domates",
+      "salatalık",
+      "kırmızı soğan",
+      "feta peyniri",
+      "zeytinyağı",
+      "kekik"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 438,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 40.0,
+    "yag_g": 14.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "Akdeniz",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Izgara tavuk, humus ve taze sebzelerle dolu Akdeniz usulü dürüm."
+  },
+  {
+    "id": "falafel_plate",
+    "ad": "Falafel Plate",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "nohut",
+      "maydanoz",
+      "kişniş",
+      "sarımsak",
+      "kimyon",
+      "tam buğday pide",
+      "tahin sos",
+      "domates",
+      "marul",
+      "turşu"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 440,
+    "protein_g": 19.0,
+    "karbonhidrat_g": 55.0,
+    "yag_g": 16.0,
+    "lif_g": 11.0,
+    "saglik_etiketler": [
+      "vegan",
+      "yüksek_lif",
+      "Orta_Doğu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Nohuttan yapılmış baharatlı köfteler, tahin sos ve taze salatayla servis edilir."
+  },
+  {
+    "id": "grain_bowl",
+    "ad": "Grain Bowl",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "quinoa",
+      "avokado",
+      "kızarmış tatlı patates",
+      "ıspanak",
+      "kabak çekirdeği",
+      "limon vinaigrette",
+      "nohut"
+    ],
+    "porsiyon_gram": 460,
+    "kalori": 451,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 19.0,
+    "lif_g": 10.0,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Quinoa, avokado ve kavrulmuş sebzelerle hazırlanan besleyici tahıl kasesi."
+  },
+  {
+    "id": "thai_chicken_salad",
+    "ad": "Thai Chicken Salad",
+    "kategori": "salata",
+    "malzemeler": [
+      "tavuk göğsü",
+      "lahana",
+      "havuç",
+      "salatalık",
+      "yeşil soğan",
+      "fıstık",
+      "kişniş",
+      "nane",
+      "fıstık sosu",
+      "limon",
+      "zencefil"
+    ],
+    "porsiyon_gram": 380,
+    "kalori": 366,
+    "protein_g": 36.0,
+    "karbonhidrat_g": 24.0,
+    "yag_g": 14.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_kalori",
+      "Asya"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Izgara tavuk, lahana ve Tayland usulü fıstık sosuyla hazırlanan ferahlatıcı salata."
+  },
+  {
+    "id": "mexican_chicken_bowl",
+    "ad": "Mexican Chicken Bowl",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "esmer pirinç",
+      "siyah fasulye",
+      "mısır",
+      "avokado",
+      "domates salsa",
+      "limon",
+      "kişniş",
+      "yoğurt"
+    ],
+    "porsiyon_gram": 480,
+    "kalori": 486,
+    "protein_g": 40.0,
+    "karbonhidrat_g": 50.0,
+    "yag_g": 14.0,
+    "lif_g": 10.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "yüksek_lif",
+      "Latin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Baharatlı tavuk, pirinç ve fasulye ile hazırlanan Meksika usulü kase yemeği."
+  },
+  {
+    "id": "teriyaki_chicken_rice_bowl",
+    "ad": "Teriyaki Chicken Rice Bowl",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "pirinç",
+      "teriyaki sos",
+      "brokoli",
+      "havuç",
+      "susam",
+      "yeşil soğan",
+      "zencefil"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 434,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 48.0,
+    "yag_g": 10.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "Japon"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Tatlı teriyaki sosuyla marine edilmiş tavuk ve buharda pişmiş pirinç kasesi."
+  },
+  {
+    "id": "greek_chicken_souvlaki_plate",
+    "ad": "Greek Chicken Souvlaki Plate",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "tam buğday pide",
+      "tzatziki",
+      "domates",
+      "kırmızı soğan",
+      "marul",
+      "zeytinyağı",
+      "kekik",
+      "limon"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 417,
+    "protein_g": 40.0,
+    "karbonhidrat_g": 35.0,
+    "yag_g": 13.0,
+    "lif_g": 4.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "Akdeniz",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Yunan usulü marine edilmiş tavuk şiş, tzatziki ve taze salatayla servis edilir."
+  },
+  {
+    "id": "chickpea_shawarma_bowl",
+    "ad": "Chickpea Shawarma Bowl",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "nohut",
+      "pirinç",
+      "domates",
+      "salatalık",
+      "kırmızı soğan",
+      "maydanoz",
+      "tahin sos",
+      "kimyon",
+      "zerdeçal",
+      "limon"
+    ],
+    "porsiyon_gram": 440,
+    "kalori": 412,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 58.0,
+    "yag_g": 12.0,
+    "lif_g": 10.0,
+    "saglik_etiketler": [
+      "vegan",
+      "yüksek_lif",
+      "Orta_Doğu"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Şavarma baharatlarıyla kavrulmuş nohut, pirinç ve tahin soslu Orta Doğu kasesi."
+  },
+  {
+    "id": "lentil_mediterranean_bowl",
+    "ad": "Lentil Mediterranean Bowl",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "kırmızı mercimek",
+      "quinoa",
+      "ızgara kırmızı biber",
+      "ıspanak",
+      "feta peyniri",
+      "zeytinyağı",
+      "kimyon",
+      "limon",
+      "maydanoz"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 405,
+    "protein_g": 22.0,
+    "karbonhidrat_g": 50.0,
+    "yag_g": 13.0,
+    "lif_g": 13.0,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "yüksek_lif",
+      "Akdeniz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "Mercimek ve quinoa bazlı, ızgara sebze ve feta peyniriyle zenginleştirilmiş Akdeniz kasesi."
+  },
+  {
+    "id": "caprese_grilled_chicken",
+    "ad": "Caprese Salad with Grilled Chicken",
+    "kategori": "salata",
+    "malzemeler": [
+      "tavuk göğsü",
+      "mozzarella",
+      "domates",
+      "fesleğen",
+      "zeytinyağı",
+      "balsamik sirke",
+      "roka"
+    ],
+    "porsiyon_gram": 370,
+    "kalori": 378,
+    "protein_g": 42.0,
+    "karbonhidrat_g": 12.0,
+    "yag_g": 18.0,
+    "lif_g": 3.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glutensiz",
+      "İtalyan"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Izgara tavuk üzerine taze mozzarella, domates ve fesleğenle hazırlanan İtalyan klasiği."
+  },
+  {
+    "id": "vietnamese_spring_rolls",
+    "ad": "Vietnamese Spring Rolls",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "pirinç kağıdı",
+      "karides/tofu",
+      "pirinç eriştesi",
+      "salatalık",
+      "havuç",
+      "nane",
+      "kişniş",
+      "marul",
+      "fıstık sosu"
+    ],
+    "porsiyon_gram": 320,
+    "kalori": 288,
+    "protein_g": 16.0,
+    "karbonhidrat_g": 38.0,
+    "yag_g": 8.0,
+    "lif_g": 4.0,
+    "saglik_etiketler": [
+      "düşük_kalori",
+      "glutensiz",
+      "Asya"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Pirinç kağıdına sarılmış taze sebze, erişteli Vietnam usulü taze rulo."
+  },
+  {
+    "id": "chicken_stir_fry",
+    "ad": "Chicken Stir-Fry (Asya Usulü)",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "brokoli",
+      "havuç",
+      "biber",
+      "mantar",
+      "soya sosu",
+      "zencefil",
+      "sarımsak",
+      "susam yağı",
+      "pirinç"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 412,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 38.0,
+    "yag_g": 12.0,
+    "lif_g": 6.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "Asya"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Yüksek ısıda çabuk pişirilmiş tavuk ve sebzelerle hazırlanan Asya usulü wok yemeği."
+  },
+  {
+    "id": "pasta_primavera",
+    "ad": "Pasta Primavera",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "tam buğday makarna",
+      "kabak",
+      "kiraz domates",
+      "kırmızı biber",
+      "bezelye",
+      "sarımsak",
+      "zeytinyağı",
+      "parmesan",
+      "fesleğen"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 438,
+    "protein_g": 16.0,
+    "karbonhidrat_g": 62.0,
+    "yag_g": 14.0,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "yüksek_lif",
+      "İtalyan"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "kolay",
+    "aciklama": "Mevsim sebzeleri ve zeytinyağıyla hazırlanan hafif İtalyan usulü makarna."
+  },
+  {
+    "id": "korean_bibimbap",
+    "ad": "Korean Bibimbap",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "pirinç",
+      "tavuk göğsü",
+      "ıspanak",
+      "havuç",
+      "fasulye filizi",
+      "salatalık",
+      "yumurta",
+      "gochujang",
+      "susam yağı",
+      "soya sosu"
+    ],
+    "porsiyon_gram": 480,
+    "kalori": 461,
+    "protein_g": 34.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 13.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "Kore",
+      "dengeli"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "Kore usulü pirinç üzerine renkli sebzeler, tavuk ve baharatlı gochujang soslu kase."
+  },
+  {
+    "id": "thai_green_curry",
+    "ad": "Thai Green Curry (Tavuk)",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "yeşil curry ezmesi",
+      "hindistancevizi sütü light",
+      "kabak",
+      "biber",
+      "fesleğen",
+      "limon otu",
+      "pirinç",
+      "zencefil"
+    ],
+    "porsiyon_gram": 480,
+    "kalori": 452,
+    "protein_g": 35.0,
+    "karbonhidrat_g": 42.0,
+    "yag_g": 16.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glutensiz",
+      "Tayland"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "orta",
+    "aciklama": "Aromatik yeşil curry sosuyla pişirilmiş tavuk ve sebzeli Tayland usulü körili yemek."
+  },
+  {
+    "id": "pad_thai_light",
+    "ad": "Pad Thai (Az Yağlı)",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "pirinç eriştesi",
+      "tavuk göğsü",
+      "yumurta",
+      "fasulye filizi",
+      "yeşil soğan",
+      "fıstık",
+      "limon",
+      "balık sosu",
+      "tamarind",
+      "kişniş"
+    ],
+    "porsiyon_gram": 420,
+    "kalori": 418,
+    "protein_g": 32.0,
+    "karbonhidrat_g": 50.0,
+    "yag_g": 10.0,
+    "lif_g": 4.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glutensiz",
+      "Tayland"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "orta",
+    "aciklama": "Tayland'ın dünyaca ünlü pirinç erişteli wok yemeği, az yağlı ve protein açısından zengin."
+  },
+  {
+    "id": "chicken_tikka_masala_light",
+    "ad": "Indian Chicken Tikka Masala (Light)",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "yoğurt yağsız",
+      "domates sosu",
+      "sarımsak",
+      "zencefil",
+      "garam masala",
+      "zerdeçal",
+      "kişniş",
+      "pirinç"
+    ],
+    "porsiyon_gram": 480,
+    "kalori": 410,
+    "protein_g": 42.0,
+    "karbonhidrat_g": 38.0,
+    "yag_g": 10.0,
+    "lif_g": 4.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "düşük_yağ",
+      "Hint"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "orta",
+    "aciklama": "Baharatlı domates soslu hafifletilmiş Hint usulü tavuk, pirinçle servis edilir."
+  },
+  {
+    "id": "moroccan_chickpea_tagine",
+    "ad": "Moroccan Chickpea Tagine",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "nohut",
+      "domates konservesi",
+      "havuç",
+      "balkabağı",
+      "soğan",
+      "sarımsak",
+      "ras el hanout",
+      "tarçın",
+      "kişniş",
+      "kuskus"
+    ],
+    "porsiyon_gram": 460,
+    "kalori": 393,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 60.0,
+    "yag_g": 9.0,
+    "lif_g": 13.0,
+    "saglik_etiketler": [
+      "vegan",
+      "yüksek_lif",
+      "Fas"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 40,
+    "zorluk": "orta",
+    "aciklama": "Fas usulü baharatlarla pişirilmiş nohut ve sebze tagini, kuskusla servis edilir."
+  },
+  {
+    "id": "greek_moussaka",
+    "ad": "Greek Moussaka",
+    "kategori": "ana_yemek_et",
+    "malzemeler": [
+      "kıyma dana/kuzu",
+      "patlıcan",
+      "domates sosu",
+      "soğan",
+      "sarımsak",
+      "tarçın",
+      "beşamel sos light",
+      "parmesan",
+      "zeytinyağı"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 412,
+    "protein_g": 30.0,
+    "karbonhidrat_g": 28.0,
+    "yag_g": 20.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "Akdeniz",
+      "Yunan"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 60,
+    "zorluk": "zor",
+    "aciklama": "Kıyma ve patlıcan katmanlarından oluşan kremsi beşamelli Yunan klasiği."
+  },
+  {
+    "id": "italian_chicken_cacciatore",
+    "ad": "Italian Chicken Cacciatore",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk but",
+      "domates konservesi",
+      "mantar",
+      "biber",
+      "soğan",
+      "sarımsak",
+      "zeytin",
+      "kırmızı şarap",
+      "kekik",
+      "fesleğen"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 359,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 18.0,
+    "yag_g": 15.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glutensiz",
+      "İtalyan"
+    ],
+    "ogun_tipleri": [
+      "aksam"
+    ],
+    "pismesi_dk": 50,
+    "zorluk": "orta",
+    "aciklama": "Domates, mantar ve biber ile yavaş pişirilmiş İtalyan usulü avcı tavuğu."
+  },
+  {
+    "id": "lemon_herb_roasted_chicken",
+    "ad": "Lemon Herb Roasted Chicken",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "limon",
+      "sarımsak",
+      "biberiye",
+      "kekik",
+      "zeytinyağı",
+      "tatlı patates",
+      "brokoli",
+      "havuç"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 397,
+    "protein_g": 42.0,
+    "karbonhidrat_g": 28.0,
+    "yag_g": 13.0,
+    "lif_g": 6.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "glutensiz",
+      "düşük_yağ"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 45,
+    "zorluk": "kolay",
+    "aciklama": "Limon ve aromatik otlarla marine edilmiş, fırında sebzelerle birlikte pişirilmiş tavuk."
+  },
+  {
+    "id": "turkish_chicken_kebab_bowl",
+    "ad": "Turkish Chicken Kebab Bowl",
+    "kategori": "ana_yemek_tavuk",
+    "malzemeler": [
+      "tavuk göğsü",
+      "bulgur",
+      "domates",
+      "maydanoz",
+      "salatalık",
+      "kırmızı soğan",
+      "cacık",
+      "zeytinyağı",
+      "kimyon",
+      "kırmızı biber"
+    ],
+    "porsiyon_gram": 450,
+    "kalori": 429,
+    "protein_g": 38.0,
+    "karbonhidrat_g": 40.0,
+    "yag_g": 13.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "yüksek_protein",
+      "Türk",
+      "Akdeniz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "Baharatlı tavuk kebabı, bulgur pilavı ve cacık ile servis edilen Türk usulü kase."
+  },
+  {
+    "id": "mexican_black_bean_bowl",
+    "ad": "Mexican Black Bean Bowl",
+    "kategori": "baklagil",
+    "malzemeler": [
+      "siyah fasulye",
+      "esmer pirinç",
+      "mısır",
+      "avokado",
+      "domates salsa",
+      "limon",
+      "kişniş",
+      "yoğurt",
+      "kırmızı soğan"
+    ],
+    "porsiyon_gram": 440,
+    "kalori": 408,
+    "protein_g": 17.0,
+    "karbonhidrat_g": 58.0,
+    "yag_g": 12.0,
+    "lif_g": 13.0,
+    "saglik_etiketler": [
+      "vegan",
+      "yüksek_lif",
+      "Latin"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Siyah fasulye, pirinç ve avokadolu bitkisel bazlı Meksika kase yemeği."
+  },
+  {
+    "id": "quinoa_tabbouleh",
+    "ad": "Quinoa Tabbouleh",
+    "kategori": "salata",
+    "malzemeler": [
+      "quinoa",
+      "maydanoz",
+      "nane",
+      "domates",
+      "salatalık",
+      "yeşil soğan",
+      "zeytinyağı",
+      "limon",
+      "nohut"
+    ],
+    "porsiyon_gram": 350,
+    "kalori": 332,
+    "protein_g": 14.0,
+    "karbonhidrat_g": 42.0,
+    "yag_g": 12.0,
+    "lif_g": 8.0,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "Akdeniz"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 20,
+    "zorluk": "kolay",
+    "aciklama": "Geleneksel tabbouleh'in bulgur yerine quinoa ile hazırlanan glutensiz versiyonu."
+  },
+  {
+    "id": "mediterranean_veggie_bowl",
+    "ad": "Mediterranean Veggie Bowl",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "hummus",
+      "patlıcan kızartması",
+      "ızgara kabak",
+      "kırmızı biber",
+      "kiraz domates",
+      "zeytin",
+      "feta",
+      "pide",
+      "zeytinyağı",
+      "limon"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 402,
+    "protein_g": 14.0,
+    "karbonhidrat_g": 46.0,
+    "yag_g": 18.0,
+    "lif_g": 9.0,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "Akdeniz",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 30,
+    "zorluk": "kolay",
+    "aciklama": "Hummus, ızgara sebzeler ve feta peyniriyle dolu Akdeniz vejetaryen kasesi."
+  },
+  {
+    "id": "asian_sesame_noodle_bowl",
+    "ad": "Asian Sesame Noodle Bowl",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "soba eriştesi",
+      "edamame",
+      "havuç",
+      "salatalık",
+      "kırmızı lahana",
+      "susam sosu",
+      "soya sosu",
+      "zencefil",
+      "susam",
+      "yeşil soğan"
+    ],
+    "porsiyon_gram": 400,
+    "kalori": 388,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 52.0,
+    "yag_g": 12.0,
+    "lif_g": 7.0,
+    "saglik_etiketler": [
+      "vegan",
+      "Asya",
+      "yüksek_lif"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 15,
+    "zorluk": "kolay",
+    "aciklama": "Soba eriştesi, edamame ve susam sosuyla hazırlanan Asya usulü soğuk erişte kasesi."
+  },
+  {
+    "id": "turmeric_cauliflower_bowl",
+    "ad": "Turmeric Cauliflower Bowl",
+    "kategori": "sebze_yemegi",
+    "malzemeler": [
+      "karnabahar",
+      "quinoa",
+      "nohut",
+      "ıspanak",
+      "zerdeçal",
+      "kimyon",
+      "zeytinyağı",
+      "tahin sos",
+      "limon",
+      "kabak çekirdeği"
+    ],
+    "porsiyon_gram": 430,
+    "kalori": 408,
+    "protein_g": 18.0,
+    "karbonhidrat_g": 48.0,
+    "yag_g": 16.0,
+    "lif_g": 11.0,
+    "saglik_etiketler": [
+      "vegan",
+      "glutensiz",
+      "anti_inflamatuar"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 35,
+    "zorluk": "kolay",
+    "aciklama": "Zerdeçal ve baharat karışımıyla kavrulmuş karnabahar, quinoa ve nohutlu sağlıklı kase."
+  },
+  {
+    "id": "miso_ramen_light",
+    "ad": "Miso Ramen (Light)",
+    "kategori": "corba",
+    "malzemeler": [
+      "miso ezmesi",
+      "pirinç eriştesi",
+      "tofu",
+      "bok choy",
+      "mantar",
+      "yeşil soğan",
+      "nori",
+      "yumurta",
+      "zencefil",
+      "sarımsak"
+    ],
+    "porsiyon_gram": 500,
+    "kalori": 346,
+    "protein_g": 20.0,
+    "karbonhidrat_g": 44.0,
+    "yag_g": 10.0,
+    "lif_g": 5.0,
+    "saglik_etiketler": [
+      "vejetaryen",
+      "düşük_kalori",
+      "Japon"
+    ],
+    "ogun_tipleri": [
+      "ogle",
+      "aksam"
+    ],
+    "pismesi_dk": 25,
+    "zorluk": "orta",
+    "aciklama": "Umami açısından zengin miso suyu, tofu ve taze sebzelerle hazırlanan hafif Japon ramen çorbası."
   }
 ]

@@ -123,11 +123,15 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
         return "\n\n".join(ctx_parts)
 
     def _format_plan_skeleton(self, selected_meals: dict, user: dict,
-                              meal_factors: dict) -> str:
+                              meal_factors: dict,
+                              tamamlayicilar: dict = None) -> str:
         """
         Plan verisini Python'da tam olarak formatlar.
         Claude bu metne sadece giriş cümlesi ve pratik notlar ekler —
         tarif adı, malzeme veya makro değerlerine DOKUNMAZ.
+
+        tamamlayicilar: {'ogle': recipe_dict, 'aksam': recipe_dict}
+            — Karbonhidrat açığını kapatmak için seçilmiş yan yemekler.
         """
         ogun_sira = ['kahvalti', 'ara_ogun', 'ogle', 'aksam']
         ogun_meta = {
@@ -145,6 +149,7 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
 
         gun_kal = gun_p = gun_k = gun_y = gun_l = 0.0
         sections = []
+        tamamlayicilar = tamamlayicilar or {}
 
         for ogun_tipi in ogun_sira:
             r = selected_meals.get(ogun_tipi)
@@ -165,12 +170,32 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
             malzemeler = ', '.join(r.get('malzemeler') or [])
             aciklama   = r.get('aciklama') or ''
 
-            sections.append(
-                f"### {ogun_adi} ({saat}) — {r['ad']}\n"
-                f"**Malzemeler:** {malzemeler}\n"
-                f"{aciklama}\n"
+            section_lines = [
+                f"### {ogun_adi} ({saat}) — {r['ad']}",
+                f"**Malzemeler:** {malzemeler}",
+                aciklama,
+            ]
+
+            # Tamamlayıcı yan yemek varsa ekle
+            yan = tamamlayicilar.get(ogun_tipi)
+            if yan:
+                yan_kal = float(yan.get('kalori') or 0)
+                yan_p   = float(yan.get('protein_g') or 0)
+                yan_k   = float(yan.get('karbonhidrat_g') or 0)
+                yan_y   = float(yan.get('yag_g') or 0)
+                yan_l   = float(yan.get('lif_g') or 0)
+                yan_por = float(yan.get('porsiyon_gram') or 0)
+                gun_kal += yan_kal; gun_p += yan_p; gun_k += yan_k
+                gun_y   += yan_y;   gun_l += yan_l
+                section_lines.append(
+                    f"**Yanında:** {yan['ad']} "
+                    f"({round(yan_por)}g | +{round(yan_kal)} kcal | +K:{yan_k}g)"
+                )
+
+            section_lines.append(
                 f"**Porsiyon: {por}g** | **{kal} kcal** | P: {p}g | K: {k}g | Y: {y}g | L: {l}g"
             )
+            sections.append("\n".join(section_lines))
 
         gun_adi = self._gun_adi()
         header = (
@@ -317,6 +342,78 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
     def _gun_adi(self) -> str:
         gunler = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar']
         return gunler[date.today().weekday()]
+
+    def _select_tamamlayici(
+        self,
+        selected_meals: dict,
+        meal_factors: dict,
+        hedef_karb_f: float,
+        tamamlayici_recipes: list,
+    ) -> tuple:
+        """
+        Plan karbonhidrat açığını yan yemeklerle kapatır.
+
+        Açık hedefin %10'undan büyükse öğle ve akşam öğününe birer
+        tamamlayıcı eklenir. Toplam kalorileri korumak için tamamlayıcı
+        kalorisi kadar ana yemek faktörü düşürülür.
+
+        Returns:
+            (tamamlayicilar, new_meal_factors)
+            tamamlayicilar: {'ogle': recipe_dict, 'aksam': recipe_dict}
+        """
+        if not tamamlayici_recipes or not selected_meals:
+            return {}, meal_factors
+
+        mevcut_karb = sum(
+            float(selected_meals[t].get('karbonhidrat_g', 0)) * meal_factors.get(t, 1.0)
+            for t in selected_meals
+        )
+        karb_acigi = hedef_karb_f - mevcut_karb
+
+        # Açık %10'dan küçükse tamamlayıcı gerekmez
+        if karb_acigi < hedef_karb_f * 0.10:
+            return {}, meal_factors
+
+        tamamlayicilar = {}
+        new_factors = dict(meal_factors)
+        kalan_acik = karb_acigi
+
+        for ogun in ['ogle', 'aksam']:
+            if ogun not in selected_meals or kalan_acik <= 5:
+                continue
+
+            # Bu öğüne uygun tamamlayıcılar (öğün tipi eşleşmesi)
+            uygun = [
+                t for t in tamamlayici_recipes
+                if ogun in (t.get('ogun_tipleri') or [])
+                and float(t.get('karbonhidrat_g', 0)) <= kalan_acik + 8
+            ]
+            if not uygun:
+                uygun = [t for t in tamamlayici_recipes
+                         if ogun in (t.get('ogun_tipleri') or [])]
+            if not uygun:
+                continue
+
+            # Kalan açığın yarısına en yakın tamamlayıcıyı seç
+            hedef_yan_karb = kalan_acik / 2
+            best = min(uygun, key=lambda t: abs(
+                float(t.get('karbonhidrat_g', 0)) - hedef_yan_karb
+            ))
+
+            yan_kal = float(best.get('kalori', 0))
+            yan_karb = float(best.get('karbonhidrat_g', 0))
+
+            # Ana yemek faktörünü yan yemek kalorisi kadar düşür (toplam kalori koru)
+            main_base_kal = float(selected_meals[ogun].get('kalori', 0))
+            if main_base_kal > 0 and yan_kal > 0:
+                current_main_kal = main_base_kal * new_factors.get(ogun, 1.0)
+                new_main_kal = max(0, current_main_kal - yan_kal)
+                new_factors[ogun] = max(self._FAKTOR_MIN, new_main_kal / main_base_kal)
+
+            tamamlayicilar[ogun] = best
+            kalan_acik -= yan_karb
+
+        return tamamlayicilar, new_factors
 
     # Scaling sınırları — _macro_fit_score ile seçim döngüsü senkronize olmalı
     # 3.0× = sebze/çorba gibi düşük kalorili tariflerin büyük öğün slotlarını
@@ -634,8 +731,26 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                                 )
 
                     if selected_meals:
+                        # Tamamlayıcı seçimi: karbonhidrat açığını kapat
+                        tamamlayicilar = {}
+                        if hedef_karb_f > 0:
+                            try:
+                                tamamlayici_recipes = await db.get_tamamlayici_recipes()
+                                if tamamlayici_recipes:
+                                    tamamlayicilar, meal_factors = self._select_tamamlayici(
+                                        selected_meals, meal_factors,
+                                        hedef_karb_f, tamamlayici_recipes,
+                                    )
+                                    if tamamlayicilar:
+                                        logger.info(
+                                            f"Tamamlayıcı eklendi: "
+                                            f"{[v['ad'] for v in tamamlayicilar.values()]}"
+                                        )
+                            except Exception as e:
+                                logger.warning(f"Tamamlayıcı seçimi başarısız: {e}")
+
                         plan_skeleton = self._format_plan_skeleton(
-                            selected_meals, user, meal_factors
+                            selected_meals, user, meal_factors, tamamlayicilar
                         )
 
                         # --- İki-parçalı mimari ---

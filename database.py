@@ -361,6 +361,24 @@ class Database:
         )
         return [r["tarif_id"] for r in rows]
 
+    async def get_tamamlayici_recipes(self) -> list:
+        """
+        Tüm tamamlayıcı (yan yemek) tariflerini döner.
+        Plan karbonhidrat açığını kapatmak için kullanılır.
+        Karbonhidrattan büyüğe sıralı döner (seçim algoritması için optimal).
+        """
+        rows = await self.pool.fetch(
+            """
+            SELECT tarif_id, ad, kategori, malzemeler,
+                   porsiyon_gram, kalori, protein_g, karbonhidrat_g, yag_g, lif_g,
+                   saglik_etiketler, ogun_tipleri, pismesi_dk, zorluk, aciklama
+            FROM tarifler
+            WHERE kategori = 'tamamlayici'
+            ORDER BY karbonhidrat_g DESC
+            """,
+        )
+        return [dict(r) for r in rows]
+
     async def get_recipes_by_category(self, kategori: str, limit: int = 5) -> list:
         """Belirli kategoriden rastgele tarif getir (vektör araması olmadan fallback)."""
         rows = await self.pool.fetch(

@@ -400,12 +400,24 @@ class Database:
         )
         return [r["tarif_id"] for r in rows]
 
-    async def save_plan_recipe_ids(self, user_id: int, plan_date, tarif_ids: list):
-        """Plan seçiminde kullanılan tarif ID'lerini günlük plana kaydet."""
+    async def save_plan_recipe_ids(self, user_id: int, plan_date, tarif_ids: list,
+                                    plan_text: str = ""):
+        """Plan seçiminde kullanılan tarif ID'lerini günlük plana kaydet.
+        Satır yoksa oluşturur (UPSERT), varsa tarif_idler + plan_detay günceller."""
+        import json as _json
         await self.pool.execute(
-            """UPDATE gunluk_plan SET tarif_idler = $3
-               WHERE user_id = $1 AND tarih = $2""",
-            user_id, plan_date, tarif_ids,
+            """INSERT INTO gunluk_plan (user_id, tarih, plan_detay, toplam_kalori, tarif_idler)
+               VALUES ($1, $2, $3::jsonb, 0, $4)
+               ON CONFLICT (user_id, tarih) DO UPDATE
+               SET tarif_idler = EXCLUDED.tarif_idler,
+                   plan_detay  = CASE
+                       WHEN EXCLUDED.plan_detay::text != '{}'
+                       THEN EXCLUDED.plan_detay
+                       ELSE gunluk_plan.plan_detay
+                   END""",
+            user_id, plan_date,
+            _json.dumps({"plan_text": plan_text} if plan_text else {}),
+            tarif_ids,
         )
 
     async def get_tamamlayici_recipes(self) -> list:

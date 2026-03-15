@@ -757,7 +757,9 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                                 )
 
                     if selected_meals:
-                        # Seçilen tarif ID'lerini DB'ye kaydet (haftalık çeşitlilik için)
+                        # Seçilen tarif ID'lerini ve plan iskeletini DB'ye kaydet.
+                        # UPSERT ile yapılır — satır yoksa oluşturur.
+                        # Bu sayede get_recently_used_recipe_ids() tarif_idler'den beslenebilir.
                         if user_id:
                             try:
                                 from datetime import date as _date
@@ -765,6 +767,8 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                                     r.get('tarif_id') or r.get('id', '')
                                     for r in selected_meals.values()
                                 ]
+                                # plan_skeleton henüz oluşturulmadı, boş geçiyoruz;
+                                # tamamlayıcı sonrası güncellenecek
                                 await db.save_plan_recipe_ids(
                                     user_id, _date.today(),
                                     [pid for pid in plan_ids if pid],
@@ -823,6 +827,20 @@ Toplanan veriler: {user.get('onboarding_data', {})}""")
                         ).content[0].text
 
                         plan_response = plan_skeleton + "\n\n" + pers_resp
+
+                        # Plan metnini de DB'ye kaydet (plan_detay güncelle)
+                        if user_id:
+                            try:
+                                from datetime import date as _date
+                                await db.save_plan_recipe_ids(
+                                    user_id, _date.today(),
+                                    [r.get('tarif_id') or r.get('id', '')
+                                     for r in selected_meals.values()],
+                                    plan_text=plan_response,
+                                )
+                            except Exception as e:
+                                logger.warning(f"Plan metni kaydedilemedi: {e}")
+
                         logger.info(
                             f"Plan RAG: {len(selected_meals)} öğün seçildi "
                             f"(Python formatladı, Claude kişiselleştirdi)"

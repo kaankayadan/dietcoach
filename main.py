@@ -64,6 +64,7 @@ def main():
     app.add_handler(CommandHandler("hedef", handlers.cmd_hedef))
     app.add_handler(CommandHandler("yardim", handlers.cmd_yardim))
     app.add_handler(CommandHandler("begenmiyorum", handlers.cmd_begenmiyorum))
+    app.add_handler(CommandHandler("tarif", handlers.cmd_tarif))
 
     app.add_handler(MessageHandler(
         filters.TEXT & ~filters.COMMAND,

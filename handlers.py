@@ -13,6 +13,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from database import Database
 from claude_client import ClaudeClient
+from embeddings import embedder
 
 logger = logging.getLogger(__name__)
 
@@ -259,6 +260,64 @@ class BotHandlers:
                 f"Alternatif için /alternatif {arg} yaz."
             )
 
+    async def cmd_tarif(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """
+        /tarif [arama terimi] — Semantik tarif araması.
+        Kullanıcının girdiği terimi embedding'e çevirip en yakın tarifleri bulur.
+        """
+        query = " ".join(context.args).strip() if context.args else ""
+        if not query:
+            await update.message.reply_text(
+                "Ne tür tarif arıyorsun? Örnek:\n"
+                "/tarif yüksek proteinli kahvaltı\n"
+                "/tarif düşük karbonhidratlı akşam yemeği\n"
+                "/tarif tavuklu salata"
+            )
+            return
+
+        await update.message.reply_text(f"🔍 \"{query}\" için tarif aranıyor...")
+
+        try:
+            # Sorguyu vektörleştir
+            query_vector = await embedder.async_embed(query)
+
+            # Semantik arama
+            results = await self.db.search_recipes(
+                embedding=query_vector,
+                limit=5,
+            )
+
+            if not results:
+                await update.message.reply_text(
+                    "Arama sonucu bulunamadı. Farklı bir terim deneyin."
+                )
+                return
+
+            lines = [f"🥗 *\"{query}\"* için en iyi eşleşmeler:\n"]
+            for i, r in enumerate(results, 1):
+                benzerlik = r.get("benzerlik", 0)
+                pct = int(benzerlik * 100)
+                lines.append(
+                    f"*{i}. {r['ad']}*  (%{pct} eşleşme)\n"
+                    f"  Kategori: {r.get('kategori', '—')}  |  "
+                    f"Kalori: {r.get('kalori', '?')} kcal\n"
+                    f"  P: {r.get('protein_g', '?')}g  "
+                    f"K: {r.get('karbonhidrat_g', '?')}g  "
+                    f"Y: {r.get('yag_g', '?')}g  "
+                    f"L: {r.get('lif_g', '?')}g\n"
+                )
+                if r.get("aciklama"):
+                    lines.append(f"  _{r['aciklama'][:120]}_\n")
+                lines.append("")
+
+            await self._send_long_message(update, "\n".join(lines))
+
+        except Exception as e:
+            logger.error(f"Tarif arama hatası: {e}")
+            await update.message.reply_text(
+                "Arama sırasında bir hata oluştu. Lütfen tekrar deneyin."
+            )
+
     async def cmd_yardim(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         help_text = """🥗 *Beslenme Koçu Komutları*
 
@@ -274,6 +333,7 @@ class BotHandlers:
 /guncelle — Profil güncelle
 /hedef — İlerleme raporu
 /begenmiyorum [öğün] — Bu tarifi bir daha önerme
+/tarif [arama] — Tarif veritabanında ara
 
 💬 Komut kullanmadan da yazabilirsin!
 "Öğlen ne yesem?" veya "100g pirinçte ne kadar kalori var?" gibi."""

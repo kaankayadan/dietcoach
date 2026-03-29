@@ -95,7 +95,9 @@ class TurboQuantMSE:
             Shape (d,) uint8 array of quantization indices.
         """
         y = self.rotation @ x
-        indices = np.digitize(y, self.boundaries) - 1
+        # np.digitize with sorted boundaries returns bin index directly:
+        # for b=2, boundaries [-σ, 0, σ] → returns 0,1,2,3 → maps to 4 centroids
+        indices = np.digitize(y, self.boundaries)
         np.clip(indices, 0, self.n_levels - 1, out=indices)
         return indices.astype(np.uint8)
 
@@ -121,7 +123,7 @@ class TurboQuantMSE:
             Shape (n, d) uint8 array of indices.
         """
         Y = X @ self.rotation.T  # (n, d)
-        indices = np.digitize(Y, self.boundaries) - 1
+        indices = np.digitize(Y, self.boundaries)
         np.clip(indices, 0, self.n_levels - 1, out=indices)
         return indices.astype(np.uint8)
 
@@ -161,14 +163,12 @@ class TurboQuantProd:
         # MSE quantizer with (b-1) bits
         self.mse_quantizer = TurboQuantMSE(d, b - 1, seed=seed)
 
-        # QJL random projection vectors (d x d) — one per coordinate
-        # Use seeded RNG for reproducibility
+        # QJL: random projection matrix S ∈ R^{d×d}, S_{i,j} ~ N(0,1)
+        # (Algorithm 2, line 3)
         qjl_seed = (seed or 42) + 1000
         self.qjl_rng_seed = qjl_seed
-        qjl_rng = np.random.RandomState(qjl_seed)
-        # Single random Gaussian vector for sign projection
-        self.qjl_vector = qjl_rng.randn(d)
-        self.qjl_vector /= np.linalg.norm(self.qjl_vector)
+        rng = np.random.RandomState(qjl_seed)
+        self.S = rng.randn(d, d)  # fixed random matrix for QJL
 
     def encode(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray, float]:
         """Quantize vector with inner-product preservation.
@@ -186,58 +186,79 @@ class TurboQuantProd:
         mse_indices = self.mse_quantizer.encode(x)
         x_hat = self.mse_quantizer.decode(mse_indices)
 
-        # Residual
+        # Residual: r ← x - DeQuantmse(idx)  (Algorithm 2, line 6)
         residual = x - x_hat
         residual_norm = float(np.linalg.norm(residual))
 
-        # QJL: project residual onto random vector, keep sign per coordinate
-        # Use random sign flips for each coordinate
-        rng = np.random.RandomState(self.qjl_rng_seed)
-        S = rng.randn(self.d, self.d)  # random projection
-        projected = S @ residual
-        qjl_signs = (projected > 0).astype(np.uint8)
+        # QJL on residual: qjl ← sign(S · r)  (Algorithm 2, line 7)
+        projected = self.S @ residual
+        qjl_signs = np.sign(projected)  # ∈ {-1, 0, +1}
+        # Convert to {-1, +1} (treat 0 as +1)
+        qjl_signs[qjl_signs == 0] = 1.0
 
         return mse_indices, qjl_signs, residual_norm
 
     def decode(self, mse_indices: np.ndarray, qjl_signs: np.ndarray,
                residual_norm: float) -> np.ndarray:
-        """Reconstruct vector (MSE part only, QJL is for IP estimation)."""
-        return self.mse_quantizer.decode(mse_indices)
+        """Full dequantization per Algorithm 2, lines 10-12.
 
-    def inner_product(
+        x̃ = x̃_mse + x̃_qjl
+        where x̃_qjl = √(π/2) / d · γ · S^T · qjl
+        """
+        x_mse = self.mse_quantizer.decode(mse_indices)
+        # Algorithm 2, line 11: x̃_qjl = √(π/2) / d · γ · S^T · qjl
+        x_qjl = (np.sqrt(np.pi / 2.0) / self.d) * residual_norm * (self.S.T @ qjl_signs)
+        return x_mse + x_qjl
+
+    def inner_product_asymmetric(
+        self,
+        y: np.ndarray,
+        code_x: tuple[np.ndarray, np.ndarray, float],
+    ) -> float:
+        """Estimate ⟨y, x⟩ where y is a fresh vector and x is quantized.
+
+        This is the primary use case per the paper (Theorem 2):
+        ⟨y, x̃⟩ = ⟨y, x̃_mse⟩ + √(π/2)/d · γ · ⟨y, S^T · qjl⟩
+
+        Args:
+            y: Fresh (unquantized) vector, shape (d,).
+            code_x: (mse_indices, qjl_signs, residual_norm) for quantized x.
+
+        Returns:
+            Unbiased estimate of ⟨y, x⟩.
+        """
+        idx_x, qjl_x, gamma_x = code_x
+
+        # MSE inner product: ⟨y, x̃_mse⟩
+        x_mse = self.mse_quantizer.decode(idx_x)
+        ip_mse = float(np.dot(y, x_mse))
+
+        # QJL correction: ⟨y, x̃_qjl⟩ = √(π/2)/d · γ · (S·y)^T · qjl
+        Sy = self.S @ y
+        qjl_correction = float(np.sqrt(np.pi / 2.0) / self.d * gamma_x * np.dot(Sy, qjl_x))
+
+        return ip_mse + qjl_correction
+
+    def inner_product_symmetric(
         self,
         code_a: tuple[np.ndarray, np.ndarray, float],
         code_b: tuple[np.ndarray, np.ndarray, float],
     ) -> float:
-        """Estimate inner product between two quantized vectors.
+        """Estimate ⟨a, b⟩ where both vectors are quantized.
 
-        Uses MSE reconstruction inner product + QJL sign-based correction.
+        Uses full dequantization: ⟨decode(a), decode(b)⟩.
+        Note: the paper primarily defines the asymmetric case.
 
         Args:
-            code_a: (mse_indices, qjl_signs, residual_norm) for vector a
-            code_b: (mse_indices, qjl_signs, residual_norm) for vector b
+            code_a: (mse_indices, qjl_signs, residual_norm) for vector a.
+            code_b: (mse_indices, qjl_signs, residual_norm) for vector b.
 
         Returns:
-            Estimated inner product <a, b>.
+            Estimated inner product.
         """
-        idx_a, signs_a, gamma_a = code_a
-        idx_b, signs_b, gamma_b = code_b
-
-        # MSE inner product
-        a_hat = self.mse_quantizer.decode(idx_a)
-        b_hat = self.mse_quantizer.decode(idx_b)
-        ip_mse = float(np.dot(a_hat, b_hat))
-
-        # QJL correction: sign agreement is proportional to residual inner product
-        # E[sign(S r_a) * sign(S r_b)] ~ (2/pi) * <r_a, r_b> / (||r_a|| * ||r_b||)
-        sign_a = 2.0 * signs_a.astype(np.float64) - 1.0
-        sign_b = 2.0 * signs_b.astype(np.float64) - 1.0
-        sign_agreement = float(np.mean(sign_a * sign_b))
-
-        # Correction factor: (pi/2) * ||r_a|| * ||r_b|| * sign_agreement
-        correction = (np.pi / 2.0) * gamma_a * gamma_b * sign_agreement
-
-        return ip_mse + correction
+        a_hat = self.decode(*code_a)
+        b_hat = self.decode(*code_b)
+        return float(np.dot(a_hat, b_hat))
 
     def encode_batch(self, X: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Batch encode for inner product preservation.
@@ -254,9 +275,9 @@ class TurboQuantProd:
         residuals = X - X_hat
         residual_norms = np.linalg.norm(residuals, axis=1)
 
-        rng = np.random.RandomState(self.qjl_rng_seed)
-        S = rng.randn(self.d, self.d)
-        projected = residuals @ S.T  # (n, d)
-        qjl_signs = (projected > 0).astype(np.uint8)
+        # QJL: sign(S · r) for each residual vector
+        projected = residuals @ self.S.T  # (n, d)
+        qjl_signs = np.sign(projected)
+        qjl_signs[qjl_signs == 0] = 1.0
 
         return mse_indices, qjl_signs, residual_norms

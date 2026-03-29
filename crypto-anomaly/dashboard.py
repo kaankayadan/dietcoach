@@ -41,7 +41,7 @@ async def broadcast(data: dict[str, Any]) -> None:
             await asyncio.wait_for(ws.send_text(message), timeout=5.0)
         except Exception:
             disconnected.add(ws)
-    _clients -= disconnected
+    _clients.difference_update(disconnected)
 
 
 @app.get("/", response_class=HTMLResponse)

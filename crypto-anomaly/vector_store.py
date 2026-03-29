@@ -9,7 +9,8 @@ In-memory vector store with TurboQuant compression.
 
 import time
 import logging
-from dataclasses import dataclass
+from collections import defaultdict
+from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
@@ -17,6 +18,18 @@ import numpy as np
 from turboquant import TurboQuantMSE
 
 logger = logging.getLogger(__name__)
+
+# Intervals (in minutes) for subsequent move tracking
+SUBSEQUENT_INTERVALS = [5, 15, 60]
+
+
+@dataclass
+class SubsequentMove:
+    """Price movement after a pattern was observed."""
+    interval_minutes: int
+    price_at_pattern: float
+    price_after: float
+    pct_change: float  # percentage change
 
 
 @dataclass
@@ -26,6 +39,7 @@ class SearchResult:
     score: float  # inner product (higher = more similar)
     distance: float  # L2 distance (lower = more similar)
     metadata: dict[str, Any]
+    subsequent_moves: list[SubsequentMove] = field(default_factory=list)
 
 
 class VectorStore:
@@ -49,6 +63,11 @@ class VectorStore:
         # Cached decoded vectors for fast search
         self._decoded_cache = np.zeros((max_vectors, self.d), dtype=np.float64)
         self._cache_dirty = np.ones(max_vectors, dtype=bool)
+
+        # Price history per symbol: {symbol: [(timestamp, price), ...]}
+        # Used to compute subsequent price moves for historical patterns
+        self._price_history: dict[str, list[tuple[float, float]]] = defaultdict(list)
+        self._max_price_history = 10_000  # per symbol
 
     @property
     def count(self) -> int:
@@ -153,11 +172,20 @@ class VectorStore:
             ip = float(scores[local_idx])
             dist = 2.0 - 2.0 * ip
             meta = self._metadata[global_idx] or {}
+
+            # Look up subsequent price moves for this historical pattern
+            sub_moves = self._get_subsequent_moves(
+                symbol=meta.get("symbol", ""),
+                pattern_timestamp=meta.get("timestamp", 0),
+                pattern_price=meta.get("price", 0),
+            )
+
             results.append(SearchResult(
                 index=int(global_idx),
                 score=ip,
                 distance=max(0.0, dist),
                 metadata=meta,
+                subsequent_moves=sub_moves,
             ))
 
         return results
@@ -202,6 +230,55 @@ class VectorStore:
 
         return evicted
 
+    def record_price(self, symbol: str, timestamp: float, price: float) -> None:
+        """Record a price point for subsequent move analysis.
+
+        Call this on every candle close to build price history.
+        """
+        history = self._price_history[symbol]
+        history.append((timestamp, price))
+        # Trim old entries
+        if len(history) > self._max_price_history:
+            self._price_history[symbol] = history[-self._max_price_history:]
+
+    def _get_subsequent_moves(self, symbol: str, pattern_timestamp: float,
+                               pattern_price: float) -> list[SubsequentMove]:
+        """Look up what happened to price after a historical pattern.
+
+        For each interval in SUBSEQUENT_INTERVALS, find the closest price
+        point after pattern_timestamp + interval and compute % change.
+        """
+        history = self._price_history.get(symbol, [])
+        if not history or pattern_price <= 0:
+            return []
+
+        moves = []
+        for interval_min in SUBSEQUENT_INTERVALS:
+            target_ts = pattern_timestamp + interval_min * 60
+
+            # Binary search for closest timestamp >= target_ts
+            best_price = None
+            best_diff = float("inf")
+            for ts, price in history:
+                if ts >= target_ts:
+                    diff = ts - target_ts
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_price = price
+                    if diff > 300:  # stop if we're >5min past target
+                        break
+
+            if best_price is not None and best_diff < interval_min * 60:
+                pct = ((best_price - pattern_price) / pattern_price) * 100
+                moves.append(SubsequentMove(
+                    interval_minutes=interval_min,
+                    price_at_pattern=pattern_price,
+                    price_after=best_price,
+                    pct_change=round(pct, 4),
+                ))
+
+        return moves
+
     def get_stats(self) -> dict[str, Any]:
         """Return store statistics."""
         valid_count = self.count
@@ -211,4 +288,5 @@ class VectorStore:
             "utilization": valid_count / self.max_vectors,
             "memory_codes_mb": self._codes.nbytes / 1e6,
             "memory_cache_mb": self._decoded_cache.nbytes / 1e6,
+            "price_history_entries": sum(len(v) for v in self._price_history.values()),
         }

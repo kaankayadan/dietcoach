@@ -192,6 +192,50 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     font-size: 12px;
   }
   .pattern-entry .sim { color: #4caf50; }
+  .pattern-entry .move-pos { color: #4caf50; font-weight: bold; }
+  .pattern-entry .move-neg { color: #f44336; font-weight: bold; }
+
+  /* Trend summary */
+  .trend-box {
+    background: #1a1a35;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  .trend-box h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; }
+  .trend-row {
+    display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 6px;
+  }
+  .trend-card {
+    background: #12122a;
+    border: 1px solid #2a2a5a;
+    border-radius: 6px;
+    padding: 10px 14px;
+    min-width: 140px;
+    text-align: center;
+  }
+  .trend-card .interval { font-size: 11px; color: #888; }
+  .trend-card .direction { font-size: 16px; font-weight: bold; }
+  .trend-card .details { font-size: 11px; color: #aaa; margin-top: 4px; }
+  .trend-bullish { border-color: #4caf50; }
+  .trend-bullish .direction { color: #4caf50; }
+  .trend-bearish { border-color: #f44336; }
+  .trend-bearish .direction { color: #f44336; }
+  .trend-neutral { border-color: #ff9800; }
+  .trend-neutral .direction { color: #ff9800; }
+
+  /* Anomaly trend tag */
+  .trend-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+    margin-left: 6px;
+  }
+  .tag-bullish { background: #1b3a1b; color: #4caf50; }
+  .tag-bearish { background: #3a1b1b; color: #f44336; }
+  .tag-neutral { background: #3a3a1b; color: #ff9800; }
 
   .empty-msg { color: #555; font-style: italic; font-size: 13px; }
 </style>
@@ -402,10 +446,21 @@ function renderAnomalyList() {
     div.className = `anomaly-entry ${a.alert_level}`;
     const time = new Date(a.timestamp * 1000).toLocaleTimeString();
     const sigmaClass = a.sigma_level > 3 ? 'sigma-high' : 'sigma-med';
+
+    // Build trend tag from first available trend summary
+    let trendTag = '';
+    if (a.trend_summaries && a.trend_summaries.length > 0) {
+      const t = a.trend_summaries[0]; // use shortest interval
+      const tagClass = t.direction === 'BULLISH' ? 'tag-bullish' :
+                       t.direction === 'BEARISH' ? 'tag-bearish' : 'tag-neutral';
+      trendTag = `<span class="trend-tag ${tagClass}">${t.direction} ${t.bullish_pct.toFixed(0)}% (${t.interval_minutes}m)</span>`;
+    }
+
     div.innerHTML = `
       <span class="anomaly-symbol">${a.symbol.toUpperCase()}</span>
       &nbsp;$${Number(a.price).toLocaleString(undefined, {minimumFractionDigits: 2})}
       &nbsp;<span class="anomaly-sigma ${sigmaClass}">${a.sigma_level.toFixed(1)}σ</span>
+      ${trendTag}
       &nbsp;<span style="color:#666">${time}</span>`;
     div.onclick = () => showPatterns(a);
     container.appendChild(div);
@@ -419,19 +474,49 @@ function showPatterns(anomaly) {
     container.innerHTML = '<p class="empty-msg">No similar patterns found</p>';
     return;
   }
-  container.innerHTML = `<p style="font-size:12px;color:#888;margin-bottom:8px;">
+
+  let html = `<p style="font-size:12px;color:#888;margin-bottom:8px;">
     Patterns similar to ${anomaly.symbol.toUpperCase()} anomaly at
     ${new Date(anomaly.timestamp * 1000).toLocaleTimeString()}</p>`;
+
+  // Trend summary cards
+  if (anomaly.trend_summaries && anomaly.trend_summaries.length > 0) {
+    html += '<div class="trend-box"><h3>TREND ANALYSIS (from similar patterns)</h3><div class="trend-row">';
+    anomaly.trend_summaries.forEach(t => {
+      const cls = t.direction === 'BULLISH' ? 'trend-bullish' :
+                  t.direction === 'BEARISH' ? 'trend-bearish' : 'trend-neutral';
+      html += `<div class="trend-card ${cls}">
+        <div class="interval">${t.interval_minutes} min outlook</div>
+        <div class="direction">${t.direction}</div>
+        <div class="details">${t.num_bullish}/${t.num_patterns} bullish (${t.bullish_pct.toFixed(0)}%)</div>
+        <div class="details">avg: ${t.avg_pct_change >= 0 ? '+' : ''}${t.avg_pct_change.toFixed(3)}%</div>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // Individual patterns
   anomaly.similar_patterns.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'pattern-entry';
     const time = new Date(p.timestamp * 1000).toLocaleString();
-    div.innerHTML = `<strong>${p.symbol.toUpperCase()}</strong>
+    let movesHtml = '';
+    if (p.subsequent_moves && p.subsequent_moves.length > 0) {
+      movesHtml = '<br><span style="font-size:11px;color:#888;">After: </span>';
+      movesHtml += p.subsequent_moves.map(m => {
+        const cls = m.pct_change >= 0 ? 'move-pos' : 'move-neg';
+        const sign = m.pct_change >= 0 ? '+' : '';
+        return `<span class="${cls}">${m.interval_minutes}m: ${sign}${m.pct_change.toFixed(2)}%</span>`;
+      }).join(' &nbsp;');
+    }
+    html += `<div class="pattern-entry">
+      <strong>${p.symbol.toUpperCase()}</strong>
       @ $${Number(p.price).toLocaleString(undefined, {minimumFractionDigits: 2})}
       &mdash; ${time}
-      &nbsp;<span class="sim">sim: ${p.similarity.toFixed(4)}</span>`;
-    container.appendChild(div);
+      &nbsp;<span class="sim">sim: ${p.similarity.toFixed(4)}</span>
+      ${movesHtml}
+    </div>`;
   });
+
+  container.innerHTML = html;
 }
 
 // Uptime counter

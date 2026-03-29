@@ -18,7 +18,7 @@ from typing import Any
 import numpy as np
 
 from config import Config
-from vector_store import VectorStore
+from vector_store import VectorStore, SUBSEQUENT_INTERVALS
 
 logger = logging.getLogger(__name__)
 
@@ -32,12 +32,35 @@ BOLD = "\033[1m"
 
 
 @dataclass
+class SubsequentMoveInfo:
+    """Price movement after a pattern, for display."""
+    interval_minutes: int
+    price_at_pattern: float
+    price_after: float
+    pct_change: float
+
+
+@dataclass
+class TrendSummary:
+    """Aggregated trend analysis from similar patterns' subsequent moves."""
+    interval_minutes: int
+    num_patterns: int  # how many patterns had data for this interval
+    num_bullish: int  # positive moves
+    num_bearish: int  # negative moves
+    avg_pct_change: float
+    median_pct_change: float
+    bullish_pct: float  # percentage of bullish outcomes
+    direction: str  # "BULLISH", "BEARISH", "NEUTRAL"
+
+
+@dataclass
 class SimilarPattern:
     """A historical pattern similar to the current one."""
     timestamp: float
     symbol: str
     price: float
     similarity: float  # inner product score
+    subsequent_moves: list[SubsequentMoveInfo] = field(default_factory=list)
 
 
 @dataclass
@@ -51,6 +74,7 @@ class AnomalyResult:
     threshold: float  # the σ threshold used
     alert_level: str  # "normal", "warning", "critical"
     similar_patterns: list[SimilarPattern] = field(default_factory=list)
+    trend_summaries: list[TrendSummary] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -67,8 +91,30 @@ class AnomalyResult:
                     "symbol": p.symbol,
                     "price": p.price,
                     "similarity": round(p.similarity, 4),
+                    "subsequent_moves": [
+                        {
+                            "interval_minutes": m.interval_minutes,
+                            "price_at_pattern": m.price_at_pattern,
+                            "price_after": m.price_after,
+                            "pct_change": m.pct_change,
+                        }
+                        for m in p.subsequent_moves
+                    ],
                 }
                 for p in self.similar_patterns
+            ],
+            "trend_summaries": [
+                {
+                    "interval_minutes": t.interval_minutes,
+                    "num_patterns": t.num_patterns,
+                    "num_bullish": t.num_bullish,
+                    "num_bearish": t.num_bearish,
+                    "avg_pct_change": round(t.avg_pct_change, 4),
+                    "median_pct_change": round(t.median_pct_change, 4),
+                    "bullish_pct": round(t.bullish_pct, 1),
+                    "direction": t.direction,
+                }
+                for t in self.trend_summaries
             ],
         }
 
@@ -147,16 +193,28 @@ class AnomalyDetector:
         else:
             alert_level = "normal"
 
-        # Build similar patterns list
-        similar_patterns = [
-            SimilarPattern(
+        # Build similar patterns list with subsequent moves
+        similar_patterns = []
+        for r in results:
+            sub_moves = [
+                SubsequentMoveInfo(
+                    interval_minutes=m.interval_minutes,
+                    price_at_pattern=m.price_at_pattern,
+                    price_after=m.price_after,
+                    pct_change=m.pct_change,
+                )
+                for m in r.subsequent_moves
+            ]
+            similar_patterns.append(SimilarPattern(
                 timestamp=r.metadata.get("timestamp", 0),
                 symbol=r.metadata.get("symbol", ""),
                 price=r.metadata.get("price", 0),
                 similarity=r.score,
-            )
-            for r in results
-        ]
+                subsequent_moves=sub_moves,
+            ))
+
+        # Build trend summaries per interval
+        trend_summaries = self._compute_trend_summaries(similar_patterns)
 
         result = AnomalyResult(
             symbol=symbol,
@@ -167,6 +225,7 @@ class AnomalyDetector:
             threshold=self.config.sigma_threshold,
             alert_level=alert_level,
             similar_patterns=similar_patterns,
+            trend_summaries=trend_summaries,
         )
 
         # Console logging for anomalies
@@ -174,6 +233,47 @@ class AnomalyDetector:
             self._log_anomaly(result)
 
         return result
+
+    @staticmethod
+    def _compute_trend_summaries(patterns: list[SimilarPattern]) -> list[TrendSummary]:
+        """Aggregate subsequent moves across all similar patterns."""
+        summaries = []
+
+        for interval in SUBSEQUENT_INTERVALS:
+            changes = []
+            for p in patterns:
+                for m in p.subsequent_moves:
+                    if m.interval_minutes == interval:
+                        changes.append(m.pct_change)
+
+            if not changes:
+                continue
+
+            arr = np.array(changes)
+            num_bullish = int(np.sum(arr > 0))
+            num_bearish = int(np.sum(arr < 0))
+            total = len(changes)
+            bullish_pct = (num_bullish / total) * 100 if total > 0 else 50.0
+
+            if bullish_pct >= 65:
+                direction = "BULLISH"
+            elif bullish_pct <= 35:
+                direction = "BEARISH"
+            else:
+                direction = "NEUTRAL"
+
+            summaries.append(TrendSummary(
+                interval_minutes=interval,
+                num_patterns=total,
+                num_bullish=num_bullish,
+                num_bearish=num_bearish,
+                avg_pct_change=float(np.mean(arr)),
+                median_pct_change=float(np.median(arr)),
+                bullish_pct=bullish_pct,
+                direction=direction,
+            ))
+
+        return summaries
 
     def _log_anomaly(self, result: AnomalyResult) -> None:
         """Print colored anomaly alert to console."""
@@ -193,9 +293,25 @@ class AnomalyDetector:
             print(f"{CYAN}  Similar patterns:{RESET}")
             for i, p in enumerate(result.similar_patterns[:3]):
                 t = time.strftime("%Y-%m-%d %H:%M", time.localtime(p.timestamp))
+                moves_str = ""
+                if p.subsequent_moves:
+                    moves_str = " → " + ", ".join(
+                        f"{m.interval_minutes}m:{m.pct_change:+.2f}%"
+                        for m in p.subsequent_moves
+                    )
                 print(
                     f"{CYAN}    {i+1}. {p.symbol.upper()} @ ${p.price:,.2f} "
-                    f"({t}) sim={p.similarity:.4f}{RESET}"
+                    f"({t}) sim={p.similarity:.4f}{moves_str}{RESET}"
+                )
+
+        if result.trend_summaries:
+            print(f"{BOLD}  Trend Analysis (from similar patterns):{RESET}")
+            for t in result.trend_summaries:
+                dir_color = GREEN if t.direction == "BULLISH" else (RED if t.direction == "BEARISH" else YELLOW)
+                print(
+                    f"  {dir_color}  {t.interval_minutes}m: {t.direction} "
+                    f"({t.num_bullish}/{t.num_patterns} bullish = {t.bullish_pct:.0f}%) "
+                    f"avg={t.avg_pct_change:+.3f}% med={t.median_pct_change:+.3f}%{RESET}"
                 )
         print()
 

@@ -102,8 +102,11 @@ class Application:
         if vector is None:
             return
 
-        # 2. Store (quantize internally)
+        # 2. Record price for subsequent move tracking
         last_candle = candles[-1]
+        self.vector_store.record_price(symbol, last_candle.timestamp, last_candle.close)
+
+        # 3. Store (quantize internally)
         metadata = {
             "symbol": symbol,
             "price": last_candle.close,
@@ -113,10 +116,10 @@ class Application:
         self.vector_store.add(vector, metadata)
         self.candle_count += 1
 
-        # 3. Detect anomaly
+        # 4. Detect anomaly
         result = self.anomaly_detector.detect(vector, metadata)
 
-        # 4. Broadcast candle to dashboard
+        # 5. Broadcast candle to dashboard
         await broadcast({
             "type": "candle",
             "symbol": symbol,
@@ -124,14 +127,14 @@ class Application:
             "volume": last_candle.volume,
         })
 
-        # 5. Broadcast anomaly if detected
+        # 6. Broadcast anomaly if detected
         if result and result.alert_level != "normal":
             await broadcast({
                 "type": "anomaly",
                 **result.to_dict(),
             })
 
-        # 6. Periodic status broadcast
+        # 7. Periodic status broadcast
         if self.candle_count % 10 == 0:
             await broadcast({
                 "type": "status",
@@ -211,9 +214,12 @@ class Application:
         except Exception as e:
             logger.warning(f"Bootstrap failed (will fill from WebSocket): {e}")
 
-        # Process bootstrapped buffers — trigger initial feature extraction
+        # Record bootstrapped price history and trigger initial feature extraction
         for symbol in self.config.symbols:
             candles = self.collector.get_buffer(symbol)
+            # Record all historical prices for subsequent move analysis
+            for c in candles:
+                self.vector_store.record_price(symbol, c.timestamp, c.close)
             if len(candles) >= self.config.window_size:
                 try:
                     await self.on_candle_close(symbol, candles)

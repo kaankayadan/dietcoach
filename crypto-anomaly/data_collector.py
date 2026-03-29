@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Binance WebSocket data collector for real-time kline (candlestick) data.
 

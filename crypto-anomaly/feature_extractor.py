@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Feature extraction: converts a window of candles into a d=128
 unit-norm vector suitable for TurboQuant quantization.

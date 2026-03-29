@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 TurboQuant: Online Vector Quantization with Near-optimal Distortion Rate
 
